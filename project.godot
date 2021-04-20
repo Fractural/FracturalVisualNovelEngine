@@ -13,10 +13,18 @@ _global_script_class_icons={
 
 }
 
+[Fractural_VNE]
+
+Display=8
+
 [application]
 
 config/name="FracturalVisualNovelEngine"
 config/icon="res://icon.png"
+
+[editor_plugins]
+
+enabled=PoolStringArray( "FracturalVNE" )
 
 [rendering]
 
