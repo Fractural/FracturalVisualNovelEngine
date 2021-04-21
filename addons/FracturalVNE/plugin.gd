@@ -2,7 +2,7 @@ tool
 extends EditorPlugin
 
 const Settings: Script = preload("settings.gd")
-const Docker: Script = preload("UI/docker.gd")
+const Docker: Script = preload("ui/docker.gd")
 const PluginUIScene: PackedScene = preload("PluginUI.tscn")
 
 var plugin_ui: Control

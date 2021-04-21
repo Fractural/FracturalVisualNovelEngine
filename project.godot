@@ -8,9 +8,56 @@
 
 config_version=4
 
-_global_script_classes=[  ]
+_global_script_classes=[ {
+"base": "Node",
+"class": "InputReader",
+"language": "GDScript",
+"path": "res://addons/FracturalVNE/core/wip-languageprocessing/inputreader.gd"
+}, {
+"base": "Node",
+"class": "Lexer",
+"language": "GDScript",
+"path": "res://addons/FracturalVNE/core/wip-languageprocessing/lexer.gd"
+}, {
+"base": "Reference",
+"class": "Story",
+"language": "GDScript",
+"path": "res://addons/FracturalVNE/core/story.gd"
+}, {
+"base": "Reference",
+"class": "StoryActions",
+"language": "GDScript",
+"path": "res://addons/FracturalVNE/core/story_actions.gd"
+}, {
+"base": "Reference",
+"class": "StoryInstruction",
+"language": "GDScript",
+"path": "res://addons/FracturalVNE/core/wip-languageprocessing/storyinstruction.gd"
+}, {
+"base": "Node",
+"class": "StoryManager",
+"language": "GDScript",
+"path": "res://addons/FracturalVNE/core/story_manager.gd"
+}, {
+"base": "Node",
+"class": "StoryProcessor",
+"language": "GDScript",
+"path": "res://addons/FracturalVNE/core/wip-languageprocessing/storyprocessor.gd"
+}, {
+"base": "Reference",
+"class": "Token",
+"language": "GDScript",
+"path": "res://addons/FracturalVNE/core/wip-languageprocessing/token.gd"
+} ]
 _global_script_class_icons={
-
+"InputReader": "",
+"Lexer": "",
+"Story": "",
+"StoryActions": "",
+"StoryInstruction": "",
+"StoryManager": "",
+"StoryProcessor": "",
+"Token": ""
 }
 
 [Fractural_VNE]

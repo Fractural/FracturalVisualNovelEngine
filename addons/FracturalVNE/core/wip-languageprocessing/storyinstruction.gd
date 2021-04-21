@@ -1,0 +1,2 @@
+extends Reference
+class_name StoryInstruction
