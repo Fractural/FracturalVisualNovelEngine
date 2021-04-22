@@ -19,14 +19,16 @@ class LoadCharacterAssets:
 
 class DefineCharacter:
 	var character_name: String
+	var name_color: Color
 	var text_color: Color
 
-	func _init(character_name_: String, text_color_: Color):
+	func _init(character_name_: String, name_color_: Color, text_color_: Color):
 		character_name = character_name_
+		name_color = name_color_
 		text_color = text_color_
 
 	func perform(story_manager):
-		story_manager.character_manager.define_character(character_name, text_color)
+		story_manager.character_manager.define_character(character_name, name_color, text_color)
 
 # SpriteManager Actions
 class DefineSprite:

@@ -1,0 +1,72 @@
+[gd_scene load_steps=8 format=2]
+
+[ext_resource path="res://addons/FracturalVNE/fonts/Noto_Sans/NotoSans-Italic.tres" type="DynamicFont" id=1]
+[ext_resource path="res://addons/FracturalVNE/fonts/Noto_Sans/NotoSans-Bold.tres" type="DynamicFont" id=2]
+[ext_resource path="res://addons/FracturalVNE/fonts/Noto_Sans/NotoSans-BoldItalic.tres" type="DynamicFont" id=3]
+[ext_resource path="res://addons/FracturalVNE/fonts/Noto_Sans/NotoSans-Regular.tres" type="DynamicFont" id=4]
+[ext_resource path="res://addons/FracturalVNE/engine/ui/text_printer/printers/components/text_reveal.gd" type="Script" id=5]
+[ext_resource path="res://addons/FracturalVNE/engine/ui/text_printer/BaseTextPrinter.tscn" type="PackedScene" id=6]
+[ext_resource path="res://addons/FracturalVNE/engine/ui/text_printer/printers/basic_text_printer.gd" type="Script" id=7]
+
+[node name="DefaultTextPrinter" instance=ExtResource( 6 )]
+rect_min_size = Vector2( 0, 200 )
+
+[node name="Panel" type="Panel" parent="." index="0"]
+anchor_right = 1.0
+anchor_bottom = 1.0
+
+[node name="MarginContainer" type="MarginContainer" parent="Panel" index="0"]
+anchor_right = 1.0
+anchor_bottom = 1.0
+margin_left = 100.0
+margin_top = 10.0
+margin_right = -100.0
+margin_bottom = -10.0
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="HSeparator" type="VSplitContainer" parent="Panel/MarginContainer" index="0"]
+margin_right = 824.0
+margin_bottom = 580.0
+dragger_visibility = 2
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="NameTextReveal" type="RichTextLabel" parent="Panel/MarginContainer/HSeparator" index="0"]
+margin_right = 824.0
+margin_bottom = 30.0
+rect_min_size = Vector2( 0, 30 )
+custom_fonts/bold_italics_font = ExtResource( 3 )
+custom_fonts/italics_font = ExtResource( 1 )
+custom_fonts/bold_font = ExtResource( 2 )
+custom_fonts/normal_font = ExtResource( 4 )
+text = "Name"
+scroll_active = false
+script = ExtResource( 5 )
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="DialogueTextReveal" type="RichTextLabel" parent="Panel/MarginContainer/HSeparator" index="1"]
+margin_top = 30.0
+margin_right = 824.0
+margin_bottom = 580.0
+custom_fonts/bold_italics_font = ExtResource( 3 )
+custom_fonts/italics_font = ExtResource( 1 )
+custom_fonts/bold_font = ExtResource( 2 )
+custom_fonts/normal_font = ExtResource( 4 )
+text = "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Morbi sit amet quam ut massa suscipit consequat eget tincidunt lacus. Duis cursus placerat lectus et consectetur. In maximus urna at risus sodales, vel placerat justo efficitur. Aliquam pellentesque felis enim, et tincidunt tellus interdum a. Sed scelerisque vestibulum ullamcorper. Aliquam eu volutpat urna. Fusce tristique libero augue, at vehicula libero sollicitudin in. Phasellus at arcu id ante molestie bibendum non et turpis. Pellentesque a mauris ipsum. Quisque tristique feugiat est vitae tempus. Cras sit amet ligula et nisi gravida sollicitudin id dapibus felis. "
+script = ExtResource( 5 )
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="BasicTextPrinter" type="Node" parent="." index="1"]
+script = ExtResource( 7 )
+_text_printer_path = NodePath("..")
+_name_text_reveal_path = NodePath("../Panel/MarginContainer/HSeparator/NameTextReveal")
+_dialogue_text_reveal = NodePath("../Panel/MarginContainer/HSeparator/DialogueTextReveal")
+default_name_color = Color( 1, 1, 1, 1 )
+default_dialogue_color = Color( 1, 1, 1, 1 )

@@ -1,4 +1,5 @@
 extends Story
+class_name DemoStory
 
 func start():
 	auto_step(ON)
