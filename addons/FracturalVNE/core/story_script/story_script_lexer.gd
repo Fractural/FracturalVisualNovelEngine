@@ -1,5 +1,5 @@
-extends Reference
 class_name StoryScriptLexer
+extends Reference
 
 const EOF = "EOF"
 

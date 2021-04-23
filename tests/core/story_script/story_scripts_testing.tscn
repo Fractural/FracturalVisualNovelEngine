@@ -1,7 +1,9 @@
-[gd_scene load_steps=3 format=2]
+[gd_scene load_steps=5 format=2]
 
 [ext_resource path="res://tests/core/story_script/story_script_lexer_tests.gd" type="Script" id=1]
 [ext_resource path="res://addons/FracturalVNE/assets/fonts/Hack/Hack-Regular.tres" type="DynamicFont" id=2]
+[ext_resource path="res://addons/FracturalVNE/plugin/ui/story_script_text_edit.gd" type="Script" id=3]
+[ext_resource path="res://addons/FracturalVNE/plugin/ui/monokai.tres" type="Resource" id=4]
 
 [node name="StoryScriptTests" type="Control"]
 anchor_right = 1.0
@@ -38,10 +40,13 @@ text = "	ThisIsAnIdentifier    \"asdfasdf\"
 	(NestedIdentifier):
 \"String Test 2\""
 highlight_current_line = true
+syntax_highlighting = true
 show_line_numbers = true
 minimap_draw = true
+script = ExtResource( 3 )
 __meta__ = {
 "_edit_use_anchors_": false
 }
+text_edit_theme = ExtResource( 4 )
 
 [connection signal="pressed" from="VSplitContainer/LexButton" to="." method="_on_LexButton_pressed"]

@@ -1,5 +1,5 @@
-extends Reference
 class_name StoryScriptToken
+extends Reference
 
 var type: String
 var symbol
