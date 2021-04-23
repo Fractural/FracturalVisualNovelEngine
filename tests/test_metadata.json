@@ -1,0 +1,9 @@
+{
+	"res://tests/core/story_script/story_script_lexer_tests.gd": {
+		"path": "res://tests/core/story_script/story_script_lexer_tests.gd",
+		"tags": [
+
+		],
+		"passing": false
+	}
+}

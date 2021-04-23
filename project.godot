@@ -9,15 +9,20 @@
 config_version=4
 
 _global_script_classes=[ {
+"base": "Node",
+"class": "BasicStoryGUI",
+"language": "GDScript",
+"path": "res://addons/FracturalVNE/core/gui/in_game_menu/basic_story_gui.gd"
+}, {
 "base": "Reference",
 "class": "Character",
 "language": "GDScript",
-"path": "res://addons/FracturalVNE/engine/character/character.gd"
+"path": "res://addons/FracturalVNE/core/character/character.gd"
 }, {
 "base": "Reference",
 "class": "CharactersDelay",
 "language": "GDScript",
-"path": "res://addons/FracturalVNE/engine/ui/text_printer/printers/components/characters_delay.gd"
+"path": "res://addons/FracturalVNE/core/gui/text_printer/printers/components/characters_delay.gd"
 }, {
 "base": "Story",
 "class": "DemoStory",
@@ -27,41 +32,93 @@ _global_script_classes=[ {
 "base": "Reference",
 "class": "Story",
 "language": "GDScript",
-"path": "res://addons/FracturalVNE/engine/core/story.gd"
+"path": "res://addons/FracturalVNE/core/story/story.gd"
 }, {
 "base": "Reference",
 "class": "StoryActions",
 "language": "GDScript",
-"path": "res://addons/FracturalVNE/engine/core/story_actions.gd"
+"path": "res://addons/FracturalVNE/core/story_script/story_actions.gd"
+}, {
+"base": "Node",
+"class": "StoryDecisionManager",
+"language": "GDScript",
+"path": "res://addons/FracturalVNE/core/decision/story_decision_manager.gd"
+}, {
+"base": "Node",
+"class": "StoryHistory",
+"language": "GDScript",
+"path": "res://addons/FracturalVNE/core/story/story_history.gd"
 }, {
 "base": "Node",
 "class": "StoryManager",
 "language": "GDScript",
-"path": "res://addons/FracturalVNE/engine/core/story_manager.gd"
+"path": "res://addons/FracturalVNE/core/story/story_manager.gd"
+}, {
+"base": "Node",
+"class": "StorySaveManger",
+"language": "GDScript",
+"path": "res://addons/FracturalVNE/core/io/story_save_manager.gd"
+}, {
+"base": "Reference",
+"class": "StoryScriptLexer",
+"language": "GDScript",
+"path": "res://addons/FracturalVNE/core/story_script/story_script_lexer.gd"
+}, {
+"base": "Reference",
+"class": "StoryScriptReader",
+"language": "GDScript",
+"path": "res://addons/FracturalVNE/core/story_script/story_script_reader.gd"
+}, {
+"base": "Reference",
+"class": "StoryScriptToken",
+"language": "GDScript",
+"path": "res://addons/FracturalVNE/core/story_script/story_script_token.gd"
 }, {
 "base": "Node",
 "class": "TextPrinter",
 "language": "GDScript",
-"path": "res://addons/FracturalVNE/engine/ui/text_printer/text_printer.gd"
+"path": "res://addons/FracturalVNE/core/gui/text_printer/text_printer.gd"
 }, {
 "base": "RichTextLabel",
 "class": "TextReveal",
 "language": "GDScript",
-"path": "res://addons/FracturalVNE/engine/ui/text_printer/printers/components/text_reveal.gd"
+"path": "res://addons/FracturalVNE/core/gui/text_printer/printers/components/text_reveal.gd"
 } ]
 _global_script_class_icons={
+"BasicStoryGUI": "",
 "Character": "",
 "CharactersDelay": "",
 "DemoStory": "",
 "Story": "",
 "StoryActions": "",
+"StoryDecisionManager": "",
+"StoryHistory": "",
 "StoryManager": "",
+"StorySaveManger": "",
+"StoryScriptLexer": "",
+"StoryScriptReader": "",
+"StoryScriptToken": "",
 "TextPrinter": "",
 "TextReveal": ""
 }
 
 [Fractural_VNE]
 
+Display=8
+
+[WAT]
+
+Test_Directory="res://tests"
+Results_Directory="res://tests"
+Test_Metadata_Directory="res://tests"
+Tags=PoolStringArray(  )
+Window_Size=Vector2( 1280, 720 )
+Minimize_Window_When_Running_Tests=false
+Port=6008
+Default_Launch=0
+Run_All_Tests=Object(InputEventKey,"resource_local_to_scene":false,"resource_name":"","device":0,"alt":false,"shift":false,"control":false,"meta":false,"command":false,"pressed":false,"scancode":0,"unicode":0,"echo":false,"script":null)
+
+Auto_Refresh_Tests=false
 Display=8
 
 [application]
@@ -71,7 +128,7 @@ config/icon="res://icon.png"
 
 [editor_plugins]
 
-enabled=PoolStringArray( "FracturalVNE" )
+enabled=PoolStringArray( "res://addons/FracturalVNE/plugin.cfg", "res://addons/gut/plugin.cfg" )
 
 [rendering]
 

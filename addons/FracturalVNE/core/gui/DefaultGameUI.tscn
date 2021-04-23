@@ -1,6 +1,6 @@
 [gd_scene load_steps=2 format=2]
 
-[ext_resource path="res://addons/FracturalVNE/engine/ui/text_printer/printers/BasicTextPrinter.tscn" type="PackedScene" id=1]
+[ext_resource path="res://addons/FracturalVNE/core/gui/text_printer/printers/BasicTextPrinter.tscn" type="PackedScene" id=1]
 
 
 

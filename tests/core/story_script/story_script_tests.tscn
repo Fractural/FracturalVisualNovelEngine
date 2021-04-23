@@ -1,0 +1,47 @@
+[gd_scene load_steps=3 format=2]
+
+[ext_resource path="res://tests/core/story_script/story_script_lexer_tests.gd" type="Script" id=1]
+[ext_resource path="res://addons/FracturalVNE/assets/fonts/Hack/Hack-Regular.tres" type="DynamicFont" id=2]
+
+[node name="StoryScriptTests" type="Control"]
+anchor_right = 1.0
+anchor_bottom = 1.0
+script = ExtResource( 1 )
+__meta__ = {
+"_edit_use_anchors_": false
+}
+text_edit_path = NodePath("VSplitContainer/TextEdit")
+
+[node name="VSplitContainer" type="VSplitContainer" parent="."]
+anchor_right = 1.0
+anchor_bottom = 1.0
+dragger_visibility = 2
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="LexButton" type="Button" parent="VSplitContainer"]
+margin_right = 1024.0
+margin_bottom = 50.0
+rect_min_size = Vector2( 0, 50 )
+text = "Run Lexer"
+
+[node name="TextEdit" type="TextEdit" parent="VSplitContainer"]
+margin_top = 50.0
+margin_right = 1024.0
+margin_bottom = 600.0
+custom_fonts/font = ExtResource( 2 )
+text = "	ThisIsAnIdentifier    \"asdfasdf\"
+234234.330 0234.339 234923
+		\"  \" Testing023 testing230
+			0.2430 200343 \"String \\\"\\t\\n\\\\ Test\"
+	(NestedIdentifier):
+\"String Test 2\""
+highlight_current_line = true
+show_line_numbers = true
+minimap_draw = true
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[connection signal="pressed" from="VSplitContainer/LexButton" to="." method="_on_LexButton_pressed"]

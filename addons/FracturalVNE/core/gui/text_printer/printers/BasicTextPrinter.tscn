@@ -1,12 +1,12 @@
 [gd_scene load_steps=8 format=2]
 
-[ext_resource path="res://addons/FracturalVNE/fonts/Noto_Sans/NotoSans-Italic.tres" type="DynamicFont" id=1]
-[ext_resource path="res://addons/FracturalVNE/fonts/Noto_Sans/NotoSans-Bold.tres" type="DynamicFont" id=2]
-[ext_resource path="res://addons/FracturalVNE/fonts/Noto_Sans/NotoSans-BoldItalic.tres" type="DynamicFont" id=3]
-[ext_resource path="res://addons/FracturalVNE/fonts/Noto_Sans/NotoSans-Regular.tres" type="DynamicFont" id=4]
-[ext_resource path="res://addons/FracturalVNE/engine/ui/text_printer/printers/components/text_reveal.gd" type="Script" id=5]
-[ext_resource path="res://addons/FracturalVNE/engine/ui/text_printer/BaseTextPrinter.tscn" type="PackedScene" id=6]
-[ext_resource path="res://addons/FracturalVNE/engine/ui/text_printer/printers/basic_text_printer.gd" type="Script" id=7]
+[ext_resource path="res://addons/FracturalVNE/assets/fonts/Noto_Sans/NotoSans-Italic.tres" type="DynamicFont" id=1]
+[ext_resource path="res://addons/FracturalVNE/assets/fonts/Noto_Sans/NotoSans-Bold.tres" type="DynamicFont" id=2]
+[ext_resource path="res://addons/FracturalVNE/assets/fonts/Noto_Sans/NotoSans-BoldItalic.tres" type="DynamicFont" id=3]
+[ext_resource path="res://addons/FracturalVNE/assets/fonts/Noto_Sans/NotoSans-Regular.tres" type="DynamicFont" id=4]
+[ext_resource path="res://addons/FracturalVNE/core/gui/text_printer/printers/components/text_reveal.gd" type="Script" id=5]
+[ext_resource path="res://addons/FracturalVNE/core/gui/text_printer/BaseTextPrinter.tscn" type="PackedScene" id=6]
+[ext_resource path="res://addons/FracturalVNE/core/gui/text_printer/printers/basic_text_printer.gd" type="Script" id=7]
 
 [node name="DefaultTextPrinter" instance=ExtResource( 6 )]
 rect_min_size = Vector2( 0, 200 )

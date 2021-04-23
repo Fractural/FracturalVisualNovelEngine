@@ -3,7 +3,7 @@ class_name StoryManager
 
 signal stepped;
 
-var auto_step: bool = false
+var auto_step: bool = false setget set_auto_step
 
 #TODO: Each class below must implement _on_stepped method
 var text_printer: TextPrinter # TODO: Write TextPrinter
@@ -12,9 +12,11 @@ var character_manager#: CharacterManager # TODO. SHould use SpriteManager to man
 var sprite_manager#: SpriteManager # TODO
 var sound_manager# : SoundManager # TODO
 
-var actions: Array
+# Actions are built in a tree like fashion using a doubly linked list, with one action referring to the next and the one before and action groups defining branches
+var action: StoryActions.Action
 
 func _ready():
+	pass
 	# TODO: Fetch the dependencies (printer, asset_loader, etc)
 	
 	#connect("stepped", text_printer, "_on_stepped")
@@ -23,10 +25,15 @@ func _ready():
 	#connect("stepped", sprite_manager, "_on_stepped")
 	#connect("stepped", sound_manager, "_on_stepped")
 
-	actions = []
-
 func load_story(story):
-	actions = story._load_story(self)
+	action = story._load_story_tree(self)
 
+func set_auto_step(value: bool):
+	if auto_step == value:
+		return
+	
+	auto_step = value
+	#TODO Make a blocker system and make set auto step only step once blocker is unblocked
+	
 func step():
 	emit_signal("stepped")
