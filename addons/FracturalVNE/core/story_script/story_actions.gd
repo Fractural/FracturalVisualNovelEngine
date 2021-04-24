@@ -176,19 +176,14 @@ class EndBlock:
 # Conditions
 
 class Condition:
-	var _decision_manager
-
-	func _init(decision_manager_):
-		_decision_manager = decision_manager_
-
-	func is_true():
+	func is_true(decision_manager_):
 		pass
 
 class FlagCondition extends Condition:
 	var flag_name: String
 
-	func _init(decision_manager_, flag_name_: String).(decision_manager_):
+	func _init(flag_name_: String):
 		flag_name = flag_name_
 
-	func is_true():
-		_decision_manager.has_identifier(flag_name)
+	func is_true(decision_manager):
+		decision_manager.has_identifier(flag_name)

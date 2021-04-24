@@ -3,14 +3,20 @@ extends Reference
 
 var type: String
 var symbol
-var line: int
-var column: int
+var position: Position
 
-func _init(type_: String, symbol_, line_: int, column_: int):
+func _init(type_: String, symbol_, position_: Position):
 	symbol = symbol_
 	type = type_
-	line = line_
-	column = column_
+	position = position_
 
 func _to_string() -> String:
-	return "[ TYPE: %-15s Line: %-2s[%-2s] SYMBOL: %-10s ]" % [type, str(line), str(column), str("" if symbol == null else symbol)]
+	return "[ TYPE: %-15s Line: %-2s[%-2s] SYMBOL: %-10s ]" % [type, str(position.line), str(position.column), str("" if symbol == null else symbol)]
+
+class Position:
+	var line: int
+	var column: int
+	
+	func _init(line_: int = 0, column_: int = 0):
+		line = line_
+		column = column_

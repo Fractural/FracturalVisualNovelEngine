@@ -21,7 +21,7 @@ func toggle_auto(enabled: bool):
 	story_manager.auto_step = enabled
 
 func toggle_story_log():
-	toggle(story_log)
+	story_log.toggle()
 
 # Called every frame. 'delta' is the elapsed time since the previous frame.
 #func _process(delta):

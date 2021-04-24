@@ -1,4 +1,4 @@
-extends Story
+#extends Story
 class_name DemoStory
 
 # func start():

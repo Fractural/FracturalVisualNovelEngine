@@ -1,3 +1,4 @@
+tool
 class_name StoryScriptLexer
 extends Reference
 
@@ -30,11 +31,13 @@ const TT_COMMA = ","
 const TT_COLON = ":"
 const TT_INDENT = "INDENT"
 
-# Lines and columns use 1 indexing 
-var current_line: int
-var current_column: int
+export var error_handler_path: NodePath
 
 var reader: StoryScriptReader
+var error_handler: StoryScriptErrorHandler
+
+# Lines and columns use 0 indexing 
+var current_token_position = StoryScriptToken.Position.new()
 
 var tokens: Array
 
@@ -42,7 +45,9 @@ var identifier_regex: RegEx
 var identifier_first_char_regex: RegEx
 var identifier_nonfirst_char_regex: RegEx
 
-func _init():
+func _init(error_handler_ : StoryScriptErrorHandler):
+	error_handler = error_handler_
+	
 	identifier_regex = RegEx.new()
 	identifier_regex.compile("^[a-zA-Z][0-9a-zA-Z]*$")
 
@@ -53,9 +58,9 @@ func _init():
 	identifier_nonfirst_char_regex.compile("^[a-zA-Z0-9]$")
 
 # Returns Token[]
-func lex_story(reader_: StoryScriptReader) -> Array:
+func generate_tokens(reader_: StoryScriptReader) -> Array:
 	reader = reader_
-	current_line = 0
+	current_token_position.line = -1
 	tokens = []
 
 	# First line is a new line
@@ -90,7 +95,7 @@ func lex_story(reader_: StoryScriptReader) -> Array:
 	return tokens
 
 func add_token(type: String, value = null):
-	tokens.append(StoryScriptToken.new(type, value, current_line, current_column))
+	tokens.append(StoryScriptToken.new(type, value, current_token_position))
 
 # Identifier
 
@@ -182,15 +187,15 @@ func add_string_literal():
 # Misc
 
 func consume(steps_ahead: int = 1) -> String:
-	current_column += 1
+	current_token_position.column += 1
 	var consumed = reader.consume(steps_ahead)
 	if consumed == NEWLINE:
 		new_line_setup()
 	return consumed 
 
 func new_line_setup():
-	current_line += 1
-	current_column = 0
+	current_token_position.line += 1
+	current_token_position.column = -1
 	# Identifiers cannot be between two linebreaks, therefore we must reset possible_identifier
 
 func add_indent():
@@ -214,5 +219,5 @@ func add_indent():
 	
 	add_token(TT_INDENT, indent_count)
 
-func error(message: String, line: int = current_line, column: int = current_column):
-	assert(false, "Line: %s[%s] : %s" % [str(line), str(column), message])
+func error(message: String, position: StoryScriptToken.Position = current_token_position):
+	error_handler.throw_error(message, position)
