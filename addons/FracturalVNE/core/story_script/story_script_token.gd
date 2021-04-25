@@ -5,7 +5,7 @@ var type: String
 var symbol
 var position: Position
 
-func _init(type_: String, symbol_, position_: Position):
+func _init(type_: String, symbol_ = null, position_: Position = null):
 	symbol = symbol_
 	type = type_
 	position = position_
@@ -20,3 +20,6 @@ class Position:
 	func _init(line_: int = 0, column_: int = 0):
 		line = line_
 		column = column_
+		
+	func clone() -> Position:
+		return Position.new(line, column)

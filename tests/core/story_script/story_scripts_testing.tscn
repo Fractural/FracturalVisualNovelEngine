@@ -11,26 +11,8 @@ __meta__ = {
 "_edit_use_anchors_": false
 }
 
-[node name="VSplitContainer" type="VSplitContainer" parent="."]
-anchor_right = 1.0
-anchor_bottom = 1.0
-dragger_visibility = 2
-__meta__ = {
-"_edit_use_anchors_": false
-}
-
-[node name="LexButton" type="Button" parent="VSplitContainer"]
-margin_right = 1024.0
-margin_bottom = 50.0
-rect_min_size = Vector2( 0, 50 )
-text = "Run Lexer"
-
-[node name="StoryScriptEditor" parent="VSplitContainer" instance=ExtResource( 2 )]
-anchor_right = 0.0
-anchor_bottom = 0.0
+[node name="StoryScriptEditor" parent="." instance=ExtResource( 2 )]
 margin_left = 0.0
-margin_top = 50.0
-margin_right = 1024.0
-margin_bottom = 600.0
-
-[connection signal="pressed" from="VSplitContainer/LexButton" to="." method="_on_LexButton_pressed"]
+margin_top = 0.0
+margin_right = 0.0
+margin_bottom = 0.0

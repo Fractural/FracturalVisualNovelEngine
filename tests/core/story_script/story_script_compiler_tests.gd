@@ -6,9 +6,6 @@ export var compiler_path: NodePath
 onready var text_edit = get_node(text_edit_path)
 onready var compiler: StoryScriptCompiler = get_node(compiler_path)
 
-func _on_LexButton_pressed():
-	load__story_script__print_tokens(text_edit.text)
-
 func load__story_script__print_tokens(script) -> void:
 	# parameters([["script", "correct_tokens"], ["test (): asdf sdfd 0.23343 44"]])
 	var lexed_tokens = compiler.lexer.generate_tokens(StoryScriptReader.new(script))

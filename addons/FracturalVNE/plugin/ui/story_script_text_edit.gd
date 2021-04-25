@@ -2,10 +2,10 @@ tool
 class_name StoryScriptTextEdit 
 extends TextEdit
 
-const ACCENT_1_KEYWORDS = [ "if", "else", "define" ]
-const ACCENT_2_KEYWORDS = [ "label", "jump", "==", ">", "<", ">=", "<=" ]
+const ACCENT_1_KEYWORDS = [ "if", "elif", "else", "pass", "call"]
+const ACCENT_2_KEYWORDS = [ "label", "jump", "with", "show", "hide", "==", ">", "<", ">=", "<=" ]
 const ACCENT_3_KEYWORDS = [ "Character", "Sprite" ]
-const ACCENT_4_KEYWORDS = [ "class" ]
+const ACCENT_4_KEYWORDS = [ "define" ]
 
 export var text_edit_theme: Resource
 export var error_label_path: NodePath
@@ -17,6 +17,7 @@ onready var caret_position_label: Label = get_node(caret_position_label_path)
 func _ready():
 	connect("cursor_changed", self, "_on_cursor_changed")
 	error_label.connect("meta_clicked", self, "_on_error_label_clicked")
+	clear_error()
 	
 	load_text_edit_theme()
 
@@ -63,14 +64,15 @@ func load_text_edit_theme(new_theme: Resource = text_edit_theme):
 	
 	add_color_override("number_color", text_edit_theme.number_color)
 
-func display_error(message: String, position: StoryScriptToken.Position):
+func display_error(error: StoryScriptError):
 	# As of now there is no way to highlight a line, therefore we cannot highlight
 	# an error in the code right now
-	error_label.bbcode_text = '[url={"line"=%s, "column"=%s}]at %s error(%s,%s): %s[/url]' % [str(position.line + 1), str(position.column + 1), position.file_path, str(position.line + 1), str(position.column + 1), message]
+	error_label.bbcode_text = '[url={"line":%s, "column":%s}]error(%s,%s): %s[/url]' % [str(error.position.line), str(error.position.column), str(error.position.line + 1), str(error.position.column + 1), error.message]
 
 func _on_error_label_clicked(meta):
-	cursor_set_line(meta.line, true)
-	cursor_set_column(meta.column, true)
+	var meta_dictionary = parse_json(meta)
+	cursor_set_line(meta_dictionary["line"], true)
+	cursor_set_column(meta_dictionary["column"], true)
 
 func clear_error():
 	error_label.bbcode_text = ""

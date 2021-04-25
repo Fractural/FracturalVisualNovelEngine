@@ -39,11 +39,6 @@ _global_script_classes=[ {
 "language": "GDScript",
 "path": "res://addons/FracturalVNE/plugin/ui/plugin_ui.gd"
 }, {
-"base": "Reference",
-"class": "StoryActions",
-"language": "GDScript",
-"path": "res://addons/FracturalVNE/core/story_script/story_actions.gd"
-}, {
 "base": "Node",
 "class": "StoryDecisionManager",
 "language": "GDScript",
@@ -64,6 +59,21 @@ _global_script_classes=[ {
 "language": "GDScript",
 "path": "res://addons/FracturalVNE/core/io/story_save_manager.gd"
 }, {
+"base": "Reference",
+"class": "StoryScriptASTNode",
+"language": "GDScript",
+"path": "res://addons/FracturalVNE/core/story_script/story_script_ast_node.gd"
+}, {
+"base": "Reference",
+"class": "StoryScriptActionTreeBuilder",
+"language": "GDScript",
+"path": "res://addons/FracturalVNE/core/story_script/story_script_action_tree_builder.gd"
+}, {
+"base": "Reference",
+"class": "StoryScriptActions",
+"language": "GDScript",
+"path": "res://addons/FracturalVNE/core/story_script/story_script_actions.gd"
+}, {
 "base": "Node",
 "class": "StoryScriptCompiler",
 "language": "GDScript",
@@ -75,9 +85,9 @@ _global_script_classes=[ {
 "path": "res://addons/FracturalVNE/plugin/ui/story_script_editor.gd"
 }, {
 "base": "Reference",
-"class": "StoryScriptErrorHandler",
+"class": "StoryScriptError",
 "language": "GDScript",
-"path": "res://addons/FracturalVNE/core/story_script/story_script_error_handler.gd"
+"path": "res://addons/FracturalVNE/core/story_script/story_script_error.gd"
 }, {
 "base": "Reference",
 "class": "StoryScriptLexer",
@@ -104,6 +114,11 @@ _global_script_classes=[ {
 "language": "GDScript",
 "path": "res://addons/FracturalVNE/core/story_script/story_script_token.gd"
 }, {
+"base": "Reference",
+"class": "StoryScriptTokensReader",
+"language": "GDScript",
+"path": "res://addons/FracturalVNE/core/story_script/story_script_tokens_reader.gd"
+}, {
 "base": "Resource",
 "class": "TextEditTheme",
 "language": "GDScript",
@@ -126,19 +141,22 @@ _global_script_class_icons={
 "DemoStory": "",
 "PluginAssetsRegistry": "",
 "PluginUI": "",
-"StoryActions": "",
 "StoryDecisionManager": "",
 "StoryHistory": "",
 "StoryManager": "",
 "StorySaveManager": "",
+"StoryScriptASTNode": "",
+"StoryScriptActionTreeBuilder": "",
+"StoryScriptActions": "",
 "StoryScriptCompiler": "",
 "StoryScriptEditor": "",
-"StoryScriptErrorHandler": "",
+"StoryScriptError": "",
 "StoryScriptLexer": "",
 "StoryScriptParser": "",
 "StoryScriptReader": "",
 "StoryScriptTextEdit": "",
 "StoryScriptToken": "",
+"StoryScriptTokensReader": "",
 "TextEditTheme": "",
 "TextPrinter": "",
 "TextReveal": ""
@@ -171,6 +189,14 @@ config/icon="res://icon.png"
 [editor_plugins]
 
 enabled=PoolStringArray( "res://addons/FracturalVNE/plugin.cfg" )
+
+[global]
+
+debug=false
+
+[network]
+
+limits/debugger_stdout/max_chars_per_second=4096
 
 [rendering]
 

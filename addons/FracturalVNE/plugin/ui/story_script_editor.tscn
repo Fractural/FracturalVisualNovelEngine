@@ -46,7 +46,7 @@ icon = ExtResource( 6 )
 [node name="ScriptTextEdit" type="TextEdit" parent="VSplitContainer"]
 margin_top = 38.0
 margin_right = 1014.0
-margin_bottom = 557.0
+margin_bottom = 559.0
 size_flags_vertical = 3
 custom_fonts/font = ExtResource( 2 )
 custom_colors/function_color = Color( 0.65098, 0.886275, 0.180392, 1 )
@@ -80,7 +80,7 @@ error_label_path = NodePath("../BottomMenu/HSplitContainer/ErrorLabel")
 caret_position_label_path = NodePath("../BottomMenu/HSplitContainer/CaretPositionLabel")
 
 [node name="BottomMenu" type="PanelContainer" parent="VSplitContainer"]
-margin_top = 557.0
+margin_top = 559.0
 margin_right = 1014.0
 margin_bottom = 590.0
 
@@ -88,12 +88,12 @@ margin_bottom = 590.0
 margin_left = 7.0
 margin_top = 7.0
 margin_right = 1007.0
-margin_bottom = 26.0
+margin_bottom = 24.0
 dragger_visibility = 2
 
 [node name="ErrorLabel" type="RichTextLabel" parent="VSplitContainer/BottomMenu/HSplitContainer"]
-margin_right = 910.0
-margin_bottom = 19.0
+margin_right = 928.0
+margin_bottom = 17.0
 size_flags_horizontal = 3
 custom_fonts/normal_font = ExtResource( 2 )
 custom_colors/default_color = Color( 0.866667, 0.25098, 0.309804, 1 )
@@ -104,9 +104,9 @@ text = "error()"
 scroll_active = false
 
 [node name="CaretPositionLabel" type="Label" parent="VSplitContainer/BottomMenu/HSplitContainer"]
-margin_left = 910.0
+margin_left = 928.0
 margin_right = 1000.0
-margin_bottom = 19.0
+margin_bottom = 17.0
 custom_fonts/font = ExtResource( 2 )
 text = "(  1,  1)"
 __meta__ = {
@@ -115,5 +115,3 @@ __meta__ = {
 
 [node name="Compiler" type="Node" parent="VSplitContainer"]
 script = ExtResource( 4 )
-
-[connection signal="throw_error" from="VSplitContainer/Compiler" to="VSplitContainer/ScriptTextEdit" method="display_error"]

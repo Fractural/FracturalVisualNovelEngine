@@ -1,5 +1,5 @@
 extends Reference
-class_name StoryActions
+class_name StoryScriptActions
 
 class Action:
 	var previous_action: Action = null

@@ -12,9 +12,14 @@ onready var compiler: StoryScriptCompiler = get_node(compiler_path)
 
 func _ready():
 	compile_button.connect("pressed", self, "compile_script")
+	compiler.connect("throw_error", script_text_edit, "display_error")
 
 func compile_script():
-	compiler.compile(script_text_edit.text)
+	var ast_tree = compiler.compile(script_text_edit.text)
+	if ast_tree is StoryScriptError:
+		script_text_edit.display_error(ast_tree)
+	else:
+		script_text_edit.clear_error()
 
 func _setup_editor_assets(assets_registry):
 	compile_button.icon = assets_registry.load_asset("assets/icons/play.svg")
