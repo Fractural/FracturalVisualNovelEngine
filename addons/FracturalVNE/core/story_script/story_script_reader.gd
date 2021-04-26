@@ -7,7 +7,7 @@ var _current_index: int = -1
 var _raw_text: String
 
 func _init(raw_text_: String):
-	_raw_text = raw_text_ + "\n\n"
+	_raw_text = "\n" + raw_text_ + "\n\n"
 
 func consume(steps_ahead: int = 1):
 	_current_index += steps_ahead

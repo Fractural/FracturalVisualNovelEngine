@@ -254,13 +254,6 @@ func generate_tokens(reader_: StoryScriptReader):
 	current_token_position.line = -1
 	tokens = []
 	previous_indent_level = 0
-
-	# First line is a new line
-	new_line_setup()
-	
-	# Add indent to represent entire program block
-	add_token(TT_PUNCTUATION, PUNC_INDENT)
-	tokens.back().position.column = 0
 	
 	var error = null
 	while not reader.is_EOF():
@@ -296,10 +289,6 @@ func generate_tokens(reader_: StoryScriptReader):
 			
 		if error is StoryScriptError:
 			return error
-	
-	# Add dedent to represent closing the entire program block
-	add_token(TT_PUNCTUATION, PUNC_DEDENT)
-	tokens.back().position.column = 0
 		
 	return tokens
 

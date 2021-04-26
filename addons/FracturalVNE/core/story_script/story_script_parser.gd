@@ -216,6 +216,7 @@ class Type:
 		fields = fields_
 
 enum StatementKind {
+	BLOCK,
 	VARIABLE_DECLARATION,
 	FUNCTION_CALL,
 	LITERAL,
@@ -224,6 +225,7 @@ enum StatementKind {
 }
 
 const StatementKindStrings = {
+	StatementKind.BLOCK: "BLOCK",
 	StatementKind.VARIABLE_DECLARATION: "VARIABLE_DECLARATION",
 	StatementKind.FUNCTION_CALL: "FUNCTION_CALL",
 	StatementKind.LITERAL: "LITERAL",
@@ -248,7 +250,10 @@ class Statement:
 		for i in indent_level:
 			indented_string += "\t"
 		
-		var string = indented_string + StatementKindStrings[kind] + " " + return_type.name + " " + str(name) + " (\n"
+		var string = indented_string + StatementKindStrings[kind] + " " + return_type.name 
+		if name != null:
+			string += " \"" + str(name) + "\""
+		string += " (\n"
 		for statement in parameters:
 			string += statement.debug_string(indent_level + 1);
 		string += indented_string + ")\n";
@@ -386,17 +391,30 @@ func _init():
 func generate_abstract_syntax_tree(reader_: StoryScriptTokensReader):
 	reader = reader_
 	
-	var program_block = expect_block()
-	if program_block is StoryScriptError:
-		return program_block
+	return expect_program()
+
+func expect_program():
+	var program = Statement.new()
+	program.name = "program"
+	
+	var block = Statement.new()
+	block.kind = StatementKind.BLOCK
+	
+	program.parameters.append(block)
+	
+	while not reader.is_EOF():
+		var statement = expect_statement()
+		if statement is StoryScriptError:
+			return statement
 		
-	program_block.name = "program" 
-	return program_block
+		block.parameters.append(statement)
+	return program
 
 # TODO: Add INDENT and DEDENTs for lexer
 func expect_block():
 	if is_success(expect_punctuation(PUNC_INDENT)):
 		var block = Statement.new()
+		block.kind = StatementKind.BLOCK
 		while not is_success(expect_punctuation(PUNC_DEDENT)):
 			# Should normally never happen since the lexer automatically adds 
 			# dedents to the end of the program
@@ -663,7 +681,7 @@ func expect_variable_declaration():
 		var initial_value = expect_expression()
 		if initial_value is StoryScriptError:
 			return error('Expected a valid expression to the right of "=" in variable declaration.', 1)
-	
+		
 		declaration_statement.parameters.push_back(initial_value)
 	
 	return declaration_statement
