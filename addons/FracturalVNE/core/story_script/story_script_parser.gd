@@ -179,7 +179,7 @@ var BINARY_OPERATOR_PRECEDENCE = {
 	OP_MULTIPLY : 5, OP_DIVIDE : 5, OP_MODULUS : 5,
 }
 
-var ALL_OPERATORS = ALL_UNARY_OPERATORS.duplicate().append_array(ALL_BINARY_OPERATORS)
+var ALL_OPERATORS
 
 
 
@@ -243,7 +243,7 @@ class Statement:
 		return_type = return_type_
 		parameters = parameters_
 	
-	func debug_string(indent_level: int) -> String:
+	func debug_string(indent_level: int = 0) -> String:
 		var indented_string = ""
 		for i in indent_level:
 			indented_string += "\t"
@@ -309,7 +309,7 @@ func peek_is_keyword(keyword: String = ""):
 	return is_keyword(reader.peek(), keyword)
 
 func peek_is_operator(operator: String = ""):
-	return peek_is_unary_operator(operator) or peek_is_binary_operator(operator)
+	return is_operator(reader.peek(), operator)
 
 func peek_is_unary_operator(operator: String = ""):
 	return is_unary_operator(reader.peek(), operator)
@@ -378,15 +378,25 @@ func is_success(result):
 
 var reader: StoryScriptTokensReader
 
+func _init():
+	ALL_OPERATORS = []
+	ALL_OPERATORS.append_array(ALL_UNARY_OPERATORS)
+	ALL_OPERATORS.append_array(ALL_BINARY_OPERATORS)
+
 func generate_abstract_syntax_tree(reader_: StoryScriptTokensReader):
 	reader = reader_
-	# TODO: Make lexer add PUNC_INDENT and PUNC_DEDENT to the beginning and end of a file
-	return expect_block()
+	
+	var program_block = expect_block()
+	if program_block is StoryScriptError:
+		return program_block
+		
+	program_block.name = "program" 
+	return program_block
 
 # TODO: Add INDENT and DEDENTs for lexer
 func expect_block():
 	if is_success(expect_punctuation(PUNC_INDENT)):
-		var statements = []
+		var block = Statement.new()
 		while not is_success(expect_punctuation(PUNC_DEDENT)):
 			# Should normally never happen since the lexer automatically adds 
 			# dedents to the end of the program
@@ -397,8 +407,8 @@ func expect_block():
 			if statement is StoryScriptError:
 				return statement
 			
-			statements.append(statement)
-		return statements
+			block.parameters.append(statement)
+		return block
 	else:
 		return error("Expected an indent to begin a block.")
 
@@ -583,6 +593,7 @@ func operator_precedence(operator):
 # An expression component can be one expression, one string, one float, etc.
 func expect_one_expression_component():
 	var result
+	var other = reader.peek()
 	if reader.peek().type == TT_FLOAT:
 		var float_literal_statement = Statement.new()
 		float_literal_statement.kind = StatementKind.LITERAL
@@ -630,10 +641,12 @@ func expect_one_expression_component():
 
 func expect_variable_declaration():
 	var start_parse_iter = reader.clone()
+	var ahead = str(reader.peek()) + str(reader.peek(2))
 	# Our language will not be typed
 	if expect_keyword(KW_DEFINE) is StoryScriptError:
 		return error('Expected "define" to start variable declaration.', 1.0/2)
 	
+	var before = reader.peek()
 	var variable_name = expect_identifier()
 	if variable_name is StoryScriptError:
 		variable_name.confidence = 2.0/2
@@ -645,7 +658,8 @@ func expect_variable_declaration():
 	declaration_statement.return_type = Type.new("variable", BuiltinType.VARIABLE)
 	
 	# Add an initial value to the variable if there is an assignment operator
-	if is_success(expect_operator(OP_EQUALS)):
+	var result = reader.peek()
+	if is_success(expect_binary_operator(OP_ASSIGN)):
 		var initial_value = expect_expression()
 		if initial_value is StoryScriptError:
 			return error('Expected a valid expression to the right of "=" in variable declaration.', 1)

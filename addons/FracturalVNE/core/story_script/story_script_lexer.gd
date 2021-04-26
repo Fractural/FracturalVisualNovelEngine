@@ -209,7 +209,7 @@ var BINARY_OPERATOR_PRECEDENCE = {
 	OP_MULTIPLY : 5, OP_DIVIDE : 5, OP_MODULUS : 5,
 }
 
-var ALL_OPERATORS = ALL_UNARY_OPERATORS.duplicate().append_array(ALL_BINARY_OPERATORS)
+var ALL_OPERATORS
 
 
 
@@ -234,19 +234,19 @@ var previous_indent_level: int
 
 var tokens: Array
 
-var identifier_regex: RegEx
 var identifier_first_char_regex: RegEx
 var identifier_nonfirst_char_regex: RegEx
 
 func _init():
-	identifier_regex = RegEx.new()
-	identifier_regex.compile("^[a-zA-Z][0-9a-zA-Z]*$")
-
+	ALL_OPERATORS = []
+	ALL_OPERATORS.append_array(ALL_UNARY_OPERATORS)
+	ALL_OPERATORS.append_array(ALL_BINARY_OPERATORS)
+	
 	identifier_first_char_regex = RegEx.new()
-	identifier_first_char_regex.compile("^[a-zA-Z]$")
+	identifier_first_char_regex.compile("^[_a-zA-Z]$")
 	
 	identifier_nonfirst_char_regex = RegEx.new()
-	identifier_nonfirst_char_regex.compile("^[a-zA-Z0-9]$")
+	identifier_nonfirst_char_regex.compile("^[_a-zA-Z0-9]$")
 
 # Returns Token[]
 func generate_tokens(reader_: StoryScriptReader):
@@ -319,7 +319,7 @@ func is_keyword(identifier) -> bool:
 	return false
 
 func add_keyword(identifier):
-	add_token(identifier)
+	add_token(TT_KEYWORD, identifier)
 
 # Comments
 
@@ -348,10 +348,8 @@ func add_identifier_or_keyword():
 		add_keyword(possible_identifier)
 	# TODO: Remove this since the previous checks technically mean
 	# this statement is always true
-	elif identifier_regex.search(possible_identifier):
-		add_identifier(possible_identifier)
 	else:
-		return error("\"%s\" is not a valid identifier" % [possible_identifier])
+		add_identifier(possible_identifier)
 
 func add_identifier(identifier):
 	add_token(TT_IDENTIFIER, identifier)

@@ -98,9 +98,7 @@ size_flags_horizontal = 3
 custom_fonts/normal_font = ExtResource( 2 )
 custom_colors/default_color = Color( 0.866667, 0.25098, 0.309804, 1 )
 bbcode_enabled = true
-bbcode_text = "error()"
 meta_underlined = false
-text = "error()"
 scroll_active = false
 
 [node name="CaretPositionLabel" type="Label" parent="VSplitContainer/BottomMenu/HSplitContainer"]
