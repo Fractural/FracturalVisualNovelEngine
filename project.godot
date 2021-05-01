@@ -79,6 +79,11 @@ _global_script_classes=[ {
 "language": "GDScript",
 "path": "res://addons/FracturalVNE/core/story_script/story_script_compiler.gd"
 }, {
+"base": "Reference",
+"class": "StoryScriptConstants",
+"language": "GDScript",
+"path": "res://addons/FracturalVNE/core/story_script/story_script_constants.gd"
+}, {
 "base": "Node",
 "class": "StoryScriptEditor",
 "language": "GDScript",
@@ -149,6 +154,7 @@ _global_script_class_icons={
 "StoryScriptActionTreeBuilder": "",
 "StoryScriptActions": "",
 "StoryScriptCompiler": "",
+"StoryScriptConstants": "",
 "StoryScriptEditor": "",
 "StoryScriptError": "",
 "StoryScriptLexer": "",
