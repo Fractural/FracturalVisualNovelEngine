@@ -1,4 +1,4 @@
-extends "res://addons/FracturalVNE/core/story_script/ast_nodes/expressions/operators/binary_operators/binary_operator_parser.gd"
+extends "res://addons/FracturalVNE/core/story_script/ast_nodes/expressions/operators/unary_operators/pre_unary_operators/pre_unary_operator_construct.gd"
 
 func get_parse_types() -> Array:
 	var arr = .get_parse_types()
@@ -19,7 +19,7 @@ func parse(parser):
 	
 	if parser.is_success(operator):
 		return NegateOperatorNode.new()
-	return parser
+	return operator
 
 class NegateOperatorNode extends "res://addons/FracturalVNE/core/story_script/ast_nodes/expressions/operators/unary_operators/pre_unary_operators/pre_unary_operator.gd":
 	func _debug_string_operator_name():

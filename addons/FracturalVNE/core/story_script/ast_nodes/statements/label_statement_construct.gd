@@ -1,4 +1,4 @@
-extends "res://addons/FracturalVNE/core/story_script/ast_nodes/statements/statement_parser.gd"
+extends "res://addons/FracturalVNE/core/story_script/ast_nodes/statements/statement_construct.gd"
 
 func get_parse_types():
 	var arr = .get_parse_types()
@@ -8,19 +8,26 @@ func get_parse_types():
 func get_keywords() -> Array:
 	return ["label"]
 
+func get_punctuation() -> Array:
+	return [":"]
+
 func parse(parser):
-	var checkpoint = parser.save_checkpoint()
+	var checkpoint = parser.save_reader_state()
 	var label = parser.expect_token("keyword", "label")
 	if parser.is_success(label):
 		var identifier = parser.expect_token("identifier")
 		if parser.is_success(identifier):
-			var block = parser.expect("block")
-			if parser.is_success(block):
-				return LabelNode.new(identifier.symbol, block)
+			var colon = parser.expect_token("punctuation", ":")
+			if parser.is_success(colon):
+				var block = parser.expect("block")
+				if parser.is_success(block):
+					return LabelNode.new(identifier.symbol, block)
+				else:
+					return parser.error(block, 3/4.0, checkpoint)
 			else:
-				return parser.error(block, 2/3.0, checkpoint)
+				return parser.error(colon, 2/4.0, checkpoint)
 		else:
-			return parser.error(identifier, 1/3.0, checkpoint)
+			return parser.error(identifier, 1/4.0, checkpoint)
 	else:
 		return parser.error(label, 0)
 # TODO NOW: Port over ast_nodes following the google drawings UML diagram
@@ -37,9 +44,10 @@ class LabelNode extends "res://addons/FracturalVNE/core/story_script/ast_nodes/e
 		# TODO Add add_label
 		runtime_manager.add_label(self)
 	
-	func debug_string(tabs_string: String):
+	func debug_string(tabs_string: String) -> String:
 		var string = ""
-		string += tabs_string + "LABEL " + name + " :" 
+		string += tabs_string + "LABEL " + name + ":" 
 		string += "\n" + tabs_string + "{"
-		string += "\n" + tabs_string + block.debug_string(tabs_string + "\t")
+		string += "\n" + block.debug_string(tabs_string + "\t")
 		string += "\n" + tabs_string + "}"
+		return string

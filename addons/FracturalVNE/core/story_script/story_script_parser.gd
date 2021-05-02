@@ -9,12 +9,29 @@ var constructs = StoryScriptConstants.new().CONSTRUCTS
 
 func generate_abstract_syntax_tree(reader_: StoryScriptTokensReader):
 	reader = reader_
+	return expect("program")
 
 func expect(construct_name: String):
+	var errors = []
 	for construct in constructs:
 		if construct.get_parse_types().has(construct_name):
-			return construct.parse(self)
-	return error("Unexpected token.")
+			errors.append(construct.parse(self))
+			if is_success(errors.back()):
+				return errors.back()
+	
+	if errors.size() == 0:
+		return error("Unknown token.")
+	
+	var closest_error = errors.front()
+	for error in errors:
+		if error.confidence > closest_error.confidence:
+			closest_error = error
+	
+	if closest_error.confidence == 0:
+		closest_error.message = "Unknown token."
+		return closest_error
+	
+	return closest_error
 
 func expect_token(token_type: String, token_symbol = null):
 	if token_type == reader.peek().type:
@@ -27,11 +44,17 @@ func expect_token(token_type: String, token_symbol = null):
 			return reader.consume()
 	return error("Expected token with type %s." % token_type)
 
+func save_reader_state():
+	return reader.clone()
+
 func is_success(result):
 	return result != null and not result is StoryScriptError
 
 func peek(steps_ahead: int = 1):
 	return reader.peek(steps_ahead)
+
+func is_EOF():
+	return reader.is_EOF()
 
 func consume(steps_ahead: int = 1):
 	return reader.consume(steps_ahead)
@@ -39,12 +62,14 @@ func consume(steps_ahead: int = 1):
 func unconsume(steps_behind: int = 1):
 	return reader.unconsume(steps_behind)
 
-func error(error, confidence: int = 0, checkpoint = null):
+func error(error, confidence: float = 0, checkpoint = null):
+	var position = reader.peek().position
+	
 	if checkpoint != null:
 		reader = checkpoint
 	
 	if typeof(error) == TYPE_STRING:
-		return StoryScriptError.new(error, reader.peek().position, confidence)
+		return StoryScriptError.new(error, position, confidence)
 	elif error is StoryScriptError:
 		error.confidence = confidence
 		return error

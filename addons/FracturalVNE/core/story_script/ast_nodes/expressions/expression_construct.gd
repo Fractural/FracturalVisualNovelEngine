@@ -1,14 +1,11 @@
-extends "res://addons/FracturalVNE/core/story_script/ast_nodes/node_parser.gd"
+extends "res://addons/FracturalVNE/core/story_script/ast_nodes/node_construct.gd"
 
 func get_parse_types() -> Array:
 	return ["expression"]
 
-var binary_operator_precedence: Dictionary
-
-func _init(constants, binary_operators_: Array):	
+func _init(constructs_array, binary_operators_: Array):	
 	for operator in binary_operators_:
-		binary_operator_precedence[operator.get_names()[0]] = operator.get_precedence()
-		constants.ast_nodes.append(operator)
+		constructs_array.append(operator)
 
 
 # Expression Parsing Classes:
@@ -19,7 +16,7 @@ func _init(constants, binary_operators_: Array):
 # 
 # Note that binary expressions will be parsed from right to left.
 func parse(parser):
-	var checkpoint = parser.save_checkpoint()
+	var checkpoint = parser.save_reader_state()
 	
 	# Is the next token a value?
 	var lhs = parser.expect("expression component")
@@ -34,10 +31,11 @@ func parse(parser):
 		
 		# Note: operator should always be a binary operator therefore should
 		# always have a precedence
-		var curr_operator_precedence: int = binary_operator_precedence[curr_operator]
+		var curr_operator_precedence: int = curr_operator.get_precedence()
 		
 		var rhs = parser.expect("expression component")
 		if not parser.is_success(rhs):
+			parser.revert_reader_state(checkpoint)
 			return parser.error("Expected an expression on the right side of the binary operator.")
 		
 		# Given the lhs is an binary operator, try and steal the number that is the deepest 
@@ -62,6 +60,7 @@ func parse(parser):
 		else:
 			curr_operator.right_operand = rhs
 			curr_operator.left_operand = lhs
+			lhs = curr_operator
 		
 	return lhs
 
@@ -73,7 +72,7 @@ func parse(parser):
 func _find_rightmost_stealable_operator(curr_value, checked_precedence: int):
 	if not curr_value.is_type("binary operator"):
 		return null
-	if binary_operator_precedence[curr_value] >= checked_precedence:
+	if curr_value.get_precedence() >= checked_precedence:
 		return null
 	
 	var rhs = curr_value.right_operand

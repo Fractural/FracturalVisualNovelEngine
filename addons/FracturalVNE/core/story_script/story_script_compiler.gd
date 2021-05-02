@@ -45,7 +45,7 @@ func compile(script_text: String):
 	
 	print()
 	print("Abstract Syntax Tree:")
-	print(parse_tree.debug_string())
+	print(parse_tree.debug_string(""))
 	
 	var action_tree = action_tree_builder.generate_action_tree(parse_tree)
 	

@@ -57,14 +57,19 @@ custom_colors/number_color = Color( 0.682353, 0.505882, 1, 1 )
 text = "label one:
 	m \"Hi! how are you doing.\"
 	s \"I'm doing well.\"
+	\"Bob\" \"Hello there!\"
 
 jump one
 
-flag = bool
+define flag = 0.3430
 
-if flag:
-	\"Flag triggered!\"
-"
+define something = 4 + 23 * 3 / 3 - 324
+define parenthesized = (4 + 23) * 3 / (3 - 324)
+define unaryStuff = not not !(something)
+define unaryNum1 = -1234
+define unaryNum2 = ---1234
+
+CustomFunction(123, named=\"oof\")"
 highlight_current_line = true
 syntax_highlighting = true
 show_line_numbers = true

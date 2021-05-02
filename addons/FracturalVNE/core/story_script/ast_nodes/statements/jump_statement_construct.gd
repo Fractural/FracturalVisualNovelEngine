@@ -1,4 +1,4 @@
-extends "res://addons/FracturalVNE/core/story_script/ast_nodes/statements/statement_parser.gd"
+extends "res://addons/FracturalVNE/core/story_script/ast_nodes/statements/statement_construct.gd"
 
 func get_parse_types() -> Array:
 	var arr = .get_parse_types()
@@ -9,12 +9,14 @@ func get_keywords() -> Array:
 	return ["jump"]
 
 func parse(parser):
-	var checkpoint = parser.save_checkpoint()
+	var checkpoint = parser.save_reader_state()
 	var jump = parser.expect_token("keyword", "jump")
 	if parser.is_success(jump):
 		var identifier = parser.expect_token("identifier")
 		if parser.is_success(identifier):
-			return JumpNode.new(identifier.symbol)
+			if parser.is_success(parser.expect_token("punctuation", "newline")):
+				return JumpNode.new(identifier.symbol)
+			return parser.error("Expected a new line to conclude a statement.", 1/2.0, checkpoint)
 		else:
 			return parser.error(identifier, 1/2.0, checkpoint)
 	else:
@@ -30,7 +32,7 @@ class JumpNode extends "res://addons/FracturalVNE/core/story_script/ast_nodes/ex
 		# TODO Add jump_to_label
 		runtime_manager.jump_to_label(label_name)
 	
-	func debug_string(tabs_string):			
+	func debug_string(tabs_string: String) -> String:
 		var string = ""
 		string += tabs_string + "JUMP -> " + label_name 
 		return string

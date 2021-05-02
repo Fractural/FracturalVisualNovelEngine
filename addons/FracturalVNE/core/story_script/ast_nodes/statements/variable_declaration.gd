@@ -1,4 +1,4 @@
-extends "res://addons/FracturalVNE/core/story_script/ast_nodes/statements/statement_parser.gd"
+extends "res://addons/FracturalVNE/core/story_script/ast_nodes/statements/statement_construct.gd"
 
 func get_parse_types():
 	var arr = .get_parse_types()
@@ -12,7 +12,7 @@ func get_punctuation():
 	return ["="]
 
 func parse(parser):
-	var checkpoint = parser.save_checkpoint()
+	var checkpoint = parser.save_reader_state()
 	var label = parser.expect_token("keyword", "define")
 	if parser.is_success(label):
 		var identifier = parser.expect_token("identifier")
@@ -21,13 +21,16 @@ func parse(parser):
 			if parser.is_success(assignment_punc):
 				var expression = parser.expect("expression")
 				if parser.is_success(expression):
-					return VariableDeclarationNode.new(identifier.symbol, expression)
+					if parser.is_success(parser.expect_token("punctuation", "newline")):
+						return VariableDeclarationNode.new(identifier.symbol, expression)
+					else:
+						return parser.error("Expected a new line to conclude a statement.", 4/5.0, checkpoint)
 				else:
-					return parser.error(expression, 3/4.0, checkpoint)
+					return parser.error(expression, 3/5.0, checkpoint)
 			else:
-				return parser.error(assignment_punc, 2/4.0, checkpoint)
+				return parser.error(assignment_punc, 2/5.0, checkpoint)
 		else:
-			return parser.error(identifier, 1/4.0, checkpoint)
+			return parser.error(identifier, 1/5.0, checkpoint)
 	else:
 		return parser.error(label, 0, checkpoint)
 
@@ -43,9 +46,13 @@ class VariableDeclarationNode extends "res://addons/FracturalVNE/core/story_scri
 		# TODO Add add_label
 		runtime_manager.declare_variable(self)
 	
-	func debug_string(tabs_string: String):
+	func debug_string(tabs_string: String) -> String:
 		var string = ""
-		string += tabs_string + "VAR DECLARE " + variable_name + " :" 
+		string += tabs_string + "VAR DECLARE " + variable_name + ":" 
 		string += "\n" + tabs_string + "{"
-		string += "\n" + tabs_string + "VALUE: " + str(value_expression)
+		string += "\n" + tabs_string + "\tVALUE:"
+		string += "\n" + tabs_string + "\t{"
+		string += "\n" + value_expression.debug_string(tabs_string + "\t\t")
+		string += "\n" + tabs_string + "\t}"
 		string += "\n" + tabs_string + "}"
+		return string

@@ -1,4 +1,4 @@
-extends "res://addons/FracturalVNE/core/story_script/ast_nodes/expressions/expression.gd"
+extends "res://addons/FracturalVNE/core/story_script/ast_nodes/expressions/expression_components/expression_component.gd"
 
 static func get_types() -> Array:
 	var arr = .get_types()
