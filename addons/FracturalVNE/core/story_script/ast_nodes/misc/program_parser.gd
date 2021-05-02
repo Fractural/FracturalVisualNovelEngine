@@ -19,7 +19,7 @@ func parse(parser):
 		return ProgramNode.new(statements)
 	else:
 		return parser.error(indent, 0)
-# TODO NOW: Port over constructs following the google drawings UML diagram
+# TODO NOW: Port over ast_nodes following the google drawings UML diagram
 
 class ProgramNode extends "res://addons/FracturalVNE/core/story_script/ast_nodes/executable_node.gd":
 	var statements: Array
@@ -38,16 +38,12 @@ class ProgramNode extends "res://addons/FracturalVNE/core/story_script/ast_nodes
 			return
 		runtime_manager.execute(statements[_curr_statement_index])
 	
-	func debug_string(indent: int):
-		var tabs_string = ""
-		for i in range(indent):
-			tabs_string += "\t"
-						
+	func debug_string(tabs_string: String):						
 		var string = ""
 		string += tabs_string + "PROGRAM :" 
 		string += "\n" + tabs_string + "{"
 		
 		for statement in statements:
-			string += statement.debug_string(indent + 1)
+			string += statement.debug_string(tabs_string + "\t") + ", "
 		
 		string += "\n" + tabs_string + "}"

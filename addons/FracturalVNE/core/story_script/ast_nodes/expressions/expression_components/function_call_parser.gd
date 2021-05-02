@@ -6,14 +6,14 @@ func get_parse_types():
 	return arr
 
 func parse(parser):
+	var checkpoint = parser.save_reader_state()
 	var function = parser.expect_token("identifier")
 	if parser.is_success(function):
-		var arguments = parser.expect("arguments")
+		var arguments = parser.expect("parenthesized arguments")
 		if parser.is_success(arguments):
 			return FunctionCallNode.new(function.symbol, arguments)
 		else:
-			arguments.confidence = 1/2.0
-			return arguments
+			return parser.error(arguments, 1/2.0, checkpoint)
 	else:
 		return function
 

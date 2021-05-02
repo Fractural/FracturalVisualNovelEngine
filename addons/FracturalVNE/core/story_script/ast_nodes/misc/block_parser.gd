@@ -21,7 +21,7 @@ func parse(parser):
 		return BlockNode.new(statements)
 	else:
 		return parser.error(indent, 0, checkpoint)
-# TODO NOW: Port over constructs following the google drawings UML diagram
+# TODO NOW: Port over ast_nodes following the google drawings UML diagram
 
 class BlockNode extends "res://addons/FracturalVNE/core/story_script/ast_nodes/executable_node.gd":
 	static func get_types() -> Array:
@@ -43,16 +43,12 @@ class BlockNode extends "res://addons/FracturalVNE/core/story_script/ast_nodes/e
 			return
 		runtime_manager.execute(statements[_curr_statement_index])
 	
-	func debug_string(indent: int):
-		var tabs_string = ""
-		for i in range(indent):
-			tabs_string += "\t"
-						
+	func debug_string(tabs_string: String):
 		var string = ""
 		string += tabs_string + "BLOCK :" 
 		string += "\n" + tabs_string + "{"
 		
 		for statement in statements:
-			string += statement.debug_string(indent + 1)
+			string += statement.debug_string(tabs_string + "\t") + ", "
 		
 		string += "\n" + tabs_string + "}"

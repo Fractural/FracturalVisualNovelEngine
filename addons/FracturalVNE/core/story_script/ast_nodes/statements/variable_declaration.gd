@@ -43,13 +43,9 @@ class VariableDeclarationNode extends "res://addons/FracturalVNE/core/story_scri
 		# TODO Add add_label
 		runtime_manager.declare_variable(self)
 	
-	func debug_string(indent: int):
-		var tabs_string = ""
-		for i in range(indent):
-			tabs_string += "\t"
-						
+	func debug_string(tabs_string: String):
 		var string = ""
-		string += tabs_string + "VARIABLE DECLARATION " + variable_name + " :" 
+		string += tabs_string + "VAR DECLARE " + variable_name + " :" 
 		string += "\n" + tabs_string + "{"
 		string += "\n" + tabs_string + "VALUE: " + str(value_expression)
 		string += "\n" + tabs_string + "}"

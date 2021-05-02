@@ -1,4 +1,4 @@
 extends "res://addons/FracturalVNE/core/utils/typeable.gd"
 
-func debug_string(indent: int):
+func debug_string(tabs_string: String):
 	pass

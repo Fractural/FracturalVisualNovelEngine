@@ -8,7 +8,7 @@ var binary_operator_precedence: Dictionary
 func _init(constants, binary_operators_: Array):	
 	for operator in binary_operators_:
 		binary_operator_precedence[operator.get_names()[0]] = operator.get_precedence()
-		constants.constructs.append(operator)
+		constants.ast_nodes.append(operator)
 
 
 # Expression Parsing Classes:

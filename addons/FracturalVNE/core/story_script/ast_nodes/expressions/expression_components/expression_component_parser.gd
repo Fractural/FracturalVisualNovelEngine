@@ -5,10 +5,11 @@ func get_parse_types() -> Array:
 
 func _init(constants, unary_operators: Array):
 	for operator in unary_operators:
-		constants.constructs.append(operator)
+		constants.ast_nodes.append(operator)
 
 # Parses unary operators
 func parse(parser):
+	var checkpoint = parser.save_reader_state()
 	var pre_unary = parser.expect("pre unary operator")
 	if parser.is_success(pre_unary):
 		var expression = parser.expect("expression component")
@@ -16,7 +17,7 @@ func parse(parser):
 			pre_unary.value = expression
 			return pre_unary
 		else:
-			return expression
+			return parser.error(expression, 1, checkpoint)
 	else:
 		var value = parser.expect("value component")
 		if parser.is_success(value):
@@ -43,4 +44,4 @@ func parse(parser):
 			# then return the expression as is.
 			return value
 		else:
-			return value
+			return parser.error(value, 1, checkpoint)

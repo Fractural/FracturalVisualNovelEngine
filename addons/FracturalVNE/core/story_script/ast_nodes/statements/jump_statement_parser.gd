@@ -30,11 +30,7 @@ class JumpNode extends "res://addons/FracturalVNE/core/story_script/ast_nodes/ex
 		# TODO Add jump_to_label
 		runtime_manager.jump_to_label(label_name)
 	
-	func debug_string(indent: int):
-		var tabs_string = ""
-		for i in range(indent):
-			tabs_string += "\t"
-			
+	func debug_string(tabs_string):			
 		var string = ""
 		string += tabs_string + "JUMP -> " + label_name 
 		return string

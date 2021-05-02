@@ -16,5 +16,8 @@ func parse(parser):
 	return parser
 
 class FlipSignOperatorNode extends "res://addons/FracturalVNE/core/story_script/ast_nodes/expressions/operators/unary_operators/pre_unary_operators/pre_unary_operator.gd":
+	func _debug_string_operator_name():
+		return "FLIP SIGN"
+	
 	func evaluate(runtime_manager):
 		return operand * -1

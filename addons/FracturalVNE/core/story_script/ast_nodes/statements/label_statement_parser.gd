@@ -23,7 +23,7 @@ func parse(parser):
 			return parser.error(identifier, 1/3.0, checkpoint)
 	else:
 		return parser.error(label, 0)
-# TODO NOW: Port over constructs following the google drawings UML diagram
+# TODO NOW: Port over ast_nodes following the google drawings UML diagram
 
 class LabelNode extends "res://addons/FracturalVNE/core/story_script/ast_nodes/executable_node.gd":
 	var name: String
@@ -37,13 +37,9 @@ class LabelNode extends "res://addons/FracturalVNE/core/story_script/ast_nodes/e
 		# TODO Add add_label
 		runtime_manager.add_label(self)
 	
-	func debug_string(indent: int):
-		var tabs_string = ""
-		for i in range(indent):
-			tabs_string += "\t"
-						
+	func debug_string(tabs_string: String):
 		var string = ""
 		string += tabs_string + "LABEL " + name + " :" 
 		string += "\n" + tabs_string + "{"
-		string += "\n" + tabs_string + block.debug_string(indent + 1)
+		string += "\n" + tabs_string + block.debug_string(tabs_string + "\t")
 		string += "\n" + tabs_string + "}"

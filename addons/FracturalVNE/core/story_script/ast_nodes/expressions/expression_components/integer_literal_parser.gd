@@ -7,7 +7,7 @@ func get_parse_types():
 
 func parse(parser):
 	if parser.peek().type == "integer":
-		return IntegerLiteralNode.new(parser.consume())
+		return IntegerLiteralNode.new(parser.consume().symbol)
 	return parser.error("Expected an integer literal.")
 
 class IntegerLiteralNode extends "res://addons/FracturalVNE/core/story_script/ast_nodes/expressions/expression_components/expression_component.gd":
