@@ -20,14 +20,14 @@ func parse(parser):
 		if not parser.is_success(closing_paren):
 			return parser.error('Expected a ")" to close a parenthesized expression.', 1, checkpoint) 
 		
-		return ParenthesizedOperator.new(expression)
+		return ParenthesizedOperator.new(expression.position, expression)
 	else:
 		return open_paren
 
 class ParenthesizedOperator extends "res://addons/FracturalVNE/core/story_script/ast_nodes/expressions/operators/operator.gd":
 	var operand
 	
-	func _init(operand_):
+	func _init(position_, operand_).(position_):
 		operand = operand_
 	
 	func evaluate(runtime_manager):

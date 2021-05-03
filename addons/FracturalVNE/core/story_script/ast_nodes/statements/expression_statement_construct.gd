@@ -11,7 +11,7 @@ func parse(parser):
 	var expression = parser.expect("expression")
 	if parser.is_success(expression):
 		if parser.is_success(parser.expect_token("punctuation", "newline")):
-			return ExpressionStatementNode.new(expression)
+			return ExpressionStatementNode.new(expression.position, expression)
 		else:
 			return parser.error("Expected a new line to conclude a statement.", 1/2.0, checkpoint)
 	else:
@@ -20,7 +20,7 @@ func parse(parser):
 class ExpressionStatementNode extends "res://addons/FracturalVNE/core/story_script/ast_nodes/executable_node.gd":
 	var expression
 	
-	func _init(expression_):
+	func _init(position_, expression_).(position_):
 		expression = expression_
 	
 	func execute(runtime_manager):

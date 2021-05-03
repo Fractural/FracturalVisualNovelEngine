@@ -7,13 +7,14 @@ func get_parse_types():
 
 func parse(parser):
 	if parser.peek().type == "string":
-		return StringLiteralNode.new(parser.consume().symbol)
+		var literal = parser.consume()
+		return StringLiteralNode.new(literal.position, literal.symbol)
 	return parser.error("Expected a string literal.")
 
 class StringLiteralNode extends "res://addons/FracturalVNE/core/story_script/ast_nodes/expressions/expression_components/value_component.gd":
 	var value: String
 	
-	func _init(value_: String):
+	func _init(position_, value_: String).(position_):
 		value = value_
 		
 	func evaluate(runtime_manager):
@@ -21,3 +22,6 @@ class StringLiteralNode extends "res://addons/FracturalVNE/core/story_script/ast
 	
 	func debug_string(tabs_string) -> String:
 		return tabs_string + "STR: " + value
+	
+	func get_return_type() -> String:
+		return "string"

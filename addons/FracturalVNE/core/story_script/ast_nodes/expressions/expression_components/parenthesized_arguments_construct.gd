@@ -34,7 +34,7 @@ func parse(parser):
 			if not parser.is_success(expression):
 				return parser.error(expression, 1, checkpoint)
 			
-			arguments.append(ArgumentNode.new(arg_name, expression))
+			arguments.append(ArgumentNode.new(expression.position, arg_name, expression))
 			
 			if parser.is_success(parser.expect_token("punctuation", ",")):
 				pass
@@ -42,14 +42,14 @@ func parse(parser):
 				break
 			else:
 				return parser.error('Expected a "," or a ")" after a argument.', 1, checkpoint)
-		return ArgumentGroupNode.new(arguments)
+		return ArgumentGroupNode.new(open_paren.position, arguments)
 	else:
 		return open_paren
 
 class ArgumentGroupNode extends "res://addons/FracturalVNE/core/story_script/ast_nodes/node.gd":
 	var arguments: Array
 	
-	func _init(arguments_: Array):
+	func _init(position_, arguments_: Array).(position_):
 		arguments = arguments_
 	
 	func debug_string(tabs_string: String) -> String:
@@ -65,7 +65,7 @@ class ArgumentNode extends "res://addons/FracturalVNE/core/story_script/ast_node
 	var name
 	var value
 	
-	func _init(name_, value_):
+	func _init(position_, name_, value_).(position_):
 		name = name_
 		value = value_
 	

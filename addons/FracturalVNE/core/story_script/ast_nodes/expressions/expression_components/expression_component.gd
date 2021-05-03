@@ -4,3 +4,6 @@ static func get_types() -> Array:
 	var arr = .get_types()
 	arr.append("expression component")
 	return arr
+
+func _init(position_).(position_):
+	pass

@@ -12,17 +12,25 @@ func parse(parser):
 		var arguments = parser.expect("parenthesized arguments")
 		var ahead = str(parser.peek().symbol) + str(parser.peek(2).symbol) + str(parser.peek(3).symbol)
 		if parser.is_success(arguments):
-			return FunctionCallNode.new(function.symbol, arguments)
+			return FunctionCallNode.new(function.position, function.symbol, arguments)
 		else:
 			return parser.error(arguments, 1, checkpoint)
 	else:
 		return function
 
 class FunctionCallNode extends "res://addons/FracturalVNE/core/story_script/ast_nodes/executable_node.gd":
+	static func get_types() -> Array:
+		var arr = .get_types()
+		arr.append("function call")
+		return arr
+	
+	static func is_stepped() -> bool:
+		return false
+	
 	var name: String
 	var argument_group
 	
-	func _init(name_: String, argument_group_):
+	func _init(position_, name_: String, argument_group_).(position_):
 		name = name_
 		argument_group = argument_group_
 	

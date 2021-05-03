@@ -12,10 +12,13 @@ func parse(parser):
 	var operator = parser.expect_token("operator", "-")
 	
 	if parser.is_success(operator):
-		return FlipSignOperatorNode.new()
+		return FlipSignOperatorNode.new(operator.position)
 	return operator
 
 class FlipSignOperatorNode extends "res://addons/FracturalVNE/core/story_script/ast_nodes/expressions/operators/unary_operators/pre_unary_operators/pre_unary_operator.gd":
+	func _init(position_, operand_ = null).(position_, operand_):
+		pass
+	
 	func _debug_string_operator_name():
 		return "FLIP SIGN"
 	

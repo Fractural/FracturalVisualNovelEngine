@@ -11,10 +11,13 @@ func get_operators():
 func parse(parser):
 	var operator = parser.expect_token("operator", "*")
 	if parser.is_success(operator):
-		return MultiplyOperatorNode.new()
+		return MultiplyOperatorNode.new(operator.position)
 	return operator
 
 class MultiplyOperatorNode extends "res://addons/FracturalVNE/core/story_script/ast_nodes/expressions/operators/binary_operators/binary_operator.gd":
+	func _init(position_, left_operand_ = null, right_operand_ = null).(position_, left_operand_, right_operand_):
+		pass
+	
 	func _debug_string_operator_name():
 		return "MULTIPLY"
 	

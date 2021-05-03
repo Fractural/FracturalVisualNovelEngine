@@ -21,7 +21,7 @@ func parse(parser):
 			if parser.is_success(colon):
 				var block = parser.expect("block")
 				if parser.is_success(block):
-					return LabelNode.new(identifier.symbol, block)
+					return LabelNode.new(label.position, identifier.symbol, block)
 				else:
 					return parser.error(block, 3/4.0, checkpoint)
 			else:
@@ -36,7 +36,7 @@ class LabelNode extends "res://addons/FracturalVNE/core/story_script/ast_nodes/e
 	var name: String
 	var block
 	
-	func _init(name_: String, block_):
+	func _init(position_, name_: String, block_).(position_):
 		name = name_
 		block = block_
 	

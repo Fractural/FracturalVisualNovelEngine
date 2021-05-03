@@ -12,7 +12,7 @@ func parse(parser):
 		var dialogue = parser.expect("string literal")
 		if parser.is_success(dialogue):
 			if parser.is_success(parser.expect_token("punctuation", "newline")):
-				return SayNode.new(character, dialogue)
+				return SayNode.new(character.position, character, dialogue)
 			else:
 				return parser.error("Expected a new line to conclude a statement.", 2/3.0, checkpoint)
 		# If only first expression can be parsed as a string, then 
@@ -23,7 +23,7 @@ func parse(parser):
 		var narration = parser.expect("string literal")
 		if parser.is_success(narration):	
 			if parser.is_success(parser.expect_token("punctuation", "newline")):
-				return SayNode.new(null, narration)
+				return SayNode.new(narration.position, null, narration)
 			else:
 				return parser.error("Expected a new line to conclude a statement.", 1/2.0, checkpoint)
 		else:
@@ -34,7 +34,7 @@ class SayNode extends "res://addons/FracturalVNE/core/story_script/ast_nodes/exe
 	var character
 	var text
 	
-	func _init(character_, text_):
+	func _init(position_, character_, text_).(position_):
 		character = character_
 		text = text_
 	

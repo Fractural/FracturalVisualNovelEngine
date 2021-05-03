@@ -7,13 +7,14 @@ func get_parse_types():
 
 func parse(parser):
 	if parser.peek().type == "float":
-		return FloatLiteralNode.new(parser.consume().symbol)
+		var literal = parser.consume()
+		return FloatLiteralNode.new(literal.position, literal.symbol)
 	return parser.error("Expected a float literal.")
 
 class FloatLiteralNode extends "res://addons/FracturalVNE/core/story_script/ast_nodes/expressions/expression_components/value_component.gd":
 	var value: float
 	
-	func _init(value_: float):
+	func _init(position_, value_: float).(position_):
 		value = value_
 	
 	func evaluate(runtime_manager):
@@ -21,3 +22,6 @@ class FloatLiteralNode extends "res://addons/FracturalVNE/core/story_script/ast_
 	
 	func debug_string(tabs_string: String) -> String:
 		return tabs_string + "FLT: " + str(value)
+	
+	func get_return_type() -> String:
+		return "float"

@@ -22,7 +22,7 @@ func parse(parser):
 				var expression = parser.expect("expression")
 				if parser.is_success(expression):
 					if parser.is_success(parser.expect_token("punctuation", "newline")):
-						return VariableDeclarationNode.new(identifier.symbol, expression)
+						return VariableDeclarationNode.new(identifier.position, identifier.symbol, expression)
 					else:
 						return parser.error("Expected a new line to conclude a statement.", 4/5.0, checkpoint)
 				else:
@@ -35,10 +35,15 @@ func parse(parser):
 		return parser.error(label, 0, checkpoint)
 
 class VariableDeclarationNode extends "res://addons/FracturalVNE/core/story_script/ast_nodes/executable_node.gd":
+	static func get_types() -> Array:
+		var arr = .get_types()
+		arr.append("variable declaration")
+		return arr
+	
 	var variable_name: String
 	var value_expression
 	
-	func _init(variable_name_: String, value_expression_):
+	func _init(position_, variable_name_: String, value_expression_).(position_):
 		variable_name = variable_name_
 		value_expression = value_expression_
 	

@@ -1,6 +1,6 @@
 extends "res://addons/FracturalVNE/core/story_script/ast_nodes/expressions/operators/operator.gd"
 
-static func get_types():
+static func get_types() -> Array:
 	var arr = .get_types()
 	arr.append("binary operator")
 	return arr
@@ -8,7 +8,7 @@ static func get_types():
 var left_operand
 var right_operand
 
-func _init(left_operand_ = null, right_operand_ = null):
+func _init(position_, left_operand_ = null, right_operand_ = null).(position_):
 	left_operand = left_operand_
 	right_operand = right_operand_
 

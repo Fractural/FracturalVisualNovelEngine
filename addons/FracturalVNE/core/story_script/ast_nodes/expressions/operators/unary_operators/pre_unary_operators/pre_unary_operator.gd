@@ -2,7 +2,7 @@ extends "res://addons/FracturalVNE/core/story_script/ast_nodes/expressions/opera
 
 var operand
 
-func _init(operand_ = null):
+func _init(position_, operand_ = null).(position_):
 	operand = operand_
 
 func _debug_string_operator_name():
