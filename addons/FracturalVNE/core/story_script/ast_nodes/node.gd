@@ -17,3 +17,19 @@ func is_success(result):
 
 func error(message: String):
 	return StoryScriptError.new(message, position)
+
+func adopt_error(error):
+	error.position = position
+	return error
+
+func throw_error(error):
+	# TODO: Add integration within StoryScriptEditor to automatically point out
+	# where the error occurred.
+	printerr(str(error))
+
+func propagate_call(method, arguments, parent_first = false):
+	if has_method(method):
+		callv(method, arguments)
+
+func configure_node(runtime_block_):
+	runtime_block = runtime_block_

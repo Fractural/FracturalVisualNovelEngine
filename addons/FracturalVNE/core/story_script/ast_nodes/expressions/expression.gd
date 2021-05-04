@@ -6,5 +6,5 @@ static func get_types() -> Array:
 func _init(position_).(position_):
 	pass
 
-func evaluate(runtime_manager):
+func evaluate():
 	pass

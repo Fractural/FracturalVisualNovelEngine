@@ -45,6 +45,11 @@ _global_script_classes=[ {
 "path": "res://addons/FracturalVNE/core/decision/story_decision_manager.gd"
 }, {
 "base": "Node",
+"class": "StoryDirector",
+"language": "GDScript",
+"path": "res://addons/FracturalVNE/core/story/story_director.gd"
+}, {
+"base": "Node",
 "class": "StoryHistory",
 "language": "GDScript",
 "path": "res://addons/FracturalVNE/core/story/story_history.gd"
@@ -63,11 +68,6 @@ _global_script_classes=[ {
 "class": "StoryScriptASTNode",
 "language": "GDScript",
 "path": "res://addons/FracturalVNE/core/story_script/story_script_ast_node.gd"
-}, {
-"base": "Reference",
-"class": "StoryScriptActionTreeBuilder",
-"language": "GDScript",
-"path": "res://addons/FracturalVNE/core/story_script/story_script_action_tree_builder.gd"
 }, {
 "base": "Reference",
 "class": "StoryScriptActions",
@@ -147,11 +147,11 @@ _global_script_class_icons={
 "PluginAssetsRegistry": "",
 "PluginUI": "",
 "StoryDecisionManager": "",
+"StoryDirector": "",
 "StoryHistory": "",
 "StoryManager": "",
 "StorySaveManager": "",
 "StoryScriptASTNode": "",
-"StoryScriptActionTreeBuilder": "",
 "StoryScriptActions": "",
 "StoryScriptCompiler": "",
 "StoryScriptConstants": "",
@@ -202,7 +202,7 @@ debug=false
 
 [network]
 
-limits/debugger_stdout/max_chars_per_second=16384
+limits/debugger_stdout/max_chars_per_second=131072
 
 [rendering]
 

@@ -16,7 +16,7 @@ func get_precedence() -> int:
 	return 0
 
 func _debug_string_operator_name():
-	return "OPERATOR"
+	return "N/A"
 
 func debug_string(tabs_string: String) -> String:
 	var string = ""
@@ -32,3 +32,13 @@ func debug_string(tabs_string: String) -> String:
 	string += "\n" + tabs_string + "\t}"
 	string += "\n" + tabs_string + "}"
 	return string
+
+func propagate_call(method, arguments, parent_first = false):
+	if parent_first:
+		.propagate_call(method, arguments, parent_first)
+	
+	left_operand.propagate_call(method, arguments)
+	right_operand.propagate_call(method, arguments)
+	
+	if not parent_first:
+		.propagate_call(method, arguments, parent_first)

@@ -30,8 +30,8 @@ class ParenthesizedOperator extends "res://addons/FracturalVNE/core/story_script
 	func _init(position_, operand_).(position_):
 		operand = operand_
 	
-	func evaluate(runtime_manager):
-		return operand.evaluate(runtime_manager)
+	func evaluate():
+		return operand.evaluate()
 	
 	func debug_string(tabs_string: String) -> String:
 		var string = ""
@@ -40,3 +40,12 @@ class ParenthesizedOperator extends "res://addons/FracturalVNE/core/story_script
 		string += "\n" + operand.debug_string(tabs_string + "\t")
 		string += "\n" + tabs_string + "}"
 		return string
+	
+	func propagate_call(method, arguments, parent_first = false):
+		if parent_first:
+			.propagate_call(method, arguments, parent_first)
+		
+		operand.propagate_call(method, arguments, parent_first)
+		
+		if not parent_first:
+			.propagate_call(method, arguments, parent_first)

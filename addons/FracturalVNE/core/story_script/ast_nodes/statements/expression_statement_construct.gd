@@ -10,21 +10,24 @@ func parse(parser):
 	var ahead = str(parser.peek()) + str(parser.peek(2)) + str(parser.peek(3))
 	var expression = parser.expect("expression")
 	if parser.is_success(expression):
-		if parser.is_success(parser.expect_token("punctuation", "newline")):
+		var newline = parser.expect_token("punctuation", "newline")
+		if parser.is_success(newline):
 			return ExpressionStatementNode.new(expression.position, expression)
 		else:
-			return parser.error("Expected a new line to conclude a statement.", 1/2.0, checkpoint)
+			newline.message = "Expected a new line to conclude an expression statement."
+			return parser.error(newline, 1/2.0, checkpoint)
 	else:
 		return expression
 
-class ExpressionStatementNode extends "res://addons/FracturalVNE/core/story_script/ast_nodes/executable_node.gd":
+class ExpressionStatementNode extends "res://addons/FracturalVNE/core/story_script/ast_nodes/statement_node.gd":
 	var expression
 	
 	func _init(position_, expression_).(position_):
 		expression = expression_
 	
-	func execute(runtime_manager):
-		expression.evaluate(runtime_manager)
+	func execute():
+		expression.evaluate()
+		.execute()
 	
 	func debug_string(tabs_string: String) -> String:
 		var string = ""
@@ -33,3 +36,12 @@ class ExpressionStatementNode extends "res://addons/FracturalVNE/core/story_scri
 		string += "\n" + expression.debug_string(tabs_string + "\t")
 		string += "\n" + tabs_string + "}"
 		return string
+	
+	func propagate_call(method, arguments, parent_first = false):
+		if parent_first:
+			.propagate_call(method, arguments, parent_first)
+		
+		expression.propagate_call(method, arguments)
+		
+		if not parent_first:
+			.propagate_call(method, arguments, parent_first)

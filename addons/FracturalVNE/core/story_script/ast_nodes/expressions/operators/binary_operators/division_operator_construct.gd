@@ -24,5 +24,5 @@ class DivideOperatorNode extends "res://addons/FracturalVNE/core/story_script/as
 	func get_precedence() -> int:
 		return 2
 	
-	func evaluate(runtime_manager):
-		return left_operand.evaluate(runtime_manager) / right_operand.evaluate(runtime_manager)
+	func evaluate():
+		return left_operand.evaluate() / right_operand.evaluate()

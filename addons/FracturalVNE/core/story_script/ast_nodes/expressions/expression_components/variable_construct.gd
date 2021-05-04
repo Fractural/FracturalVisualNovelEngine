@@ -18,12 +18,11 @@ class VariableNode extends "res://addons/FracturalVNE/core/story_script/ast_node
 	func _init(position_, name_: String).(position_):
 		name = name_
 	
-	func evaluate(runtime_manager):
+	func evaluate():
 		var variable = runtime_block.get_variable(name)
 		if is_success(variable):
 			return variable.value
-		variable.position = position
-		return variable
+		return adopt_error(variable)
 	
 	func debug_string(tabs_string: String) -> String:
 		return tabs_string + "VAR: " + name

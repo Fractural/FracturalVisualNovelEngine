@@ -32,6 +32,7 @@ const Program = preload("res://addons/FracturalVNE/core/story_script/ast_nodes/m
 const JumpStatement = preload("res://addons/FracturalVNE/core/story_script/ast_nodes/statements/jump_statement_construct.gd")
 const LabelStatement = preload("res://addons/FracturalVNE/core/story_script/ast_nodes/statements/label_statement_construct.gd")
 const VariableDeclaration = preload("res://addons/FracturalVNE/core/story_script/ast_nodes/statements/variable_declaration.gd")
+const VariableAssignment = preload("res://addons/FracturalVNE/core/story_script/ast_nodes/statements/variable_assignment.gd")
 const SayStatement = preload("res://addons/FracturalVNE/core/story_script/ast_nodes/statements/say_statement_construct.gd")
 const ExpressionStatement = preload("res://addons/FracturalVNE/core/story_script/ast_nodes/statements/expression_statement_construct.gd")
 
@@ -50,9 +51,12 @@ var CONSTRUCTS = [
 	JumpStatement.new(),
 	LabelStatement.new(),
 	VariableDeclaration.new(),
+	VariableAssignment.new(),
 	SayStatement.new(),
 	ExpressionStatement.new(),
 ]
+
+var CONSTRUCTS_DICT: Dictionary
 
 func _init():
 	CONSTRUCTS.append_array([
@@ -67,3 +71,10 @@ func _init():
 			NegateOperator.new(),
 		]),
 	])
+	
+	for construct in CONSTRUCTS:
+		for type in construct.get_parse_types():
+			if CONSTRUCTS_DICT.has(type):
+				CONSTRUCTS_DICT[type].append(construct)
+			else:
+				CONSTRUCTS_DICT[type] = [construct]

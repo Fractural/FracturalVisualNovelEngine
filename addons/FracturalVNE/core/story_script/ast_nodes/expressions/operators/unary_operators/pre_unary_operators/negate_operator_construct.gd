@@ -28,5 +28,5 @@ class NegateOperatorNode extends "res://addons/FracturalVNE/core/story_script/as
 	func _debug_string_operator_name():
 		return "NEGATE"
 	
-	func evaluate(runtime_manager):
-		return operand
+	func evaluate():
+		return operand.evaluate()

@@ -12,12 +12,17 @@ func parse(parser):
 	return parser.error("Expected an integer literal.")
 
 class IntegerLiteralNode extends "res://addons/FracturalVNE/core/story_script/ast_nodes/expressions/expression_components/value_component.gd":
+	static func get_types():
+		var arr = .get_types()
+		arr.append("integer literal")
+		return arr
+	
 	var value: int
 	
 	func _init(position_, value_: int).(position_):
 		value = value_
 	
-	func evaluate(runtime_manager):
+	func evaluate():
 		return value
 		
 	func debug_string(tabs_string) -> String:

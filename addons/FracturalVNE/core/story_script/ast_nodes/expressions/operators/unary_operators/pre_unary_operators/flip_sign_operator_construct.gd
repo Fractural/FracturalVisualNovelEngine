@@ -22,5 +22,5 @@ class FlipSignOperatorNode extends "res://addons/FracturalVNE/core/story_script/
 	func _debug_string_operator_name():
 		return "FLIP SIGN"
 	
-	func evaluate(runtime_manager):
-		return operand * -1
+	func evaluate():
+		return operand.evaluate() * -1

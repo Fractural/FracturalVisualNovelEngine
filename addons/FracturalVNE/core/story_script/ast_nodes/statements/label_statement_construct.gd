@@ -32,7 +32,7 @@ func parse(parser):
 		return parser.error(label, 0)
 # TODO NOW: Port over ast_nodes following the google drawings UML diagram
 
-class LabelNode extends "res://addons/FracturalVNE/core/story_script/ast_nodes/executable_node.gd":
+class LabelNode extends "res://addons/FracturalVNE/core/story_script/ast_nodes/statement_node.gd":
 	var name: String
 	var block
 	
@@ -40,9 +40,8 @@ class LabelNode extends "res://addons/FracturalVNE/core/story_script/ast_nodes/e
 		name = name_
 		block = block_
 	
-	func execute(runtime_manager):
-		# TODO Add add_label
-		runtime_manager.add_label(self)
+	func runtime_initialize():
+		runtime_block.get_service("StoryDirector").add_label(self)
 	
 	func debug_string(tabs_string: String) -> String:
 		var string = ""
@@ -51,3 +50,12 @@ class LabelNode extends "res://addons/FracturalVNE/core/story_script/ast_nodes/e
 		string += "\n" + block.debug_string(tabs_string + "\t")
 		string += "\n" + tabs_string + "}"
 		return string
+	
+	func propagate_call(method, arguments, parent_first = false):
+		if parent_first:
+			.propagate_call(method, arguments, parent_first)
+		
+		block.propagate_call(method, arguments, parent_first)
+		
+		if not parent_first:
+			.propagate_call(method, arguments, parent_first)

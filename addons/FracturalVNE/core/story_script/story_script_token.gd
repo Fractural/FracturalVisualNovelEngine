@@ -23,3 +23,6 @@ class Position:
 		
 	func clone() -> Position:
 		return Position.new(line, column)
+	
+	func _to_string():
+		return "(Line:%s, Col:%s)" % [line, column]

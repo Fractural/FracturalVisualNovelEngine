@@ -34,7 +34,7 @@ func parse(parser):
 	else:
 		return parser.error(label, 0, checkpoint)
 
-class VariableDeclarationNode extends "res://addons/FracturalVNE/core/story_script/ast_nodes/executable_node.gd":
+class VariableDeclarationNode extends "res://addons/FracturalVNE/core/story_script/ast_nodes/statement_node.gd":
 	static func get_types() -> Array:
 		var arr = .get_types()
 		arr.append("variable declaration")
@@ -47,9 +47,9 @@ class VariableDeclarationNode extends "res://addons/FracturalVNE/core/story_scri
 		variable_name = variable_name_
 		value_expression = value_expression_
 	
-	func execute(runtime_manager):
-		# TODO Add add_label
-		runtime_manager.declare_variable(self)
+	func execute():
+		runtime_block.declare_variable(variable_name, value_expression)
+		.execute()
 	
 	func debug_string(tabs_string: String) -> String:
 		var string = ""

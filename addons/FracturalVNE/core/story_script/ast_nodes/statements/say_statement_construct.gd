@@ -7,7 +7,7 @@ func get_parse_types():
 
 func parse(parser):
 	var checkpoint = parser.save_reader_state()
-	var character = parser.expect("expression")
+	var character = parser.expect("string literal")
 	if parser.is_success(character):
 		var dialogue = parser.expect("string literal")
 		if parser.is_success(dialogue):
@@ -15,22 +15,28 @@ func parse(parser):
 				return SayNode.new(character.position, character, dialogue)
 			else:
 				return parser.error("Expected a new line to conclude a statement.", 2/3.0, checkpoint)
-		# If only first expression can be parsed as a string, then 
-		# the line must be a narration line
 		else:
-			return parser.error(dialogue, 1/3.0, checkpoint)
-	else:
-		var narration = parser.expect("string literal")
-		if parser.is_success(narration):	
+			# If only first expression can be parsed as a string, then 
+			# the line must be a narration line
 			if parser.is_success(parser.expect_token("punctuation", "newline")):
-				return SayNode.new(narration.position, null, narration)
+				return SayNode.new(character.position, null, character)
 			else:
-				return parser.error("Expected a new line to conclude a statement.", 1/2.0, checkpoint)
+				return parser.error("Expected a new line to conclude a statement.", 2/3.0, checkpoint)
+	else:
+		character = parser.expect("expression")
+		if parser.is_success(character):
+			var dialogue = parser.expect("string literal")
+			if parser.is_success(dialogue):
+				if parser.is_success(parser.expect_token("punctuation", "newline")):
+					return SayNode.new(character.position, character, dialogue)
+				else:
+					return parser.error("Expected a new line to conclude a statement.", 2/3.0, checkpoint)
+			else:
+				return parser.error(dialogue, 1/2.0, checkpoint)
 		else:
-			return parser.error(narration, 0)
-# TODO NOW: Port over ast_nodes following the google drawings UML diagram
+			return character
 
-class SayNode extends "res://addons/FracturalVNE/core/story_script/ast_nodes/executable_node.gd":
+class SayNode extends "res://addons/FracturalVNE/core/story_script/ast_nodes/stepped_node.gd":
 	var character
 	var text
 	
@@ -38,9 +44,9 @@ class SayNode extends "res://addons/FracturalVNE/core/story_script/ast_nodes/exe
 		character = character_
 		text = text_
 	
-	func execute(runtime_manager):
-		# TODO Add add_label
-		runtime_manager.say(self)
+	func execute():
+		runtime_block.get_service("TextPrinter").say(self)
+		.execute()
 	
 	func debug_string(tabs_string: String) -> String:
 		var string = ""

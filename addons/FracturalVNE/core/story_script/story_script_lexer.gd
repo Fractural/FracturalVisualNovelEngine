@@ -265,7 +265,7 @@ func add_number():
 	elif possible_number_string.is_valid_float():
 		add_token("float", float(possible_number_string))
 	else:
-		return error("Could not parse number.", 1)
+		return error("Could not parse number. Maybe there is a stray period?", 1)
 
 # String
 

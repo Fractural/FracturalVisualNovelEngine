@@ -24,5 +24,5 @@ class SubtractOperatorNode extends "res://addons/FracturalVNE/core/story_script/
 	func get_precedence() -> int:
 		return 1
 	
-	func evaluate(runtime_manager):
-		return left_operand.evaluate(runtime_manager) - right_operand.evaluate(runtime_manager)
+	func evaluate():
+		return left_operand.evaluate() - right_operand.evaluate()

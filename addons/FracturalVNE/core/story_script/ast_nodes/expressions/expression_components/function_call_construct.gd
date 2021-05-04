@@ -34,9 +34,24 @@ class FunctionCallNode extends "res://addons/FracturalVNE/core/story_script/ast_
 		name = name_
 		argument_group = argument_group_
 	
-	func execute(runtime_manager):
-		runtime_manager.call_function(self)
-	
+	func execute():
+		# Formatted arguments is in the form of:
+		# [["parameter name", value]. ["another param name", another_value]]
+		var formatted_arguments = []
+		for argument in argument_group.arguments:
+			var evaluated_value = argument.value.evaluate()
+			if is_success(evaluated_value):
+				formatted_arguments.append([argument.name, evaluated_value])
+			else:
+				throw_error(evaluated_value)
+				return
+		
+		var result = runtime_block.call_function(name, formatted_arguments)
+		if is_success(result):
+			.execute()
+		else:
+			throw_error(adopt_error(result))
+		
 	func debug_string(tabs_strings) -> String:
 		var string = ""
 		string += tabs_strings + "CALL FUNC " + name + ":"

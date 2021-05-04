@@ -60,6 +60,16 @@ class ArgumentGroupNode extends "res://addons/FracturalVNE/core/story_script/ast
 			string += "\n" + argument.debug_string(tabs_string + "\t")
 		string += "\n" + tabs_string + "}"
 		return string
+	
+	func propagate_call(method, arguments, parent_first = false):
+		if parent_first:
+			.propagate_call(method, arguments, parent_first)
+		
+		for argument in arguments:
+			argument.propagate_call(method, arguments, parent_first)
+		
+		if not parent_first:
+			.propagate_call(method, arguments, parent_first)
 
 class ArgumentNode extends "res://addons/FracturalVNE/core/story_script/ast_nodes/node.gd":
 	var name
