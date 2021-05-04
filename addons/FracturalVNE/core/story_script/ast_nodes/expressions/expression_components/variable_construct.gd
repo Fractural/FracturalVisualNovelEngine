@@ -6,7 +6,6 @@ func get_parse_types():
 	return arr
 
 func parse(parser):
-	var ahead = str(parser.peek().symbol) + str(parser.peek(2).symbol) + str(parser.peek(3).symbol)
 	var identifier = parser.expect_token("identifier")
 	if parser.is_success(identifier):
 		return VariableNode.new(identifier.position, identifier.symbol)
@@ -22,7 +21,7 @@ class VariableNode extends "res://addons/FracturalVNE/core/story_script/ast_node
 		var variable = runtime_block.get_variable(name)
 		if is_success(variable):
 			return variable.value
-		return adopt_error(variable)
+		return stack_error(variable)
 	
 	func debug_string(tabs_string: String) -> String:
 		return tabs_string + "VAR: " + name

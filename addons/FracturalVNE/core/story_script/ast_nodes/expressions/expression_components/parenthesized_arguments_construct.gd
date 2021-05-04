@@ -21,6 +21,7 @@ func parse(parser):
 			if parser.is_EOF():
 				return parser.error('Expected a ")" to close a parenthesized argument group but reached the end of the file.', 1, checkpoint)
 			
+			var checkpoint2 = parser.save_reader_state()
 			var arg_name = null
 			
 			var arg_identifier = parser.expect_token("identifier")
@@ -28,7 +29,10 @@ func parse(parser):
 				if parser.is_success(parser.expect_token("punctuation", "=")):
 					arg_name = arg_identifier.symbol
 				else:
-					return parser.error('Expected a "=" after an argument identifier.', 1, checkpoint)
+					# Identifier may be interpreted as a variable, so we have to
+					# revert the parser state back so that expect("expression") 
+					# can pickup the identifier since it could be a variable
+					parser.load_reader_state(checkpoint2)
 			
 			var expression = parser.expect("expression")
 			if not parser.is_success(expression):

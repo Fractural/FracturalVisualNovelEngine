@@ -7,6 +7,7 @@ const IntegerLiteral = preload("res://addons/FracturalVNE/core/story_script/ast_
 const StringLiteral = preload("res://addons/FracturalVNE/core/story_script/ast_nodes/expressions/expression_components/string_literal_construct.gd")
 const FunctionCall = preload("res://addons/FracturalVNE/core/story_script/ast_nodes/expressions/expression_components/function_call_construct.gd")
 const ParenthesizedArguments = preload("res://addons/FracturalVNE/core/story_script/ast_nodes/expressions/expression_components/parenthesized_arguments_construct.gd")
+const ParenthesizedParameters = preload("res://addons/FracturalVNE/core/story_script/ast_nodes/expressions/expression_components/parenthesized_parameters_construct.gd")
 const ParenthesizedExpression = preload("res://addons/FracturalVNE/core/story_script/ast_nodes/expressions/expression_components/parenthesized_expression_construct.gd")
 const VariableGet = preload("res://addons/FracturalVNE/core/story_script/ast_nodes/expressions/expression_components/variable_construct.gd")
 
@@ -42,6 +43,7 @@ var CONSTRUCTS = [
 	StringLiteral.new(),
 	FunctionCall.new(),
 	ParenthesizedArguments.new(),
+	ParenthesizedParameters.new(),
 	ParenthesizedExpression.new(),
 	VariableGet.new(),
 	

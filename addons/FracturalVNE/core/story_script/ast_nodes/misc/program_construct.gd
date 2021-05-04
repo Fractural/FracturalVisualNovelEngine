@@ -66,50 +66,54 @@ class ProgramNode extends "res://addons/FracturalVNE/core/story_script/ast_nodes
 			add_function_holder(new_function_holder)
 	
 	# function_defintions = [
-	# 	["function1_name", ["arg_name1", "arg_name2"]],
-	# 	["function2_name", ["arg_name1"]],
-	# 	["function3_name", ["arg_name1", "arg_name2", "arg_name3"]],
+	# 	StoryScriptFuncDef.new("function1_name", [
+	#		StoryScriptParameter.new("arg_name1")
+	#		StoryScriptParameter.new("arg_name2", 0.1230),
+	#		]
+	# 	StoryScriptFuncDef.new("function2_name", [
+	#		StoryScriptParameter.new("arg_name1", "default")
+	#		StoryScriptParameter.new("arg_name2", 0.1230),
+	#		]
+	# 	StoryScriptFuncDef.new("function3_name", [
+	#		StoryScriptParameter.new("arg_name1")
+	#		]
 	# ]
 	#
 	# arguments = [
-	# 	["name", value]
-	# 	[null, value2]
-	# 	["name2", value]
+	# 	StoryScriptArgument.new("name", value)
+	# 	StoryScriptArgument.new(null, value2)
+	# 	StoryScriptArgument.new("name2", value3)
 	# ]
 	# 
 	# TODO Check for variable function_defintions in function_holders
 	# and use that to assign appropriate arguments
-	const _ARG_NAME = 0
-	const _ARG_VALUE = 1
-	const _FUNC_DEF_NAME = 0
-	const _FUNC_DEF_PARAMS = 1
 	
 	func call_function(name: String, arguments = []):
 		# Only support for native GDScript functions for now
 		# User can add custom gdscript functions if they like 
 		for holder in function_holders:
 			for func_def in holder.function_definitions:
-				if func_def[_FUNC_DEF_NAME] == name:
-					if arguments.size() > func_def[_FUNC_DEF_PARAMS].size():
-						return error('Expected at most %s arguments for function "%s()".' % [func_def[1].size(), name])
+				if func_def.name == name:
+					if arguments.size() > func_def.parameters.size():
+						return error('Expected at most %s arguments for function "%s()".' % [func_def.parameters.size(), name])
 					
 					var ordered_args = []
-					for param in func_def[_FUNC_DEF_PARAMS]:
-						ordered_args.append(null)
+					for param in func_def.parameters:
+						ordered_args.append(param.default_value)
 					
 					for i in range(arguments.size()):
 						# If argument name is null, then it must be a positional argument
-						if arguments[i][_ARG_NAME] == null:
+						if arguments[i].name == null:
 							ordered_args[i] = arguments
 						else:
 							# Else the argument must be a named argument, which means
 							# we must lookup the name's index and assign the appropriate 
 							# index on ordered_args to the argument's value.
-							var param_index = func_def[_FUNC_DEF_PARAMS].find(arguments[i][_ARG_NAME])
+							var param_index = func_def.parameters.find(arguments[i].value)
 							if param_index > -1:
-								ordered_args[param_index] = arguments[i][_ARG_VALUE]
+								ordered_args[param_index] = arguments[i].value
 							else:
-								return error('Function "%s()" does not have a named argument "%s".' % [name, arguments[i][_ARG_NAME]])
+								return error('Function "%s()" does not have a named argument "%s".' % [name, arguments[i].name])
 					return holder.callv(name, ordered_args)
 		return error('Function "%s()" could not be found.' % name)
 	

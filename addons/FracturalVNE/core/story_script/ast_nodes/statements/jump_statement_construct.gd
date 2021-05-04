@@ -34,7 +34,9 @@ class JumpNode extends "res://addons/FracturalVNE/core/story_script/ast_nodes/st
 		label_name = label_name_
 	
 	func execute():
-		runtime_block.get_service("StoryDirector").jump_to_label(label_name)
+		var result = runtime_block.get_service("StoryDirector").jump_to_label(label_name)
+		if not is_success(result):
+			throw_error(result)
 		.execute()
 	
 	func debug_string(tabs_string: String) -> String:

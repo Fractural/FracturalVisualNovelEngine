@@ -74,6 +74,11 @@ _global_script_classes=[ {
 "language": "GDScript",
 "path": "res://addons/FracturalVNE/core/story_script/story_script_actions.gd"
 }, {
+"base": "Reference",
+"class": "StoryScriptArgument",
+"language": "GDScript",
+"path": "res://addons/FracturalVNE/core/story_script/story_script_argument.gd"
+}, {
 "base": "Node",
 "class": "StoryScriptCompiler",
 "language": "GDScript",
@@ -98,6 +103,11 @@ _global_script_classes=[ {
 "class": "StoryScriptLexer",
 "language": "GDScript",
 "path": "res://addons/FracturalVNE/core/story_script/story_script_lexer.gd"
+}, {
+"base": "Reference",
+"class": "StoryScriptParameter",
+"language": "GDScript",
+"path": "res://addons/FracturalVNE/core/story_script/story_script_parameter.gd"
 }, {
 "base": "Reference",
 "class": "StoryScriptParser",
@@ -138,6 +148,11 @@ _global_script_classes=[ {
 "class": "TextReveal",
 "language": "GDScript",
 "path": "res://addons/FracturalVNE/core/gui/text_printer/printers/components/text_reveal.gd"
+}, {
+"base": "Reference",
+"class": "argu",
+"language": "GDScript",
+"path": "res://addons/FracturalVNE/core/story_script/story_script_function_definition.gd"
 } ]
 _global_script_class_icons={
 "BasicStoryGUI": "",
@@ -153,11 +168,13 @@ _global_script_class_icons={
 "StorySaveManager": "",
 "StoryScriptASTNode": "",
 "StoryScriptActions": "",
+"StoryScriptArgument": "",
 "StoryScriptCompiler": "",
 "StoryScriptConstants": "",
 "StoryScriptEditor": "",
 "StoryScriptError": "",
 "StoryScriptLexer": "",
+"StoryScriptParameter": "",
 "StoryScriptParser": "",
 "StoryScriptReader": "",
 "StoryScriptTextEdit": "",
@@ -165,7 +182,8 @@ _global_script_class_icons={
 "StoryScriptTokensReader": "",
 "TextEditTheme": "",
 "TextPrinter": "",
-"TextReveal": ""
+"TextReveal": "",
+"argu": ""
 }
 
 [Fractural_VNE]

@@ -63,14 +63,23 @@ class BlockNode extends "res://addons/FracturalVNE/core/story_script/ast_nodes/e
 	func get_service(name: String):
 		return runtime_block.get_service(name)
 	
+	func has_variable(name: String):
+		return variables.has(name)
+	
 	func get_variable(name: String):
 		if variables.has(name):
 			return variables[name]
 		return StoryScriptError.new('Variable named "%s" could not be found.' % name)
 	
-	func declare_variable(name: String, value):
+	func set_variable(name: String, value):
+		if variables.has(name):
+			variables[name] = value
+		else:
+			StoryScriptError.new('Variable named "%s" could not be found.' % name)
+	
+	func declare_variable(name: String, value = null):
 		if not variables.has(name):
-			variables[name] = Variable.new(name, value)
+			variables[name] = value
 		else:
 			return error('Local variable with name "%s" already exists' % name)
 	
@@ -97,26 +106,3 @@ class BlockNode extends "res://addons/FracturalVNE/core/story_script/ast_nodes/e
 		
 		if not parent_first:
 			.propagate_call(method, arguments, parent_first)
-		
-	class Variable:
-		var name
-		var value setget set_value, get_value
-		var type: String
-		
-		func _init(name_, value_):
-			name = name_
-			set_value(value_)
-		
-		func set_value(new_value):
-			value = new_value
-			if typeof(new_value) == TYPE_STRING:
-				type = "string"
-			elif typeof(new_value) == TYPE_INT:
-				type = "integer"
-			elif typeof(new_value) == TYPE_REAL:
-				type = "float"
-			elif typeof(new_value) == TYPE_OBJECT:
-				type = value.get_type()
-		
-		func get_value():
-			return value

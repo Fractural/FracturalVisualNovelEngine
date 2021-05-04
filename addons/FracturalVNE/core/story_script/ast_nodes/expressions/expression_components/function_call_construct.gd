@@ -44,13 +44,12 @@ class FunctionCallNode extends "res://addons/FracturalVNE/core/story_script/ast_
 				formatted_arguments.append([argument.name, evaluated_value])
 			else:
 				throw_error(evaluated_value)
-				return
 		
 		var result = runtime_block.call_function(name, formatted_arguments)
 		if is_success(result):
 			.execute()
 		else:
-			throw_error(adopt_error(result))
+			throw_error(stack_error(result))
 		
 	func debug_string(tabs_strings) -> String:
 		var string = ""
