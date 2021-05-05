@@ -23,4 +23,10 @@ class FlipSignOperatorNode extends "res://addons/FracturalVNE/core/story_script/
 		return "FLIP SIGN"
 	
 	func evaluate():
-		return operand.evaluate() * -1
+		var result = operand.evaluate()
+		if not is_success(result):
+			return result
+		
+		if typeof(result) == TYPE_INT or typeof(result) == TYPE_REAL:
+			return result * -1
+		return error('Cannot flip sign of type "%s".' % FracturalUtils.get_type_name(result))

@@ -12,6 +12,11 @@ func parse(parser):
 	return identifier
 
 class VariableNode extends "res://addons/FracturalVNE/core/story_script/ast_nodes/expressions/expression_components/value_component.gd":
+	static func get_types():
+		var arr = .get_types()
+		arr.append("variable")
+		return arr
+	
 	var name: String
 	
 	func _init(position_, name_: String).(position_):

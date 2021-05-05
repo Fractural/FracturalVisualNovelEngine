@@ -29,4 +29,12 @@ class NegateOperatorNode extends "res://addons/FracturalVNE/core/story_script/as
 		return "NEGATE"
 	
 	func evaluate():
-		return operand.evaluate()
+		var result = operand.evaluate()
+		if not is_success(result):
+			return result
+		
+		if typeof(result) == TYPE_INT:
+			return result == 1
+		elif typeof(result) == TYPE_BOOL:
+			return not result
+		return error('Cannot negate type "%s".' % FracturalUtils.get_type_name(result))

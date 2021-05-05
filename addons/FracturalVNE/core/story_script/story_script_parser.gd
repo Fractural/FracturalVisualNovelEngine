@@ -23,7 +23,7 @@ func expect(construct_names, excluded_construct_names = null):
 		for name in construct_names:
 			if constructs_dict.has(name):
 				for construct in constructs_dict[name]:
-					errors.append(construct.parse(self))
+					errors.append(construct.parse(self))	
 					if is_success(errors.back()):
 						for ex_construct_name in excluded_construct_names:
 							if not errors.back().is_type(ex_construct_name):
@@ -32,7 +32,9 @@ func expect(construct_names, excluded_construct_names = null):
 								errors[errors.size() - 1] = error("Unexpected %s." % ex_construct_name)
 								load_reader_state(checkpoint)
 								break
-					else:
+					elif errors.back().confidence == 1:
+						# Bail statement for when you are absolutely sure this 
+						# the parsed statement is an error
 						return errors.back()
 	else:
 		for name in construct_names:
@@ -40,6 +42,10 @@ func expect(construct_names, excluded_construct_names = null):
 				for construct in constructs_dict[name]:
 					errors.append(construct.parse(self))
 					if is_success(errors.back()):
+						return errors.back()
+					elif errors.back().confidence == 1:
+						# Bail statement for when you are absolutely sure this 
+						# the parsed statement is an error
 						return errors.back()
 	
 	if errors.size() == 0:

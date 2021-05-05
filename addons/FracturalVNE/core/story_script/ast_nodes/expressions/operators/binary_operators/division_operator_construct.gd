@@ -25,4 +25,13 @@ class DivideOperatorNode extends "res://addons/FracturalVNE/core/story_script/as
 		return 2
 	
 	func evaluate():
-		return left_operand.evaluate() / right_operand.evaluate()
+		var left_result = left_operand.evaluate()
+		if not is_success(left_result):
+			return left_result
+		var right_result = right_operand.evaluate()
+		if not is_success(right_result):
+			return right_result
+		
+		if (typeof(left_result) == TYPE_INT or typeof(left_result) == TYPE_REAL) and (typeof(right_result) == TYPE_INT or typeof(right_result) == TYPE_REAL):
+			return left_result / right_result
+		return error('Cannot divide "%s" by "%s".' % [FracturalUtils.get_type_name(left_result), FracturalUtils.get_type_name(right_result)])

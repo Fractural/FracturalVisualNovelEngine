@@ -1,4 +1,4 @@
-class_name argu
+class_name StoryScriptFuncDef
 extends Reference
 
 var name: String

@@ -10,11 +10,10 @@ func parse(parser):
 	var function = parser.expect_token("identifier")
 	if parser.is_success(function):
 		var arguments = parser.expect("parenthesized arguments")
-		var ahead = str(parser.peek().symbol) + str(parser.peek(2).symbol) + str(parser.peek(3).symbol)
 		if parser.is_success(arguments):
 			return FunctionCallNode.new(function.position, function.symbol, arguments)
 		else:
-			return parser.error(arguments, 1, checkpoint)
+			return parser.error(arguments, arguments.confidence, checkpoint)
 	else:
 		return function
 
@@ -49,7 +48,7 @@ class FunctionCallNode extends "res://addons/FracturalVNE/core/story_script/ast_
 		if is_success(result):
 			.execute()
 		else:
-			throw_error(stack_error(result))
+			throw_error(stack_error(result, 'Error calling function "%s".' % name))
 		
 	func debug_string(tabs_strings) -> String:
 		var string = ""

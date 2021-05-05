@@ -77,12 +77,11 @@ class LabelNode extends "res://addons/FracturalVNE/core/story_script/ast_nodes/s
 		var string = ""
 		string += tabs_string + "LABEL " + name + ":" 
 		
-		if parameter_group != null:
-			string += "\n" + tabs_string + "("
-			string += "\n" + parameter_group.debug_string(tabs_string + "\t")
-			string += "\n" + tabs_string + ")"
-		
 		string += "\n" + tabs_string + "{"
+		
+		if parameter_group != null:
+			string += "\n" + parameter_group.debug_string(tabs_string + "\t")
+
 		string += "\n" + block.debug_string(tabs_string + "\t")
 		string += "\n" + tabs_string + "}"
 		return string

@@ -30,6 +30,11 @@ _global_script_classes=[ {
 "path": "res://demo/demo_story.gd"
 }, {
 "base": "Reference",
+"class": "FracturalUtils",
+"language": "GDScript",
+"path": "res://addons/FracturalVNE/core/utils/utils.gd"
+}, {
+"base": "Reference",
 "class": "PluginAssetsRegistry",
 "language": "GDScript",
 "path": "res://addons/FracturalVNE/plugin/plugin_assets_registry.gd"
@@ -100,6 +105,11 @@ _global_script_classes=[ {
 "path": "res://addons/FracturalVNE/core/story_script/story_script_error.gd"
 }, {
 "base": "Reference",
+"class": "StoryScriptFuncDef",
+"language": "GDScript",
+"path": "res://addons/FracturalVNE/core/story_script/story_script_function_definition.gd"
+}, {
+"base": "Reference",
 "class": "StoryScriptLexer",
 "language": "GDScript",
 "path": "res://addons/FracturalVNE/core/story_script/story_script_lexer.gd"
@@ -148,17 +158,13 @@ _global_script_classes=[ {
 "class": "TextReveal",
 "language": "GDScript",
 "path": "res://addons/FracturalVNE/core/gui/text_printer/printers/components/text_reveal.gd"
-}, {
-"base": "Reference",
-"class": "argu",
-"language": "GDScript",
-"path": "res://addons/FracturalVNE/core/story_script/story_script_function_definition.gd"
 } ]
 _global_script_class_icons={
 "BasicStoryGUI": "",
 "Character": "",
 "CharactersDelay": "",
 "DemoStory": "",
+"FracturalUtils": "",
 "PluginAssetsRegistry": "",
 "PluginUI": "",
 "StoryDecisionManager": "",
@@ -173,6 +179,7 @@ _global_script_class_icons={
 "StoryScriptConstants": "",
 "StoryScriptEditor": "",
 "StoryScriptError": "",
+"StoryScriptFuncDef": "",
 "StoryScriptLexer": "",
 "StoryScriptParameter": "",
 "StoryScriptParser": "",
@@ -182,8 +189,7 @@ _global_script_class_icons={
 "StoryScriptTokensReader": "",
 "TextEditTheme": "",
 "TextPrinter": "",
-"TextReveal": "",
-"argu": ""
+"TextReveal": ""
 }
 
 [Fractural_VNE]

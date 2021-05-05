@@ -25,4 +25,17 @@ class AddOperatorNode extends "res://addons/FracturalVNE/core/story_script/ast_n
 		return 1
 	
 	func evaluate():
-		return left_operand.evaluate() - right_operand.evaluate()
+		var left_result = left_operand.evaluate()
+		if not is_success(left_result):
+			return left_result
+		var right_result = right_operand.evaluate()
+		if not is_success(right_result):
+			return right_result
+		
+		if (typeof(left_result) == TYPE_INT or typeof(left_result) == TYPE_REAL) and (typeof(right_result) == TYPE_INT or typeof(right_result) == TYPE_REAL):
+			# Numerical addition
+			return left_result + right_result
+		elif typeof(left_result) == TYPE_STRING and typeof(right_result) == TYPE_STRING:
+			# String concatnation
+			return left_result + right_result
+		return error('Cannot add "%s" with "%s".' % [FracturalUtils.get_type_name(left_result), FracturalUtils.get_type_name(right_result)])

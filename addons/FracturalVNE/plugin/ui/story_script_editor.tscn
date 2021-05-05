@@ -54,10 +54,11 @@ custom_colors/font_color = Color( 0.972549, 0.972549, 0.94902, 1 )
 custom_colors/line_number_color = Color( 0.458824, 0.443137, 0.368627, 1 )
 custom_colors/background_color = Color( 0.152941, 0.156863, 0.133333, 1 )
 custom_colors/number_color = Color( 0.682353, 0.505882, 1, 1 )
-text = "label one:
+text = "label one(oof=\"xd\", lol, another_one=123 + 3234 /234 * (4 + 345.454)):
 	m \"Hi! how are you doing.\"
 	s \"I'm doing well.\"
 	\"Bob\" \"Hello there!\"
+	\"This is some narration text!\"
 
 jump one
 
@@ -69,7 +70,14 @@ define unaryStuff = not not !(something)
 define unaryNum1 = -1234
 define unaryNum2 = ---1234
 
-CustomFunction(123, named=\"oof\")"
+CustomFunction(123, named=\"oof\")
+EmptyArgFunc()
+
+label empty_param_label():
+	\"I have no parameters!\"
+
+label another_empty_param_label():
+	\"I also have no parameters!\""
 highlight_current_line = true
 syntax_highlighting = true
 show_line_numbers = true

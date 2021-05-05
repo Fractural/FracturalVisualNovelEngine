@@ -19,11 +19,11 @@ func parse(parser):
 				if parser.is_success(parser.expect_token("punctuation", "newline")):
 					return VariableAssignmentNode.new(identifier.position, identifier.symbol, expression)
 				else:
-					return parser.error("Expected a new line to conclude a statement.", 1, checkpoint)
+					return parser.error("Expected a new line to conclude a statement.", 3/4.0, checkpoint)
 			else:
-				return parser.error(expression, 2/3.0, checkpoint)
+				return parser.error(expression, 2/4.0, checkpoint)
 		else:
-			return parser.error(assignment_punc, 1/3.0, checkpoint)
+			return parser.error(assignment_punc, 1/4.0, checkpoint)
 	else:
 		return parser.error(identifier, 0, checkpoint)
 
