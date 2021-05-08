@@ -5,10 +5,14 @@ static func get_types() -> Array:
 	arr.append("stepped")
 	return arr
 
-func _init(position).(position):
+func _init(position_ = null).(position_):
 	pass
 
 func execute():
 	emit_signal("executed")
-	if runtime_next_node != null:
-		runtime_block.get_service("StoryDirector").start_step(funcref(runtime_next_node, "execute"))
+	if not override_step and runtime_next_node != null:
+		runtime_block.get_service("StoryDirector").start_step(self)
+
+# Overriding step allows things like  "together blocks" to 
+# run groups of statements on the same step together
+var override_step: bool = false

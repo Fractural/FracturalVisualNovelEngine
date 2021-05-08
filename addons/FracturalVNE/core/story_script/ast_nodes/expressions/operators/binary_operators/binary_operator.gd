@@ -8,7 +8,7 @@ static func get_types() -> Array:
 var left_operand
 var right_operand
 
-func _init(position_, left_operand_ = null, right_operand_ = null).(position_):
+func _init(position_ = null, left_operand_ = null, right_operand_ = null).(position_):
 	left_operand = left_operand_
 	right_operand = right_operand_
 
@@ -42,3 +42,19 @@ func propagate_call(method, arguments, parent_first = false):
 	
 	if not parent_first:
 		.propagate_call(method, arguments, parent_first)
+
+# ----- Serialization ----- #
+
+func serialize():
+	var serialized_obj = .serialize()
+	serialized_obj["left_operand"] = left_operand.serialize()
+	serialized_obj["right_operand"] = right_operand.serialize()
+	return serialized_obj
+
+func deserialize(serialized_obj):	
+	var instance = .deserialize(serialized_obj)
+	instance.left_operand = SerializationUtils.deserialize(serialized_obj["left_operand"])
+	instance.right_operand = SerializationUtils.deserialize(serialized_obj["right_operand"])
+	return instance
+
+# ----- Serialization ----- #

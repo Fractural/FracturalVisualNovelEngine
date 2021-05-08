@@ -1,5 +1,7 @@
 extends "res://addons/FracturalVNE/core/story_script/ast_nodes/statements/statement_construct.gd"
 
+const JumpNode = preload("res://addons/FracturalVNE/core/story_script/ast_nodes/statements/jump_statement.gd")
+
 func get_parse_types() -> Array:
 	var arr = .get_parse_types()
 	arr.append("jump")
@@ -21,25 +23,3 @@ func parse(parser):
 			return parser.error(identifier, 1/2.0, checkpoint)
 	else:
 		return parser.error(jump, 0)
-
-class JumpNode extends "res://addons/FracturalVNE/core/story_script/ast_nodes/statement_node.gd":
-	static func get_types() -> Array:
-		var arr = .get_types()
-		arr.append("jump")
-		return arr
-	
-	var label_name: String
-	
-	func _init(position_, label_name_: String).(position_):
-		label_name = label_name_
-	
-	func execute():
-		var result = runtime_block.get_service("StoryDirector").jump_to_label(label_name)
-		if not is_success(result):
-			throw_error(stack_error(result, 'Error jumping to label "%s".' % label_name))
-		.execute()
-	
-	func debug_string(tabs_string: String) -> String:
-		var string = ""
-		string += tabs_string + "JUMP -> " + label_name 
-		return string

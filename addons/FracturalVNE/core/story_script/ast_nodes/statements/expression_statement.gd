@@ -1,0 +1,41 @@
+extends "res://addons/FracturalVNE/core/story_script/ast_nodes/statement_node.gd"
+
+var expression
+
+func _init(position_ = null, expression_ = null).(position_):
+	expression = expression_
+
+func execute():
+	expression.evaluate()
+	.execute()
+
+func debug_string(tabs_string: String) -> String:
+	var string = ""
+	string += tabs_string + "EXPR STMT:"
+	string += "\n" + tabs_string + "{"
+	string += "\n" + expression.debug_string(tabs_string + "\t")
+	string += "\n" + tabs_string + "}"
+	return string
+
+func propagate_call(method, arguments, parent_first = false):
+	if parent_first:
+		.propagate_call(method, arguments, parent_first)
+	
+	expression.propagate_call(method, arguments)
+	
+	if not parent_first:
+		.propagate_call(method, arguments, parent_first)
+
+# ----- Serialization ----- #
+
+func serialize():
+	var serialized_obj = .serialize()
+	serialized_obj["expression"] = expression.serialize()
+	return serialized_obj
+
+func deserialize(serialized_obj):	
+	var instance = .deserialize(serialized_obj)
+	instance.expression = SerializationUtils.deserialize(serialized_obj["expression"])
+	return instance
+
+# ----- Serialization ----- #

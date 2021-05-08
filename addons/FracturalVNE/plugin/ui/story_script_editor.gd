@@ -15,7 +15,7 @@ func _ready():
 	compiler.connect("throw_error", script_text_edit, "display_error")
 
 func compile_script():
-	var ast_tree = compiler.compile(script_text_edit.text)
+	var ast_tree = compiler.test_compile(script_text_edit.text)
 	if ast_tree is StoryScriptError:
 		script_text_edit.display_error(ast_tree)
 	else:

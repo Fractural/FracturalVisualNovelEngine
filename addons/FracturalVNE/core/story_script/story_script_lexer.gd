@@ -54,7 +54,7 @@ var operators = []
 var punctuation = []
 
 # Lines and columns use 0 indexing 
-var current_token_position = StoryScriptToken.Position.new()
+var current_token_position = StoryScriptPosition.new()
 var previous_indent_level: int
 
 var tokens: Array
@@ -336,7 +336,7 @@ func consume(steps_ahead: int = 1) -> String:
 		return consume(steps_ahead - 1)
 	return consumed 
 
-func peek_position(steps_ahead: int = 1) -> StoryScriptToken.Position:
+func peek_position(steps_ahead: int = 1) -> StoryScriptPosition:
 	var new_position = current_token_position.clone()
 	for i in range(1, steps_ahead + 1):
 		if reader.peek(i) == EOF:
@@ -421,7 +421,7 @@ func error(message = null, confidence: float = 0, checkpoint = null, position = 
 	if message == null:
 		return StoryScriptError.new("", position, confidence)
 	
-	if position is StoryScriptToken.Position:
+	if position is StoryScriptPosition:
 		return StoryScriptError.new(message, position.clone(), confidence)
 	elif typeof(position) == TYPE_INT:
 		return StoryScriptError.new(message, peek_position(position), confidence)

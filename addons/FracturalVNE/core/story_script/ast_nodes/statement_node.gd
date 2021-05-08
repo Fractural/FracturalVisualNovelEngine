@@ -7,7 +7,7 @@ static func get_types() -> Array:
 
 var runtime_next_node
 
-func _init(position).(position):
+func _init(position_ = null).(position_):
 	pass
 
 func execute():

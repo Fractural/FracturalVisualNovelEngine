@@ -1,5 +1,6 @@
 extends Node
-class_name TextPrinter
+
+const Character = preload("res://addons/FracturalVNE/core/character/character.gd")
 
 signal skip
 signal say(character, text)

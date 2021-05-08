@@ -5,5 +5,5 @@ static func get_types() -> Array:
 	arr.append("value component")
 	return arr
 
-func _init(position_).(position_):
+func _init(position_ = null).(position_):
 	pass

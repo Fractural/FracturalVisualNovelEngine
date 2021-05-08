@@ -1,5 +1,8 @@
 extends "res://addons/FracturalVNE/core/story_script/ast_nodes/node_construct.gd"
 
+const ArgumentNode = preload("res://addons/FracturalVNE/core/story_script/ast_nodes/expressions/expression_components/argument.gd")
+const ArgumentGroupNode = preload("res://addons/FracturalVNE/core/story_script/ast_nodes/expressions/expression_components/argument_group.gd")
+
 func get_punctuation():
 	return ["(", ",", ")", "="]
 
@@ -54,44 +57,3 @@ func parse(parser):
 		return ArgumentGroupNode.new(open_paren.position, arguments)
 	else:
 		return open_paren
-
-class ArgumentGroupNode extends "res://addons/FracturalVNE/core/story_script/ast_nodes/node.gd":
-	var arguments: Array
-	
-	func _init(position_, arguments_: Array).(position_):
-		arguments = arguments_
-	
-	func debug_string(tabs_string: String) -> String:
-		var string = ""
-		string += tabs_string + "ARG GROUP:" 
-		string += "\n" + tabs_string + "{"
-		for argument in arguments:
-			string += "\n" + argument.debug_string(tabs_string + "\t")
-		string += "\n" + tabs_string + "}"
-		return string
-	
-	func propagate_call(method, arguments, parent_first = false):
-		if parent_first:
-			.propagate_call(method, arguments, parent_first)
-		
-		for argument in arguments:
-			argument.propagate_call(method, arguments, parent_first)
-		
-		if not parent_first:
-			.propagate_call(method, arguments, parent_first)
-
-class ArgumentNode extends "res://addons/FracturalVNE/core/story_script/ast_nodes/node.gd":
-	var name
-	var value
-	
-	func _init(position_, name_, value_).(position_):
-		name = name_
-		value = value_
-	
-	func debug_string(tabs_string: String) -> String:
-		var string = ""
-		string += tabs_string + "ARG " + ("_" if name == null else str(name)) + ": "
-		string += "\n" + tabs_string + "{"
-		string += "\n" + value.debug_string(tabs_string + "\t")
-		string += "\n" + tabs_string + "}"
-		return string

@@ -1,4 +1,4 @@
-[gd_scene load_steps=8 format=2]
+[gd_scene load_steps=9 format=2]
 
 [ext_resource path="res://addons/FracturalVNE/assets/fonts/Noto_Sans/NotoSans-Italic.tres" type="DynamicFont" id=1]
 [ext_resource path="res://addons/FracturalVNE/assets/fonts/Noto_Sans/NotoSans-Bold.tres" type="DynamicFont" id=2]
@@ -7,9 +7,11 @@
 [ext_resource path="res://addons/FracturalVNE/core/gui/text_printer/printers/components/text_reveal.gd" type="Script" id=5]
 [ext_resource path="res://addons/FracturalVNE/core/gui/text_printer/BaseTextPrinter.tscn" type="PackedScene" id=6]
 [ext_resource path="res://addons/FracturalVNE/core/gui/text_printer/printers/basic_text_printer.gd" type="Script" id=7]
+[ext_resource path="res://addons/FracturalVNE/core/gui/text_printer/printers/basic_text_printer_configurer.gd" type="Script" id=8]
 
 [node name="DefaultTextPrinter" instance=ExtResource( 6 )]
 rect_min_size = Vector2( 0, 200 )
+name_custom_char_delays = [ null ]
 
 [node name="Panel" type="Panel" parent="." index="0"]
 anchor_right = 1.0
@@ -70,3 +72,7 @@ _name_text_reveal_path = NodePath("../Panel/MarginContainer/HSeparator/NameTextR
 _dialogue_text_reveal = NodePath("../Panel/MarginContainer/HSeparator/DialogueTextReveal")
 default_name_color = Color( 1, 1, 1, 1 )
 default_dialogue_color = Color( 1, 1, 1, 1 )
+
+[node name="Configurer" type="Node" parent="BasicTextPrinter" index="0"]
+script = ExtResource( 8 )
+text_printer_path = NodePath("../..")

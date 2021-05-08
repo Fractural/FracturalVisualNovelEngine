@@ -2,7 +2,7 @@ extends "res://addons/FracturalVNE/core/story_script/ast_nodes/expressions/opera
 
 var operand
 
-func _init(position_, operand_ = null).(position_):
+func _init(position_ = null, operand_ = null).(position_):
 	operand = operand_
 
 func _debug_string_operator_name():
@@ -24,3 +24,17 @@ func propagate_call(method, arguments, parent_first = false):
 	
 	if not parent_first:
 		.propagate_call(method, arguments, parent_first)
+
+# ----- Serialization ----- #
+
+func serialize():
+	var serialized_obj = .serialize()
+	serialized_obj["operand"] = operand.serialize()
+	return serialized_obj
+
+func deserialize(serialized_obj):	
+	var instance = .deserialize(serialized_obj)
+	instance.operand = SerializationUtils.deserialize(serialized_obj["operand"])
+	return instance
+
+# ----- Serialization ----- #

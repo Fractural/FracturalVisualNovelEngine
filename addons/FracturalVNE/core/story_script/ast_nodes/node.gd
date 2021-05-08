@@ -3,14 +3,29 @@ extends "res://addons/FracturalVNE/core/utils/typeable.gd"
 static func get_types() -> Array:
 	return ["node"]
 
+var reference_id
 var runtime_block
-var position: StoryScriptToken.Position
+var position: StoryScriptPosition
 
-func _init(position_):
+func _init(position_ = StoryScriptPosition.new()):
 	position = position_
+
+func propagate_call(method, arguments, parent_first = false):
+	if has_method(method):
+		callv(method, arguments)
+
+func find_node_with_id(reference_id_):
+	if reference_id == reference_id_:
+		runtime_block.get_service("ASTNodeManager")._add_result(self)
+
+func configure_node(runtime_block_):
+	runtime_block = runtime_block_
+	reference_id = runtime_block.get_service("ASTNodeManager").next_reference_id()
 
 func debug_string(tabs_string: String) -> String:
 	return "N/A"
+
+# ----- Error ----- #
 
 func is_success(result):
 	return not result is StoryScriptError and not result is StoryScriptError.ErrorStack
@@ -34,9 +49,20 @@ func stack_error(error, message = ""):
 	else:
 		assert(false, "Unknown of stack_error()")
 
-func propagate_call(method, arguments, parent_first = false):
-	if has_method(method):
-		callv(method, arguments)
+# ----- Error ----- #
 
-func configure_node(runtime_block_):
-	runtime_block = runtime_block_
+# ----- Serialization ----- #
+
+func serialize():
+	return {
+		"script_path": get_script().get_path(),
+		"position": position.serialize(),
+	}
+
+func deserialize(serialized_obj):
+	var instance = get_script().new()
+	instance.position = SerializationUtils.deserialize(serialized_obj["position"])
+	# No need to assign runtime_block since that is assgined at runtime
+	return instance
+
+# ----- Serialization ----- #

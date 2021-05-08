@@ -32,8 +32,8 @@ const Program = preload("res://addons/FracturalVNE/core/story_script/ast_nodes/m
 # Statements
 const JumpStatement = preload("res://addons/FracturalVNE/core/story_script/ast_nodes/statements/jump_statement_construct.gd")
 const LabelStatement = preload("res://addons/FracturalVNE/core/story_script/ast_nodes/statements/label_statement_construct.gd")
-const VariableDeclaration = preload("res://addons/FracturalVNE/core/story_script/ast_nodes/statements/variable_declaration.gd")
-const VariableAssignment = preload("res://addons/FracturalVNE/core/story_script/ast_nodes/statements/variable_assignment.gd")
+const VariableDeclaration = preload("res://addons/FracturalVNE/core/story_script/ast_nodes/statements/variable_declaration_construct.gd")
+const VariableAssignment = preload("res://addons/FracturalVNE/core/story_script/ast_nodes/statements/variable_assignment_construct.gd")
 const SayStatement = preload("res://addons/FracturalVNE/core/story_script/ast_nodes/statements/say_statement_construct.gd")
 const ExpressionStatement = preload("res://addons/FracturalVNE/core/story_script/ast_nodes/statements/expression_statement_construct.gd")
 

@@ -1,5 +1,7 @@
 extends "res://addons/FracturalVNE/core/story_script/ast_nodes/expressions/expression_components/value_component_construct.gd"
 
+const ParenthesizedExpression = preload("res://addons/FracturalVNE/core/story_script/ast_nodes/expressions/expression_components/parenthesized_expression.gd")
+
 func get_punctuation():
 	return ["(", ")"]
 
@@ -20,32 +22,6 @@ func parse(parser):
 		if not parser.is_success(closing_paren):
 			return parser.error('Expected a ")" to close a parenthesized expression.', 1, checkpoint) 
 		
-		return ParenthesizedOperator.new(expression.position, expression)
+		return ParenthesizedExpression.new(expression.position, expression)
 	else:
 		return open_paren
-
-class ParenthesizedOperator extends "res://addons/FracturalVNE/core/story_script/ast_nodes/expressions/operators/operator.gd":
-	var operand
-	
-	func _init(position_, operand_).(position_):
-		operand = operand_
-	
-	func evaluate():
-		return operand.evaluate()
-	
-	func debug_string(tabs_string: String) -> String:
-		var string = ""
-		string += tabs_string + "PARENTHESES GROUP:"
-		string += "\n" + tabs_string + "{"
-		string += "\n" + operand.debug_string(tabs_string + "\t")
-		string += "\n" + tabs_string + "}"
-		return string
-	
-	func propagate_call(method, arguments, parent_first = false):
-		if parent_first:
-			.propagate_call(method, arguments, parent_first)
-		
-		operand.propagate_call(method, arguments, parent_first)
-		
-		if not parent_first:
-			.propagate_call(method, arguments, parent_first)

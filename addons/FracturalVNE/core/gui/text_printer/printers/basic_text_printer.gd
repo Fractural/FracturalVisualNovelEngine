@@ -1,5 +1,10 @@
 extends Node
 
+const Character = preload("res://addons/FracturalVNE/core/character/character.gd")
+const CharactersDelay = preload("res://addons/FracturalVNE/core/gui/text_printer/printers/components/characters_delay.gd")
+const TextPrinter = preload("res://addons/FracturalVNE/core/gui/text_printer/text_printer.gd")
+const TextReveal = preload("res://addons/FracturalVNE/core/gui/text_printer/printers/components/text_reveal.gd")
+
 export var _text_printer_path: NodePath
 onready var text_printer: TextPrinter = get_node(_text_printer_path)
 

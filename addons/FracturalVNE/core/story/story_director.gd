@@ -1,10 +1,6 @@
 extends Node
-class_name StoryDirector
 
-signal stepped()
-
-var label_dict: Dictionary
-var _curr_step_callback: FuncRef
+# ----- StoryService Info ----- #
 
 var function_definitions = [
 	# DEMO
@@ -14,15 +10,34 @@ var function_definitions = [
 	]),
 ]
 
+func get_service_name():
+	return "StoryDirector"
+
 func configure_service(program_node):
 	label_dict = {}
 
-func start_step(step_callback):
-	_curr_step_callback = step_callback
+# --- StoryService Info End --- #
+
+
+
+
+
+signal stepped()
+
+var label_dict: Dictionary
+var curr_stepped_node
+
+func execute(ast_node):
+	ast_node.execute()
+
+func start_step(ast_node):
+	curr_stepped_node = ast_node
 
 func step():
 	emit_signal("stepped")
-	_curr_step_callback.call_func()
+	if curr_stepped_node.runtime_next_node != null:
+		curr_stepped_node.runtime_next_node.execute()
+	curr_stepped_node = null
 
 func call_label(label_name: String, arguments = []):
 	if label_dict.has(label_name):

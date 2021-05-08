@@ -1,5 +1,7 @@
 extends "res://addons/FracturalVNE/core/story_script/ast_nodes/node_construct.gd"
 
+const ParameterGroupNode = preload("res://addons/FracturalVNE/core/story_script/ast_nodes/expressions/expression_components/parameter_group.gd")
+
 func get_punctuation():
 	return ["(", ",", ")"]
 
@@ -55,18 +57,3 @@ func parse(parser):
 		return ParameterGroupNode.new(open_paren.position, parameters.values())
 	else:
 		return open_paren
-
-class ParameterGroupNode extends "res://addons/FracturalVNE/core/story_script/ast_nodes/node.gd":
-	var parameters: Array
-	
-	func _init(position_, parameters_: Array).(position_):
-		parameters = parameters_
-	
-	func debug_string(tabs_string: String) -> String:
-		var string = ""
-		string += tabs_string + "PARAM GROUP:" 
-		string += "\n" + tabs_string + "{"
-		for param in parameters:
-			string += "\n" + tabs_string + "\t" + str(param) + ","
-		string += "\n" + tabs_string + "}"
-		return string

@@ -1,5 +1,7 @@
-extends Node
+ extends Node
 class_name StoryManager
+
+const TextPrinter = preload("res://addons/FracturalVNE/core/gui/text_printer/text_printer.gd")
 
 signal stepped;
 
@@ -12,8 +14,7 @@ var character_manager#: CharacterManager # TODO. SHould use SpriteManager to man
 var sprite_manager#: SpriteManager # TODO
 var sound_manager# : SoundManager # TODO
 
-# Actions are built in a tree like fashion using a doubly linked list, with one action referring to the next and the one before and action groups defining branches
-var action: StoryActions.Action
+var abstract_syntax_tree;
 
 func _ready():
 	pass
@@ -25,8 +26,9 @@ func _ready():
 	#connect("stepped", sprite_manager, "_on_stepped")
 	#connect("stepped", sound_manager, "_on_stepped")
 
+# TODO
 func load_story(story):
-	action = story._load_story_tree(self)
+	action = story._load_story_tree()
 
 func set_auto_step(value: bool):
 	if auto_step == value:

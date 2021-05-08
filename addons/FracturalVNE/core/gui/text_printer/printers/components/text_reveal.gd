@@ -1,5 +1,4 @@
 extends RichTextLabel
-class_name TextReveal
 
 # The default time to wait before animating the next character
 var default_char_delay: float
