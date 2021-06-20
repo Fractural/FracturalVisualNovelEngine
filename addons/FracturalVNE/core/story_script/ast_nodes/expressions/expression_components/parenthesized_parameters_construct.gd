@@ -33,16 +33,15 @@ func parse(parser):
 					if parameters.has(param_identifier.symbol):
 						return parser.error('Parameter with the name "%s" already exists.' % param_identifier.symbol, 1, checkpoint)
 					if parser.is_success(parser.expect_token("punctuation", "=")):
-						var limited_expression = parser.expect("expression", ["function call", "variable"])
-						if parser.is_success(limited_expression):
-							var evaluated_expression = limited_expression.evaluate()
+						var constant_expression = parser.expect("constant expression")
+						if parser.is_success(constant_expression):
+							var evaluated_expression = constant_expression.evaluate()
 							if parser.is_success(evaluated_expression):
 								parameters[param_identifier.symbol] = StoryScriptParameter.new(param_identifier.symbol, evaluated_expression)
 							else:
 								return parser.error(evaluated_expression, 1, checkpoint)
 						else:
-							limited_expression.message += " Expected an expression that does not contain variables or function calls."
-							return parser.error(limited_expression, 1, checkpoint)
+							return parser.error("Expected an expression that does not contain variables or function calls.", 1, checkpoint)
 					else:
 						parameters[param_identifier.symbol] = StoryScriptParameter.new(param_identifier.symbol)
 				else:

@@ -1,0 +1,66 @@
+[gd_scene load_steps=9 format=2]
+
+[ext_resource path="res://addons/FracturalVNE/core/gui/_misc/modulate_button.gd" type="Script" id=1]
+[ext_resource path="res://icon.png" type="Texture" id=2]
+[ext_resource path="res://addons/FracturalVNE/core/gui/save_slots_menu/ui_save_slot.gd" type="Script" id=3]
+
+[sub_resource type="StyleBoxEmpty" id=1]
+
+[sub_resource type="StyleBoxEmpty" id=2]
+
+[sub_resource type="StyleBoxEmpty" id=3]
+
+[sub_resource type="StyleBoxEmpty" id=4]
+
+[sub_resource type="StyleBoxEmpty" id=5]
+
+[node name="SaveSlot" type="Control"]
+margin_right = 225.0
+margin_bottom = 185.0
+rect_min_size = Vector2( 225, 185 )
+script = ExtResource( 3 )
+__meta__ = {
+"_edit_use_anchors_": false
+}
+screenshot_rect_path = NodePath("Button/ScreenshotRect")
+date_label_path = NodePath("Button/DateLabel")
+button_path = NodePath("Button")
+
+[node name="Button" type="Button" parent="."]
+margin_right = 225.0
+margin_bottom = 185.0
+custom_styles/hover = SubResource( 1 )
+custom_styles/pressed = SubResource( 2 )
+custom_styles/focus = SubResource( 3 )
+custom_styles/disabled = SubResource( 4 )
+custom_styles/normal = SubResource( 5 )
+script = ExtResource( 1 )
+__meta__ = {
+"_edit_use_anchors_": false,
+"_editor_description_": ""
+}
+disabled_color = Color( 0.588235, 0.588235, 0.588235, 0.588235 )
+pressed_color = Color( 0.490196, 0.490196, 0.490196, 1 )
+hover_color = Color( 0.882353, 0.882353, 0.882353, 0.882353 )
+
+[node name="ScreenshotRect" type="TextureRect" parent="Button"]
+anchor_right = 1.0
+anchor_bottom = 1.0
+margin_bottom = -25.0
+texture = ExtResource( 2 )
+expand = true
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="DateLabel" type="Label" parent="Button"]
+anchor_top = 1.0
+anchor_right = 1.0
+anchor_bottom = 1.0
+margin_top = -23.0
+margin_bottom = 2.0
+text = "12/12/21, Saturday, 12:56 PM"
+valign = 1
+__meta__ = {
+"_edit_use_anchors_": false
+}

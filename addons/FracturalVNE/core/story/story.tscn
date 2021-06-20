@@ -1,0 +1,27 @@
+[gd_scene load_steps=7 format=2]
+
+[ext_resource path="res://addons/FracturalVNE/core/story/story_manager.gd" type="Script" id=1]
+[ext_resource path="res://addons/FracturalVNE/core/story/story_director.gd" type="Script" id=2]
+[ext_resource path="res://addons/FracturalVNE/core/story/story_configurer.gd" type="Script" id=3]
+[ext_resource path="res://addons/FracturalVNE/core/gui/basic_gui.tscn" type="PackedScene" id=4]
+[ext_resource path="res://addons/FracturalVNE/core/story_script/ast_node_manager.gd" type="Script" id=5]
+[ext_resource path="res://addons/FracturalVNE/core/story/story_history_manager.gd" type="Script" id=6]
+
+[node name="StoryConfigurer" type="Node"]
+script = ExtResource( 3 )
+service_paths = [ NodePath("StorySaveManager"), NodePath("StoryDirector"), NodePath("BasicGUI/DefaultTextPrinter"), NodePath("ASTNodeManager") ]
+
+[node name="StoryManager" type="Node" parent="."]
+script = ExtResource( 1 )
+
+[node name="StoryDirector" type="Node" parent="."]
+script = ExtResource( 2 )
+
+[node name="StoryHistoryManager" type="Node" parent="."]
+script = ExtResource( 6 )
+story_director_path = NodePath("../StoryDirector")
+
+[node name="ASTNodeManager" type="Node" parent="."]
+script = ExtResource( 5 )
+
+[node name="BasicGUI" parent="." instance=ExtResource( 4 )]

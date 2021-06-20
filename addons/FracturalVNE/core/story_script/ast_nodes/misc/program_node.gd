@@ -5,18 +5,19 @@ extends "res://addons/FracturalVNE/core/story_script/ast_nodes/executable_node.g
 # 2. runtime_initialize() 
 # 3. execute()
 
-const ASTNodeManager = preload("res://addons/FracturalVNE/core/story_script/ast_node_manager.gd")
+const ASTNodeConfigurer = preload("res://addons/FracturalVNE/core/story_script/ast_node_configurer.gd")
 
+# TODO: Refactor function_holders into just a Dictionary of functions
+# to improve lookup speeds
 var function_holders: Array = []
 var services: Dictionary = {}
-# StoryDirector
 var block
 
 func _init(block_ = null).(StoryScriptPosition.new(0, 0)):
 	block = block_
 
 func _init_post():
-	add_service(ASTNodeManager.new())
+	add_service(ASTNodeConfigurer.new())
 	block.propagate_call("configure_node", [self])
 
 func propagate_call(method, arguments, parent_first = false):
@@ -45,6 +46,10 @@ func add_service(service, name = null):
 	if typeof(name) != TYPE_STRING:
 		assert(false, "Service name must be string.")
 	services[name] = service
+	
+	# Adds the service as a function holder if it has function definitions
+	if "function_definitions" in service:
+		add_function_holder(service)
 
 func get_service(name: String):
 	if services.has(name):
@@ -59,27 +64,13 @@ func add_function_holders(new_function_holders):
 	for new_function_holder in new_function_holders:
 		add_function_holder(new_function_holder)
 
-# function_defintions = [
-# 	StoryScriptFuncDef.new("function1_name", [
-#		StoryScriptParameter.new("arg_name1")
-#		StoryScriptParameter.new("arg_name2", 0.1230),
-#		]
-# 	StoryScriptFuncDef.new("function2_name", [
-#		StoryScriptParameter.new("arg_name1", "default")
-#		StoryScriptParameter.new("arg_name2", 0.1230),
-#		]
-# 	StoryScriptFuncDef.new("function3_name", [
-#		StoryScriptParameter.new("arg_name1")
-#		]
-# ]
-#
 # arguments = [
 # 	StoryScriptArgument.new("name", value)
 # 	StoryScriptArgument.new(null, value2)
 # 	StoryScriptArgument.new("name2", value3)
 # ]
 # 
-# TODO Check for variable function_defintions in function_holders
+# TODO Check for variable function_definitions in function_holders
 # and use that to assign appropriate arguments
 
 func call_function(name: String, arguments = []):

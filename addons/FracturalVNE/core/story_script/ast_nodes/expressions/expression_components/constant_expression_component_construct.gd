@@ -1,21 +1,24 @@
-extends "res://addons/FracturalVNE/core/story_script/ast_nodes/node_construct.gd"
+extends "res://addons/FracturalVNE/core/story_script/ast_nodes/expressions/expression_components/expression_component_construct.gd"
 
 func get_parse_types() -> Array:
-	return ["expression component"]
+	var arr = .get_parse_types()
+	arr.append("constant expression component")
+	return arr
 
-# Parses unary operators
+# Overrides expression component to only include constant values (which are only literals at the moment).
+# Parses unary operators.
 func parse(parser):
 	var checkpoint = parser.save_reader_state()
 	var pre_unary = parser.expect("pre unary operator")
 	if parser.is_success(pre_unary):
-		var expression = parser.expect("expression component")
+		var expression = parser.expect("constant expression component")
 		if parser.is_success(expression):
 			pre_unary.operand = expression
 			return pre_unary
 		else:
 			return parser.error(expression, 0, checkpoint)
 	else:
-		var value = parser.expect("value component")
+		var value = parser.expect("constant value component")
 		if parser.is_success(value):
 			var previous_unary = null
 			# Chaining together post unary operators

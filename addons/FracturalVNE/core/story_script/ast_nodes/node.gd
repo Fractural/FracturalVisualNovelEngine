@@ -16,11 +16,11 @@ func propagate_call(method, arguments, parent_first = false):
 
 func find_node_with_id(reference_id_):
 	if reference_id == reference_id_:
-		runtime_block.get_service("ASTNodeManager")._add_result(self)
+		runtime_block.get_service("ASTNodeConfigurer")._add_result(self)
 
 func configure_node(runtime_block_):
 	runtime_block = runtime_block_
-	reference_id = runtime_block.get_service("ASTNodeManager").next_reference_id()
+	reference_id = runtime_block.get_service("ASTNodeConfigurer").next_reference_id()
 
 func debug_string(tabs_string: String) -> String:
 	return "N/A"

@@ -9,11 +9,6 @@
 config_version=4
 
 _global_script_classes=[ {
-"base": "Node",
-"class": "BasicStoryGUI",
-"language": "GDScript",
-"path": "res://addons/FracturalVNE/core/gui/in_game_menu/basic_story_gui.gd"
-}, {
 "base": "Reference",
 "class": "DemoStory",
 "language": "GDScript",
@@ -38,16 +33,6 @@ _global_script_classes=[ {
 "class": "SerializationUtils",
 "language": "GDScript",
 "path": "res://addons/FracturalVNE/core/utils/serialization_utils.gd"
-}, {
-"base": "Node",
-"class": "StoryDecisionManager",
-"language": "GDScript",
-"path": "res://addons/FracturalVNE/core/decision/story_decision_manager.gd"
-}, {
-"base": "Node",
-"class": "StoryManager",
-"language": "GDScript",
-"path": "res://addons/FracturalVNE/core/story/story_manager.gd"
 }, {
 "base": "Reference",
 "class": "StoryScriptASTNode",
@@ -135,14 +120,11 @@ _global_script_classes=[ {
 "path": "res://addons/FracturalVNE/plugin/ui/text_edit_theme.gd"
 } ]
 _global_script_class_icons={
-"BasicStoryGUI": "",
 "DemoStory": "",
 "FracturalUtils": "",
 "PluginAssetsRegistry": "",
 "PluginUI": "",
 "SerializationUtils": "",
-"StoryDecisionManager": "",
-"StoryManager": "",
 "StoryScriptASTNode": "",
 "StoryScriptActions": "",
 "StoryScriptArgument": "",
@@ -184,7 +166,12 @@ Display=8
 [application]
 
 config/name="FracturalVisualNovelEngine"
+run/main_scene="res://addons/FracturalVNE/plugin/ui/plugin_ui.tscn"
 config/icon="res://icon.png"
+
+[autoload]
+
+StoryServiceRegistry="*res://addons/FracturalVNE/core/utils/story_service_registry.tscn"
 
 [editor_plugins]
 

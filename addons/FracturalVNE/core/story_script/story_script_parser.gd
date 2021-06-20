@@ -11,42 +11,49 @@ func generate_abstract_syntax_tree(reader_: StoryScriptTokensReader):
 	reader = reader_
 	return expect("program")
 
-func expect(construct_names, excluded_construct_names = null):
+func expect(construct_names):
 	var errors = []
 	if typeof(construct_names) == TYPE_STRING:
 		construct_names = [construct_names]
 	
-	if excluded_construct_names != null:
-		if typeof(excluded_construct_names) == TYPE_STRING:
-			excluded_construct_names = [excluded_construct_names]
-		var checkpoint = save_reader_state()
-		for name in construct_names:
-			if constructs_dict.has(name):
-				for construct in constructs_dict[name]:
-					errors.append(construct.parse(self))	
-					if is_success(errors.back()):
-						for ex_construct_name in excluded_construct_names:
-							if not errors.back().is_type(ex_construct_name):
-								return errors.back()
-							else:
-								errors[errors.size() - 1] = error("Unexpected %s." % ex_construct_name)
-								load_reader_state(checkpoint)
-								break
-					elif errors.back().confidence == 1:
-						# Bail statement for when you are absolutely sure this 
-						# the parsed statement is an error
-						return errors.back()
-	else:
-		for name in construct_names:
-			if constructs_dict.has(name):
-				for construct in constructs_dict[name]:
-					errors.append(construct.parse(self))
-					if is_success(errors.back()):
-						return errors.back()
-					elif errors.back().confidence == 1:
-						# Bail statement for when you are absolutely sure this 
-						# the parsed statement is an error
-						return errors.back()
+# TODO: Remove excluding feature of expect, since it's pointless to try to exclude
+# 		variable and function constructs from an expression. Instead, you should
+#		create a new construct that only accepts constant expressions.
+#	if excluded_construct_names != null:
+#		if typeof(excluded_construct_names) == TYPE_STRING:
+#			excluded_construct_names = [excluded_construct_names]
+#		var checkpoint = save_reader_state()
+#		for name in construct_names:
+#			if constructs_dict.has(name):
+#				for construct in constructs_dict[name]:
+#					errors.append(construct.parse(self))
+#					if is_success(errors.back()):
+#						for ex_construct_name in excluded_construct_names:
+#							if not errors.back().is_type(ex_construct_name):
+#								return errors.back()
+#							else:
+#								errors[errors.size() - 1] = error("Unexpected %s." % ex_construct_name)
+#								load_reader_state(checkpoint)
+#								break
+#					elif errors.back().confidence == 1:
+#						# Bail statement for when you are absolutely sure this 
+#						# the parsed statement is an error
+#						return errors.back()
+#			else:
+#				return error('Unknown construct of type: "%s"' % [name], 1)
+#	else:
+	for name in construct_names:
+		if constructs_dict.has(name):
+			for construct in constructs_dict[name]:
+				errors.append(construct.parse(self))
+				if is_success(errors.back()):
+					return errors.back()
+				elif errors.back().confidence == 1:
+					# Bail statement for when you are absolutely sure this 
+					# the parsed statement is an error
+					return errors.back()
+		else:
+			return error('Unknown construct of type: "%s"' % [name], 1)
 	
 	if errors.size() == 0:
 		return error("Unknown token.")

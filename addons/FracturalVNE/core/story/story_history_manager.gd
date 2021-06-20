@@ -1,9 +1,10 @@
 extends Node
 
-const StoryDirector = preload("res://addons/FracturalVNE/core/story/story_director.gd")
+export var story_director_path: NodePath
+
+onready var story_director = get_node(story_director_path)
 
 var history_stack = []
-var story_director : StoryDirector
 
 func add_entry(history_entry):
 	history_stack.append(history_entry)

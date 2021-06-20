@@ -9,13 +9,13 @@ var is_revealing: bool
 
 var _animate_text_timer: float = 0
 
-func _init(default_char_delay_: float, custom_char_delays_: Array = []):
+func init(default_char_delay_: float, custom_char_delays_: Array = []):
 	default_char_delay = default_char_delay_
 	custom_char_delays = custom_char_delays_
 
 func _ready():
 	# Keep process off until need to animate text
-	set_process(true)
+	set_process(false)
 
 # We are using process to handle animating text every few seconds because as of Godot 3.2, 
 # there is no way to inturrupt coroutines, meaning you cannot use timers to loops things over time

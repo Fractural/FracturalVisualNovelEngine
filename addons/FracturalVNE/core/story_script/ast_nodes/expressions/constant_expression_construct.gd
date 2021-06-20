@@ -1,21 +1,24 @@
-extends "res://addons/FracturalVNE/core/story_script/ast_nodes/node_construct.gd"
+extends "res://addons/FracturalVNE/core/story_script/ast_nodes/expressions/expression_construct.gd"
 
 func get_parse_types() -> Array:
-	return ["expression"]
+	var arr = .get_parse_types()
+	arr.append("constant expression")
+	return arr
 
-# Expression Parsing Classes:
+# Overrides expression parsing to only parse constant expressions
 #
-# Expression								Handles Binary Operators
-#  -> Expression Component					Handles Unary Operators
-#      -> Value Component					Handles Function Calls and Parenthesized Expressions
-#      		-> Constant Value Component		Handles Literals
+# Constant Expression Parsing Classes:
+#
+# Constant Expression					Handles Binary Operators
+#  -> Constant Expression Component		Handles Unary Operators
+#      -> Constant Value Component		Handles Literals and Parenthesized Expressions
 # 
 # Note that binary expressions will be parsed from right to left.
 func parse(parser):
 	var checkpoint = parser.save_reader_state()
 	
-	# Is the next token a value?
-	var lhs = parser.expect("expression component")
+	# Is the next token a constant value?
+	var lhs = parser.expect("constant expression component")
 	if not parser.is_success(lhs):
 		return lhs
 	
@@ -29,7 +32,7 @@ func parse(parser):
 		# always have a precedence
 		var curr_operator_precedence: int = curr_operator.get_precedence()
 		
-		var rhs = parser.expect("expression component")
+		var rhs = parser.expect("constant expression component")
 		if not parser.is_success(rhs):
 			parser.load_reader_state(checkpoint)
 			return parser.error("Expected an expression on the right side of the binary operator.")

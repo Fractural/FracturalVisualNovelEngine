@@ -1,41 +1,38 @@
- extends Node
-class_name StoryManager
+extends Node
 
-const TextPrinter = preload("res://addons/FracturalVNE/core/gui/text_printer/text_printer.gd")
+const SaveState = preload("res://addons/FracturalVNE/core/io/save_state.gd")
 
-signal stepped;
+signal save_state_started(save_state)
 
-var auto_step: bool = false setget set_auto_step
+signal state_loaded(save_state)
+signal state_saved(save_state)
 
-#TODO: Each class below must implement _on_stepped method
-var text_printer: TextPrinter # TODO: Write TextPrinter
-var animation_manager#: AnimationManager # TODO. Use AnimationPlayer.advance() to skip player if player steps early
-var character_manager#: CharacterManager # TODO. SHould use SpriteManager to manage sprite
-var sprite_manager#: SpriteManager # TODO
-var sound_manager# : SoundManager # TODO
+export var story_director_path: NodePath
+export var ast_node_manager_path: NodePath
+export var story_configurer_path: NodePath
 
-var abstract_syntax_tree;
+onready var story_director = get_node(story_director_path)
+onready var ast_node_manager = get_node(ast_node_manager_path)
+onready var story_configurer = get_node(story_configurer_path)
+
+var story_save_manager = get_node("/root/ServiceRegistry").get_service("SaveManager")
 
 func _ready():
-	pass
-	# TODO: Fetch the dependencies (printer, asset_loader, etc)
-	
-	#connect("stepped", text_printer, "_on_stepped")
-	#connect("stepped", animation_manager, "_on_stepped")
-	#connect("stepped", character_manager, "_on_stepped")
-	#connect("stepped", sprite_manager, "_on_stepped")
-	#connect("stepped", sound_manager, "_on_stepped")
+	story_configurer.connect("initialized_story", self, "_on_initialized_story")
 
-# TODO
-func load_story(story):
-	action = story._load_story_tree()
+func _on_initialized_story(story_tree):
+	# Only runs once on initialize
+	story_tree.execute()
+	story_configurer.disconnect("initialized_story", self, "_on_initialized_story")
 
-func set_auto_step(value: bool):
-	if auto_step == value:
-		return
-	
-	auto_step = value
-	#TODO Make a blocker system and make set auto step only step once blocker is unblocked
-	
-func step():
-	emit_signal("stepped")
+func save_current_state(slot, save_slot_id: int):
+	assert(story_director.curr_stepped_node != null, "StoryDirector.cur_node is null, therefore cannot save current state.")
+	story_save_manager.save_state(SaveState.new(story_configurer.story_file_path, story_director.curr_stepped_node.reference_id, story_configurer.story_tree.start_serialize_save()), save_slot_id)
+
+func load_save_slot(save_slot_id: int):
+	var state = story_save_manager.get_save_slot(save_slot_id)
+	story_configurer.load_story(state.story_tree)
+	# The StoryDirector is primed to go the the next node, since the
+	# StoryDirector calls the execute method of the next node
+	story_director.start_step(ast_node_manager.find_node_with_id(state.starting_node_id))
+	emit_signal("state_loaded", state)

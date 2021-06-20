@@ -3,10 +3,19 @@ extends Node
 # ----- StoryService Info ----- #
 
 var function_definitions = [
-	# DEMO
 	StoryScriptFuncDef.new("step"),
 	StoryScriptFuncDef.new("start_step", [
-		"step_callback"
+		"ast_node"
+	]),
+	StoryScriptFuncDef.new("call_label", [
+		"label_name",
+		"arguments",
+	]),
+	StoryScriptFuncDef.new("jump_to_label", [
+		"label_name"
+	]),
+	StoryScriptFuncDef.new("add_label", [
+		"label_node"
 	]),
 ]
 
@@ -18,20 +27,42 @@ func configure_service(program_node):
 
 # --- StoryService Info End --- #
 
-
-
-
-
 signal stepped()
+
+export var auto_step_duration: float = 0.5 setget set_auto_step_duration
+export var skip_speed: float = 0.05
 
 var label_dict: Dictionary
 var curr_stepped_node
+var auto_step: bool = false
+var skipping: bool = false
+var _auto_step_timer: Timer
+var _skip_timer: Timer
+
+func _ready():
+	_auto_step_timer = Timer.new()
+	add_child(_auto_step_timer)
+	_auto_step_timer.connect("timeout", self, "step")
+	_auto_step_timer.wait_time = auto_step_duration
+	
+	_skip_timer = Timer.new()
+	add_child(_skip_timer)
+	_skip_timer.connect("timeout", self, "step")
+	_skip_timer.wait_time = skip_speed
 
 func execute(ast_node):
 	ast_node.execute()
 
 func start_step(ast_node):
 	curr_stepped_node = ast_node
+	if skipping:
+		_skip_timer.start()
+	elif auto_step:
+		_auto_step_timer.start()
+
+func set_auto_step_duration(new_value):
+	auto_step_duration = new_value
+	_auto_step_timer.wait_time = new_value
 
 func step():
 	emit_signal("stepped")

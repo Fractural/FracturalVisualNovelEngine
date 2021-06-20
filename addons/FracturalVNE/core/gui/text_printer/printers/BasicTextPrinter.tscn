@@ -9,9 +9,8 @@
 [ext_resource path="res://addons/FracturalVNE/core/gui/text_printer/printers/basic_text_printer.gd" type="Script" id=7]
 [ext_resource path="res://addons/FracturalVNE/core/gui/text_printer/printers/basic_text_printer_configurer.gd" type="Script" id=8]
 
-[node name="DefaultTextPrinter" instance=ExtResource( 6 )]
+[node name="BasicTextPrinter" instance=ExtResource( 6 )]
 rect_min_size = Vector2( 0, 200 )
-name_custom_char_delays = [ null ]
 
 [node name="Panel" type="Panel" parent="." index="0"]
 anchor_right = 1.0
@@ -67,9 +66,9 @@ __meta__ = {
 
 [node name="BasicTextPrinter" type="Node" parent="." index="1"]
 script = ExtResource( 7 )
-_text_printer_path = NodePath("..")
-_name_text_reveal_path = NodePath("../Panel/MarginContainer/HSeparator/NameTextReveal")
-_dialogue_text_reveal = NodePath("../Panel/MarginContainer/HSeparator/DialogueTextReveal")
+text_printer_path = NodePath("..")
+name_text_reveal_path = NodePath("../Panel/MarginContainer/HSeparator/NameTextReveal")
+dialogue_text_reveal_path = NodePath("../Panel/MarginContainer/HSeparator/DialogueTextReveal")
 default_name_color = Color( 1, 1, 1, 1 )
 default_dialogue_color = Color( 1, 1, 1, 1 )
 

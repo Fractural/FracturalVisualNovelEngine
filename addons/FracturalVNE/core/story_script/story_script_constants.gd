@@ -15,6 +15,11 @@ const VariableGet = preload("res://addons/FracturalVNE/core/story_script/ast_nod
 const Expression = preload("res://addons/FracturalVNE/core/story_script/ast_nodes/expressions/expression_construct.gd")
 const ExpressionComponent = preload("res://addons/FracturalVNE/core/story_script/ast_nodes/expressions/expression_components/expression_component_construct.gd")
 
+# Constant Expressions
+const ConstantParenthesizedExpression = preload("res://addons/FracturalVNE/core/story_script/ast_nodes/expressions/expression_components/constant_parenthesized_expression_construct.gd")
+const ConstantExpression = preload("res://addons/FracturalVNE/core/story_script/ast_nodes/expressions/constant_expression_construct.gd")
+const ConstantExpressionComponent = preload("res://addons/FracturalVNE/core/story_script/ast_nodes/expressions/expression_components/constant_expression_component_construct.gd")
+
 # Binary Operators
 const AddOperator = preload("res://addons/FracturalVNE/core/story_script/ast_nodes/expressions/operators/binary_operators/add_operator_construct.gd")
 const SubtractOperator = preload("res://addons/FracturalVNE/core/story_script/ast_nodes/expressions/operators/binary_operators/subtract_operator_construct.gd")
@@ -38,18 +43,25 @@ const SayStatement = preload("res://addons/FracturalVNE/core/story_script/ast_no
 const ExpressionStatement = preload("res://addons/FracturalVNE/core/story_script/ast_nodes/statements/expression_statement_construct.gd")
 
 var CONSTRUCTS = [
+	# Value Components
 	FloatLiteral.new(),
 	IntegerLiteral.new(),
 	StringLiteral.new(),
 	FunctionCall.new(),
+	
+	# Parenthesized
 	ParenthesizedArguments.new(),
 	ParenthesizedParameters.new(),
 	ParenthesizedExpression.new(),
+	ConstantParenthesizedExpression.new(),
+	
 	VariableGet.new(),
 	
+	# Blocks
 	Block.new(),
 	Program.new(),
 	
+	# Statements
 	JumpStatement.new(),
 	LabelStatement.new(),
 	VariableDeclaration.new(),
@@ -61,17 +73,29 @@ var CONSTRUCTS = [
 var CONSTRUCTS_DICT: Dictionary
 
 func _init():
-	CONSTRUCTS.append_array([
-		Expression.new(CONSTRUCTS, [
+	var binary_operators = [
 			AddOperator.new(),
 			SubtractOperator.new(),
 			MultiplyOperator.new(),
 			DivideOperator.new(),
-		]),
-		ExpressionComponent.new(CONSTRUCTS, [
+		]
+	
+	var unary_operators = [
 			FlipSignOperator.new(),
 			NegateOperator.new(),
-		]),
+		]
+	
+	for operator in binary_operators:
+		CONSTRUCTS.append(operator)
+	
+	for operator in unary_operators:
+		CONSTRUCTS.append(operator)
+	
+	CONSTRUCTS.append_array([
+		Expression.new(),
+		ExpressionComponent.new(),
+		ConstantExpression.new(),
+		ConstantExpressionComponent.new(),
 	])
 	
 	for construct in CONSTRUCTS:
