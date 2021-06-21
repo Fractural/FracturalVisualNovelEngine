@@ -10,7 +10,7 @@ func _init(position_ = null).(position_):
 
 func execute():
 	emit_signal("executed")
-	if not override_step and runtime_next_node != null:
+	if not override_step:
 		runtime_block.get_service("StoryDirector").start_step(self)
 
 # Overriding step allows things like  "together blocks" to 

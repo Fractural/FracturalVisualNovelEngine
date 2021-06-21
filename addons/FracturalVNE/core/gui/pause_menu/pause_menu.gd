@@ -13,7 +13,7 @@ func toggle(enabled):
 
 func show_options():
 	toggle(true)
-	menu_manager.goto_menu("Save")
+	menu_manager.goto_menu("Options")
 
 func show_save():
 	toggle(true)

@@ -14,6 +14,13 @@ var story_file_path: String
 var _readied = false
 var _load_story_when_ready = false
 
+func _enter_tree():
+	StoryServiceRegistry.add_service(self)
+
+func _notification(what):
+	if what == NOTIFICATION_PREDELETE:
+		StoryServiceRegistry.remove_service("StoryConfigurer")
+
 func _ready():
 	for path in service_paths:
 		services.append(get_node(path))
@@ -31,7 +38,7 @@ func load_story(story_file_path_):
 	story_file_path = story_file_path_
 	
 	var story_file = File.new()
-	story_file.open_compressed(story_file_path_)
+	story_file.open_compressed(story_file_path_, File.READ)
 	var json_result = JSON.parse(story_file.get_line())
 	story_file.close()
 	

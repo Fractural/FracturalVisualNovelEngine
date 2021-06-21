@@ -65,10 +65,19 @@ func set_auto_step_duration(new_value):
 	_auto_step_timer.wait_time = new_value
 
 func step():
-	emit_signal("stepped")
+	# TODO: Add support for skipping the execution of a current node.
+	#		
+	#		This is useful for play animation nodes, since the animated object must
+	#		snap to it's final position if the animation is skipped.
+	#
+	# 		Maybe create a function that can be called on each node
+	#		that terminates whatever action they are currently doing.
+	#		Something like "terminate_execute" ?
 	if curr_stepped_node.runtime_next_node != null:
+		emit_signal("stepped")
 		curr_stepped_node.runtime_next_node.execute()
-	curr_stepped_node = null
+	else:
+		return
 
 func call_label(label_name: String, arguments = []):
 	if label_dict.has(label_name):

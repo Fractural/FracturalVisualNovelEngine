@@ -14,7 +14,7 @@ var function_definitions = [
 ]
 
 func get_service_name():
-	return "StoryDirector"
+	return "TextPrinter"
 
 # --- StoryService Info End --- #
 

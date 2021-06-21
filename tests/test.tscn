@@ -1,0 +1,136 @@
+[gd_scene load_steps=9 format=2]
+
+[ext_resource path="res://tests/test.gd" type="Script" id=1]
+[ext_resource path="res://addons/FracturalVNE/core/gui/text_printer/printers/BasicTextPrinter.tscn" type="PackedScene" id=2]
+[ext_resource path="res://addons/FracturalVNE/core/gui/_misc/bottom_menu_manager.gd" type="Script" id=3]
+[ext_resource path="res://addons/FracturalVNE/core/gui/story_gui.gd" type="Script" id=4]
+[ext_resource path="res://addons/FracturalVNE/core/gui/pause_menu/basic_pause_menu.tscn" type="PackedScene" id=5]
+[ext_resource path="res://addons/FracturalVNE/assets/fonts/Noto_Sans/NotoSans-Regular.tres" type="DynamicFont" id=6]
+[ext_resource path="res://addons/FracturalVNE/core/gui/_misc/basic_stepper.gd" type="Script" id=7]
+
+[sub_resource type="Theme" id=1]
+default_font = ExtResource( 6 )
+
+[node name="Control" type="Control"]
+anchor_right = 1.0
+anchor_bottom = 1.0
+mouse_filter = 2
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="Test" type="Control" parent="."]
+margin_right = 40.0
+margin_bottom = 40.0
+script = ExtResource( 1 )
+
+[node name="BasicGUI" type="Control" parent="."]
+anchor_right = 1.0
+anchor_bottom = 1.0
+mouse_filter = 2
+theme = SubResource( 1 )
+script = ExtResource( 4 )
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="BasicStepper" type="Control" parent="BasicGUI"]
+anchor_right = 1.0
+anchor_bottom = 1.0
+mouse_filter = 2
+script = ExtResource( 7 )
+__meta__ = {
+"_edit_use_anchors_": false
+}
+story_gui_path = NodePath("..")
+
+[node name="Panel" type="MarginContainer" parent="BasicGUI"]
+anchor_top = 1.0
+anchor_right = 1.0
+anchor_bottom = 1.0
+margin_top = -244.0
+mouse_filter = 2
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="Panel" type="Panel" parent="BasicGUI/Panel"]
+margin_right = 1024.0
+margin_bottom = 244.0
+mouse_filter = 2
+
+[node name="VBoxContainer" type="VBoxContainer" parent="BasicGUI/Panel"]
+margin_right = 1024.0
+margin_bottom = 244.0
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="BasicTextPrinter" parent="BasicGUI/Panel/VBoxContainer" instance=ExtResource( 2 )]
+anchor_right = 0.0
+anchor_bottom = 0.0
+margin_right = 1024.0
+margin_bottom = 200.0
+
+[node name="BottomMenu" type="HBoxContainer" parent="BasicGUI/Panel/VBoxContainer"]
+margin_top = 204.0
+margin_right = 1024.0
+margin_bottom = 244.0
+custom_constants/separation = 10
+alignment = 1
+script = ExtResource( 3 )
+history_button_path = NodePath("History")
+skip_button_path = NodePath("Skip")
+auto_button_path = NodePath("Auto")
+save_button_path = NodePath("Save")
+load_button_path = NodePath("Load")
+options_button_path = NodePath("Options")
+pause_menu_path = NodePath("../../../BasicPauseMenu")
+story_gui_path = NodePath("../../..")
+
+[node name="History" type="Button" parent="BasicGUI/Panel/VBoxContainer/BottomMenu"]
+margin_left = 112.0
+margin_right = 237.0
+margin_bottom = 40.0
+rect_min_size = Vector2( 125, 0 )
+text = "History"
+
+[node name="Skip" type="CheckButton" parent="BasicGUI/Panel/VBoxContainer/BottomMenu"]
+margin_left = 247.0
+margin_right = 372.0
+margin_bottom = 40.0
+rect_min_size = Vector2( 125, 0 )
+text = "Skip"
+align = 1
+
+[node name="Auto" type="CheckButton" parent="BasicGUI/Panel/VBoxContainer/BottomMenu"]
+margin_left = 382.0
+margin_right = 507.0
+margin_bottom = 40.0
+rect_min_size = Vector2( 125, 0 )
+text = "Auto"
+align = 1
+
+[node name="Save" type="Button" parent="BasicGUI/Panel/VBoxContainer/BottomMenu"]
+margin_left = 517.0
+margin_right = 642.0
+margin_bottom = 40.0
+rect_min_size = Vector2( 125, 0 )
+text = "Save"
+
+[node name="Load" type="Button" parent="BasicGUI/Panel/VBoxContainer/BottomMenu"]
+margin_left = 652.0
+margin_right = 777.0
+margin_bottom = 40.0
+rect_min_size = Vector2( 125, 0 )
+text = "Load"
+
+[node name="Options" type="Button" parent="BasicGUI/Panel/VBoxContainer/BottomMenu"]
+margin_left = 787.0
+margin_right = 912.0
+margin_bottom = 40.0
+rect_min_size = Vector2( 125, 0 )
+text = "Options"
+
+[node name="BasicPauseMenu" parent="BasicGUI" instance=ExtResource( 5 )]
+visible = false

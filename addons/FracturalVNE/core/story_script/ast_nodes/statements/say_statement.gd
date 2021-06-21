@@ -8,7 +8,13 @@ func _init(position_ = null, character_ = null, text_ = null).(position_):
 	text = text_
 
 func execute():
-	runtime_block.get_service("TextPrinter").say(self)
+	var text_printer = runtime_block.get_service("TextPrinter")
+	
+	if character == null:
+		text_printer.narrate(text)
+	else:
+		text_printer.say(character.evaluate(), text)
+	
 	.execute()
 
 func debug_string(tabs_string: String) -> String:

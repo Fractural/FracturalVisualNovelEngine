@@ -165,4 +165,4 @@ script = ExtResource( 8 )
 save_slots_menu_path = NodePath("../VSplitContainer/HSplitContainer/Menus/SaveSlots")
 pause_menu_path = NodePath("..")
 
-[connection signal="pressed" from="VSplitContainer/HSplitContainer/VSplitContainer/Return" to="." method="show_settings" binds= [ false ]]
+[connection signal="pressed" from="VSplitContainer/HSplitContainer/VSplitContainer/Return" to="." method="toggle" binds= [ false ]]

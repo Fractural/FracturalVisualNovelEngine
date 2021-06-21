@@ -10,7 +10,7 @@ var position: StoryScriptPosition
 func _init(position_ = StoryScriptPosition.new()):
 	position = position_
 
-func propagate_call(method, arguments, parent_first = false):
+func propagate_call(method, arguments = [], parent_first = false):
 	if has_method(method):
 		callv(method, arguments)
 

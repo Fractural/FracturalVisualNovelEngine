@@ -1,4 +1,4 @@
-[gd_scene load_steps=7 format=2]
+[gd_scene load_steps=8 format=2]
 
 [ext_resource path="res://addons/FracturalVNE/plugin/ui/monokai.tres" type="Resource" id=1]
 [ext_resource path="res://addons/FracturalVNE/assets/fonts/Hack/Hack-Regular.tres" type="DynamicFont" id=2]
@@ -6,6 +6,7 @@
 [ext_resource path="res://addons/FracturalVNE/core/story_script/story_script_compiler.gd" type="Script" id=4]
 [ext_resource path="res://addons/FracturalVNE/plugin/ui/story_script_editor.gd" type="Script" id=5]
 [ext_resource path="res://addons/FracturalVNE/assets/icons/play.svg" type="Texture" id=6]
+[ext_resource path="res://addons/FracturalVNE/assets/icons/CheckBox.svg" type="Texture" id=7]
 
 [node name="StoryScriptEditor" type="MarginContainer"]
 anchor_right = 1.0
@@ -18,7 +19,9 @@ script = ExtResource( 5 )
 __meta__ = {
 "_edit_use_anchors_": false
 }
+compiled_ui_path = NodePath("VSplitContainer/TopMenu/HBoxContainer/MarginContainer/CompiledUIContainer")
 compile_button_path = NodePath("VSplitContainer/TopMenu/HBoxContainer/CompileButton")
+run_button_path = NodePath("VSplitContainer/TopMenu/HBoxContainer/RunButton")
 script_text_edit_path = NodePath("VSplitContainer/ScriptTextEdit")
 compiler_path = NodePath("VSplitContainer/Compiler")
 
@@ -41,6 +44,45 @@ margin_bottom = 31.0
 margin_right = 84.0
 margin_bottom = 24.0
 text = "Compile"
+icon = ExtResource( 6 )
+
+[node name="MarginContainer" type="MarginContainer" parent="VSplitContainer/TopMenu/HBoxContainer"]
+margin_left = 88.0
+margin_right = 179.0
+margin_bottom = 24.0
+custom_constants/margin_right = 5
+custom_constants/margin_left = 5
+
+[node name="CompiledUIContainer" type="HBoxContainer" parent="VSplitContainer/TopMenu/HBoxContainer/MarginContainer"]
+margin_left = 5.0
+margin_right = 86.0
+margin_bottom = 24.0
+
+[node name="CompiledIcon" type="TextureRect" parent="VSplitContainer/TopMenu/HBoxContainer/MarginContainer/CompiledUIContainer"]
+margin_top = 4.0
+margin_right = 16.0
+margin_bottom = 20.0
+size_flags_horizontal = 4
+size_flags_vertical = 4
+texture = ExtResource( 7 )
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="CompiledText" type="Label" parent="VSplitContainer/TopMenu/HBoxContainer/MarginContainer/CompiledUIContainer"]
+margin_left = 20.0
+margin_top = 5.0
+margin_right = 81.0
+margin_bottom = 19.0
+custom_colors/font_color = Color( 0.647059, 0.937255, 0.67451, 1 )
+text = "Compiled"
+valign = 1
+
+[node name="RunButton" type="ToolButton" parent="VSplitContainer/TopMenu/HBoxContainer"]
+margin_left = 183.0
+margin_right = 238.0
+margin_bottom = 24.0
+text = "Run"
 icon = ExtResource( 6 )
 
 [node name="ScriptTextEdit" type="TextEdit" parent="VSplitContainer"]

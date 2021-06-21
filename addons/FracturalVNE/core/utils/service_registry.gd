@@ -16,5 +16,8 @@ func add_service(service, custom_service_name = null):
 	assert(not services.has(service_name), 'Service with name "%s" already exists.' % service_name)
 	services[service_name] = service
 
+func remove_service(service_name):
+	services.erase(service_name)
+
 func has_service(service_name):
 	return services.has(service_name)

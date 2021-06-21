@@ -20,7 +20,7 @@ func _init_post():
 	add_service(ASTNodeConfigurer.new())
 	block.propagate_call("configure_node", [self])
 
-func propagate_call(method, arguments, parent_first = false):
+func propagate_call(method, arguments = [], parent_first = false):
 	if parent_first:
 		.propagate_call(method, arguments, parent_first)
 	

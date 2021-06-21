@@ -39,6 +39,7 @@ func parse(parser):
 					else:
 						return parser.error(colon, 3/5.0, checkpoint)
 				else:
+					params.message += " Expected a valid parameter group or a ':' to close a label declaration."
 					return parser.error(params, 2/5.0, checkpoint)
 		else:
 			return parser.error(identifier, 1/5.0, checkpoint)

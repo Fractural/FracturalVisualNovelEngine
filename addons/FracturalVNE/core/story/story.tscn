@@ -9,10 +9,13 @@
 
 [node name="StoryConfigurer" type="Node"]
 script = ExtResource( 3 )
-service_paths = [ NodePath("StorySaveManager"), NodePath("StoryDirector"), NodePath("BasicGUI/DefaultTextPrinter"), NodePath("ASTNodeManager") ]
+service_paths = [ NodePath("StoryDirector"), NodePath("ASTNodeManager"), NodePath("BasicGUI/Panel/VBoxContainer/BasicTextPrinter") ]
 
 [node name="StoryManager" type="Node" parent="."]
 script = ExtResource( 1 )
+story_director_path = NodePath("../StoryDirector")
+ast_node_manager_path = NodePath("../ASTNodeManager")
+story_configurer_path = NodePath("..")
 
 [node name="StoryDirector" type="Node" parent="."]
 script = ExtResource( 2 )
@@ -25,3 +28,8 @@ story_director_path = NodePath("../StoryDirector")
 script = ExtResource( 5 )
 
 [node name="BasicGUI" parent="." instance=ExtResource( 4 )]
+story_director_path = NodePath("../StoryDirector")
+story_manager_path = NodePath("../StoryManager")
+story_history_path = NodePath("../StoryHistoryManager")
+
+[editable path="BasicGUI"]
