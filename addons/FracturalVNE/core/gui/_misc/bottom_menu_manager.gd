@@ -18,6 +18,8 @@ onready var options_button: Button = get_node(options_button_path)
 onready var pause_menu = get_node(pause_menu_path)
 onready var story_gui = get_node(story_gui_path)
 
+var pressed_state_button_count: int = 0
+
 func _ready():
 	history_button.connect("pressed", self, "_on_history_button_pressed")
 	skip_button.connect("toggled", self, "_on_skip_button_toggled")
@@ -30,10 +32,26 @@ func _on_history_button_pressed():
 	pause_menu.show_history()
 
 func _on_skip_button_toggled(enabled):
-	story_gui.story_director.skipping = enabled
+	if enabled:
+		auto_button.pressed = false
+	
+	_update_step_state()
 
 func _on_auto_button_toggled(enabled):
-	story_gui.story_director.auto_step = enabled
+	if enabled:
+		if skip_button.pressed:
+			skip_button.pressed = false
+			return
+	
+	_update_step_state()
+
+func _update_step_state():
+	if skip_button.pressed:
+		story_gui.story_director.step_state = story_gui.story_director.StepState.SKIPPING
+	elif auto_button.pressed:
+		story_gui.story_director.step_state = story_gui.story_director.StepState.AUTO_STEP
+	else:
+		story_gui.story_director.step_state = story_gui.story_director.StepState.MANUAL
 
 func _on_save_button_pressed():
 	pause_menu.show_save()

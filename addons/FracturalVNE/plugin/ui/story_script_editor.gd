@@ -26,10 +26,21 @@ func _ready():
 	compiler.connect("throw_error", script_text_edit, "display_error")
 	
 	# TODO: Remove when done testing
-	script_text_edit.text = '"Simple test"\n"Even more narration"\n"Testestsetstsetsetsetsetsetsetsetestest"'
+	script_text_edit.text = ""
+#	for i in 100:
+#		script_text_edit.text += '"Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum."'
+#		script_text_edit.text += "\n"
+	script_text_edit.text += 'define b = Character(name="Bob", name_color="#fcba03") \n'
+	script_text_edit.text += 'define j = Character("Joe", "#03a1fc", "#03a1fc") \n'
+	script_text_edit.text += 'b "Hi there, I\'m bob!" \n'
+	script_text_edit.text += 'j "Hi there, I\'m joeeee!" \n'
+	script_text_edit.text += '"Tom" "Hi there, I\'m tom!" \n'
+	script_text_edit.text += 'say(b, "This is from a function!") \n'
+	script_text_edit.text += 'say(j, "This is also from a function!") \n'
+	script_text_edit.text += 'say("lol", "This is also also from a function!") \n'
 
 func compile_script():
-	var ast_tree = compiler.compile(script_text_edit.text)
+	var ast_tree = compiler.test_compile(script_text_edit.text)
 	
 	if ast_tree is StoryScriptError:
 		script_text_edit.display_error(ast_tree)

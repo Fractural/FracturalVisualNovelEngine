@@ -20,3 +20,6 @@ var function_definitions = [
 # Optional
 func configure_service(program_node):
 	pass
+
+func get_service_name():
+	return "DemoService"

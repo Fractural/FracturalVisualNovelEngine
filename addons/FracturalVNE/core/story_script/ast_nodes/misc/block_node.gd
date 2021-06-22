@@ -55,8 +55,10 @@ func declare_variable(name: String, value = null):
 	else:
 		return error('Local variable with name "%s" already exists' % name)
 
+# For now only the ProgramNode can call functions. All blocks just pass
+# the call_function request to its parent block until it reaches a ProgramNode.
 func call_function(name: String, arguments = []):
-	runtime_block.call_function(name, arguments)
+	return runtime_block.call_function(name, arguments)
 
 func debug_string(tabs_string: String) -> String:
 	var string = ""
@@ -69,9 +71,14 @@ func debug_string(tabs_string: String) -> String:
 	string += "\n" + tabs_string + "}"
 	return string
 
-func propagate_call(method, arguments = [], parent_first = false):
+func propagate_call(method: String, arguments: Array = [], parent_first: bool = false):	
 	if parent_first:
 		.propagate_call(method, arguments, parent_first)
+		
+		# Hijack the arguments of a method
+		match method:
+			"configure_node":
+				arguments = [self]
 	
 	for statement in statements:
 		statement.propagate_call(method, arguments, parent_first)

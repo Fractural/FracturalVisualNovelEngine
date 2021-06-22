@@ -5,4 +5,4 @@ func run(story_file_path):
 	
 	yield(get_tree(), "idle_frame")
 	
-	StoryServiceRegistry.get_service("StoryConfigurer").load_story(story_file_path)
+	StoryServiceRegistry.get_service("StoryManager").run_story(story_file_path)

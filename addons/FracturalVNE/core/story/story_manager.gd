@@ -17,13 +17,25 @@ onready var story_configurer = get_node(story_configurer_path)
 
 var story_save_manager = StoryServiceRegistry.get_service("StorySaveManager")
 
+func _enter_tree():
+	StoryServiceRegistry.add_service(self)
+
+func _notification(what):
+	if what == NOTIFICATION_PREDELETE:
+		StoryServiceRegistry.remove_service(self)
+
 func _ready():
 	story_configurer.connect("initialized_story", self, "_on_initialized_story")
+
+func run_story(story_file_path):
+	story_configurer.load_story(story_file_path)
 
 func _on_initialized_story(story_tree):
 	# Only runs once on initialize
 	story_tree.execute()
 	story_configurer.disconnect("initialized_story", self, "_on_initialized_story")
+
+# TODO: Abstract saving into a LocalStorySaveManager
 
 func save_current_state(slot, save_slot_id: int):
 	# Serialized node data are stored in a dict as:
@@ -32,7 +44,7 @@ func save_current_state(slot, save_slot_id: int):
 	var serialized_nodes = {}
 	# start_serialize_save propagates a call through the AST that populates serialized_nodes.
 	story_configurer.story_tree.start_serialize_save(serialized_nodes)
-	assert(story_director.curr_stepped_node != null, "StoryDirector.cur_node is null, therefore cannot save current state.")
+	assert(story_director.curr_stepped_node != null, "StoryDirector.curr_node is null, therefore cannot save current state.")
 	story_save_manager.save_state(SaveState.new(story_configurer.story_file_path, story_director.curr_stepped_node.reference_id, serialized_nodes), save_slot_id)
 
 func load_save_slot(save_slot_id: int):

@@ -1,4 +1,4 @@
-[gd_scene load_steps=7 format=2]
+[gd_scene load_steps=10 format=2]
 
 [ext_resource path="res://addons/FracturalVNE/core/story/story_manager.gd" type="Script" id=1]
 [ext_resource path="res://addons/FracturalVNE/core/story/story_director.gd" type="Script" id=2]
@@ -6,30 +6,48 @@
 [ext_resource path="res://addons/FracturalVNE/core/gui/basic_gui.tscn" type="PackedScene" id=4]
 [ext_resource path="res://addons/FracturalVNE/core/story_script/ast_node_manager.gd" type="Script" id=5]
 [ext_resource path="res://addons/FracturalVNE/core/story/story_history_manager.gd" type="Script" id=6]
+[ext_resource path="res://addons/FracturalVNE/core/gui/story_gui_configurer.gd" type="Script" id=7]
+[ext_resource path="res://addons/FracturalVNE/core/character/character_manager.gd" type="Script" id=8]
+[ext_resource path="res://addons/FracturalVNE/core/utils/post_ready.gd" type="Script" id=9]
 
-[node name="StoryConfigurer" type="Node"]
-script = ExtResource( 3 )
-service_paths = [ NodePath("StoryDirector"), NodePath("ASTNodeManager"), NodePath("BasicGUI/Panel/VBoxContainer/BasicTextPrinter") ]
+[node name="ScenePostReady" type="Node"]
+script = ExtResource( 9 )
 
 [node name="StoryManager" type="Node" parent="."]
 script = ExtResource( 1 )
-story_director_path = NodePath("../StoryDirector")
-ast_node_manager_path = NodePath("../ASTNodeManager")
-story_configurer_path = NodePath("..")
-
-[node name="StoryDirector" type="Node" parent="."]
-script = ExtResource( 2 )
+story_director_path = NodePath("../StoryConfigurer/StoryServices/StoryDirector")
+ast_node_manager_path = NodePath("../StoryConfigurer/StoryServices/ASTNodeManager")
+story_configurer_path = NodePath("../StoryConfigurer")
 
 [node name="StoryHistoryManager" type="Node" parent="."]
 script = ExtResource( 6 )
-story_director_path = NodePath("../StoryDirector")
+story_director_path = NodePath("../StoryConfigurer/StoryServices/StoryDirector")
 
-[node name="ASTNodeManager" type="Node" parent="."]
+[node name="StoryConfigurer" type="Node" parent="."]
+script = ExtResource( 3 )
+services_holder_path = NodePath("StoryServices")
+
+[node name="StoryServices" type="Node" parent="StoryConfigurer"]
+
+[node name="StoryDirector" type="Node" parent="StoryConfigurer/StoryServices"]
+script = ExtResource( 2 )
+auto_step_duration = 0.25
+skip_speed = 0.01
+
+[node name="ASTNodeManager" type="Node" parent="StoryConfigurer/StoryServices"]
 script = ExtResource( 5 )
 
-[node name="BasicGUI" parent="." instance=ExtResource( 4 )]
-story_director_path = NodePath("../StoryDirector")
-story_manager_path = NodePath("../StoryManager")
-story_history_path = NodePath("../StoryHistoryManager")
+[node name="CharacterManager" type="Node" parent="StoryConfigurer/StoryServices"]
+script = ExtResource( 8 )
+story_gui_configurer_path = NodePath("../../../StoryGUIConfigurer")
 
-[editable path="BasicGUI"]
+[node name="StoryGUIConfigurer" type="Node" parent="."]
+script = ExtResource( 7 )
+story_configurer_path = NodePath("../StoryConfigurer")
+
+[node name="BasicGUI" parent="StoryGUIConfigurer" instance=ExtResource( 4 )]
+
+[node name="BasicTextPrinter" parent="StoryGUIConfigurer/BasicGUI/Panel/VBoxContainer" index="0"]
+name_default_char_delay = 0.0
+
+[editable path="StoryGUIConfigurer/BasicGUI"]

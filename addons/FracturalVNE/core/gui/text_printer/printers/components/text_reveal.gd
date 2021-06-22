@@ -1,5 +1,8 @@
 extends RichTextLabel
 
+signal stopped_reveal()
+signal finished_reveal()
+
 # The default time to wait before animating the next character
 export(float) var default_char_delay: float = 0.001
 
@@ -36,6 +39,7 @@ func stop_reveal():
 	self.visible_characters = -1
 	is_revealing = false
 	set_process(false)
+	emit_signal("stopped_reveal")
 
 func _animate_text_tick(delta):
 	_animate_text_timer -= delta
@@ -52,6 +56,7 @@ func _animate_text_tick(delta):
 				_animate_text_tick(left_over)
 		else:
 			stop_reveal()
+			emit_signal("finished_reveal")
 
 func _get_char_delay(ch: String) -> float:
 	for character_delay in custom_char_delays:

@@ -1,8 +1,8 @@
 extends Reference
 
 var name: String
-var name_color
-var dialogue_color
+var name_color: Color
+var dialogue_color: Color
 
 func _init(name_: String, name_color_ = null, dialogue_color_ = null):
 	name = name_

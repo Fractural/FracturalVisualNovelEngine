@@ -24,30 +24,50 @@ func get_service_name():
 
 func configure_service(program_node):
 	label_dict = {}
+	curr_active_step_actions = []
 
 # --- StoryService Info End --- #
 
 signal stepped()
 
+# Wait duration after a step is completed
 export var auto_step_duration: float = 0.5 setget set_auto_step_duration
+# Wait duration between steps and skips
 export var skip_speed: float = 0.05
+
+enum StepState {
+	MANUAL,
+	AUTO_STEP,
+	SKIPPING,
+}
 
 var label_dict: Dictionary
 var curr_stepped_node
-var auto_step: bool = false
-var skipping: bool = false
+var step_state: int = StepState.MANUAL setget set_step_state
 var _auto_step_timer: Timer
 var _skip_timer: Timer
+var curr_active_step_actions: Array
+# curr_node_executed prevents repeated stepping if the program terminates on an executable node that
+# is not steppable. (This means the current step node never reaches another step node to replace
+# it as curr_stepped_node).
+var curr_node_executed: bool = false
 
 func _ready():
 	_auto_step_timer = Timer.new()
 	add_child(_auto_step_timer)
-	_auto_step_timer.connect("timeout", self, "step")
+	_auto_step_timer.connect("timeout", self, "try_step")
 	_auto_step_timer.wait_time = auto_step_duration
+	_auto_step_timer.one_shot = true
 	
+	# Skipping seems to just be the fastest version of auto stepping according to renpy.
+	# TODO: Maybe try to skip each frame?
+	
+	# TODO: Refactor out skipping to a custom timer inside process()
+	#		I'm pretty sure a regular timer node cannot fire multiple times 
+	#		in one frame, therefore when the timer overshoots, some time is lost.
 	_skip_timer = Timer.new()
 	add_child(_skip_timer)
-	_skip_timer.connect("timeout", self, "step")
+	_skip_timer.connect("timeout", self, "try_step")
 	_skip_timer.wait_time = skip_speed
 
 func execute(ast_node):
@@ -55,16 +75,64 @@ func execute(ast_node):
 
 func start_step(ast_node):
 	curr_stepped_node = ast_node
-	if skipping:
-		_skip_timer.start()
-	elif auto_step:
-		_auto_step_timer.start()
+	curr_node_executed = false
 
 func set_auto_step_duration(new_value):
 	auto_step_duration = new_value
-	_auto_step_timer.wait_time = new_value
+	
+	if _auto_step_timer != null:
+		_auto_step_timer.wait_time = new_value
+
+func set_step_state(new_value):
+	step_state = new_value
+	
+	if curr_stepped_node == null:
+		return
+	
+	match step_state:
+		StepState.AUTO_STEP:
+			if curr_active_step_actions.size() == 0:
+				try_step()
+		StepState.SKIPPING:
+			try_step()
+			_skip_timer.start()
+	
+	if step_state != StepState.SKIPPING:
+		_skip_timer.stop() 
+
+# Attempts to skip if there are actions currently playing
+# and steps if no actions are playing
+func try_step():
+	if curr_active_step_actions.size() > 0:
+		skip()
+	else:
+		step()
+
+func step_completed():
+	if step_state == StepState.AUTO_STEP:
+		_auto_step_timer.start()
+
+func skip():
+	for i in range(curr_active_step_actions.size() - 1, -1, -1):
+		if curr_active_step_actions[i].skippable:
+			curr_active_step_actions[i].skip()
+			curr_active_step_actions.remove(i)
+
+func add_step_action(step_action):
+	curr_active_step_actions.append(step_action)
+
+func remove_step_action(step_action):
+	curr_active_step_actions.erase(step_action)
+	if curr_active_step_actions.size() == 0:
+		step_completed()
 
 func step():
+	# TODO: Consider decoupling story director from nodes to follow single responsibility principle.
+	#		That is, a story director should not know about the existance of a node and instead
+	#		would operate using events and callbacks to step.
+	#		Though tbh this is not much of a priority right now since even renpy
+	#		expected you to use it's own programming language.
+	
 	# TODO: Add support for skipping the execution of a current node.
 	#		
 	#		This is useful for play animation nodes, since the animated object must
@@ -73,10 +141,14 @@ func step():
 	# 		Maybe create a function that can be called on each node
 	#		that terminates whatever action they are currently doing.
 	#		Something like "terminate_execute" ?
-	if curr_stepped_node.runtime_next_node != null:
+	if curr_stepped_node.runtime_next_node != null and not curr_node_executed:
 		emit_signal("stepped")
+		
+		curr_node_executed = true
+		
 		curr_stepped_node.runtime_next_node.execute()
 	else:
+		# TODO: Exit the story when the last node is reached
 		return
 
 func call_label(label_name: String, arguments = []):

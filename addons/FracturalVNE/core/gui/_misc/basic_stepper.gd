@@ -9,4 +9,4 @@ onready var story_gui: Node = get_node(story_gui_path)
 func _unhandled_input(event):
 	if event is InputEventMouseButton and event.button_index == BUTTON_LEFT and event.pressed:
 		get_tree().set_input_as_handled()
-		story_gui.story_director.step()
+		story_gui.story_director.try_step()

@@ -4,30 +4,16 @@ const ProgramNode = preload("res://addons/FracturalVNE/core/story_script/ast_nod
 
 signal initialized_story(story_tree)
 
-export(Array, NodePath) var service_paths = []
+export var services_holder_path: NodePath
 
 var services: Array
 
 var story_tree: ProgramNode
 var story_file_path: String
 
-var _readied = false
-var _load_story_when_ready = false
-
-func _enter_tree():
-	StoryServiceRegistry.add_service(self)
-
-func _notification(what):
-	if what == NOTIFICATION_PREDELETE:
-		StoryServiceRegistry.remove_service("StoryConfigurer")
-
 func _ready():
-	for path in service_paths:
-		services.append(get_node(path))
-	_readied = true
-	
-	if _load_story_when_ready:
-		load_story(story_tree)
+	for child in get_node(services_holder_path).get_children():
+		services.append(child)
 
 # For now, the StoryConfigurer will only load stories from file paths.
 # Loading regular story trees seems impractical at the moment, since you would
@@ -45,12 +31,6 @@ func load_story(story_file_path_):
 	assert(json_result.error == OK, 'Could not load story script at path: "%s"' % story_file_path)
 	
 	story_tree = SerializationUtils.deserialize(json_result.result)
-	
-	# Prevents start story from running before the story configurer is ready.
-	# All services must be loaded before we can start a new story.
-	if not _readied:
-		_load_story_when_ready = true
-		return
 	
 	for service in services:
 		story_tree.add_service(service)

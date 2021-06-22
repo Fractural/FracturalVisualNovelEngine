@@ -18,7 +18,7 @@ func _init(block_ = null).(StoryScriptPosition.new(0, 0)):
 
 func _init_post():
 	add_service(ASTNodeConfigurer.new())
-	block.propagate_call("configure_node", [self])
+	start_configure_node()
 
 func propagate_call(method, arguments = [], parent_first = false):
 	if parent_first:
@@ -28,6 +28,9 @@ func propagate_call(method, arguments = [], parent_first = false):
 	
 	if not parent_first:
 		.propagate_call(method, arguments, parent_first)
+
+func start_configure_node():
+	block.propagate_call("configure_node", [self], true)
 
 func start_runtime_initialize():
 	block.propagate_call("runtime_initialize")
@@ -89,12 +92,16 @@ func call_function(name: String, arguments = []):
 				for i in range(arguments.size()):
 					# If argument name is null, then it must be a positional argument
 					if arguments[i].name == null:
-						ordered_args[i] = arguments
+						ordered_args[i] = arguments[i].value
 					else:
 						# Else the argument must be a named argument, which means
 						# we must lookup the name's index and assign the appropriate 
 						# index on ordered_args to the argument's value.
-						var param_index = func_def.parameters.find(arguments[i].value)
+						var param_index: int = -1
+						for j in func_def.parameters.size():
+							if func_def.parameters[j].name == arguments[i].name:
+								param_index = j
+								break
 						if param_index > -1:
 							ordered_args[param_index] = arguments[i].value
 						else:

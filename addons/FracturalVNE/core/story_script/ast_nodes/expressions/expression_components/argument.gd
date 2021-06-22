@@ -15,6 +15,15 @@ func debug_string(tabs_string: String) -> String:
 	string += "\n" + tabs_string + "}"
 	return string
 
+func propagate_call(method: String, arguments_: Array = [], parent_first: bool = false):
+	if parent_first:
+		.propagate_call(method, arguments_, parent_first)
+	
+	value.propagate_call(method, arguments_, parent_first)
+	
+	if not parent_first:
+		.propagate_call(method, arguments_, parent_first)
+
 # ----- Serialization ----- #
 
 func serialize():

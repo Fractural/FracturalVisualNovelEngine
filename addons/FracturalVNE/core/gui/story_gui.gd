@@ -1,9 +1,16 @@
 extends Node
 
-export var story_director_path: NodePath
-export var story_manager_path: NodePath
-export var story_history_path: NodePath
+export var text_printer_path: NodePath
 
-onready var story_director = get_node(story_director_path)
-onready var story_manager = get_node(story_manager_path)
-onready var story_history = get_node(story_history_path)
+onready var text_printer = get_node(text_printer_path)
+
+var story_director
+var story_manager
+var story_history
+
+func _enter_tree():
+	var story_services_holder = get_node("../..")
+	
+	story_director = story_services_holder.find_node("StoryDirector")
+	story_manager = story_services_holder.find_node("StoryManager")
+	story_history = story_services_holder.find_node("StoryHistoryManager")
