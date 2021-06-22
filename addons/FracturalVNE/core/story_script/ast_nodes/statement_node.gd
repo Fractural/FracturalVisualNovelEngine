@@ -5,6 +5,9 @@ static func get_types() -> Array:
 	arr.append("statement")
 	return arr
 
+func overrides_story_flow():
+	return false
+
 var runtime_next_node
 
 func _init(position_ = null).(position_):

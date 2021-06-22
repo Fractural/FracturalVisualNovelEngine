@@ -2,15 +2,15 @@
 
 importer="texture"
 type="StreamTexture"
-path="res://.import/CheckBox.svg-a4785990c9fcaedf53cdd53525b09f32.stex"
+path="res://.import/save.svg-641c52443de817729aa91fe569e3f0d7.stex"
 metadata={
 "vram_texture": false
 }
 
 [deps]
 
-source_file="res://addons/FracturalVNE/assets/icons/CheckBox.svg"
-dest_files=[ "res://.import/CheckBox.svg-a4785990c9fcaedf53cdd53525b09f32.stex" ]
+source_file="res://addons/FracturalVNE/assets/icons/save.svg"
+dest_files=[ "res://.import/save.svg-641c52443de817729aa91fe569e3f0d7.stex" ]
 
 [params]
 

@@ -13,8 +13,8 @@ func _post_ready():
 	function_definitions = [
 	StoryScriptFuncDef.new("Character", [
 		StoryScriptParameter.new("name"),
-		StoryScriptParameter.new("name_color", story_gui_configurer.get_story_gui().text_printer.default_name_color),
-		StoryScriptParameter.new("dialogue_color", story_gui_configurer.get_story_gui().text_printer.default_dialogue_color),
+		StoryScriptParameter.new("name_color", story_gui_configurer.story_gui.text_printer.default_name_color),
+		StoryScriptParameter.new("dialogue_color", story_gui_configurer.story_gui.text_printer.default_dialogue_color),
 		]),
 	]
 

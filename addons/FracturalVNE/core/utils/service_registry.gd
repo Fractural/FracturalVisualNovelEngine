@@ -16,6 +16,14 @@ func add_service(service, custom_service_name = null):
 	assert(not services.has(service_name), 'Service with name "%s" already exists.' % service_name)
 	services[service_name] = service
 
+func add_persistent_service(service, custom_service_name = null):
+	add_service(service, custom_service_name)
+	
+	yield(get_tree(), "idle_frame")
+	service.get_parent().remove_child(service)
+	add_child(service)
+	service.owner = self
+
 func remove_service(service):
 	if typeof(service) == TYPE_STRING:
 		services.erase(service)

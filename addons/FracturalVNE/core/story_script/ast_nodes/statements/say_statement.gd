@@ -1,4 +1,4 @@
-extends "res://addons/FracturalVNE/core/story_script/ast_nodes/stepped_node.gd"
+extends "res://addons/FracturalVNE/core/story_script/ast_nodes/stepped_statement_node.gd"
 
 var character
 var text

@@ -5,10 +5,15 @@ static func get_types() -> Array:
 	arr.append("jump")
 	return arr
 
+func overrides_story_flow():
+	return true
+
 var label_name
 
 func _init(position_ = null, label_name_ = null).(position_):
 	label_name = label_name_
+
+# TODO NOW: Add error system and connect it to the StoryRuntimeDebugger error popup
 
 func execute():
 	var result = runtime_block.get_service("StoryDirector").jump_to_label(label_name)

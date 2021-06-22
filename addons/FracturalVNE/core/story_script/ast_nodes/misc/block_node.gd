@@ -20,9 +20,13 @@ func _init_post():
 			statements[i].runtime_block = self
 			statements[i - 1].runtime_next_node = statements[i]
 	
-	# Bind the last statement's executed signal to listen
-	# for when the block is fully executed
-	statements.back().connect("executed", self, "block_completed")
+	# Bind the last statement's executed signal to listen for when the block 
+	# is fully executed.
+	#
+	# Do not bind if the statement overrides the story flow (such as with
+	# a jump statement).
+	if not statements.back().overrides_story_flow():
+		statements.back().connect("executed", self, "block_completed")
 
 func execute():
 	statements.front().execute()

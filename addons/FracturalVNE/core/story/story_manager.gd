@@ -10,12 +10,15 @@ signal state_saved(save_state)
 export var story_director_path: NodePath
 export var ast_node_manager_path: NodePath
 export var story_configurer_path: NodePath
+export var story_gui_configurer_path: NodePath
 
 onready var story_director = get_node(story_director_path)
 onready var ast_node_manager = get_node(ast_node_manager_path)
 onready var story_configurer = get_node(story_configurer_path)
+onready var story_gui_configurer = get_node(story_gui_configurer_path)
 
 var story_save_manager = StoryServiceRegistry.get_service("StorySaveManager")
+var quit_to_scene: PackedScene
 
 func _enter_tree():
 	StoryServiceRegistry.add_service(self)
@@ -24,11 +27,16 @@ func _notification(what):
 	if what == NOTIFICATION_PREDELETE:
 		StoryServiceRegistry.remove_service(self)
 
-func _ready():
+func _post_ready():
 	story_configurer.connect("initialized_story", self, "_on_initialized_story")
+	story_gui_configurer.story_gui.connect("quit", self, "quit")
 
 func run_story(story_file_path):
 	story_configurer.load_story(story_file_path)
+
+func quit():
+	# TODO: Add a transition to the quit to scene using a transition manager
+	get_tree().change_scene_to(quit_to_scene)
 
 func _on_initialized_story(story_tree):
 	# Only runs once on initialize

@@ -41,8 +41,7 @@ func _on_options_button_pressed():
 	menu_manager.goto_menu("Options")
 
 func _on_quit_button_pressed():
-	# Implement a transition manager and quit using that
-	pass
+	pause_menu.story_gui.quit()
 
 func _on_return_button_pressed():
 	pause_menu.toggle(false)

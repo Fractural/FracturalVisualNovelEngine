@@ -1,4 +1,4 @@
-extends "res://addons/FracturalVNE/core/story_script/ast_nodes/statements/statement_construct.gd"
+extends "res://addons/FracturalVNE/core/story_script/ast_nodes/statements/stepped_statement_construct.gd"
 
 const SayNode = preload("res://addons/FracturalVNE/core/story_script/ast_nodes/statements/say_statement.gd")
 
