@@ -13,7 +13,11 @@ func execute():
 	if character == null:
 		text_printer.narrate(text)
 	else:
-		text_printer.say(character.evaluate(), text)
+		var result = character.evaluate()
+		if not is_success(result):
+			throw_error(result)
+			return
+		text_printer.say(result, text)
 	
 	.execute()
 
@@ -37,7 +41,8 @@ func propagate_call(method: String, arguments: Array = [], parent_first: bool = 
 	if parent_first:
 		.propagate_call(method, arguments, parent_first)
 	
-	character.propagate_call(method, arguments, parent_first)
+	if character != null:
+		character.propagate_call(method, arguments, parent_first)
 	
 	if not parent_first:
 		.propagate_call(method, arguments, parent_first)

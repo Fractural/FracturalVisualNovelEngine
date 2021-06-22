@@ -14,7 +14,8 @@ func execute():
 	var result = runtime_block.get_service("StoryDirector").jump_to_label(label_name)
 	if not is_success(result):
 		throw_error(stack_error(result, 'Error jumping to label "%s".' % label_name))
-	.execute()
+		return
+	emit_signal("executed")
 
 func debug_string(tabs_string: String) -> String:
 	var string = ""

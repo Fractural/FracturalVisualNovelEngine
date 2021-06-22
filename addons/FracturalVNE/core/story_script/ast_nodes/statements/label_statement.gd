@@ -28,7 +28,10 @@ func block_executed():
 	.execute()
 
 func runtime_initialize():
-	runtime_block.get_service("StoryDirector").add_label(self)
+	var result = runtime_block.get_service("StoryDirector").add_label(self)
+	if not is_success(result):
+		throw_error(result)
+		return
 
 func debug_string(tabs_string: String) -> String:
 	var string = ""
@@ -66,7 +69,8 @@ func deserialize(serialized_obj):
 	var instance = .deserialize(serialized_obj)
 	instance.name = serialized_obj["name"]
 	instance.block = SerializationUtils.deserialize(serialized_obj["block"])
-	instance.parameter_group = SerializationUtils.deserialize(serialized_obj["parameter_group"])
+	if serialized_obj.has("parameter_group"):
+		instance.parameter_group = SerializationUtils.deserialize(serialized_obj["parameter_group"])
 	instance._init_post()
 	return instance
 

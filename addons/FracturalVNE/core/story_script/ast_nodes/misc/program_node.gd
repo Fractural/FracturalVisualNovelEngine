@@ -41,6 +41,13 @@ func start_configure_services():
 			service.configure_service(self)
 
 func execute():
+	# TODO NOW: Add error system that breaks out of execution. For ProgramNode, check for 
+	#			initialization errors before executing. The error system should be a new instance
+	#			for each AST and should reside in the program_node. We can probably make
+	#			each node throw an error in it's runtime_block, which means the error will
+	#			eventually end up in the ProgramNode through this sort of backward tree traversal.
+	#			ProgramNode can then have a signal that is listened to by some class in the scene
+	#			which shows a popup of the error and an option to head back to the editor.
 	block.execute()
 
 func add_service(service, name = null):
@@ -58,6 +65,17 @@ func get_service(name: String):
 	if services.has(name):
 		return services[name]
 	return error('Service "%s" could not be found.' % name)
+
+# TODO: Add global variables. Variable functions are currently placeholders.
+
+func has_variable(name: String):
+	return false
+
+func get_variable(name: String):
+	return StoryScriptError.new('Variable named "%s" could not be found.' % name)
+
+func set_variable(name: String, value):
+	StoryScriptError.new('Variable named "%s" could not be found.' % name)
 
 func add_function_holder(new_function_holder):
 	if not function_holders.has(new_function_holder):

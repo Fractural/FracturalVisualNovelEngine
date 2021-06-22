@@ -24,13 +24,13 @@ func evaluate():
 		if is_success(evaluated_value):
 			formatted_arguments.append({"name": argument.name, "value": evaluated_value})
 		else:
-			throw_error(evaluated_value)
+			return stack_error(evaluated_value, 'Error in arguments for function "%s".' % name)
 	
 	var result = runtime_block.call_function(name, formatted_arguments)
 	if is_success(result):
 		return result
 	else:
-		throw_error(stack_error(result, 'Error calling function "%s".' % name))
+		return stack_error(result, 'Error calling function "%s".' % name)
 	
 func debug_string(tabs_strings) -> String:
 	var string = ""

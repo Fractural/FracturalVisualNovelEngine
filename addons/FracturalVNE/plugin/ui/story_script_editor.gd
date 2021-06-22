@@ -38,9 +38,16 @@ func _ready():
 	script_text_edit.text += 'say(b, "This is from a function!") \n'
 	script_text_edit.text += 'say(j, "This is also from a function!") \n'
 	script_text_edit.text += 'say("lol", "This is also also from a function!") \n'
+	script_text_edit.text += 'label lol: \n'
+	script_text_edit.text += '\tb "I\'m in a label!" \n'
+	script_text_edit.text += '\tj "I\'m also in a label!" \n'
+	script_text_edit.text += '\t"Tom" "I\'m also also in a label!" \n'
+	script_text_edit.text += '\t"Tom" "Lets jump recursively back to that label!" \n'
+	script_text_edit.text += '\tjump lol\n'
+	script_text_edit.text += 'label lol: \n'
 
 func compile_script():
-	var ast_tree = compiler.test_compile(script_text_edit.text)
+	var ast_tree = compiler.compile(script_text_edit.text)
 	
 	if ast_tree is StoryScriptError:
 		script_text_edit.display_error(ast_tree)
@@ -63,6 +70,9 @@ func save_ast_to_file(ast_tree, file_path):
 func run_script():
 	if not compiled:
 		compile_script()
+	
+	if not compiled:
+		return
 	
 	# TODO: Add support for playing story from editor
 	# 		Use this to play custom scene in editor: plugin.get_editor_interface().play_custom_scene("scene_file_path")

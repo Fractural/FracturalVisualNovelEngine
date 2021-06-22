@@ -34,18 +34,27 @@ func get_service(name: String):
 	return runtime_block.get_service(name)
 
 func has_variable(name: String):
-	return variables.has(name)
+	if variables.has(name):
+		return true
+	if runtime_block != null:
+		return runtime_block.has_variable(name)
+	return false
 
 func get_variable(name: String):
 	if variables.has(name):
 		return variables[name]
-	return StoryScriptError.new('Variable named "%s" could not be found.' % name)
+	elif runtime_block != null:
+		return runtime_block.get_variable(name)
+	else:
+		return StoryScriptError.new('Variable named "%s" could not be found.' % name)
 
-# TODO NOW: Add saving for block_node's variables
+# TODO NOW: Add saving (serialization) for block_node's variables
 
 func set_variable(name: String, value):
 	if variables.has(name):
 		variables[name] = value
+	elif runtime_block != null:
+		runtime_block.set_variable(name)
 	else:
 		StoryScriptError.new('Variable named "%s" could not be found.' % name)
 
@@ -102,8 +111,8 @@ func serialize_save(saved_nodes):
 
 func deserialize_save(saved_nodes_lookup):
 	var serialized_variables = saved_nodes_lookup[reference_id]["variables"]
-	for serialized_variable_name in serialized_variables.keys():
-		variables[serialized_variable_name] = serialized_variables[serialized_variable_name]
+	for serialized_variable in serialized_variables:
+		variables[serialized_variable.variable] = serialized_variable.value
 
 func serialize():
 	var serialized_obj = .serialize()

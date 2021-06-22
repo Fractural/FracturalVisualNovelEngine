@@ -6,7 +6,10 @@ func _init(position_ = null, expression_ = null).(position_):
 	expression = expression_
 
 func execute():
-	expression.evaluate()
+	var result = expression.evaluate()
+	if not is_success(result):
+		throw_error(stack_error(result, 'Expression statement could not evaluate.'))
+		return
 	.execute()
 
 func debug_string(tabs_string: String) -> String:

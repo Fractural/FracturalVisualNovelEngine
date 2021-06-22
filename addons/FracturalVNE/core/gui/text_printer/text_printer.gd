@@ -41,11 +41,17 @@ onready var story_director = get_node(story_gui_path).story_director
 var curr_print_text_action
 
 func say(character, text: String, skippable: bool = true):
+	if curr_print_text_action != null:
+		story_director.remove_step_action(curr_print_text_action)
+	
 	curr_print_text_action = PrintTextAction.new(self, skippable)
 	story_director.add_step_action(curr_print_text_action)
 	emit_signal("say", character, text)
 
 func narrate(text: String, skippable: bool = true):
+	if curr_print_text_action != null:
+		story_director.remove_step_action(curr_print_text_action)
+	
 	curr_print_text_action = PrintTextAction.new(self, skippable)
 	story_director.add_step_action(curr_print_text_action)
 	emit_signal("narrate", text)
