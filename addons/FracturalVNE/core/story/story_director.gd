@@ -117,6 +117,9 @@ func skip():
 		if curr_active_step_actions[i].skippable:
 			curr_active_step_actions[i].skip()
 			curr_active_step_actions.remove(i)
+	
+	if step_state == StepState.AUTO_STEP:
+		_auto_step_timer.start()
 
 func add_step_action(step_action):
 	curr_active_step_actions.append(step_action)

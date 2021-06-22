@@ -2,6 +2,7 @@ extends Node
 
 const ProgramNode = preload("res://addons/FracturalVNE/core/story_script/ast_nodes/misc/program_construct.gd").ProgramNode
 
+signal throw_error(error)
 signal initialized_story(story_tree)
 
 export var services_holder_path: NodePath
@@ -32,6 +33,8 @@ func load_story(story_file_path_):
 	
 	story_tree = SerializationUtils.deserialize(json_result.result)
 	
+	story_tree.connect("throw_error", self, "throw_error")
+	
 	for service in services:
 		story_tree.add_service(service)
 	story_tree.start_configure_services()
@@ -39,3 +42,6 @@ func load_story(story_file_path_):
 	story_tree.start_runtime_initialize()
 	
 	emit_signal("initialized_story", story_tree)
+
+func throw_error(error):
+	emit_signal("throw_error", error)

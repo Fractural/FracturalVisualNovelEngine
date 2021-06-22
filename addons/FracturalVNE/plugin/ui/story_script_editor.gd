@@ -95,6 +95,8 @@ func _ready():
 		set_current_script_path(persistent_data.current_script_path)
 	else:
 		open_file(persistent_data.current_script_path)
+	
+	script_text_edit.clear_undo_history()
 
 func set_compiled(new_value):
 	compiled = new_value

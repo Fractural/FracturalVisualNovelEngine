@@ -1,4 +1,4 @@
-[gd_scene load_steps=13 format=2]
+[gd_scene load_steps=14 format=2]
 
 [ext_resource path="res://addons/FracturalVNE/core/story/story_manager.gd" type="Script" id=1]
 [ext_resource path="res://addons/FracturalVNE/core/story/story_director.gd" type="Script" id=2]
@@ -12,6 +12,7 @@
 [ext_resource path="res://addons/FracturalVNE/assets/fonts/Noto_Sans/NotoSans-Regular-Title.tres" type="DynamicFont" id=10]
 [ext_resource path="res://addons/FracturalVNE/core/utils/story_runtime_debugger.gd" type="Script" id=11]
 [ext_resource path="res://addons/FracturalVNE/assets/themes/basic_gui_theme.tres" type="Theme" id=12]
+[ext_resource path="res://addons/FracturalVNE/assets/fonts/Hack/Hack-Regular.tres" type="DynamicFont" id=13]
 
 [node name="ScenePostReady" type="Node"]
 script = ExtResource( 9 )
@@ -57,11 +58,12 @@ name_default_char_delay = 0.0
 [node name="StoryRuntimeDebugger" type="Node" parent="."]
 script = ExtResource( 11 )
 story_manager_path = NodePath("../StoryManager")
-quit_button_path = NodePath("ErrorPopup/Panel/MarginContainer/VSplitContainer/QuitButton")
-error_popup_path = NodePath("ErrorPopup")
-error_text_path = NodePath("ErrorPopup/Panel/MarginContainer/VSplitContainer/ErrorText")
+quit_button_path = NodePath("ErrorUI/Panel/MarginContainer/VSplitContainer/QuitButton")
+error_ui_path = NodePath("ErrorUI")
+error_text_path = NodePath("ErrorUI/Panel/MarginContainer/VSplitContainer/ErrorText")
 
-[node name="ErrorPopup" type="Popup" parent="StoryRuntimeDebugger"]
+[node name="ErrorUI" type="Control" parent="StoryRuntimeDebugger"]
+visible = false
 anchor_right = 1.0
 anchor_bottom = 1.0
 mouse_filter = 2
@@ -70,7 +72,7 @@ __meta__ = {
 "_edit_use_anchors_": false
 }
 
-[node name="ColorRect" type="ColorRect" parent="StoryRuntimeDebugger/ErrorPopup"]
+[node name="ColorRect" type="ColorRect" parent="StoryRuntimeDebugger/ErrorUI"]
 anchor_right = 1.0
 anchor_bottom = 1.0
 color = Color( 0, 0, 0, 0.392157 )
@@ -78,7 +80,7 @@ __meta__ = {
 "_edit_use_anchors_": false
 }
 
-[node name="Panel" type="Panel" parent="StoryRuntimeDebugger/ErrorPopup"]
+[node name="Panel" type="Panel" parent="StoryRuntimeDebugger/ErrorUI"]
 anchor_right = 1.0
 anchor_bottom = 1.0
 margin_left = 100.0
@@ -89,11 +91,9 @@ __meta__ = {
 "_edit_use_anchors_": false
 }
 
-[node name="MarginContainer" type="MarginContainer" parent="StoryRuntimeDebugger/ErrorPopup/Panel"]
-margin_left = 7.0
-margin_top = 7.0
-margin_right = 817.0
-margin_bottom = 393.0
+[node name="MarginContainer" type="MarginContainer" parent="StoryRuntimeDebugger/ErrorUI/Panel"]
+anchor_right = 1.0
+anchor_bottom = 1.0
 custom_constants/margin_right = 20
 custom_constants/margin_top = 20
 custom_constants/margin_left = 20
@@ -102,35 +102,35 @@ __meta__ = {
 "_edit_use_anchors_": false
 }
 
-[node name="VSplitContainer" type="VBoxContainer" parent="StoryRuntimeDebugger/ErrorPopup/Panel/MarginContainer"]
+[node name="VSplitContainer" type="VBoxContainer" parent="StoryRuntimeDebugger/ErrorUI/Panel/MarginContainer"]
 margin_left = 20.0
 margin_top = 20.0
-margin_right = 790.0
-margin_bottom = 366.0
+margin_right = 804.0
+margin_bottom = 380.0
 
-[node name="Title" type="RichTextLabel" parent="StoryRuntimeDebugger/ErrorPopup/Panel/MarginContainer/VSplitContainer"]
-margin_right = 770.0
+[node name="Title" type="RichTextLabel" parent="StoryRuntimeDebugger/ErrorUI/Panel/MarginContainer/VSplitContainer"]
+margin_right = 784.0
 margin_bottom = 50.0
 rect_min_size = Vector2( 0, 50 )
 custom_fonts/normal_font = ExtResource( 10 )
 text = "Error"
 
-[node name="ErrorText" type="RichTextLabel" parent="StoryRuntimeDebugger/ErrorPopup/Panel/MarginContainer/VSplitContainer"]
+[node name="ErrorText" type="TextEdit" parent="StoryRuntimeDebugger/ErrorUI/Panel/MarginContainer/VSplitContainer"]
 margin_top = 54.0
-margin_right = 770.0
-margin_bottom = 302.0
+margin_right = 784.0
+margin_bottom = 316.0
 size_flags_horizontal = 3
 size_flags_vertical = 3
+custom_fonts/font = ExtResource( 13 )
 text = "This is where the stack trace is displayed."
-__meta__ = {
-"_edit_use_anchors_": false
-}
+readonly = true
+wrap_enabled = true
 
-[node name="QuitButton" type="Button" parent="StoryRuntimeDebugger/ErrorPopup/Panel/MarginContainer/VSplitContainer"]
-margin_left = 285.0
-margin_top = 306.0
-margin_right = 485.0
-margin_bottom = 346.0
+[node name="QuitButton" type="Button" parent="StoryRuntimeDebugger/ErrorUI/Panel/MarginContainer/VSplitContainer"]
+margin_left = 292.0
+margin_top = 320.0
+margin_right = 492.0
+margin_bottom = 360.0
 rect_min_size = Vector2( 200, 40 )
 size_flags_horizontal = 4
 text = "Quit"

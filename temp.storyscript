@@ -12,6 +12,6 @@ label lol:
 	"Tom" "I'm also also in a label!" 
 	"Here's some narration in the label!" 
 	"Tom" "Lets jump recursively back to that label!" 
-	jump lol
+	jump lolasdf
 label another_one: 
 	 "You will never reach this label!"

@@ -1,5 +1,7 @@
 extends "res://addons/FracturalVNE/core/story_script/ast_nodes/executable_node.gd"
 
+signal throw_error(error)
+
 # Execution order
 # 1. configure_service()
 # 2. runtime_initialize() 
@@ -134,6 +136,9 @@ func debug_string(tabs_string: String) -> String:
 	string += "\n" + block.debug_string(tabs_string + "\t")
 	string += "\n" + tabs_string + "}"
 	return string
+
+func throw_error(error):
+	emit_signal("throw_error", error)
 
 # ----- Serialization ----- #
 

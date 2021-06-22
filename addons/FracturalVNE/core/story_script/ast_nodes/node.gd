@@ -36,7 +36,9 @@ func error(message: String):
 func throw_error(error):
 	# TODO: Add integration within StoryScriptEditor to automatically point out
 	# where the error occurred.
-	assert(false, str(error))
+	if runtime_block != null:
+		runtime_block.throw_error(error)
+	# assert(false, str(error))
 
 func stack_error(error, message = ""):
 	if error is StoryScriptError.ErrorStack:

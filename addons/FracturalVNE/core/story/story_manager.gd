@@ -40,8 +40,8 @@ func quit():
 
 func _on_initialized_story(story_tree):
 	# Only runs once on initialize
-	story_tree.execute()
 	story_configurer.disconnect("initialized_story", self, "_on_initialized_story")
+	story_tree.execute()
 
 # TODO: Abstract saving into a LocalStorySaveManager
 
