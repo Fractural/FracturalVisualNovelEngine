@@ -1,4 +1,4 @@
-[gd_scene load_steps=14 format=2]
+[gd_scene load_steps=16 format=2]
 
 [ext_resource path="res://addons/FracturalVNE/core/story/story_manager.gd" type="Script" id=1]
 [ext_resource path="res://addons/FracturalVNE/core/story/story_director.gd" type="Script" id=2]
@@ -13,6 +13,8 @@
 [ext_resource path="res://addons/FracturalVNE/core/utils/story_runtime_debugger.gd" type="Script" id=11]
 [ext_resource path="res://addons/FracturalVNE/assets/themes/basic_gui_theme.tres" type="Theme" id=12]
 [ext_resource path="res://addons/FracturalVNE/assets/fonts/Hack/Hack-Regular.tres" type="DynamicFont" id=13]
+[ext_resource path="res://addons/FracturalVNE/core/utils/follow_main_viewport_size.gd" type="Script" id=14]
+[ext_resource path="res://addons/FracturalVNE/core/gui/_misc/screenshot_manager.gd" type="Script" id=16]
 
 [node name="ScenePostReady" type="Node"]
 script = ExtResource( 9 )
@@ -23,6 +25,7 @@ story_director_path = NodePath("../StoryConfigurer/StoryServices/StoryDirector")
 ast_node_manager_path = NodePath("../StoryConfigurer/StoryServices/ASTNodeManager")
 story_configurer_path = NodePath("../StoryConfigurer")
 story_gui_configurer_path = NodePath("../StoryGUIConfigurer")
+screenshot_manager_path = NodePath("../ScreenshotManager")
 
 [node name="StoryHistoryManager" type="Node" parent="."]
 script = ExtResource( 6 )
@@ -46,14 +49,44 @@ script = ExtResource( 5 )
 script = ExtResource( 8 )
 story_gui_configurer_path = NodePath("../../../StoryGUIConfigurer")
 
+[node name="ScreenshotManager" type="Node" parent="."]
+script = ExtResource( 16 )
+temporary_viewport_texture_rect_path = NodePath("TempViewportTextureRect")
+story_gui_configurer_path = NodePath("../StoryGUIConfigurer")
+gui_viewport_path = NodePath("ViewportContainer/GUI")
+
+[node name="ViewportContainer" type="ViewportContainer" parent="ScreenshotManager"]
+anchor_right = 1.0
+anchor_bottom = 1.0
+mouse_filter = 2
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="GUI" type="Viewport" parent="ScreenshotManager/ViewportContainer"]
+size = Vector2( 1024, 600 )
+handle_input_locally = false
+render_target_update_mode = 3
+physics_object_picking = true
+gui_disable_input = true
+script = ExtResource( 14 )
+
+[node name="TempViewportTextureRect" type="TextureRect" parent="ScreenshotManager"]
+visible = false
+anchor_right = 1.0
+anchor_bottom = 1.0
+mouse_filter = 0
+expand = true
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
 [node name="StoryGUIConfigurer" type="Node" parent="."]
 script = ExtResource( 7 )
 story_configurer_path = NodePath("../StoryConfigurer")
+story_gui_holder_path = NodePath(".")
 
 [node name="BasicGUI" parent="StoryGUIConfigurer" instance=ExtResource( 4 )]
-
-[node name="BasicTextPrinter" parent="StoryGUIConfigurer/BasicGUI/Panel/VBoxContainer" index="0"]
-name_default_char_delay = 0.0
 
 [node name="StoryRuntimeDebugger" type="Node" parent="."]
 script = ExtResource( 11 )
@@ -137,5 +170,3 @@ text = "Quit"
 __meta__ = {
 "_edit_use_anchors_": false
 }
-
-[editable path="StoryGUIConfigurer/BasicGUI"]

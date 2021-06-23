@@ -17,6 +17,7 @@ __meta__ = {
 "_edit_use_anchors_": false
 }
 text_printer_path = NodePath("Panel/VBoxContainer/BasicTextPrinter")
+pause_menu_path = NodePath("BasicPauseMenu")
 
 [node name="BasicStepper" type="Control" parent="."]
 anchor_right = 1.0

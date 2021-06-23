@@ -126,6 +126,7 @@ script = ExtResource( 2 )
 menu_title_path = NodePath("../../MenuTitle")
 
 [node name="History" type="Control" parent="VSplitContainer/HSplitContainer/Menus"]
+visible = false
 anchor_right = 1.0
 anchor_bottom = 1.0
 script = ExtResource( 6 )
@@ -141,6 +142,7 @@ script = ExtResource( 4 )
 menu_manager_path = NodePath("..")
 settings_path = NodePath("../../../..")
 save_slot_prefab = ExtResource( 1 )
+grid_container_path = NodePath("GridContainer")
 
 [node name="GridContainer" type="GridContainer" parent="VSplitContainer/HSplitContainer/Menus/SaveSlots"]
 anchor_right = 1.0
