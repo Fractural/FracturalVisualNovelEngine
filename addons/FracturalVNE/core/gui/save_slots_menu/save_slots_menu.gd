@@ -30,8 +30,8 @@ func _ready():
 		var slot = save_manager.save_slots[i]
 		ui_save_slots.append(save_slot_prefab.instance())
 		grid_container.add_child(ui_save_slots.back())
-		ui_save_slots.back().init(i, slot)
-		ui_save_slots.back().connect("save_slot_pressed", self, "on_save_slot_pressed")
+		ui_save_slots.back().construct(i, slot)
+		ui_save_slots.back().connect("save_slot_pressed", self, "_on_save_slot_pressed")
 
 
 func start_save():

@@ -14,6 +14,8 @@ func _init(name_ = null, name_color_ = null, dialogue_color_ = null):
 	dialogue_color = dialogue_color_
 
 
+# ----- Serialization ----- #
+
 func serialize():
 	return {
 		"script_path": get_script().get_path(),
@@ -29,3 +31,5 @@ func deserialize(serialized_object):
 	instance.name_color = Color(serialized_object["name_color"])
 	instance.dialogue_color = Color(serialized_object["dialogue_color"])
 	return instance
+
+# ----- Serialization ----- #
