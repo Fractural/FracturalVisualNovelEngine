@@ -19,5 +19,5 @@ func _on_picked_saved_state(slot_id):
 	
 func _on_picked_load_state(slot_id):
 	if (pause_menu.story_gui.story_manager.try_load_save_slot(slot_id)):
-		save_slots_menu.ui_save_slots[slot_id].init(pause_menu.story_gui.story_manager.save_slots[slot_id])
-		pause_menu.show_settings(false)
+		save_slots_menu.ui_save_slots[slot_id].init(slot_id, pause_menu.story_gui.story_manager.story_save_manager.save_slots[slot_id])
+		pause_menu.toggle(false)

@@ -67,7 +67,9 @@ func save_current_state(save_slot_id: int):
 
 func load_save_slot(save_slot_id: int):	
 	var state = story_save_manager.get_save_slot(save_slot_id)
-	story_configurer.load_story(state.story_tree)
+	story_configurer.load_story(state.story_file_path)
+	story_configurer.story_tree.start_deserialize_save(state.story_save_nodes)
+	ast_node_manager.find_node_with_id(state.starting_node_id).execute()
 	# The StoryDirector is primed to go the the next node, since the
 	# StoryDirector calls the execute method of the next node
 	story_director.start_step(ast_node_manager.find_node_with_id(state.starting_node_id))

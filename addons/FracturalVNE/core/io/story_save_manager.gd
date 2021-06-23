@@ -36,7 +36,7 @@ func get_save_slot(save_slot_id: int):
 	return save_slots[save_slot_id]
 
 func has_save_slot(save_slot_id: int):
-	return save_slots.has(save_slot_id) and save_slots[save_slot_id] != null
+	return save_slot_id >= 0 and save_slot_id < save_slots.size() and save_slots[save_slot_id] != null
 
 func preload_save_slots():
 	save_slots = []

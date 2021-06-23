@@ -64,7 +64,7 @@ func set_variable(name: String, value):
 
 func declare_variable(name: String, value = null):
 	if not variables.has(name):
-		variables[name] = value
+		variables[name] = value.evaluate()
 	else:
 		return error('Local variable with name "%s" already exists' % name)
 
@@ -103,20 +103,32 @@ func propagate_call(method: String, arguments: Array = [], parent_first: bool = 
 
 func serialize_save(saved_nodes):
 	var serialized_variables = []
+		
 	for variable_name in variables.keys():
+		
+		var value
+		var is_object:bool = typeof(variables[variable_name]) == TYPE_OBJECT
+		
+		if is_object:
+			value = variables[variable_name].serialize()
+		
 		serialized_variables.append({
 			"variable": variable_name,
-			"value": variables[variable_name],
+			"value": value,
+			"is_object": is_object,
 		})
 	
-	saved_nodes[reference_id] = {
-		"variables:": serialized_variables,
+	saved_nodes[str(reference_id)] = {
+		"variables": serialized_variables,
 	}
 
 func deserialize_save(saved_nodes_lookup):
-	var serialized_variables = saved_nodes_lookup[reference_id]["variables"]
+	var serialized_variables = saved_nodes_lookup[str(reference_id)]["variables"]
 	for serialized_variable in serialized_variables:
-		variables[serialized_variable.variable] = serialized_variable.value
+		if serialized_variable["is_object"]:
+			variables[serialized_variable["variable"]] = SerializationUtils.deserialize(serialized_variable["value"])
+		else:
+			variables[serialized_variable["variable"]] = serialized_variable["value"]
 
 func serialize():
 	var serialized_obj = .serialize()

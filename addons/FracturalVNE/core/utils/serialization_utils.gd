@@ -15,8 +15,8 @@ static func deserialize(serialized_object):
 #		"script_path": get_script().get_path(),
 #	}
 #
-#static func deserialize(save_state):
-#	var instance = load(get_script().get_path()
+#func deserialize(serialized_object):
+#	var instance = get_script().new()
 #	return instance
 #
 ## ----- Serialization ----- #

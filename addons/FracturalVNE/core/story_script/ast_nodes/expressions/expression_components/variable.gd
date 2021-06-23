@@ -13,7 +13,7 @@ func _init(position_ = null, name_ = null).(position_):
 func evaluate():
 	var variable = runtime_block.get_variable(name)
 	if is_success(variable):
-		return variable.evaluate()
+		return variable
 	return stack_error(variable)
 
 func debug_string(tabs_string: String) -> String:

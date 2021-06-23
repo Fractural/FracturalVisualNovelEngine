@@ -70,9 +70,6 @@ func _ready():
 	_skip_timer.connect("timeout", self, "try_step")
 	_skip_timer.wait_time = skip_speed
 
-func execute(ast_node):
-	ast_node.execute()
-
 func start_step(ast_node):
 	curr_stepped_node = ast_node
 	curr_node_executed = false
