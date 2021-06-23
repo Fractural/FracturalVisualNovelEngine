@@ -2,7 +2,7 @@
 
 [ext_resource path="res://tests/test.gd" type="Script" id=1]
 [ext_resource path="res://addons/FracturalVNE/core/gui/text_printer/printers/BasicTextPrinter.tscn" type="PackedScene" id=2]
-[ext_resource path="res://addons/FracturalVNE/core/gui/_misc/bottom_menu_manager.gd" type="Script" id=3]
+[ext_resource path="res://addons/FracturalVNE/core/gui/_misc/gui_bottom_menu.gd" type="Script" id=3]
 [ext_resource path="res://addons/FracturalVNE/core/gui/story_gui.gd" type="Script" id=4]
 [ext_resource path="res://addons/FracturalVNE/core/gui/pause_menu/basic_pause_menu.tscn" type="PackedScene" id=5]
 [ext_resource path="res://addons/FracturalVNE/assets/fonts/Noto_Sans/NotoSans-Regular.tres" type="DynamicFont" id=6]

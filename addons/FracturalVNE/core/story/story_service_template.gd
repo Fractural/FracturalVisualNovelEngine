@@ -1,6 +1,6 @@
-# A template file to create new StoryServices off of
-
 extends Reference
+# A template file to create new StoryServices off of.
+
 
 # Optional
 var function_definitions = [
@@ -17,9 +17,11 @@ var function_definitions = [
 	]),
 ]
 
+
 # Optional
 func configure_service(program_node):
 	pass
+
 
 func get_service_name():
 	return "DemoService"

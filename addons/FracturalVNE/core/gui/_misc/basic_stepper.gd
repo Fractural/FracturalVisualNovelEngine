@@ -1,10 +1,11 @@
 extends Node
+# Steps the story whenever an unhandled mouse button is clicked
+
 
 export var story_gui_path: NodePath
 
 onready var story_gui: Node = get_node(story_gui_path)
 
-# Steps the story whenever an unhandled mouse button is clicked
 
 func _unhandled_input(event):
 	if event is InputEventMouseButton and event.button_index == BUTTON_LEFT and event.pressed:

@@ -1,4 +1,6 @@
 extends Node
+# Basic implementation of a TextPrinter.
+
 
 const Character = preload("res://addons/FracturalVNE/core/character/character.gd")
 const CharactersDelay = preload("res://addons/FracturalVNE/core/gui/text_printer/printers/components/characters_delay.gd")
@@ -6,15 +8,15 @@ const TextPrinter = preload("res://addons/FracturalVNE/core/gui/text_printer/tex
 const TextReveal = preload("res://addons/FracturalVNE/core/gui/text_printer/printers/components/text_reveal.gd")
 
 export var text_printer_path: NodePath
-onready var text_printer: TextPrinter = get_node(text_printer_path)
-
 export var name_text_reveal_path: NodePath
-onready var name_text_reveal: TextReveal = get_node(name_text_reveal_path)
-
 export var dialogue_text_reveal_path: NodePath
-onready var dialogue_text_reveal: TextReveal = get_node(dialogue_text_reveal_path)
 
 var active_text_reveal_count: int = 0
+
+onready var text_printer: TextPrinter = get_node(text_printer_path)
+onready var name_text_reveal: TextReveal = get_node(name_text_reveal_path)
+onready var dialogue_text_reveal: TextReveal = get_node(dialogue_text_reveal_path)
+
 
 func _ready():
 	# Keep process off until need to animate text
@@ -30,11 +32,13 @@ func _ready():
 	name_text_reveal.connect("finished_reveal", self, "_on_finish_text_reveal")
 	dialogue_text_reveal.connect("finished_reveal", self, "_on_finish_text_reveal")
 
+
 func _on_finish_text_reveal():
 	if active_text_reveal_count > 0:
 		active_text_reveal_count -= 1
 		if active_text_reveal_count == 0:
 			text_printer._finished_print_text()
+
 
 func _on_say(character, text):
 	if typeof(character) == TYPE_STRING:
@@ -50,6 +54,7 @@ func _on_say(character, text):
 	
 	active_text_reveal_count = 2
 
+
 func _on_narrate(text: String):
 	name_text_reveal.bbcode_text = ""
 
@@ -57,6 +62,7 @@ func _on_narrate(text: String):
 	dialogue_text_reveal.start_reveal()
 	
 	active_text_reveal_count = 1
+
 
 func _on_skip():
 	name_text_reveal.stop_reveal()

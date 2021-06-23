@@ -1,4 +1,8 @@
 extends RichTextLabel
+# Reveals characters in a RichTextLabel at a certain rate.
+# Certain characters may be set to reveal at different rates.
+# Used in TextPrinters.
+
 
 signal stopped_reveal()
 signal finished_reveal()
@@ -12,19 +16,22 @@ var is_revealing: bool
 
 var _animate_text_timer: float = 0
 
+
 func init(default_char_delay_: float, custom_char_delays_: Array = []):
 	default_char_delay = default_char_delay_
 	custom_char_delays = custom_char_delays_
+
 
 func _ready():
 	# Keep process off until need to animate text
 	set_process(false)
 
+
 # We are using process to handle animating text every few seconds because as of Godot 3.2, 
 # there is no way to inturrupt coroutines, meaning you cannot use timers to loops things over time
-
 func _process(delta):
 	_animate_text_tick(delta)
+
 
 func start_reveal():
 	if is_revealing:
@@ -35,11 +42,13 @@ func start_reveal():
 	is_revealing = true
 	set_process(true)
 
+
 func stop_reveal():
 	self.visible_characters = -1
 	is_revealing = false
 	set_process(false)
 	emit_signal("stopped_reveal")
+
 
 func _animate_text_tick(delta):
 	_animate_text_timer -= delta
@@ -57,6 +66,7 @@ func _animate_text_tick(delta):
 		else:
 			stop_reveal()
 			emit_signal("finished_reveal")
+
 
 func _get_char_delay(ch: String) -> float:
 	for character_delay in custom_char_delays:

@@ -1,6 +1,9 @@
 extends Node
+# Base TextPrinter with signals that allow for the implementation of
+# the actual printing functionality. 
 
-# ----- StoryService Info ----- #
+
+# ----- StoryService ----- #
 
 var function_definitions = [
 	StoryScriptFuncDef.new("skip"),
@@ -13,10 +16,12 @@ var function_definitions = [
 	], true)
 ]
 
+
 func get_service_name():
 	return "TextPrinter"
 
-# --- StoryService Info End --- #
+# ----- StoryService ----- #
+
 
 const Character = preload("res://addons/FracturalVNE/core/character/character.gd")
 const PrintTextAction = preload("res://addons/FracturalVNE/core/gui/text_printer/print_text_action.gd")
@@ -36,9 +41,10 @@ export var dialogue_custom_char_delays: Array = []
 export var default_name_color: Color = Color.white
 export var default_dialogue_color: Color = Color.white
 
+var curr_print_text_action
+
 onready var story_director = get_node(story_gui_path).story_director
 
-var curr_print_text_action
 
 func say(character, text: String, skippable: bool = true):
 	if curr_print_text_action != null:
@@ -48,6 +54,7 @@ func say(character, text: String, skippable: bool = true):
 	story_director.add_step_action(curr_print_text_action)
 	emit_signal("say", character, text)
 
+
 func narrate(text: String, skippable: bool = true):
 	if curr_print_text_action != null:
 		story_director.remove_step_action(curr_print_text_action)
@@ -55,6 +62,7 @@ func narrate(text: String, skippable: bool = true):
 	curr_print_text_action = PrintTextAction.new(self, skippable)
 	story_director.add_step_action(curr_print_text_action)
 	emit_signal("narrate", text)
+
 
 func _finished_print_text():
 	story_director.remove_step_action(curr_print_text_action)

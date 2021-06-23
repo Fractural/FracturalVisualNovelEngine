@@ -1,10 +1,14 @@
-extends Button
 tool
+extends Button
+# Button that changes color depending on its state 
+# (normal, hovered, pressed, disabled).
+
 
 export var normal_color: Color = Color.white
 export var disabled_color: Color = Color.white
 export var pressed_color: Color = Color.white
 export var hover_color: Color = Color.white
+
 
 func _draw():
 	match get_draw_mode():

@@ -51,7 +51,7 @@ story_gui_configurer_path = NodePath("../../../StoryGUIConfigurer")
 
 [node name="ScreenshotManager" type="Node" parent="."]
 script = ExtResource( 16 )
-temporary_viewport_texture_rect_path = NodePath("TempViewportTextureRect")
+facade_viewport_texture_rect_path = NodePath("FacadeViewportTextureRect")
 story_gui_configurer_path = NodePath("../StoryGUIConfigurer")
 gui_viewport_path = NodePath("ViewportContainer/GUI")
 
@@ -71,7 +71,7 @@ physics_object_picking = true
 gui_disable_input = true
 script = ExtResource( 14 )
 
-[node name="TempViewportTextureRect" type="TextureRect" parent="ScreenshotManager"]
+[node name="FacadeViewportTextureRect" type="TextureRect" parent="ScreenshotManager"]
 visible = false
 anchor_right = 1.0
 anchor_bottom = 1.0

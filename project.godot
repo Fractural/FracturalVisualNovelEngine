@@ -59,7 +59,7 @@ _global_script_classes=[ {
 "language": "GDScript",
 "path": "res://addons/FracturalVNE/core/story_script/story_script_constants.gd"
 }, {
-"base": "Node",
+"base": "Reference",
 "class": "StoryScriptEditor",
 "language": "GDScript",
 "path": "res://addons/FracturalVNE/plugin/ui/story_script_editor.gd"
@@ -114,7 +114,7 @@ _global_script_classes=[ {
 "language": "GDScript",
 "path": "res://addons/FracturalVNE/core/story_script/story_script_tokens_reader.gd"
 }, {
-"base": "Resource",
+"base": "Reference",
 "class": "TextEditTheme",
 "language": "GDScript",
 "path": "res://addons/FracturalVNE/plugin/ui/text_edit_theme.gd"
