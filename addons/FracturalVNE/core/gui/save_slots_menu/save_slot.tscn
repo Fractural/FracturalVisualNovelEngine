@@ -23,7 +23,7 @@ script = ExtResource( 3 )
 __meta__ = {
 "_edit_use_anchors_": false
 }
-screenshot_rect_path = NodePath("Button/ScreenshotRect")
+thumbnail_rect_path = NodePath("Button/ThumbnailRect")
 date_label_path = NodePath("Button/DateLabel")
 button_path = NodePath("Button")
 slot_label_path = NodePath("Button/ColorRect/SlotLabel")
@@ -68,7 +68,7 @@ size_flags_horizontal = 5
 custom_fonts/font = ExtResource( 4 )
 text = "Slot 1"
 
-[node name="ScreenshotRect" type="TextureRect" parent="Button"]
+[node name="ThumbnailRect" type="TextureRect" parent="Button"]
 anchor_right = 1.0
 anchor_bottom = 1.0
 margin_bottom = -25.0

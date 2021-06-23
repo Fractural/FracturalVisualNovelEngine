@@ -15,7 +15,7 @@ const WEEKDAYS = [
 
 signal save_slot_pressed(slot_id)
 
-export var screenshot_rect_path: NodePath
+export var thumbnail_rect_path: NodePath
 export var date_label_path: NodePath
 export var button_path: NodePath
 export var slot_label_path: NodePath
@@ -23,7 +23,7 @@ export var slot_label_path: NodePath
 var save_slot
 var slot_id: int
 
-onready var screenshot_rect: TextureRect = get_node(screenshot_rect_path)
+onready var thumbnail_rect: TextureRect = get_node(thumbnail_rect_path)
 onready var date_label: Label = get_node(date_label_path)
 onready var button: Button = get_node(button_path)
 onready var slot_label: Label = get_node(slot_label_path)
@@ -39,10 +39,10 @@ func construct(slot_id_, save_slot_ = null):
 	
 	if save_slot == null:
 		date_label.text = "Empty"
-		screenshot_rect.texture = null
+		thumbnail_rect.texture = null
 	else:
 		date_label.text = _get_date_string(save_slot.saved_date)
-		screenshot_rect.texture = save_slot.screenshot
+		thumbnail_rect.texture = save_slot.thumbnail
 	slot_label.text = "Slot " + str(slot_id)
 
 
@@ -56,4 +56,4 @@ func _get_date_string(date):
 	if date["hour"] > 12:
 		hour -= 12
 		PM = true
-	return "%s/%s/%s, %s, %s:%s " % [date["month"], date["day"], date["year"], WEEKDAYS[date["weekday"]], hour, date["minute"]] + "PM" if PM else "AM"
+	return "%s/%s/%s, %s, %s:%s " % [date["month"], date["day"], str(date["year"]).right(2), WEEKDAYS[date["weekday"]], hour, date["minute"]] + ("PM" if PM else "AM")

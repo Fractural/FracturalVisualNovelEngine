@@ -1,6 +1,9 @@
 tool
 class_name StoryScriptEditor
 extends Node
+# Controls the story script editor and wires up the UI buttons within the
+# editor.
+
 
 const TEMP_STORY_PATH: String = "res://temp.story"
 const TEMP_SCRIPT_PATH: String = "res://temp.storyscript"
@@ -21,6 +24,10 @@ export var open_file_dialog_path: NodePath
 export var save_file_dialog_path: NodePath
 export var popup_dim_path: NodePath
 
+var compiled: bool = false setget set_compiled
+var saved: bool = false setget set_saved
+var current_script_path: String = TEMP_SCRIPT_PATH
+
 onready var compile_button: Button = get_node(compile_button_path)
 onready var run_button: Button = get_node(run_button_path)
 onready var script_text_edit: StoryScriptTextEdit = get_node(script_text_edit_path)
@@ -38,9 +45,6 @@ onready var popup_dim: ColorRect = get_node(popup_dim_path)
 onready var story_save_manager = StoryServiceRegistry.get_service("StorySaveManager")
 onready var persistent_data = StoryServiceRegistry.get_service("StoryScriptPersistentData")
 
-var compiled: bool = false setget set_compiled
-var saved: bool = false setget set_saved
-var current_script_path: String = TEMP_SCRIPT_PATH
 
 func _ready():
 	# If this is running standalone, then set up editor assets with a default scale of 1.
@@ -96,44 +100,10 @@ func _ready():
 	else:
 		open_file(persistent_data.current_script_path)
 	
+	# Clear the undo history after switching to a new script -- we don't want users to undo
+	# back to the original script after they loaded a new one.
 	script_text_edit.clear_undo_history()
 
-func set_compiled(new_value):
-	compiled = new_value
-	persistent_data.compiled = new_value
-	if compiled_ui != null:
-		compiled_ui.modulate.a = 1 if new_value else 0.5
-
-func set_saved(new_value):
-	saved = new_value
-	persistent_data.saved = new_value
-	if saved_ui != null:
-		saved_ui.modulate.a = 1 if new_value else 0.5
-
-func set_current_script_path(new_value):
-	current_script_path = new_value
-	persistent_data.current_script_path = new_value
-	if editing_file_label != null:
-		editing_file_label.text = "Editing \"%s\" " % current_script_path
-
-func _on_script_text_changed():
-	set_compiled(false)
-	set_saved(false)
-
-func _on_file_menu_item_pressed(meta):
-	match meta:
-		"open":
-			open_file_dialog.popup()
-		"save":
-			save_current_file()
-		"save as":
-			save_file_dialog.popup()
-
-func _on_popup_about_to_show():
-	popup_dim.visible = true
-
-func _on_popup_hide():
-	popup_dim.visible = false
 
 func open_file(file_path):
 	set_current_script_path(file_path)
@@ -144,6 +114,7 @@ func open_file(file_path):
 	
 	set_saved(true)
 
+
 func save_file_to(file_path):
 	set_current_script_path(file_path)
 	var file = File.new()
@@ -153,8 +124,10 @@ func save_file_to(file_path):
 	
 	set_saved(true)
 
+
 func save_current_file():
 	save_file_to(current_script_path)
+
 
 func compile_script():
 	var ast_tree = compiler.compile(script_text_edit.text)
@@ -167,6 +140,7 @@ func compile_script():
 		set_compiled(true)
 		save_ast_to_file(ast_tree, TEMP_STORY_PATH)
 
+
 func save_ast_to_file(ast_tree, file_path):
 	var serialized_ast = JSON.print(ast_tree.serialize())
 	
@@ -174,6 +148,7 @@ func save_ast_to_file(ast_tree, file_path):
 	serialized_file.open_compressed(file_path, File.WRITE)
 	serialized_file.store_line(serialized_ast)
 	serialized_file.close()
+
 
 func run_script():
 	if not compiled:
@@ -191,12 +166,60 @@ func run_script():
 	else:
 		run_from_standalone_editor()
 
+
 func run_from_standalone_editor():
 	StoryServiceRegistry.get_service("StoryRunner").run(TEMP_STORY_PATH, load("res://addons/FracturalVNE/plugin/ui/story_script_editor.tscn"))
+
+
+func set_compiled(new_value):
+	compiled = new_value
+	persistent_data.compiled = new_value
+	if compiled_ui != null:
+		compiled_ui.modulate.a = 1 if new_value else 0.5
+
+
+func set_saved(new_value):
+	saved = new_value
+	persistent_data.saved = new_value
+	if saved_ui != null:
+		saved_ui.modulate.a = 1 if new_value else 0.5
+
+
+func set_current_script_path(new_value):
+	current_script_path = new_value
+	persistent_data.current_script_path = new_value
+	if editing_file_label != null:
+		editing_file_label.text = "Editing \"%s\" " % current_script_path
+
+
+func _on_script_text_changed():
+	set_compiled(false)
+	set_saved(false)
+
+
+func _on_file_menu_item_pressed(meta):
+	match meta:
+		"open":
+			open_file_dialog.popup()
+		"save":
+			save_current_file()
+		"save as":
+			save_file_dialog.popup()
+
+
+func _on_popup_about_to_show():
+	popup_dim.visible = true
+
+
+func _on_popup_hide():
+	popup_dim.visible = false
+
 
 func _setup_editor_assets(assets_registry):
 	compile_button.icon = assets_registry.load_asset("assets/icons/play.svg")
 	run_button.icon = assets_registry.load_asset("assets/icons/play.svg")
 	compiled_icon.texture = assets_registry.load_asset("assets/icons/check_box.svg")
+	saved_icon.texture = assets_registry.load_asset("assets/icons/check_box.svg")
+	file_menu.icon = assets_registry.load_asset("assets/icons/load.svg")
 	
 	script_text_edit._setup_editor_assets(assets_registry)
