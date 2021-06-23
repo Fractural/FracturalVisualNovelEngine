@@ -35,16 +35,6 @@ _global_script_classes=[ {
 "path": "res://addons/FracturalVNE/core/utils/serialization_utils.gd"
 }, {
 "base": "Reference",
-"class": "StoryScriptASTNode",
-"language": "GDScript",
-"path": "res://addons/FracturalVNE/core/story_script/story_script_ast_node.gd"
-}, {
-"base": "Reference",
-"class": "StoryScriptActions",
-"language": "GDScript",
-"path": "res://addons/FracturalVNE/core/story_script/story_script_actions.gd"
-}, {
-"base": "Reference",
 "class": "StoryScriptArgument",
 "language": "GDScript",
 "path": "res://addons/FracturalVNE/core/story_script/story_script_argument.gd"
@@ -52,7 +42,7 @@ _global_script_classes=[ {
 "base": "Node",
 "class": "StoryScriptCompiler",
 "language": "GDScript",
-"path": "res://addons/FracturalVNE/core/story_script/story_script_compiler.gd"
+"path": "res://addons/FracturalVNE/core/story_script/compiling/story_script_compiler.gd"
 }, {
 "base": "Reference",
 "class": "StoryScriptConstants",
@@ -77,7 +67,7 @@ _global_script_classes=[ {
 "base": "Reference",
 "class": "StoryScriptLexer",
 "language": "GDScript",
-"path": "res://addons/FracturalVNE/core/story_script/story_script_lexer.gd"
+"path": "res://addons/FracturalVNE/core/story_script/compiling/story_script_lexer.gd"
 }, {
 "base": "Reference",
 "class": "StoryScriptParameter",
@@ -87,7 +77,7 @@ _global_script_classes=[ {
 "base": "Reference",
 "class": "StoryScriptParser",
 "language": "GDScript",
-"path": "res://addons/FracturalVNE/core/story_script/story_script_parser.gd"
+"path": "res://addons/FracturalVNE/core/story_script/compiling/story_script_parser.gd"
 }, {
 "base": "Reference",
 "class": "StoryScriptPosition",
@@ -97,7 +87,7 @@ _global_script_classes=[ {
 "base": "Reference",
 "class": "StoryScriptReader",
 "language": "GDScript",
-"path": "res://addons/FracturalVNE/core/story_script/story_script_reader.gd"
+"path": "res://addons/FracturalVNE/core/story_script/compiling/story_script_reader.gd"
 }, {
 "base": "TextEdit",
 "class": "StoryScriptTextEdit",
@@ -107,12 +97,12 @@ _global_script_classes=[ {
 "base": "Reference",
 "class": "StoryScriptToken",
 "language": "GDScript",
-"path": "res://addons/FracturalVNE/core/story_script/story_script_token.gd"
+"path": "res://addons/FracturalVNE/core/story_script/compiling/story_script_token.gd"
 }, {
 "base": "Reference",
 "class": "StoryScriptTokensReader",
 "language": "GDScript",
-"path": "res://addons/FracturalVNE/core/story_script/story_script_tokens_reader.gd"
+"path": "res://addons/FracturalVNE/core/story_script/compiling/story_script_tokens_reader.gd"
 }, {
 "base": "Resource",
 "class": "TextEditTheme",
@@ -125,8 +115,6 @@ _global_script_class_icons={
 "PluginAssetsRegistry": "",
 "PluginUI": "",
 "SerializationUtils": "",
-"StoryScriptASTNode": "",
-"StoryScriptActions": "",
 "StoryScriptArgument": "",
 "StoryScriptCompiler": "",
 "StoryScriptConstants": "",

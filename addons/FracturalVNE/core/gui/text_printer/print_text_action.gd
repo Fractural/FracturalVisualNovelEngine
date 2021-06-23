@@ -1,4 +1,4 @@
-extends "res://addons/FracturalVNE/core/story/step_action.gd"
+extends "res://addons/FracturalVNE/core/story/director/step_action.gd"
 # Action for printing something in the TextPrinter
 
 

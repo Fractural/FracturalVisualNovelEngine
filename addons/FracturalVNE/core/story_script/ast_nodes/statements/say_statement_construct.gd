@@ -1,11 +1,15 @@
 extends "res://addons/FracturalVNE/core/story_script/ast_nodes/statements/stepped_statement_construct.gd"
+# Parses a say statement in a story script.
+
 
 const SayNode = preload("res://addons/FracturalVNE/core/story_script/ast_nodes/statements/say_statement.gd")
+
 
 func get_parse_types():
 	var arr = .get_parse_types()
 	arr.append("say")
 	return arr
+
 
 func parse(parser):
 	var checkpoint = parser.save_reader_state()

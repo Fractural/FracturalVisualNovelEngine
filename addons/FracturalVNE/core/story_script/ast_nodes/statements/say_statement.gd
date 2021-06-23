@@ -1,14 +1,24 @@
 extends "res://addons/FracturalVNE/core/story_script/ast_nodes/stepped_statement_node.gd"
+# AST Node that prints text said by a character or, if there is no character 
+# speaking, prints text as narration.
+
+
+const SayEntry = preload("res://addons/FracturalVNE/core/story/history/history_entries/say_entry.gd")
 
 var character
 var text
+
 
 func _init(position_ = null, character_ = null, text_ = null).(position_):
 	character = character_
 	text = text_
 
+
 func execute():
 	var text_printer = runtime_block.get_service("TextPrinter")
+	var history_manager = runtime_block.get_service("HistoryManager")
+	
+	history_manager.add_entry(SayEntry.new(character, text))
 	
 	if character == null:
 		text_printer.narrate(text)
@@ -20,6 +30,7 @@ func execute():
 		text_printer.say(result, text)
 	
 	.execute()
+
 
 func debug_string(tabs_string: String) -> String:
 	var string = ""
@@ -37,6 +48,7 @@ func debug_string(tabs_string: String) -> String:
 	string += "\n" + tabs_string + "}"
 	return string
 
+
 func propagate_call(method: String, arguments: Array = [], parent_first: bool = false):	
 	if parent_first:
 		.propagate_call(method, arguments, parent_first)
@@ -47,6 +59,7 @@ func propagate_call(method: String, arguments: Array = [], parent_first: bool = 
 	if not parent_first:
 		.propagate_call(method, arguments, parent_first)
 
+
 # ----- Serialization ----- #
 
 func serialize():
@@ -55,6 +68,7 @@ func serialize():
 		serialized_obj["character"] = character.serialize()
 	serialized_obj["text"] = text
 	return serialized_obj
+
 
 func deserialize(serialized_obj):	
 	var instance = .deserialize(serialized_obj)

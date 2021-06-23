@@ -1,11 +1,11 @@
-[gd_scene load_steps=16 format=2]
+[gd_scene load_steps=17 format=2]
 
 [ext_resource path="res://addons/FracturalVNE/core/story/story_manager.gd" type="Script" id=1]
-[ext_resource path="res://addons/FracturalVNE/core/story/story_director.gd" type="Script" id=2]
-[ext_resource path="res://addons/FracturalVNE/core/story/story_configurer.gd" type="Script" id=3]
+[ext_resource path="res://addons/FracturalVNE/core/story/director/story_director.gd" type="Script" id=2]
+[ext_resource path="res://addons/FracturalVNE/core/story/story_loader.gd" type="Script" id=3]
 [ext_resource path="res://addons/FracturalVNE/core/gui/basic_gui.tscn" type="PackedScene" id=4]
-[ext_resource path="res://addons/FracturalVNE/core/story_script/ast_node_manager.gd" type="Script" id=5]
-[ext_resource path="res://addons/FracturalVNE/core/story/story_history_manager.gd" type="Script" id=6]
+[ext_resource path="res://addons/FracturalVNE/core/story_script/story_services/ast_node_locator.gd" type="Script" id=5]
+[ext_resource path="res://addons/FracturalVNE/core/story/history/history_manager.gd" type="Script" id=6]
 [ext_resource path="res://addons/FracturalVNE/core/gui/story_gui_configurer.gd" type="Script" id=7]
 [ext_resource path="res://addons/FracturalVNE/core/character/character_manager.gd" type="Script" id=8]
 [ext_resource path="res://addons/FracturalVNE/core/utils/post_ready.gd" type="Script" id=9]
@@ -14,6 +14,7 @@
 [ext_resource path="res://addons/FracturalVNE/assets/themes/basic_gui_theme.tres" type="Theme" id=12]
 [ext_resource path="res://addons/FracturalVNE/assets/fonts/Hack/Hack-Regular.tres" type="DynamicFont" id=13]
 [ext_resource path="res://addons/FracturalVNE/core/utils/follow_main_viewport_size.gd" type="Script" id=14]
+[ext_resource path="res://addons/FracturalVNE/core/io/story_state_manager.gd" type="Script" id=15]
 [ext_resource path="res://addons/FracturalVNE/core/gui/_misc/screenshot_manager.gd" type="Script" id=16]
 
 [node name="ScenePostReady" type="Node"]
@@ -21,31 +22,35 @@ script = ExtResource( 9 )
 
 [node name="StoryManager" type="Node" parent="."]
 script = ExtResource( 1 )
-story_director_path = NodePath("../StoryConfigurer/StoryServices/StoryDirector")
-ast_node_manager_path = NodePath("../StoryConfigurer/StoryServices/ASTNodeManager")
-story_configurer_path = NodePath("../StoryConfigurer")
+story_loader_path = NodePath("../StoryLoader")
 story_gui_configurer_path = NodePath("../StoryGUIConfigurer")
+
+[node name="StoryStateManager" type="Node" parent="."]
+script = ExtResource( 15 )
 screenshot_manager_path = NodePath("../ScreenshotManager")
+story_manager_path = NodePath("../StoryManager")
+story_director_path = NodePath("../StoryLoader/StoryServices/StoryDirector")
+ast_node_locator_path = NodePath("../StoryLoader/StoryServices/ASTNodeLocator")
 
-[node name="StoryHistoryManager" type="Node" parent="."]
-script = ExtResource( 6 )
-story_director_path = NodePath("../StoryConfigurer/StoryServices/StoryDirector")
-
-[node name="StoryConfigurer" type="Node" parent="."]
+[node name="StoryLoader" type="Node" parent="."]
 script = ExtResource( 3 )
 services_holder_path = NodePath("StoryServices")
 
-[node name="StoryServices" type="Node" parent="StoryConfigurer"]
+[node name="StoryServices" type="Node" parent="StoryLoader"]
 
-[node name="StoryDirector" type="Node" parent="StoryConfigurer/StoryServices"]
+[node name="HistoryManager" type="Node" parent="StoryLoader/StoryServices"]
+script = ExtResource( 6 )
+story_director_path = NodePath("../StoryDirector")
+
+[node name="StoryDirector" type="Node" parent="StoryLoader/StoryServices"]
 script = ExtResource( 2 )
 auto_step_duration = 0.25
 skip_speed = 0.01
 
-[node name="ASTNodeManager" type="Node" parent="StoryConfigurer/StoryServices"]
+[node name="ASTNodeLocator" type="Node" parent="StoryLoader/StoryServices"]
 script = ExtResource( 5 )
 
-[node name="CharacterManager" type="Node" parent="StoryConfigurer/StoryServices"]
+[node name="CharacterManager" type="Node" parent="StoryLoader/StoryServices"]
 script = ExtResource( 8 )
 story_gui_configurer_path = NodePath("../../../StoryGUIConfigurer")
 
@@ -83,7 +88,7 @@ __meta__ = {
 
 [node name="StoryGUIConfigurer" type="Node" parent="."]
 script = ExtResource( 7 )
-story_configurer_path = NodePath("../StoryConfigurer")
+story_loader_path = NodePath("../StoryLoader")
 story_gui_holder_path = NodePath(".")
 
 [node name="BasicGUI" parent="StoryGUIConfigurer" instance=ExtResource( 4 )]

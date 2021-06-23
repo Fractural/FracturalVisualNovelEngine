@@ -43,7 +43,7 @@ export var default_dialogue_color: Color = Color.white
 
 var curr_print_text_action
 
-onready var story_director = get_node(story_gui_path).story_director
+onready var story_director = StoryServiceRegistry.get_service("StoryDirector")
 
 
 func say(character, text: String, skippable: bool = true):

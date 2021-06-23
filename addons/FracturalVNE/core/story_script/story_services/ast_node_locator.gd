@@ -1,27 +1,26 @@
 extends Node
+# Responsible for searching a story tree for a specific node that has
+# a specific id.
 
-# ----- StoryService Info ----- #
+
+# ----- StoryService ----- #
 
 var program_node
 
 func get_service_name():
-	return "ASTNodeManager"
+	return "ASTNodeLocator"
 
 func configure_service(program_node_):
 	program_node = program_node_
-	curr_reference_id = 0
 
-# --- StoryService Info End --- #
-
-
-
+# --- StoryService --- #
 
 
 var _results = []
-var curr_reference_id = 0
 
 func _add_result(node):
 	_results.append(node)
+
 
 func find_node_with_id(reference_id):
 	_results = []
@@ -29,7 +28,3 @@ func find_node_with_id(reference_id):
 	if _results.size() == 0:
 		return null
 	return _results[0]
-
-func next_reference_id():
-	curr_reference_id += 1
-	return curr_reference_id - 1

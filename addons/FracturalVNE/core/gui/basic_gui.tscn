@@ -27,7 +27,6 @@ script = ExtResource( 5 )
 __meta__ = {
 "_edit_use_anchors_": false
 }
-story_gui_path = NodePath("..")
 
 [node name="Panel" type="MarginContainer" parent="."]
 anchor_top = 1.0
@@ -74,7 +73,6 @@ save_button_path = NodePath("Save")
 load_button_path = NodePath("Load")
 options_button_path = NodePath("Options")
 pause_menu_path = NodePath("../../../BasicPauseMenu")
-story_gui_path = NodePath("../../..")
 
 [node name="History" type="Button" parent="Panel/VBoxContainer/BottomMenu"]
 margin_left = 112.0

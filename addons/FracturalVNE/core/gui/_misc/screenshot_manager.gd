@@ -13,6 +13,7 @@ export var gui_viewport_path: NodePath
 
 # The latest screenshot taken
 var screenshot
+var is_taking_screenshot: bool = false
 
 onready var facade_viewport_texture_rect = get_node(facade_viewport_texture_rect_path)
 onready var story_gui_configurer = get_node(story_gui_configurer_path)
@@ -21,6 +22,10 @@ onready var gui_viewport = get_node(gui_viewport_path)
 
 # Screenshots the entire screen
 func screenshot():
+	if is_taking_screenshot:
+		return
+	
+	is_taking_screenshot = true
 	var image = get_viewport().get_texture().get_data()
 	
 	image.flip_y()
@@ -29,6 +34,7 @@ func screenshot():
 	texture.create_from_image(image)
 	
 	screenshot = texture
+	is_taking_screenshot = false
 	emit_signal("finished_screenshot", texture)
 
 # Screenshots all gameplay related nodes (excludes pause menu).
@@ -37,6 +43,10 @@ func screenshot():
 # 		terrible support for viewports. (ie. viewports not receiving unhandled_input, 
 #		etc)
 func screenshot_gameplay():
+	if is_taking_screenshot:
+		return
+	
+	is_taking_screenshot = true
 	# Reparent the gui as a child of the viewport
 	story_gui_configurer.story_gui_holder.remove_child(story_gui_configurer.story_gui)
 	gui_viewport.add_child(story_gui_configurer.story_gui)
@@ -83,4 +93,5 @@ func screenshot_gameplay():
 	story_gui_configurer.story_gui_holder.add_child(story_gui_configurer.story_gui)
 	
 	screenshot = viewport_texture
+	is_taking_screenshot = false
 	emit_signal("finished_screenshot", screenshot)
