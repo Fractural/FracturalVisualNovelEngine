@@ -1,4 +1,4 @@
-extends Node
+extends Reference
 # Responsible for assigning references IDs (essentially UIDs) for each node
 # If the tree has not been changed, all nodes should still receive the same
 # reference ids. However even a tiny modification can alter the ids that are

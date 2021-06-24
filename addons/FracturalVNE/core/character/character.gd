@@ -14,6 +14,17 @@ func _init(name_ = null, name_color_ = null, dialogue_color_ = null):
 	dialogue_color = dialogue_color_
 
 
+# Optional function that is called whenever an object is instantiated within
+# a story as a variable. This can be used to populate services that track
+# certain types of objects (ie. CharacterManager tracking all Character
+# instances in a story). And since all variables are stored in the order they
+# are added, these services would be populated with the exact same data in the
+# exact same order every time, which allows for saving and loading of a story's
+# variables.
+func _story_init():
+	StoryServiceRegistry.get_service("CharacterManager").add_character(self)
+
+
 # ----- Serialization ----- #
 
 func serialize():

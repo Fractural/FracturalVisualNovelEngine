@@ -15,9 +15,9 @@ func _init(position_ = null, statements_: Array = []).(position_):
 func _init_post():
 	variables = {}
 	if statements.size() > 0:
-		statements.front().runtime_block = self
+		statements.front().set_runtime_block(self)
 		for i in range(1, statements.size()):
-			statements[i].runtime_block = self
+			statements[i].set_runtime_block(self)
 			statements[i - 1].runtime_next_node = statements[i]
 	
 	# Bind the last statement's executed signal to listen for when the block 
@@ -35,20 +35,20 @@ func block_completed():
 	.execute()
 
 func get_service(name: String):
-	return runtime_block.get_service(name)
+	return get_runtime_block().get_service(name)
 
 func has_variable(name: String):
 	if variables.has(name):
 		return true
-	if runtime_block != null:
-		return runtime_block.has_variable(name)
+	if get_runtime_block() != null:
+		return get_runtime_block().has_variable(name)
 	return false
 
 func get_variable(name: String):
 	if variables.has(name):
 		return variables[name]
-	elif runtime_block != null:
-		return runtime_block.get_variable(name)
+	elif get_runtime_block() != null:
+		return get_runtime_block().get_variable(name)
 	else:
 		return StoryScriptError.new('Variable named "%s" could not be found.' % name)
 
@@ -57,8 +57,8 @@ func get_variable(name: String):
 func set_variable(name: String, value):
 	if variables.has(name):
 		variables[name] = value
-	elif runtime_block != null:
-		runtime_block.set_variable(name)
+	elif get_runtime_block() != null:
+		get_runtime_block().set_variable(name)
 	else:
 		StoryScriptError.new('Variable named "%s" could not be found.' % name)
 
@@ -71,7 +71,7 @@ func declare_variable(name: String, value = null):
 # For now only the ProgramNode can call functions. All blocks just pass
 # the call_function request to its parent block until it reaches a ProgramNode.
 func call_function(name: String, arguments = []):
-	return runtime_block.call_function(name, arguments)
+	return get_runtime_block().call_function(name, arguments)
 
 func debug_string(tabs_string: String) -> String:
 	var string = ""
@@ -113,7 +113,7 @@ func serialize_save(saved_nodes):
 			value = variables[variable_name].serialize()
 		
 		serialized_variables.append({
-			"variable": variable_name,
+			"variable_name": variable_name,
 			"value": value,
 			"is_object": is_object,
 		})
@@ -126,9 +126,12 @@ func deserialize_save(saved_nodes_lookup):
 	var serialized_variables = saved_nodes_lookup[str(reference_id)]["variables"]
 	for serialized_variable in serialized_variables:
 		if serialized_variable["is_object"]:
-			variables[serialized_variable["variable"]] = SerializationUtils.deserialize(serialized_variable["value"])
+			var variable = SerializationUtils.deserialize(serialized_variable["value"])
+			variables[serialized_variable["variable_name"]] = variable
+			if variable.has_method("_story_init"):
+				variable._story_init()
 		else:
-			variables[serialized_variable["variable"]] = serialized_variable["value"]
+			variables[serialized_variable["variable_name"]] = serialized_variable["value"]
 
 func serialize():
 	var serialized_obj = .serialize()

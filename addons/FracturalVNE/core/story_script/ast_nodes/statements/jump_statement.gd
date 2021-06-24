@@ -16,7 +16,7 @@ func _init(position_ = null, label_name_ = null).(position_):
 # TODO NOW: Add error system and connect it to the StoryRuntimeDebugger error popup
 
 func execute():
-	var result = runtime_block.get_service("StoryDirector").jump_to_label(label_name)
+	var result = get_runtime_block().get_service("StoryDirector").jump_to_label(label_name)
 	if not is_success(result):
 		throw_error(stack_error(result, 'Error jumping to label "%s".' % label_name))
 		return

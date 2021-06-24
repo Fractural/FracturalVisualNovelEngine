@@ -18,7 +18,7 @@ func execute():
 		throw_error(result)
 		return
 	
-	runtime_block.get_variable(variable_name).value = result
+	get_runtime_block().get_variable(variable_name).value = result
 	.execute()
 
 func debug_string(tabs_string: String) -> String:

@@ -28,7 +28,7 @@ func block_executed():
 	.execute()
 
 func runtime_initialize():
-	var result = runtime_block.get_service("StoryDirector").add_label(self)
+	var result = get_runtime_block().get_service("StoryDirector").add_label(self)
 	if not is_success(result):
 		throw_error(result)
 		return

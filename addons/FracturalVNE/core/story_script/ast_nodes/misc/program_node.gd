@@ -37,11 +37,6 @@ func start_configure_node():
 func start_runtime_initialize():
 	block.propagate_call("runtime_initialize")
 
-func start_configure_services():
-	for service in services.values():
-		if service.has_method("configure_service"):
-			service.configure_service(self)
-
 func execute():
 	# TODO NOW: Add error system that breaks out of execution. For ProgramNode, check for 
 	#			initialization errors before executing. The error system should be a new instance
@@ -57,15 +52,18 @@ func add_service(service, name = null):
 		name = service.get_service_name()
 	if typeof(name) != TYPE_STRING:
 		assert(false, "Service name must be string.")
-	services[name] = service
+	services[name] = weakref(service)
 	
 	# Adds the service as a function holder if it has function definitions
 	if "function_definitions" in service:
 		add_function_holder(service)
+	
+	if service.has_method("configure_service"):
+		service.configure_service(self)
 
 func get_service(name: String):
 	if services.has(name):
-		return services[name]
+		return services[name].get_ref()
 	return error('Service "%s" could not be found.' % name)
 
 # TODO: Add global variables. Variable functions are currently placeholders.

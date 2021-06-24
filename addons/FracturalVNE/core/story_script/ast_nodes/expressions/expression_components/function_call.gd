@@ -26,7 +26,7 @@ func evaluate():
 		else:
 			return stack_error(evaluated_value, 'Error in arguments for function "%s".' % name)
 	
-	var result = runtime_block.call_function(name, formatted_arguments)
+	var result = get_runtime_block().call_function(name, formatted_arguments)
 	if is_success(result):
 		return result
 	else:

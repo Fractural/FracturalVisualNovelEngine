@@ -13,7 +13,7 @@ func _init(position_ = null, variable_name_ = null, value_expression_ = null).(p
 	value_expression = value_expression_
 
 func execute():
-	runtime_block.declare_variable(variable_name, value_expression)
+	get_runtime_block().declare_variable(variable_name, value_expression)
 	.execute()
 
 func debug_string(tabs_string: String) -> String:

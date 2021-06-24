@@ -11,7 +11,7 @@ func _init(position_ = null, name_ = null).(position_):
 	name = name_
 
 func evaluate():
-	var variable = runtime_block.get_variable(name)
+	var variable = get_runtime_block().get_variable(name)
 	if is_success(variable):
 		return variable
 	return stack_error(variable)

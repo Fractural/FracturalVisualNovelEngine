@@ -15,8 +15,8 @@ func _init(position_ = null, character_ = null, text_ = null).(position_):
 
 
 func execute():
-	var text_printer = runtime_block.get_service("TextPrinter")
-	var history_manager = runtime_block.get_service("HistoryManager")
+	var text_printer = get_runtime_block().get_service("TextPrinter")
+	var history_manager = get_runtime_block().get_service("HistoryManager")
 	
 	history_manager.add_entry(SayEntry.new(character, text))
 	

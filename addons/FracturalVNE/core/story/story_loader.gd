@@ -32,7 +32,6 @@ func load_story(story_file_path):
 	
 	for service in services:
 		story_tree.add_service(service)
-	story_tree.start_configure_services()
 	
 	story_tree.start_runtime_initialize()
 	

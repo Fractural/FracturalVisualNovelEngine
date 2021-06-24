@@ -54,6 +54,10 @@ func get_character_id(character):
 	return id
 
 
+func add_character(character):
+	characters.append(character)
+
+
 func get_character(id):
 	return characters[id]
 
@@ -63,26 +67,30 @@ func Character(name_: String, name_color_, dialogue_color_):
 		name_color_ = Color(name_color_)
 	if typeof(dialogue_color_) == TYPE_STRING:
 		dialogue_color_ = Color(dialogue_color_)
-	characters.append(Character.new(name_, name_color_, dialogue_color_))
-	return characters.back()
+	var new_character = Character.new(name_, name_color_, dialogue_color_)
+	new_character._story_init()
+	return new_character
 
 
 # ----- Serialization ----- #
 
-func serialize_state():
-	var serialized_characters = []
-	for character in characters:
-		serialized_characters.append(character.serialize())
-	
-	return { 
-		"service_name": get_service_name(),
-		"characters": serialized_characters, 
-	}
+# characters will be populated automatically by Character variables when they 
+# are deserialized in a BlockNode.
 
-
-func deserialize_state(serialized_state):
-	characters = []
-	for serialized_character in serialized_state["characters"]:
-		characters.append(SerializationUtils.deserialize(serialized_character))
+#func serialize_state():
+#	var serialized_characters = []
+#	for character in characters:
+#		serialized_characters.append(character.serialize())
+#
+#	return { 
+#		"service_name": get_service_name(),
+#		"characters": serialized_characters, 
+#	}
+#
+#
+#func deserialize_state(serialized_state):
+#	characters = []
+#	for serialized_character in serialized_state["characters"]:
+#		characters.append(SerializationUtils.deserialize(serialized_character))
 
 # ----- Serialization ----- #

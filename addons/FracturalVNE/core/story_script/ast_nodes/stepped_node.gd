@@ -11,7 +11,7 @@ func _init(position_ = null).(position_):
 func execute():
 	emit_signal("executed")
 	if not override_step:
-		runtime_block.get_service("StoryDirector").start_step(self)
+		get_runtime_block().get_service("StoryDirector").start_step(self)
 
 # Overriding step allows things like  "together blocks" to 
 # run groups of statements on the same step together
