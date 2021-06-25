@@ -15,23 +15,27 @@ func _init(character_ = null, text_: String = ""):
 # ----- Serialization ----- #
 
 func serialize():
-	var character_id: int
-	if character != null:
-		character_id = StoryServiceRegistry.get_service("StoryReferenceRegistry").get_reference_id(character)
-	else:
-		character_id = -1
-	
-	return {
+	var serialized_object = {
 		"script_path": get_script().get_path(),
-		"character_id": character_id,
 		"text": text
 	}
+	
+	if character != null and typeof(character) != TYPE_STRING:
+		serialized_object["character_id"] = StoryServiceRegistry.get_service("StoryReferenceRegistry").get_reference_id(character)
+	else:
+		serialized_object["character_name"] = character
+	
+	return serialized_object
 
 
 func deserialize(serialized_object):
 	var instance = get_script().new()
-	if serialized_object["character_id"] > -1:
+	
+	if serialized_object.has("character_id"):
 		instance.character = StoryServiceRegistry.get_service("StoryReferenceRegistry").get_reference(serialized_object["character_id"])
+	else:
+		instance.character = serialized_object["character_name"]
+	
 	instance.text = serialized_object["text"]
 	
 	return instance
