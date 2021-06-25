@@ -1,0 +1,92 @@
+[gd_scene load_steps=10 format=2]
+
+[ext_resource path="res://addons/FracturalVNE/core/gui/_misc/modulate_button.gd" type="Script" id=1]
+[ext_resource path="res://icon.png" type="Texture" id=2]
+[ext_resource path="res://addons/FracturalVNE/core/gui/save_slots_menu/ui_save_slot.gd" type="Script" id=3]
+[ext_resource path="res://addons/FracturalVNE/assets/fonts/Noto_Sans/NotoSans-Regular-Title.tres" type="DynamicFont" id=4]
+
+[sub_resource type="StyleBoxEmpty" id=1]
+
+[sub_resource type="StyleBoxEmpty" id=2]
+
+[sub_resource type="StyleBoxEmpty" id=3]
+
+[sub_resource type="StyleBoxEmpty" id=4]
+
+[sub_resource type="StyleBoxEmpty" id=5]
+
+[node name="SaveSlot" type="Control"]
+margin_right = 230.0
+margin_bottom = 185.0
+rect_min_size = Vector2( 230, 185 )
+script = ExtResource( 3 )
+__meta__ = {
+"_edit_use_anchors_": false
+}
+thumbnail_rect_path = NodePath("Button/ThumbnailRect")
+date_label_path = NodePath("Button/DateLabel")
+button_path = NodePath("Button")
+slot_label_path = NodePath("Button/ColorRect/SlotLabel")
+
+[node name="Button" type="Button" parent="."]
+anchor_right = 1.0
+anchor_bottom = 1.0
+custom_styles/hover = SubResource( 1 )
+custom_styles/pressed = SubResource( 2 )
+custom_styles/focus = SubResource( 3 )
+custom_styles/disabled = SubResource( 4 )
+custom_styles/normal = SubResource( 5 )
+script = ExtResource( 1 )
+__meta__ = {
+"_edit_use_anchors_": false,
+"_editor_description_": ""
+}
+disabled_color = Color( 0.588235, 0.588235, 0.588235, 0.588235 )
+pressed_color = Color( 0.490196, 0.490196, 0.490196, 1 )
+hover_color = Color( 0.882353, 0.882353, 0.882353, 0.882353 )
+
+[node name="ColorRect" type="ColorRect" parent="Button"]
+anchor_right = 1.0
+anchor_bottom = 1.0
+margin_bottom = -25.0
+mouse_filter = 2
+color = Color( 0, 0, 0, 0.392157 )
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="SlotLabel" type="Label" parent="Button/ColorRect"]
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+margin_left = -41.5
+margin_top = -22.5
+margin_right = 41.5
+margin_bottom = 22.5
+size_flags_horizontal = 5
+custom_fonts/font = ExtResource( 4 )
+text = "Slot 1"
+
+[node name="ThumbnailRect" type="TextureRect" parent="Button"]
+anchor_right = 1.0
+anchor_bottom = 1.0
+margin_bottom = -25.0
+texture = ExtResource( 2 )
+expand = true
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="DateLabel" type="Label" parent="Button"]
+anchor_top = 1.0
+anchor_right = 1.0
+anchor_bottom = 1.0
+margin_top = -23.0
+margin_bottom = 2.0
+text = "12/12/2021, Saturday, 12:56 PM"
+align = 1
+valign = 1
+__meta__ = {
+"_edit_use_anchors_": false
+}

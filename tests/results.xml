@@ -1,0 +1,7 @@
+<?xml version="1.0" ?>
+<testsuites failures="1" name="TestXML" tests="1" time="0">
+	<testsuite name="" failures="0"  tests="0" time="0">
+		<testcase name="Not Found" time="0"><failure message="No Tests Found On Suite res://tests/story_script_lexer_tests.gd"></failure></testcase>
+	</testsuite>
+
+</testsuites>

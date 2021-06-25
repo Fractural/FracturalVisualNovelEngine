@@ -8,23 +8,170 @@
 
 config_version=4
 
-_global_script_classes=[  ]
+_global_script_classes=[ {
+"base": "Reference",
+"class": "DemoStory",
+"language": "GDScript",
+"path": "res://demo/demo_story.gd"
+}, {
+"base": "Reference",
+"class": "FracturalUtils",
+"language": "GDScript",
+"path": "res://addons/FracturalVNE/core/utils/utils.gd"
+}, {
+"base": "Reference",
+"class": "PluginAssetsRegistry",
+"language": "GDScript",
+"path": "res://addons/FracturalVNE/plugin/plugin_assets_registry.gd"
+}, {
+"base": "Control",
+"class": "PluginUI",
+"language": "GDScript",
+"path": "res://addons/FracturalVNE/plugin/ui/plugin_ui.gd"
+}, {
+"base": "Reference",
+"class": "SerializationUtils",
+"language": "GDScript",
+"path": "res://addons/FracturalVNE/core/utils/serialization_utils.gd"
+}, {
+"base": "Reference",
+"class": "StoryScriptArgument",
+"language": "GDScript",
+"path": "res://addons/FracturalVNE/core/story_script/story_script_argument.gd"
+}, {
+"base": "Node",
+"class": "StoryScriptCompiler",
+"language": "GDScript",
+"path": "res://addons/FracturalVNE/core/story_script/compiling/story_script_compiler.gd"
+}, {
+"base": "Reference",
+"class": "StoryScriptConstants",
+"language": "GDScript",
+"path": "res://addons/FracturalVNE/core/story_script/story_script_constants.gd"
+}, {
+"base": "Node",
+"class": "StoryScriptEditor",
+"language": "GDScript",
+"path": "res://addons/FracturalVNE/plugin/ui/story_script_editor.gd"
+}, {
+"base": "Reference",
+"class": "StoryScriptError",
+"language": "GDScript",
+"path": "res://addons/FracturalVNE/core/story_script/story_script_error.gd"
+}, {
+"base": "Reference",
+"class": "StoryScriptFuncDef",
+"language": "GDScript",
+"path": "res://addons/FracturalVNE/core/story_script/story_script_function_definition.gd"
+}, {
+"base": "Reference",
+"class": "StoryScriptLexer",
+"language": "GDScript",
+"path": "res://addons/FracturalVNE/core/story_script/compiling/story_script_lexer.gd"
+}, {
+"base": "Reference",
+"class": "StoryScriptParameter",
+"language": "GDScript",
+"path": "res://addons/FracturalVNE/core/story_script/story_script_parameter.gd"
+}, {
+"base": "Reference",
+"class": "StoryScriptParser",
+"language": "GDScript",
+"path": "res://addons/FracturalVNE/core/story_script/compiling/story_script_parser.gd"
+}, {
+"base": "Reference",
+"class": "StoryScriptPosition",
+"language": "GDScript",
+"path": "res://addons/FracturalVNE/core/story_script/story_script_position.gd"
+}, {
+"base": "Reference",
+"class": "StoryScriptReader",
+"language": "GDScript",
+"path": "res://addons/FracturalVNE/core/story_script/compiling/story_script_reader.gd"
+}, {
+"base": "TextEdit",
+"class": "StoryScriptTextEdit",
+"language": "GDScript",
+"path": "res://addons/FracturalVNE/plugin/ui/story_script_text_edit.gd"
+}, {
+"base": "Reference",
+"class": "StoryScriptToken",
+"language": "GDScript",
+"path": "res://addons/FracturalVNE/core/story_script/compiling/story_script_token.gd"
+}, {
+"base": "Reference",
+"class": "StoryScriptTokensReader",
+"language": "GDScript",
+"path": "res://addons/FracturalVNE/core/story_script/compiling/story_script_tokens_reader.gd"
+}, {
+"base": "Resource",
+"class": "TextEditTheme",
+"language": "GDScript",
+"path": "res://addons/FracturalVNE/plugin/ui/text_edit_theme.gd"
+} ]
 _global_script_class_icons={
-
+"DemoStory": "",
+"FracturalUtils": "",
+"PluginAssetsRegistry": "",
+"PluginUI": "",
+"SerializationUtils": "",
+"StoryScriptArgument": "",
+"StoryScriptCompiler": "",
+"StoryScriptConstants": "",
+"StoryScriptEditor": "",
+"StoryScriptError": "",
+"StoryScriptFuncDef": "",
+"StoryScriptLexer": "",
+"StoryScriptParameter": "",
+"StoryScriptParser": "",
+"StoryScriptPosition": "",
+"StoryScriptReader": "",
+"StoryScriptTextEdit": "",
+"StoryScriptToken": "",
+"StoryScriptTokensReader": "",
+"TextEditTheme": ""
 }
 
 [Fractural_VNE]
 
+Display=9
+
+[WAT]
+
+Test_Directory="res://tests"
+Results_Directory="res://tests"
+Test_Metadata_Directory="res://tests"
+Tags=PoolStringArray(  )
+Window_Size=Vector2( 1280, 720 )
+Minimize_Window_When_Running_Tests=false
+Port=6008
+Default_Launch=0
+Run_All_Tests=Object(InputEventKey,"resource_local_to_scene":false,"resource_name":"","device":0,"alt":false,"shift":false,"control":false,"meta":false,"command":false,"pressed":false,"scancode":0,"unicode":0,"echo":false,"script":null)
+
+Auto_Refresh_Tests=false
 Display=8
 
 [application]
 
 config/name="FracturalVisualNovelEngine"
+run/main_scene="res://addons/FracturalVNE/plugin/ui/plugin_ui.tscn"
 config/icon="res://icon.png"
+
+[autoload]
+
+StoryServiceRegistry="*res://addons/FracturalVNE/core/utils/story_service_registry.tscn"
 
 [editor_plugins]
 
-enabled=PoolStringArray( "FracturalVNE" )
+enabled=PoolStringArray( "res://addons/FracturalVNE/plugin.cfg" )
+
+[global]
+
+debug=false
+
+[network]
+
+limits/debugger_stdout/max_chars_per_second=131072
 
 [rendering]
 

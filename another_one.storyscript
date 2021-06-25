@@ -1,0 +1,23 @@
+define b = Character(name="Bob", name_color="#fcba03") 
+define j = Character("Joe", "#03a1fc", "#03a1fc") 
+
+b "Hi there, I'm bob!" 
+j "Hi there, I'm joeeee!" 
+"Tom" "Hi there, I'm tom!" 
+"Tom" "How are ya doing?" 
+"Tom" "**Insert more small talk**"
+
+"Here's some lorem ipsum!"
+"Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum."
+
+say(b, "This is from a function!") 
+say(j, "This is also from a function!") 
+say("lol", "This is also also from a function!") 
+
+label lol: 
+	b "I'm in a label!" 
+	j "I'm also in a label!" 
+	"Tom" "I'm also also in a label!" 
+	"Here's some narration in the label!" 
+	"Tom" "Lets jump recursively back to that label!" 
+	jump lol

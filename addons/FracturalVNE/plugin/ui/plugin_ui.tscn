@@ -1,0 +1,21 @@
+[gd_scene load_steps=4 format=2]
+
+[ext_resource path="res://addons/FracturalVNE/plugin/ui/plugin_ui.gd" type="Script" id=1]
+[ext_resource path="res://addons/FracturalVNE/plugin/ui/story_script_editor.tscn" type="PackedScene" id=2]
+[ext_resource path="res://addons/FracturalVNE/plugin/ui/story_script_persistent_data.gd" type="Script" id=3]
+
+[node name="Fractural VNE" type="Control"]
+anchor_right = 1.0
+anchor_bottom = 1.0
+rect_min_size = Vector2( 0, 500 )
+size_flags_vertical = 3
+script = ExtResource( 1 )
+__meta__ = {
+"_edit_use_anchors_": false
+}
+story_script_editor_path = NodePath("StoryScriptEditor")
+
+[node name="StoryScriptEditor" parent="." instance=ExtResource( 2 )]
+
+[node name="StoryScriptPersistentData" type="Node" parent="."]
+script = ExtResource( 3 )

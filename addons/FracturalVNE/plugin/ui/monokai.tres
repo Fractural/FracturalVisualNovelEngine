@@ -1,0 +1,17 @@
+[gd_resource type="Resource" load_steps=3 format=2]
+
+[ext_resource path="res://addons/FracturalVNE/plugin/ui/text_edit_theme.gd" type="Script" id=1]
+[ext_resource path="res://addons/FracturalVNE/assets/fonts/Hack/Hack-Regular.tres" type="DynamicFont" id=2]
+
+[resource]
+script = ExtResource( 1 )
+font = ExtResource( 2 )
+background_color = Color( 0.152941, 0.156863, 0.133333, 1 )
+foreground_color = Color( 0.972549, 0.972549, 0.94902, 1 )
+comment_color = Color( 0.458824, 0.443137, 0.368627, 1 )
+accent_1_color = Color( 0.976471, 0.14902, 0.447059, 1 )
+accent_2_color = Color( 0.992157, 0.592157, 0.121569, 1 )
+accent_3_color = Color( 0.65098, 0.886275, 0.180392, 1 )
+accent_4_color = Color( 0.4, 0.85098, 0.937255, 1 )
+string_color = Color( 0.901961, 0.858824, 0.454902, 1 )
+number_color = Color( 0.682353, 0.505882, 1, 1 )

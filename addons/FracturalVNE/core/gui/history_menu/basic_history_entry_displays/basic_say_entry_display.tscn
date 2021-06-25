@@ -1,0 +1,45 @@
+[gd_scene load_steps=2 format=2]
+
+[ext_resource path="res://addons/FracturalVNE/core/gui/history_menu/basic_history_entry_displays/say_entry_display.gd" type="Script" id=1]
+
+[node name="SayEntry" type="PanelContainer"]
+margin_right = 714.0
+margin_bottom = 299.0
+script = ExtResource( 1 )
+__meta__ = {
+"_edit_use_anchors_": false
+}
+name_label_path = NodePath("HSplitContainer/Name")
+dialogue_label_path = NodePath("HSplitContainer/Text")
+
+[node name="HSplitContainer" type="HSplitContainer" parent="."]
+margin_left = 7.0
+margin_top = 7.0
+margin_right = 707.0
+margin_bottom = 292.0
+custom_constants/separation = 20
+dragger_visibility = 1
+
+[node name="Name" type="RichTextLabel" parent="HSplitContainer"]
+margin_right = 100.0
+margin_bottom = 285.0
+rect_min_size = Vector2( 100, 24 )
+bbcode_enabled = true
+bbcode_text = "[right]Name"
+text = "Name"
+fit_content_height = true
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="Text" type="RichTextLabel" parent="HSplitContainer"]
+margin_left = 120.0
+margin_right = 700.0
+margin_bottom = 285.0
+rect_min_size = Vector2( 0, 24 )
+bbcode_enabled = true
+text = "This is some text."
+fit_content_height = true
+__meta__ = {
+"_edit_use_anchors_": false
+}

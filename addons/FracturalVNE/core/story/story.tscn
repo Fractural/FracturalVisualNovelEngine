@@ -1,0 +1,182 @@
+[gd_scene load_steps=18 format=2]
+
+[ext_resource path="res://addons/FracturalVNE/core/story/story_manager.gd" type="Script" id=1]
+[ext_resource path="res://addons/FracturalVNE/core/story/director/story_director.gd" type="Script" id=2]
+[ext_resource path="res://addons/FracturalVNE/core/story/story_loader.gd" type="Script" id=3]
+[ext_resource path="res://addons/FracturalVNE/core/gui/basic_gui.tscn" type="PackedScene" id=4]
+[ext_resource path="res://addons/FracturalVNE/core/story_script/story_services/ast_node_locator.gd" type="Script" id=5]
+[ext_resource path="res://addons/FracturalVNE/core/story/history/history_manager.gd" type="Script" id=6]
+[ext_resource path="res://addons/FracturalVNE/core/gui/story_gui_configurer.gd" type="Script" id=7]
+[ext_resource path="res://addons/FracturalVNE/core/character/character_manager.gd" type="Script" id=8]
+[ext_resource path="res://addons/FracturalVNE/core/utils/post_ready.gd" type="Script" id=9]
+[ext_resource path="res://addons/FracturalVNE/assets/fonts/Noto_Sans/NotoSans-Regular-Title.tres" type="DynamicFont" id=10]
+[ext_resource path="res://addons/FracturalVNE/core/utils/story_runtime_debugger.gd" type="Script" id=11]
+[ext_resource path="res://addons/FracturalVNE/assets/themes/basic_gui_theme.tres" type="Theme" id=12]
+[ext_resource path="res://addons/FracturalVNE/assets/fonts/Hack/Hack-Regular.tres" type="DynamicFont" id=13]
+[ext_resource path="res://addons/FracturalVNE/core/utils/follow_main_viewport_size.gd" type="Script" id=14]
+[ext_resource path="res://addons/FracturalVNE/core/io/story_state_manager.gd" type="Script" id=15]
+[ext_resource path="res://addons/FracturalVNE/core/gui/_misc/screenshot_manager.gd" type="Script" id=16]
+[ext_resource path="res://addons/FracturalVNE/core/io/reference_registry.gd" type="Script" id=17]
+
+[node name="ScenePostReady" type="Node"]
+script = ExtResource( 9 )
+
+[node name="StoryManager" type="Node" parent="."]
+script = ExtResource( 1 )
+story_loader_path = NodePath("../StoryLoader")
+story_gui_configurer_path = NodePath("../StoryGUIConfigurer")
+
+[node name="StoryStateManager" type="Node" parent="."]
+script = ExtResource( 15 )
+screenshot_manager_path = NodePath("../ScreenshotManager")
+story_manager_path = NodePath("../StoryManager")
+story_director_path = NodePath("../StoryLoader/StoryServices/StoryDirector")
+ast_node_locator_path = NodePath("../StoryLoader/StoryServices/ASTNodeLocator")
+
+[node name="StoryLoader" type="Node" parent="."]
+script = ExtResource( 3 )
+services_holder_path = NodePath("StoryServices")
+
+[node name="StoryServices" type="Node" parent="StoryLoader"]
+
+[node name="StoryReferenceRegistry" type="Node" parent="StoryLoader/StoryServices"]
+script = ExtResource( 17 )
+
+[node name="StoryDirector" type="Node" parent="StoryLoader/StoryServices"]
+script = ExtResource( 2 )
+auto_step_duration = 0.25
+skip_speed = 0.01
+
+[node name="ASTNodeLocator" type="Node" parent="StoryLoader/StoryServices"]
+script = ExtResource( 5 )
+
+[node name="CharacterManager" type="Node" parent="StoryLoader/StoryServices"]
+script = ExtResource( 8 )
+reference_registry_path = NodePath("../StoryReferenceRegistry")
+story_gui_configurer_path = NodePath("../../../StoryGUIConfigurer")
+
+[node name="HistoryManager" type="Node" parent="StoryLoader/StoryServices"]
+script = ExtResource( 6 )
+story_director_path = NodePath("../StoryDirector")
+
+[node name="ScreenshotManager" type="Node" parent="."]
+script = ExtResource( 16 )
+facade_viewport_texture_rect_path = NodePath("FacadeViewportTextureRect")
+story_gui_configurer_path = NodePath("../StoryGUIConfigurer")
+gui_viewport_path = NodePath("ViewportContainer/GUI")
+
+[node name="ViewportContainer" type="ViewportContainer" parent="ScreenshotManager"]
+anchor_right = 1.0
+anchor_bottom = 1.0
+mouse_filter = 2
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="GUI" type="Viewport" parent="ScreenshotManager/ViewportContainer"]
+size = Vector2( 1024, 600 )
+handle_input_locally = false
+render_target_update_mode = 3
+physics_object_picking = true
+gui_disable_input = true
+script = ExtResource( 14 )
+
+[node name="FacadeViewportTextureRect" type="TextureRect" parent="ScreenshotManager"]
+visible = false
+anchor_right = 1.0
+anchor_bottom = 1.0
+mouse_filter = 0
+expand = true
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="StoryGUIConfigurer" type="Node" parent="."]
+script = ExtResource( 7 )
+story_loader_path = NodePath("../StoryLoader")
+story_gui_holder_path = NodePath(".")
+
+[node name="BasicGUI" parent="StoryGUIConfigurer" instance=ExtResource( 4 )]
+
+[node name="StoryRuntimeDebugger" type="Node" parent="."]
+script = ExtResource( 11 )
+story_manager_path = NodePath("../StoryManager")
+quit_button_path = NodePath("ErrorUI/Panel/MarginContainer/VSplitContainer/QuitButton")
+error_ui_path = NodePath("ErrorUI")
+error_text_path = NodePath("ErrorUI/Panel/MarginContainer/VSplitContainer/ErrorText")
+
+[node name="ErrorUI" type="Control" parent="StoryRuntimeDebugger"]
+visible = false
+anchor_right = 1.0
+anchor_bottom = 1.0
+mouse_filter = 2
+theme = ExtResource( 12 )
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="ColorRect" type="ColorRect" parent="StoryRuntimeDebugger/ErrorUI"]
+anchor_right = 1.0
+anchor_bottom = 1.0
+color = Color( 0, 0, 0, 0.392157 )
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="Panel" type="Panel" parent="StoryRuntimeDebugger/ErrorUI"]
+anchor_right = 1.0
+anchor_bottom = 1.0
+margin_left = 100.0
+margin_top = 100.0
+margin_right = -100.0
+margin_bottom = -100.0
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="MarginContainer" type="MarginContainer" parent="StoryRuntimeDebugger/ErrorUI/Panel"]
+anchor_right = 1.0
+anchor_bottom = 1.0
+custom_constants/margin_right = 20
+custom_constants/margin_top = 20
+custom_constants/margin_left = 20
+custom_constants/margin_bottom = 20
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="VSplitContainer" type="VBoxContainer" parent="StoryRuntimeDebugger/ErrorUI/Panel/MarginContainer"]
+margin_left = 20.0
+margin_top = 20.0
+margin_right = 804.0
+margin_bottom = 380.0
+
+[node name="Title" type="RichTextLabel" parent="StoryRuntimeDebugger/ErrorUI/Panel/MarginContainer/VSplitContainer"]
+margin_right = 784.0
+margin_bottom = 50.0
+rect_min_size = Vector2( 0, 50 )
+custom_fonts/normal_font = ExtResource( 10 )
+text = "Error"
+
+[node name="ErrorText" type="TextEdit" parent="StoryRuntimeDebugger/ErrorUI/Panel/MarginContainer/VSplitContainer"]
+margin_top = 54.0
+margin_right = 784.0
+margin_bottom = 316.0
+size_flags_horizontal = 3
+size_flags_vertical = 3
+custom_fonts/font = ExtResource( 13 )
+text = "This is where the stack trace is displayed."
+readonly = true
+wrap_enabled = true
+
+[node name="QuitButton" type="Button" parent="StoryRuntimeDebugger/ErrorUI/Panel/MarginContainer/VSplitContainer"]
+margin_left = 292.0
+margin_top = 320.0
+margin_right = 492.0
+margin_bottom = 360.0
+rect_min_size = Vector2( 200, 40 )
+size_flags_horizontal = 4
+text = "Quit"
+__meta__ = {
+"_edit_use_anchors_": false
+}
