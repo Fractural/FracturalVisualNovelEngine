@@ -7,13 +7,11 @@ extends Reference
 
 # ----- StoryService ----- #
 
-var program_node
 
 func get_service_name():
 	return "ASTNodeIDDistributor"
 
 func configure_service(program_node_):
-	program_node = program_node_
 	curr_reference_id = 0
 
 # ----- StoryService ----- #

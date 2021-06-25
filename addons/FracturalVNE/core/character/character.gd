@@ -21,8 +21,11 @@ func _init(name_ = null, name_color_ = null, dialogue_color_ = null):
 # are added, these services would be populated with the exact same data in the
 # exact same order every time, which allows for saving and loading of a story's
 # variables.
+#
+# Note that it is the developer's responsibility to call "_story_init()" if
+# they plan on serializing the object when the story saves.
 func _story_init():
-	StoryServiceRegistry.get_service("CharacterManager").add_character(self)
+	StoryServiceRegistry.get_service("StoryReferenceRegistry").add_reference(self)
 
 
 # ----- Serialization ----- #

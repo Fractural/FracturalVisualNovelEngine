@@ -1,6 +1,6 @@
 [gd_scene load_steps=7 format=2]
 
-[ext_resource path="res://addons/FracturalVNE/core/gui/text_printer/printers/BasicTextPrinter.tscn" type="PackedScene" id=1]
+[ext_resource path="res://addons/FracturalVNE/core/gui/text_printer/printers/basic_text_printer.tscn" type="PackedScene" id=1]
 [ext_resource path="res://addons/FracturalVNE/core/gui/story_gui.gd" type="Script" id=2]
 [ext_resource path="res://addons/FracturalVNE/assets/themes/basic_gui_theme.tres" type="Theme" id=3]
 [ext_resource path="res://addons/FracturalVNE/core/gui/pause_menu/basic_pause_menu.tscn" type="PackedScene" id=4]
@@ -120,6 +120,7 @@ text = "Options"
 
 [node name="BasicPauseMenu" parent="." instance=ExtResource( 4 )]
 visible = false
+story_gui_path = NodePath("..")
 
 [node name="Control" type="Control" parent="."]
 margin_right = 40.0

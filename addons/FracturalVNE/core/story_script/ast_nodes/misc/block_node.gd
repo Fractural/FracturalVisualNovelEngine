@@ -101,7 +101,7 @@ func propagate_call(method: String, arguments: Array = [], parent_first: bool = 
 
 # ----- Serialization ----- #
 
-func serialize_save(saved_nodes):
+func serialize_node_state(saved_nodes):
 	var serialized_variables = []
 		
 	for variable_name in variables.keys():
@@ -122,7 +122,7 @@ func serialize_save(saved_nodes):
 		"variables": serialized_variables,
 	}
 
-func deserialize_save(saved_nodes_lookup):
+func deserialize_node_state(saved_nodes_lookup):
 	var serialized_variables = saved_nodes_lookup[str(reference_id)]["variables"]
 	for serialized_variable in serialized_variables:
 		if serialized_variable["is_object"]:

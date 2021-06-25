@@ -3,6 +3,8 @@ extends Control
 # the date that it was created.
 
 
+signal save_slot_pressed(slot_id)
+
 const WEEKDAYS = [
 	"Sunday",
 	"Monday",
@@ -12,8 +14,6 @@ const WEEKDAYS = [
 	"Friday",
 	"Saturday",
 ]
-
-signal save_slot_pressed(slot_id)
 
 export var thumbnail_rect_path: NodePath
 export var date_label_path: NodePath

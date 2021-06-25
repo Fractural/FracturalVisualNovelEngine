@@ -17,7 +17,7 @@ func _init(character_ = null, text_: String = ""):
 func serialize():
 	var character_id: int
 	if character != null:
-		character_id = StoryServiceRegistry.get_service("CharacterManager").get_character_id(character)
+		character_id = StoryServiceRegistry.get_service("StoryReferenceRegistry").get_reference_id(character)
 	else:
 		character_id = -1
 	
@@ -31,7 +31,7 @@ func serialize():
 func deserialize(serialized_object):
 	var instance = get_script().new()
 	if serialized_object["character_id"] > -1:
-		instance.character = StoryServiceRegistry.get_service("CharacterManager").get_character(serialized_object["character_id"])
+		instance.character = StoryServiceRegistry.get_service("StoryReferenceRegistry").get_reference(serialized_object["character_id"])
 	instance.text = serialized_object["text"]
 	
 	return instance

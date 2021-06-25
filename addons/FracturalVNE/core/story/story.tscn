@@ -1,4 +1,4 @@
-[gd_scene load_steps=17 format=2]
+[gd_scene load_steps=18 format=2]
 
 [ext_resource path="res://addons/FracturalVNE/core/story/story_manager.gd" type="Script" id=1]
 [ext_resource path="res://addons/FracturalVNE/core/story/director/story_director.gd" type="Script" id=2]
@@ -16,6 +16,7 @@
 [ext_resource path="res://addons/FracturalVNE/core/utils/follow_main_viewport_size.gd" type="Script" id=14]
 [ext_resource path="res://addons/FracturalVNE/core/io/story_state_manager.gd" type="Script" id=15]
 [ext_resource path="res://addons/FracturalVNE/core/gui/_misc/screenshot_manager.gd" type="Script" id=16]
+[ext_resource path="res://addons/FracturalVNE/core/io/reference_registry.gd" type="Script" id=17]
 
 [node name="ScenePostReady" type="Node"]
 script = ExtResource( 9 )
@@ -38,9 +39,8 @@ services_holder_path = NodePath("StoryServices")
 
 [node name="StoryServices" type="Node" parent="StoryLoader"]
 
-[node name="HistoryManager" type="Node" parent="StoryLoader/StoryServices"]
-script = ExtResource( 6 )
-story_director_path = NodePath("../StoryDirector")
+[node name="StoryReferenceRegistry" type="Node" parent="StoryLoader/StoryServices"]
+script = ExtResource( 17 )
 
 [node name="StoryDirector" type="Node" parent="StoryLoader/StoryServices"]
 script = ExtResource( 2 )
@@ -52,7 +52,12 @@ script = ExtResource( 5 )
 
 [node name="CharacterManager" type="Node" parent="StoryLoader/StoryServices"]
 script = ExtResource( 8 )
+reference_registry_path = NodePath("../StoryReferenceRegistry")
 story_gui_configurer_path = NodePath("../../../StoryGUIConfigurer")
+
+[node name="HistoryManager" type="Node" parent="StoryLoader/StoryServices"]
+script = ExtResource( 6 )
+story_director_path = NodePath("../StoryDirector")
 
 [node name="ScreenshotManager" type="Node" parent="."]
 script = ExtResource( 16 )

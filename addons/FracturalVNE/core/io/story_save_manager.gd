@@ -1,11 +1,10 @@
 extends Node
 
-const SaveState = preload("res://addons/FracturalVNE/core/io/save_state.gd")
-
 signal state_saved(save_state)
 
 const MAX_SAVE_SLOTS = 6
 const SAVE_FILES_DIRECTORY = "user://saves/"
+const SaveState = preload("res://addons/FracturalVNE/core/io/save_state.gd")
 
 var save_slots = []
 

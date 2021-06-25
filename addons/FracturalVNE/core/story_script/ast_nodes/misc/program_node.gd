@@ -1,11 +1,14 @@
 extends "res://addons/FracturalVNE/core/story_script/ast_nodes/executable_node.gd"
+# The root node of a story tree. Responsible for starting the program
+# and propagating calls to all the nodes.
 
-signal throw_error(error)
-
-# Execution order
+# Story Tree Execution Order:
 # 1. configure_service()
 # 2. runtime_initialize() 
 # 3. execute()
+
+
+signal throw_error(error)
 
 const ASTNodeIDDistributor = preload("res://addons/FracturalVNE/core/story_script/story_services/ast_node_id_distributor.gd")
 
@@ -15,12 +18,15 @@ var function_holders: Array = []
 var services: Dictionary = {}
 var block
 
+
 func _init(block_ = null).(StoryScriptPosition.new(0, 0)):
 	block = block_
+
 
 func _init_post():
 	add_service(ASTNodeIDDistributor.new())
 	start_configure_node()
+
 
 func propagate_call(method, arguments = [], parent_first = false):
 	if parent_first:
@@ -31,28 +37,25 @@ func propagate_call(method, arguments = [], parent_first = false):
 	if not parent_first:
 		.propagate_call(method, arguments, parent_first)
 
+
 func start_configure_node():
 	block.propagate_call("configure_node", [self], true)
+
 
 func start_runtime_initialize():
 	block.propagate_call("runtime_initialize")
 
+
 func execute():
-	# TODO NOW: Add error system that breaks out of execution. For ProgramNode, check for 
-	#			initialization errors before executing. The error system should be a new instance
-	#			for each AST and should reside in the program_node. We can probably make
-	#			each node throw an error in it's runtime_block, which means the error will
-	#			eventually end up in the ProgramNode through this sort of backward tree traversal.
-	#			ProgramNode can then have a signal that is listened to by some class in the scene
-	#			which shows a popup of the error and an option to head back to the editor.
 	block.execute()
+
 
 func add_service(service, name = null):
 	if name == null:
 		name = service.get_service_name()
 	if typeof(name) != TYPE_STRING:
 		assert(false, "Service name must be string.")
-	services[name] = weakref(service)
+	services[name] = service
 	
 	# Adds the service as a function holder if it has function definitions
 	if "function_definitions" in service:
@@ -61,29 +64,36 @@ func add_service(service, name = null):
 	if service.has_method("configure_service"):
 		service.configure_service(self)
 
+
 func get_service(name: String):
 	if services.has(name):
-		return services[name].get_ref()
+		return services[name]
 	return error('Service "%s" could not be found.' % name)
+
 
 # TODO: Add global variables. Variable functions are currently placeholders.
 
 func has_variable(name: String):
 	return false
 
+
 func get_variable(name: String):
 	return StoryScriptError.new('Variable named "%s" could not be found.' % name)
 
+
 func set_variable(name: String, value):
 	StoryScriptError.new('Variable named "%s" could not be found.' % name)
+
 
 func add_function_holder(new_function_holder):
 	if not function_holders.has(new_function_holder):
 		function_holders.append(new_function_holder)
 
+
 func add_function_holders(new_function_holders):
 	for new_function_holder in new_function_holders:
 		add_function_holder(new_function_holder)
+
 
 # arguments = [
 # 	StoryScriptArgument.new("name", value)
@@ -127,6 +137,7 @@ func call_function(name: String, arguments = []):
 				return holder.callv(name, ordered_args)
 	return error('Function "%s()" could not be found.' % name)
 
+
 func debug_string(tabs_string: String) -> String:
 	var string = ""
 	string += tabs_string + "PROGRAM:" 
@@ -135,21 +146,40 @@ func debug_string(tabs_string: String) -> String:
 	string += "\n" + tabs_string + "}"
 	return string
 
+
 func throw_error(error):
 	emit_signal("throw_error", error)
 
+
 # ----- Serialization ----- #
 
-func start_serialize_save(saved_nodes = {}):
-	propagate_call("serialize_save", [saved_nodes])
+func serialize_state():
+	var serialized_node_states = {}
+	propagate_call("serialize_node_state", [serialized_node_states])
+	
+	var serialized_service_states = []
+	for service in services.values():
+		if service.has_method("serialize_state"):
+			serialized_service_states.append(service.serialize_state())
+	
+	return { 
+		"nodes": serialized_node_states,
+		"services": serialized_service_states,
+	}
 
-func start_deserialize_save(saved_nodes):
-	propagate_call("deserialize_save", [saved_nodes])
+
+func deserialize_state(serialized_state):
+	propagate_call("deserialize_node_state", [serialized_state["nodes"]])
+	
+	for serialized_service_state in serialized_state["services"]:
+		services[serialized_service_state["service_name"]].deserialize_state(serialized_service_state)
+
 
 func serialize():
 	var serialized_obj = .serialize()
 	serialized_obj["block"] = block.serialize()
 	return serialized_obj
+
 
 func deserialize(serialized_obj):
 	var instance = .deserialize(serialized_obj)

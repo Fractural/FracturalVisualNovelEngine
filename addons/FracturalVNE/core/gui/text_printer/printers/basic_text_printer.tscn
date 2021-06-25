@@ -5,7 +5,7 @@
 [ext_resource path="res://addons/FracturalVNE/assets/fonts/Noto_Sans/NotoSans-BoldItalic.tres" type="DynamicFont" id=3]
 [ext_resource path="res://addons/FracturalVNE/assets/fonts/Noto_Sans/NotoSans-Regular.tres" type="DynamicFont" id=4]
 [ext_resource path="res://addons/FracturalVNE/core/gui/text_printer/printers/components/text_reveal.gd" type="Script" id=5]
-[ext_resource path="res://addons/FracturalVNE/core/gui/text_printer/BaseTextPrinter.tscn" type="PackedScene" id=6]
+[ext_resource path="res://addons/FracturalVNE/core/gui/text_printer/base_text_printer.tscn" type="PackedScene" id=6]
 [ext_resource path="res://addons/FracturalVNE/core/gui/text_printer/printers/basic_text_printer.gd" type="Script" id=7]
 [ext_resource path="res://addons/FracturalVNE/core/gui/text_printer/printers/basic_text_printer_configurer.gd" type="Script" id=8]
 

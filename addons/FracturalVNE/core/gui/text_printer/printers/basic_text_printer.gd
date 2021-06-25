@@ -25,6 +25,8 @@ func _ready():
 	text_printer.connect("say", self, "_on_say")
 	text_printer.connect("narrate", self, "_on_narrate")
 	text_printer.connect("skip", self, "_on_skip")
+	text_printer.connect("serialize_state", self, "_on_serialize_state")
+	text_printer.connect("deserialize_state", self, "_on_deserialize_state")
 
 	name_text_reveal.init(text_printer.name_default_char_delay, text_printer.name_custom_char_delays);
 	dialogue_text_reveal.init(text_printer.dialogue_default_char_delay, text_printer.dialogue_custom_char_delays);
@@ -67,3 +69,17 @@ func _on_narrate(text: String):
 func _on_skip():
 	name_text_reveal.stop_reveal()
 	dialogue_text_reveal.stop_reveal()
+
+
+# ----- Serialization ----- #
+
+func _on_serialize_state(serialized_state):
+	serialized_state["name_text"] = name_text_reveal.bbcode_text
+	serialized_state["dialogue_text"] = dialogue_text_reveal.bbcode_text
+
+
+func _on_deserialize_state(serialized_state):
+	name_text_reveal.bbcode_text = serialized_state["name_text"]
+	dialogue_text_reveal.bbcode_text = serialized_state["dialogue_text"]
+
+# ----- Serialization ----- #

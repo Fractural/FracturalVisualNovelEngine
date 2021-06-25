@@ -26,6 +26,8 @@ func get_service_name():
 const Character = preload("res://addons/FracturalVNE/core/character/character.gd")
 const PrintTextAction = preload("res://addons/FracturalVNE/core/gui/text_printer/print_text_action.gd")
 
+signal serialize_state(serialized_state)
+signal deserialize_state(serialized_state)
 signal say(character, text)
 signal narrate(text)
 signal skip()
@@ -67,3 +69,19 @@ func narrate(text: String, skippable: bool = true):
 func _finished_print_text():
 	story_director.remove_step_action(curr_print_text_action)
 	curr_print_text_action = null
+
+
+# ----- Serialization ----- #
+
+func serialize_state():
+	var serialized_state = {
+		"service_name": get_service_name(),
+	}
+	emit_signal("serialize_state", serialized_state)
+	return serialized_state
+
+
+func deserialize_state(serialized_state):
+	emit_signal("deserialize_state", serialized_state)
+
+# ----- Serialization ----- #

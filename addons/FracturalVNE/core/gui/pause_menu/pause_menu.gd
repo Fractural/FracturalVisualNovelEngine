@@ -35,3 +35,14 @@ func show_load():
 func show_history():
 	toggle(true)
 	menu_manager.goto_menu("History")
+
+
+func _get_property_list():
+    var properties = []
+    properties.append({
+            name = "Rotate",
+            type = TYPE_NIL,
+            hint_string = "rotate_",
+            usage = PROPERTY_USAGE_GROUP | PROPERTY_USAGE_SCRIPT_VARIABLE
+    })
+    return properties

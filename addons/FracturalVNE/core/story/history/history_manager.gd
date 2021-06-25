@@ -15,6 +15,10 @@ func get_service_name():
 # ----- StoryService ----- #
 
 
+signal entry_added(history_entry)
+signal entry_removed(history_entry)
+signal entries_cleared()
+
 export var story_director_path: NodePath
 
 var history_stack = []
@@ -22,8 +26,28 @@ var history_stack = []
 onready var story_director = get_node(story_director_path)
 
 
+func _enter_tree():
+	StoryServiceRegistry.add_service(self)
+
+
+func _notification(what):
+	if what == NOTIFICATION_PREDELETE:
+		StoryServiceRegistry.remove_service(self)
+
+
 func add_entry(history_entry):
 	history_stack.append(history_entry)
+	emit_signal("entry_added", history_entry)
+
+
+func remove_entry(history_entry):
+	history_stack.erase(history_entry)
+	emit_signal("entry_removed", history_entry)
+
+
+func clear_entries():
+	history_stack.clear()
+	emit_signal("entries_cleared")
 
 
 # ----- Serialization ----- #
@@ -42,9 +66,10 @@ func serialize_state():
 		"history_stack": serialized_history_stack,
 	}
 
+
 func deserialize_state(serialized_state):
-	history_stack = []
+	clear_entries()
 	for serialized_entry in serialized_state["history_stack"]:
-		history_stack.append(SerializationUtils.deserialize(serialized_entry))
+		add_entry(SerializationUtils.deserialize(serialized_entry))
 
 # ----- Serialization ----- #

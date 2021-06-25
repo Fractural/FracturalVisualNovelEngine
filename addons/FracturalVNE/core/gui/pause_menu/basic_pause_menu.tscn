@@ -1,4 +1,4 @@
-[gd_scene load_steps=9 format=2]
+[gd_scene load_steps=11 format=2]
 
 [ext_resource path="res://addons/FracturalVNE/core/gui/save_slots_menu/save_slot.tscn" type="PackedScene" id=1]
 [ext_resource path="res://addons/FracturalVNE/core/gui/_misc/menu_manager.gd" type="Script" id=2]
@@ -6,17 +6,19 @@
 [ext_resource path="res://addons/FracturalVNE/core/gui/save_slots_menu/save_slots_menu.gd" type="Script" id=4]
 [ext_resource path="res://addons/FracturalVNE/core/gui/pause_menu/pause_menu.gd" type="Script" id=5]
 [ext_resource path="res://addons/FracturalVNE/core/gui/history_menu/history_menu.gd" type="Script" id=6]
+[ext_resource path="res://addons/FracturalVNE/assets/themes/basic_gui_theme.tres" type="Theme" id=7]
 [ext_resource path="res://addons/FracturalVNE/core/gui/save_slots_menu/save_slots_pause_menu_configurer.gd" type="Script" id=8]
 [ext_resource path="res://addons/FracturalVNE/assets/fonts/Noto_Sans/NotoSans-Regular-Title.tres" type="DynamicFont" id=9]
+[ext_resource path="res://addons/FracturalVNE/core/gui/history_menu/basic_history_entry_displays/basic_say_entry_display.tscn" type="PackedScene" id=10]
 
 [node name="BasicPauseMenu" type="Panel"]
 anchor_right = 1.0
 anchor_bottom = 1.0
+theme = ExtResource( 7 )
 script = ExtResource( 5 )
 __meta__ = {
 "_edit_use_anchors_": false
 }
-story_gui_path = NodePath("..")
 menu_manager_path = NodePath("VSplitContainer/HSplitContainer/Menus")
 save_slots_menu_path = NodePath("VSplitContainer/HSplitContainer/Menus/SaveSlots")
 
@@ -133,6 +135,21 @@ script = ExtResource( 6 )
 __meta__ = {
 "_edit_use_anchors_": false
 }
+entries_holder_path = NodePath("ScrollContainer/EntriesHolder")
+entry_prefabs = [ ExtResource( 10 ) ]
+
+[node name="ScrollContainer" type="ScrollContainer" parent="VSplitContainer/HSplitContainer/Menus/History"]
+anchor_right = 1.0
+anchor_bottom = 1.0
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="EntriesHolder" type="VBoxContainer" parent="VSplitContainer/HSplitContainer/Menus/History/ScrollContainer"]
+margin_right = 714.0
+margin_bottom = 503.0
+size_flags_horizontal = 3
+size_flags_vertical = 3
 
 [node name="SaveSlots" type="Control" parent="VSplitContainer/HSplitContainer/Menus"]
 visible = false

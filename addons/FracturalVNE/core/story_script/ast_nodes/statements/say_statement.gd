@@ -18,17 +18,16 @@ func execute():
 	var text_printer = get_runtime_block().get_service("TextPrinter")
 	var history_manager = get_runtime_block().get_service("HistoryManager")
 	
-	history_manager.add_entry(SayEntry.new(character, text))
-	
 	if character == null:
 		text_printer.narrate(text)
+		history_manager.add_entry(SayEntry.new(null, text))
 	else:
-		var result = character.evaluate()
-		if not is_success(result):
-			throw_error(result)
+		var character_result = character.evaluate()
+		if not is_success(character_result):
+			throw_error(character_result)
 			return
-		text_printer.say(result, text)
-	
+		text_printer.say(character_result, text)
+		history_manager.add_entry(SayEntry.new(character_result, text))
 	.execute()
 
 
