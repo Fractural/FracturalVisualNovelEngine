@@ -13,19 +13,11 @@ onready var error_ui: Control = get_node(error_ui_path)
 onready var error_text: TextEdit = get_node(error_text_path)
 
 
-func _enter_tree():
-	StoryServiceRegistry.add_service(self)
-
-
 func _ready():
 	error_ui.visible = false
 	quit_button.connect("pressed", self, "_on_quit_button_pressed")
 	story_manager.connect("throw_error", self, "popup_error")
 
-
-func _notification(what):
-	if what == NOTIFICATION_PREDELETE:
-		StoryServiceRegistry.remove_service(self)
 
 func popup_error(error):
 	error_ui.visible = true

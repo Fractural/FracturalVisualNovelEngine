@@ -3,8 +3,6 @@ extends Node
 # story services and running the initialization calls on the story tree's nodes.
 
 
-const ProgramNode = preload("res://addons/FracturalVNE/core/story_script/ast_nodes/misc/program_node.gd")
-
 export var services_holder_path: NodePath
 
 var services: Array

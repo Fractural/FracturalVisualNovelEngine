@@ -24,6 +24,9 @@ export var open_file_dialog_path: NodePath
 export var save_file_dialog_path: NodePath
 export var popup_dim_path: NodePath
 
+export var story_runner_dep_path: NodePath
+export var persistent_data_dep_path: NodePath
+
 var compiled: bool = false setget set_compiled
 var saved: bool = false setget set_saved
 var current_script_path: String = TEMP_SCRIPT_PATH
@@ -42,8 +45,8 @@ onready var open_file_dialog: FileDialog = get_node(open_file_dialog_path)
 onready var save_file_dialog: FileDialog = get_node(save_file_dialog_path)
 onready var popup_dim: ColorRect = get_node(popup_dim_path)
 
-onready var story_save_manager = StoryServiceRegistry.get_service("StorySaveManager")
-onready var persistent_data = StoryServiceRegistry.get_service("StoryScriptPersistentData")
+onready var story_runner_dep = get_node(story_runner_dep_path)
+onready var persistent_data_dep = get_node(persistent_data_dep_path)
 
 
 func _ready():
@@ -51,8 +54,8 @@ func _ready():
 	if not Engine.is_editor_hint():
 		_setup_editor_assets(PluginAssetsRegistry.new())
 	
-	set_compiled(persistent_data.compiled)
-	set_saved(persistent_data.saved)
+	set_compiled(persistent_data_dep.dependency.compiled)
+	set_saved(persistent_data_dep.dependency.saved)
 	compile_button.connect("pressed", self, "compile_script")
 	run_button.connect("pressed", self, "run_script")
 	compiler.connect("throw_error", script_text_edit, "display_error")
@@ -71,7 +74,7 @@ func _ready():
 	open_file_dialog.connect("popup_hide", self, "_on_popup_hide")
 	save_file_dialog.connect("popup_hide", self, "_on_popup_hide")
 	
-	if persistent_data.current_script_path == "":
+	if persistent_data_dep.dependency.current_script_path == "":
 		# TODO: Remove when done testing
 		script_text_edit.text = ""
 	#	for i in 100:
@@ -95,10 +98,10 @@ func _ready():
 		script_text_edit.text += 'label another_one: \n'
 		script_text_edit.text += '\t "You will never reach this label!"\n'
 		
-		persistent_data.current_script_path = TEMP_SCRIPT_PATH
-		set_current_script_path(persistent_data.current_script_path)
+		persistent_data_dep.dependency.current_script_path = TEMP_SCRIPT_PATH
+		set_current_script_path(persistent_data_dep.dependency.current_script_path)
 	else:
-		open_file(persistent_data.current_script_path)
+		open_file(persistent_data_dep.dependency.current_script_path)
 	
 	# Clear the undo history after switching to a new script -- we don't want users to undo
 	# back to the original script after they loaded a new one.
@@ -112,6 +115,7 @@ func open_file(file_path):
 	script_text_edit.text = file.get_as_text()
 	file.close()
 	
+	set_compiled(false)
 	set_saved(true)
 
 
@@ -138,7 +142,7 @@ func compile_script():
 	else:
 		script_text_edit.clear_error()
 		set_compiled(true)
-		save_ast_to_file(ast_tree, TEMP_STORY_PATH)
+		save_ast_to_file(ast_tree, persistent_data_dep.dependency.current_script_path.trim_suffix(".storyscript") + ".story")#TEMP_STORY_PATH)
 
 
 func save_ast_to_file(ast_tree, file_path):
@@ -148,6 +152,8 @@ func save_ast_to_file(ast_tree, file_path):
 	serialized_file.open_compressed(file_path, File.WRITE)
 	serialized_file.store_line(serialized_ast)
 	serialized_file.close()
+	
+	persistent_data_dep.dependency.current_saved_story_path = file_path
 
 
 func run_script():
@@ -160,34 +166,28 @@ func run_script():
 	save_current_file()
 	
 	# TODO: Add support for playing story from editor
-	# 		Use this to play custom scene in editor: plugin.get_editor_interface().play_custom_scene("scene_file_path")
-	if Engine.is_editor_hint():
-		return
-	else:
-		run_from_standalone_editor()
-
-
-func run_from_standalone_editor():
-	StoryServiceRegistry.get_service("StoryRunner").run(TEMP_STORY_PATH, load("res://addons/FracturalVNE/plugin/ui/story_script_editor.tscn"))
+	# 		PluginUI should implement it's own "StoryRunner" and manually
+	#		inject the dependency into StoryScriptEditor
+	story_runner_dep.dependency.run(persistent_data_dep.dependency.current_saved_story_path, load("res://addons/FracturalVNE/plugin/ui/story_script_editor.tscn"))
 
 
 func set_compiled(new_value):
 	compiled = new_value
-	persistent_data.compiled = new_value
+	persistent_data_dep.dependency.compiled = new_value
 	if compiled_ui != null:
 		compiled_ui.modulate.a = 1 if new_value else 0.5
 
 
 func set_saved(new_value):
 	saved = new_value
-	persistent_data.saved = new_value
+	persistent_data_dep.dependency.saved = new_value
 	if saved_ui != null:
 		saved_ui.modulate.a = 1 if new_value else 0.5
 
 
 func set_current_script_path(new_value):
 	current_script_path = new_value
-	persistent_data.current_script_path = new_value
+	persistent_data_dep.dependency.current_script_path = new_value
 	if editing_file_label != null:
 		editing_file_label.text = "Editing \"%s\" " % current_script_path
 

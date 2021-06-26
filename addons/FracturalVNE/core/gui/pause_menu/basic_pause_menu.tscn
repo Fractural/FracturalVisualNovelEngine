@@ -1,4 +1,4 @@
-[gd_scene load_steps=11 format=2]
+[gd_scene load_steps=12 format=2]
 
 [ext_resource path="res://addons/FracturalVNE/core/gui/save_slots_menu/save_slot.tscn" type="PackedScene" id=1]
 [ext_resource path="res://addons/FracturalVNE/core/gui/_misc/menu_manager.gd" type="Script" id=2]
@@ -10,6 +10,7 @@
 [ext_resource path="res://addons/FracturalVNE/core/gui/save_slots_menu/save_slots_pause_menu_configurer.gd" type="Script" id=8]
 [ext_resource path="res://addons/FracturalVNE/assets/fonts/Noto_Sans/NotoSans-Regular-Title.tres" type="DynamicFont" id=9]
 [ext_resource path="res://addons/FracturalVNE/core/gui/history_menu/basic_history_entry_displays/basic_say_entry_display.tscn" type="PackedScene" id=10]
+[ext_resource path="res://addons/FracturalVNE/core/utils/dependency_injection/dependency.gd" type="Script" id=11]
 
 [node name="BasicPauseMenu" type="Panel"]
 anchor_right = 1.0
@@ -21,6 +22,24 @@ __meta__ = {
 }
 menu_manager_path = NodePath("VSplitContainer/HSplitContainer/Menus")
 save_slots_menu_path = NodePath("VSplitContainer/HSplitContainer/Menus/SaveSlots")
+
+[node name="Dependencies" type="Node" parent="."]
+
+[node name="HistoryManagerDependency" type="Node" parent="Dependencies"]
+script = ExtResource( 11 )
+dependency_name = "HistoryManager"
+
+[node name="StorySaveManagerDependency" type="Node" parent="Dependencies"]
+script = ExtResource( 11 )
+dependency_name = "StorySaveManager"
+
+[node name="StoryStateManagerDependency" type="Node" parent="Dependencies"]
+script = ExtResource( 11 )
+dependency_name = "StoryStateManager"
+
+[node name="StoryGUIDependency" type="Node" parent="Dependencies"]
+script = ExtResource( 11 )
+dependency_name = "StoryStateManager"
 
 [node name="VSplitContainer" type="VSplitContainer" parent="."]
 anchor_right = 1.0
@@ -78,6 +97,7 @@ return_button_path = NodePath("../Return")
 menu_manager_path = NodePath("../../Menus")
 save_slots_menu_path = NodePath("../../Menus/SaveSlots")
 pause_menu_path = NodePath("../../../..")
+story_gui_dep_path = NodePath("../../../../Dependencies/StoryGUIDependency")
 
 [node name="History" type="Button" parent="VSplitContainer/HSplitContainer/VSplitContainer/SideButtons"]
 margin_right = 250.0
@@ -137,6 +157,7 @@ __meta__ = {
 }
 entries_holder_path = NodePath("ScrollContainer/EntriesHolder")
 entry_prefabs = [ ExtResource( 10 ) ]
+history_manager_dep_path = NodePath("../../../../Dependencies/HistoryManagerDependency")
 
 [node name="ScrollContainer" type="ScrollContainer" parent="VSplitContainer/HSplitContainer/Menus/History"]
 anchor_right = 1.0
@@ -160,6 +181,7 @@ menu_manager_path = NodePath("..")
 settings_path = NodePath("../../../..")
 save_slot_prefab = ExtResource( 1 )
 grid_container_path = NodePath("GridContainer")
+save_manager_dep_path = NodePath("../../../../Dependencies/StorySaveManagerDependency")
 
 [node name="GridContainer" type="GridContainer" parent="VSplitContainer/HSplitContainer/Menus/SaveSlots"]
 anchor_right = 1.0
@@ -183,5 +205,6 @@ __meta__ = {
 script = ExtResource( 8 )
 save_slots_menu_path = NodePath("../VSplitContainer/HSplitContainer/Menus/SaveSlots")
 pause_menu_path = NodePath("..")
+story_state_manager_dep_path = NodePath("../Dependencies/StoryStateManagerDependency")
 
 [connection signal="pressed" from="VSplitContainer/HSplitContainer/VSplitContainer/Return" to="." method="toggle" binds= [ false ]]

@@ -1,4 +1,4 @@
-[gd_scene load_steps=18 format=2]
+[gd_scene load_steps=21 format=2]
 
 [ext_resource path="res://addons/FracturalVNE/core/story/story_manager.gd" type="Script" id=1]
 [ext_resource path="res://addons/FracturalVNE/core/story/director/story_director.gd" type="Script" id=2]
@@ -8,23 +8,40 @@
 [ext_resource path="res://addons/FracturalVNE/core/story/history/history_manager.gd" type="Script" id=6]
 [ext_resource path="res://addons/FracturalVNE/core/gui/story_gui_configurer.gd" type="Script" id=7]
 [ext_resource path="res://addons/FracturalVNE/core/character/character_manager.gd" type="Script" id=8]
-[ext_resource path="res://addons/FracturalVNE/core/utils/post_ready.gd" type="Script" id=9]
+[ext_resource path="res://addons/FracturalVNE/core/story/story_runner_listener.gd" type="Script" id=9]
 [ext_resource path="res://addons/FracturalVNE/assets/fonts/Noto_Sans/NotoSans-Regular-Title.tres" type="DynamicFont" id=10]
 [ext_resource path="res://addons/FracturalVNE/core/utils/story_runtime_debugger.gd" type="Script" id=11]
 [ext_resource path="res://addons/FracturalVNE/assets/themes/basic_gui_theme.tres" type="Theme" id=12]
 [ext_resource path="res://addons/FracturalVNE/assets/fonts/Hack/Hack-Regular.tres" type="DynamicFont" id=13]
-[ext_resource path="res://addons/FracturalVNE/core/utils/follow_main_viewport_size.gd" type="Script" id=14]
+[ext_resource path="res://addons/FracturalVNE/core/gui/_misc/follow_main_viewport_size.gd" type="Script" id=14]
 [ext_resource path="res://addons/FracturalVNE/core/io/story_state_manager.gd" type="Script" id=15]
 [ext_resource path="res://addons/FracturalVNE/core/gui/_misc/screenshot_manager.gd" type="Script" id=16]
 [ext_resource path="res://addons/FracturalVNE/core/io/reference_registry.gd" type="Script" id=17]
+[ext_resource path="res://addons/FracturalVNE/core/utils/dependency_injection/dependency.gd" type="Script" id=18]
+[ext_resource path="res://addons/FracturalVNE/core/utils/serialization/serialization_manager.gd" type="Script" id=19]
+[ext_resource path="res://addons/FracturalVNE/core/story/history/history_entries/say_entry/say_entry_serializer.gd" type="Script" id=20]
 
-[node name="ScenePostReady" type="Node"]
-script = ExtResource( 9 )
+[node name="Story" type="Node"]
+
+[node name="Dependencies" type="Node" parent="."]
+
+[node name="StoryRunnerDependency" type="Node" parent="Dependencies"]
+script = ExtResource( 18 )
+dependency_name = "StoryRunner"
+
+[node name="StorySaveManagerDependency" type="Node" parent="Dependencies"]
+script = ExtResource( 18 )
+dependency_name = "StorySaveManager"
+
+[node name="SceneManagerDependency" type="Node" parent="Dependencies"]
+script = ExtResource( 18 )
+dependency_name = "SceneManager"
 
 [node name="StoryManager" type="Node" parent="."]
 script = ExtResource( 1 )
 story_loader_path = NodePath("../StoryLoader")
 story_gui_configurer_path = NodePath("../StoryGUIConfigurer")
+scene_manager_dep_path = NodePath("../Dependencies/SceneManagerDependency")
 
 [node name="StoryStateManager" type="Node" parent="."]
 script = ExtResource( 15 )
@@ -32,6 +49,15 @@ screenshot_manager_path = NodePath("../ScreenshotManager")
 story_manager_path = NodePath("../StoryManager")
 story_director_path = NodePath("../StoryLoader/StoryServices/StoryDirector")
 ast_node_locator_path = NodePath("../StoryLoader/StoryServices/ASTNodeLocator")
+story_save_manager_dep_path = NodePath("../Dependencies/StorySaveManagerDependency")
+
+[node name="SerializationManager" type="Node" parent="."]
+script = ExtResource( 19 )
+serializers_holder_path = NodePath(".")
+
+[node name="SayEntrySerializer" type="Node" parent="SerializationManager"]
+script = ExtResource( 20 )
+reference_registry_path = NodePath("../../StoryLoader/StoryServices/StoryReferenceRegistry")
 
 [node name="StoryLoader" type="Node" parent="."]
 script = ExtResource( 3 )
@@ -58,6 +84,7 @@ story_gui_configurer_path = NodePath("../../../StoryGUIConfigurer")
 [node name="HistoryManager" type="Node" parent="StoryLoader/StoryServices"]
 script = ExtResource( 6 )
 story_director_path = NodePath("../StoryDirector")
+serialization_manager_path = NodePath("../../../SerializationManager")
 
 [node name="ScreenshotManager" type="Node" parent="."]
 script = ExtResource( 16 )
@@ -97,6 +124,18 @@ story_loader_path = NodePath("../StoryLoader")
 story_gui_holder_path = NodePath(".")
 
 [node name="BasicGUI" parent="StoryGUIConfigurer" instance=ExtResource( 4 )]
+
+[node name="StoryDirectorDependency" parent="StoryGUIConfigurer/BasicGUI/Dependencies" index="0"]
+dependency_path = NodePath("../../../../StoryLoader/StoryServices/StoryDirector")
+
+[node name="HistoryManagerDependency" parent="StoryGUIConfigurer/BasicGUI/Dependencies" index="1"]
+dependency_path = NodePath("../../../../StoryLoader/StoryServices/HistoryManager")
+
+[node name="StorySaveManagerDependency" parent="StoryGUIConfigurer/BasicGUI/Dependencies" index="2"]
+dependency_path = NodePath("../../../../Dependencies/StorySaveManagerDependency")
+
+[node name="StoryStateManagerDependency" parent="StoryGUIConfigurer/BasicGUI/Dependencies" index="3"]
+dependency_path = NodePath("../../../../StoryStateManager")
 
 [node name="StoryRuntimeDebugger" type="Node" parent="."]
 script = ExtResource( 11 )
@@ -180,3 +219,12 @@ text = "Quit"
 __meta__ = {
 "_edit_use_anchors_": false
 }
+
+[node name="StoryRunnerListener" type="Node" parent="."]
+script = ExtResource( 9 )
+story_manager_path = NodePath("../StoryManager")
+story_runner_dep_path = NodePath("../Dependencies/StoryRunnerDependency")
+
+[editable path="StoryGUIConfigurer/BasicGUI"]
+[editable path="StoryGUIConfigurer/BasicGUI/Panel/VBoxContainer/BasicTextPrinter"]
+[editable path="StoryGUIConfigurer/BasicGUI/BasicPauseMenu"]

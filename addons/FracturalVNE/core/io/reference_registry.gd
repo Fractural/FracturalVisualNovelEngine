@@ -15,15 +15,6 @@ func get_service_name():
 var references: Array = []
 
 
-func _ready():
-	StoryServiceRegistry.add_service(self)
-
-
-func _notification(what):
-	if what == NOTIFICATION_PREDELETE:
-		StoryServiceRegistry.remove_service(self)
-
-
 func add_reference(reference: Object):
 	if not references.has(reference):
 		references.append(reference)

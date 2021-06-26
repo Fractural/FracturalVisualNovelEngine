@@ -1,4 +1,17 @@
 extends Node
+# Saves and loads story save slots to and from save files.
+
+
+# ----- Typeable ----- #
+
+func is_type(type: String) -> bool:
+	return get_types().has(type)
+
+static func get_types() -> Array:
+	return ["StorySaveManager"]
+
+# ----- Typeable ----- #
+
 
 signal state_saved(save_state)
 
@@ -7,6 +20,7 @@ const SAVE_FILES_DIRECTORY = "user://saves/"
 const SaveState = preload("res://addons/FracturalVNE/core/io/save_state.gd")
 
 var save_slots = []
+
 
 func _ready():
 	preload_save_slots()
@@ -18,6 +32,7 @@ func _ready():
 	
 	if not dir.dir_exists("saves"):
 		dir.make_dir("saves")
+
 
 func save_state(save_state, save_slot_id: int):
 	save_slots[save_slot_id] = save_state
@@ -31,11 +46,14 @@ func save_state(save_state, save_slot_id: int):
 	save_file.close()
 	emit_signal("state_saved", save_state)
 
+
 func get_save_slot(save_slot_id: int):
 	return save_slots[save_slot_id]
 
+
 func has_save_slot(save_slot_id: int):
 	return save_slot_id >= 0 and save_slot_id < save_slots.size() and save_slots[save_slot_id] != null
+
 
 func preload_save_slots():
 	save_slots = []

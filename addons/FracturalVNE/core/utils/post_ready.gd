@@ -9,9 +9,14 @@ extends Node
 # "_post_ready()" is analogous to "Start()" in Unity.
 
 
-signal post_ready()
+export var scene_manager_path: NodePath
+
+onready var scene_manager = get_node(scene_manager_path)
 
 
 func _ready():
-	propagate_call("_post_ready")
-	emit_signal("post_ready")
+	scene_manager.connect("scene_readied", self, "_on_scene_readied")
+
+func _on_scene_readied(readied_scene):
+	# Make _post_ready() calls after entire scene is readied 
+	readied_scene.propagate_call("_post_ready")

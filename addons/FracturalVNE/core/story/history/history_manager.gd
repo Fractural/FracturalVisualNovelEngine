@@ -20,19 +20,12 @@ signal entry_removed(history_entry)
 signal entries_cleared()
 
 export var story_director_path: NodePath
+export var serialization_manager_path: NodePath
 
 var history_stack = []
 
 onready var story_director = get_node(story_director_path)
-
-
-func _enter_tree():
-	StoryServiceRegistry.add_service(self)
-
-
-func _notification(what):
-	if what == NOTIFICATION_PREDELETE:
-		StoryServiceRegistry.remove_service(self)
+onready var serialization_manager = get_node(serialization_manager_path)
 
 
 func add_entry(history_entry):
@@ -59,7 +52,7 @@ func clear_entries():
 func serialize_state():
 	var serialized_history_stack = []
 	for entry in history_stack:
-		serialized_history_stack.append(entry.serialize())
+		serialized_history_stack.append(serialization_manager.serialize(entry))
 	
 	return {
 		"service_name": get_service_name(),
@@ -70,6 +63,6 @@ func serialize_state():
 func deserialize_state(serialized_state):
 	clear_entries()
 	for serialized_entry in serialized_state["history_stack"]:
-		add_entry(SerializationUtils.deserialize(serialized_entry))
+		add_entry(serialization_manager.deserialize(serialized_entry))
 
 # ----- Serialization ----- #

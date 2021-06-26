@@ -28,10 +28,6 @@ onready var reference_registry = get_node(reference_registry_path)
 onready var story_gui_configurer = get_node(story_gui_configurer_path)
 
 
-func _enter_tree():
-	StoryServiceRegistry.add_service(self)
-
-
 func _post_ready():
 	function_definitions = [
 		StoryScriptFuncDef.new("Character", [
@@ -42,22 +38,19 @@ func _post_ready():
 	]
 
 
-func _notification(what):
-	if what == NOTIFICATION_PREDELETE:
-		StoryServiceRegistry.remove_service(self)
-
-
 func add_character(character):
 	characters.append(character)
 
 
+# Used in the StoryScript to create a new character that will be serialized when 
+# the story is saved. 
 func Character(name_: String, name_color_, dialogue_color_):
 	if typeof(name_color_) == TYPE_STRING:
 		name_color_ = Color(name_color_)
 	if typeof(dialogue_color_) == TYPE_STRING:
 		dialogue_color_ = Color(dialogue_color_)
 	var new_character = Character.new(name_, name_color_, dialogue_color_)
-	new_character._story_init()
+	reference_registry.add_reference(new_character)
 	return new_character
 
 

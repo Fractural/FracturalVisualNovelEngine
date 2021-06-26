@@ -62,10 +62,6 @@ var curr_active_step_actions: Array
 var curr_node_executed: bool = false
 
 
-func _enter_tree():
-	StoryServiceRegistry.add_service(self)
-
-
 func _ready():
 	_auto_step_timer = Timer.new()
 	add_child(_auto_step_timer)
@@ -83,11 +79,6 @@ func _ready():
 	add_child(_skip_timer)
 	_skip_timer.connect("timeout", self, "try_step")
 	_skip_timer.wait_time = skip_speed
-
-
-func _notification(what):
-	if what == NOTIFICATION_PREDELETE:
-		StoryServiceRegistry.remove_service(self)
 
 
 func start_step(ast_node):
