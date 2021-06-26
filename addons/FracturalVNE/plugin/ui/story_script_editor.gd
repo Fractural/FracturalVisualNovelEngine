@@ -5,7 +5,6 @@ extends Node
 # editor.
 
 
-const TEMP_STORY_PATH: String = "res://temp.story"
 const TEMP_SCRIPT_PATH: String = "res://temp.storyscript"
 
 const PluginAssetsRegistry = preload("res://addons/FracturalVNE/plugin/plugin_assets_registry.gd")
@@ -142,7 +141,7 @@ func compile_script():
 	else:
 		script_text_edit.clear_error()
 		set_compiled(true)
-		save_ast_to_file(ast_tree, persistent_data_dep.dependency.current_script_path.trim_suffix(".storyscript") + ".story")#TEMP_STORY_PATH)
+		save_ast_to_file(ast_tree, persistent_data_dep.dependency.current_script_path.trim_suffix(".storyscript") + ".story")
 
 
 func save_ast_to_file(ast_tree, file_path):
