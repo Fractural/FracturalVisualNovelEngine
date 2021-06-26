@@ -55,7 +55,7 @@ func _load_scaled_font(font: Font) -> DynamicFont:
 func get_editor_scale():
 	if plugin == null:
 		return 1
-	if Engine.get_version_info().minor >= 3:
+	if Engine.get_version_info().major > 3 or (Engine.get_version_info().major == 3 and Engine.get_version_info().minor >= 3):
 		return plugin.get_editor_interface().get_editor_scale()
 	else:
 		if _cached_editor_scale == -1:

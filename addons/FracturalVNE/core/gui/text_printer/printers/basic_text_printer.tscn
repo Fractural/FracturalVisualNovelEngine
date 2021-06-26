@@ -1,4 +1,4 @@
-[gd_scene load_steps=9 format=2]
+[gd_scene load_steps=10 format=2]
 
 [ext_resource path="res://addons/FracturalVNE/assets/fonts/Noto_Sans/NotoSans-Italic.tres" type="DynamicFont" id=1]
 [ext_resource path="res://addons/FracturalVNE/assets/fonts/Noto_Sans/NotoSans-Bold.tres" type="DynamicFont" id=2]
@@ -8,13 +8,21 @@
 [ext_resource path="res://addons/FracturalVNE/core/gui/text_printer/base_text_printer.tscn" type="PackedScene" id=6]
 [ext_resource path="res://addons/FracturalVNE/core/gui/text_printer/printers/basic_text_printer.gd" type="Script" id=7]
 [ext_resource path="res://addons/FracturalVNE/core/gui/text_printer/printers/basic_text_printer_configurer.gd" type="Script" id=8]
+[ext_resource path="res://addons/FracturalVNE/core/utils/dependency_injection/dependency.gd" type="Script" id=9]
 
 [node name="BasicTextPrinter" instance=ExtResource( 6 )]
 rect_min_size = Vector2( 0, 200 )
 mouse_filter = 2
 name_default_char_delay = 0.001
+story_director_dep_path = NodePath("Dependencies/StoryDirectorDependency")
 
-[node name="Panel" type="Panel" parent="." index="0"]
+[node name="Dependencies" type="Node" parent="." index="0"]
+
+[node name="StoryDirectorDependency" type="Node" parent="Dependencies" index="0"]
+script = ExtResource( 9 )
+dependency_name = "StoryDirector"
+
+[node name="Panel" type="Panel" parent="." index="1"]
 anchor_right = 1.0
 anchor_bottom = 1.0
 mouse_filter = 2
@@ -78,7 +86,7 @@ __meta__ = {
 "_edit_use_anchors_": false
 }
 
-[node name="BasicTextPrinter" type="Node" parent="." index="1"]
+[node name="BasicTextPrinter" type="Node" parent="." index="2"]
 script = ExtResource( 7 )
 text_printer_path = NodePath("..")
 name_text_reveal_path = NodePath("../Panel/MarginContainer/HSeparator/NameTextReveal")

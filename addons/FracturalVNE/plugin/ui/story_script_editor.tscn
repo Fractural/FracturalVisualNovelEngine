@@ -1,4 +1,4 @@
-[gd_scene load_steps=10 format=2]
+[gd_scene load_steps=11 format=2]
 
 [ext_resource path="res://addons/FracturalVNE/plugin/ui/monokai.tres" type="Resource" id=1]
 [ext_resource path="res://addons/FracturalVNE/assets/fonts/Hack/Hack-Regular.tres" type="DynamicFont" id=2]
@@ -7,6 +7,7 @@
 [ext_resource path="res://addons/FracturalVNE/plugin/ui/story_script_editor.gd" type="Script" id=5]
 [ext_resource path="res://addons/FracturalVNE/assets/icons/play.svg" type="Texture" id=6]
 [ext_resource path="res://addons/FracturalVNE/assets/icons/check_box.svg" type="Texture" id=7]
+[ext_resource path="res://addons/FracturalVNE/core/utils/dependency_injection/dependency.gd" type="Script" id=8]
 [ext_resource path="res://addons/FracturalVNE/assets/icons/load.svg" type="Texture" id=9]
 [ext_resource path="res://addons/FracturalVNE/plugin/ui/shortcuts_menu_button.gd" type="Script" id=10]
 
@@ -34,6 +35,18 @@ editing_file_label_path = NodePath("VSplitContainer/TopMenu/VBoxContainer/Editin
 open_file_dialog_path = NodePath("Control/OpenFileDialog")
 save_file_dialog_path = NodePath("Control/SaveFileDialog")
 popup_dim_path = NodePath("Control/PopupDim")
+story_runner_dep_path = NodePath("Dependencies/StoryRunnerDependency")
+persistent_data_dep_path = NodePath("Dependencies/StoryScriptPersistentDataDependency")
+
+[node name="Dependencies" type="Node" parent="."]
+
+[node name="StoryRunnerDependency" type="Node" parent="Dependencies"]
+script = ExtResource( 8 )
+dependency_name = "StoryRunner"
+
+[node name="StoryScriptPersistentDataDependency" type="Node" parent="Dependencies"]
+script = ExtResource( 8 )
+dependency_name = "StoryScriptPersistentData"
 
 [node name="VSplitContainer" type="VBoxContainer" parent="."]
 margin_right = 1014.0

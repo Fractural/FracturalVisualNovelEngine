@@ -1,10 +1,27 @@
 extends Node
+# Runs a story from a file path
 
-func run(story_file_path: String, quit_to_scene: PackedScene = null):
-	get_tree().change_scene("res://addons/FracturalVNE/core/story/story.tscn")
-	
-	yield(get_tree(), "idle_frame")
-	
-	var story_manager = StoryServiceRegistry.get_service("StoryManager")
-	story_manager.quit_to_scene = quit_to_scene
-	story_manager.run_story(story_file_path)
+
+# ----- Typeable ----- #
+
+func is_type(type: String) -> bool:
+	return get_types().has(type)
+
+static func get_types() -> Array:
+	return ["StoryRunner"]
+
+# ----- Typeable ----- #
+
+
+export var scene_manager_path: NodePath
+
+var story_file_path: String
+var quit_to_scene: PackedScene
+
+onready var scene_manager = get_node(scene_manager_path)
+
+
+func run(story_file_path_: String, quit_to_scene_: PackedScene = null):
+	story_file_path = story_file_path_
+	quit_to_scene = quit_to_scene_
+	scene_manager.transition_to_scene("res://addons/FracturalVNE/core/story/story.tscn")

@@ -1,10 +1,11 @@
-[gd_scene load_steps=7 format=2]
+[gd_scene load_steps=8 format=2]
 
 [ext_resource path="res://addons/FracturalVNE/core/gui/text_printer/printers/basic_text_printer.tscn" type="PackedScene" id=1]
 [ext_resource path="res://addons/FracturalVNE/core/gui/story_gui.gd" type="Script" id=2]
 [ext_resource path="res://addons/FracturalVNE/assets/themes/basic_gui_theme.tres" type="Theme" id=3]
 [ext_resource path="res://addons/FracturalVNE/core/gui/pause_menu/basic_pause_menu.tscn" type="PackedScene" id=4]
 [ext_resource path="res://addons/FracturalVNE/core/gui/_misc/basic_stepper.gd" type="Script" id=5]
+[ext_resource path="res://addons/FracturalVNE/core/utils/dependency_injection/dependency.gd" type="Script" id=7]
 [ext_resource path="res://addons/FracturalVNE/core/gui/_misc/gui_bottom_menu.gd" type="Script" id=11]
 
 [node name="BasicGUI" type="Control"]
@@ -19,6 +20,25 @@ __meta__ = {
 text_printer_path = NodePath("Panel/VBoxContainer/BasicTextPrinter")
 pause_menu_path = NodePath("BasicPauseMenu")
 
+[node name="Dependencies" type="Node" parent="."]
+pause_mode = 1
+
+[node name="StoryDirectorDependency" type="Node" parent="Dependencies"]
+script = ExtResource( 7 )
+dependency_name = "StoryDirector"
+
+[node name="HistoryManagerDependency" type="Node" parent="Dependencies"]
+script = ExtResource( 7 )
+dependency_name = "HistoryManager"
+
+[node name="StorySaveManagerDependency" type="Node" parent="Dependencies"]
+script = ExtResource( 7 )
+dependency_name = "StorySaveManager"
+
+[node name="StoryStateManagerDependency" type="Node" parent="Dependencies"]
+script = ExtResource( 7 )
+dependency_name = "StoryStateManager"
+
 [node name="BasicStepper" type="Control" parent="."]
 anchor_right = 1.0
 anchor_bottom = 1.0
@@ -27,6 +47,7 @@ script = ExtResource( 5 )
 __meta__ = {
 "_edit_use_anchors_": false
 }
+story_director_dep_path = NodePath("../Dependencies/StoryDirectorDependency")
 
 [node name="Panel" type="MarginContainer" parent="."]
 anchor_top = 1.0
@@ -56,7 +77,15 @@ anchor_right = 0.0
 anchor_bottom = 0.0
 margin_right = 1024.0
 margin_bottom = 200.0
-story_gui_path = NodePath("../../..")
+
+[node name="StoryDirectorDependency" parent="Panel/VBoxContainer/BasicTextPrinter/Dependencies" index="0"]
+dependency_path = NodePath("../../../../../Dependencies/StoryDirectorDependency")
+
+[node name="HSeparator" parent="Panel/VBoxContainer/BasicTextPrinter/Panel/MarginContainer" index="0"]
+margin_bottom = 180.0
+
+[node name="DialogueTextReveal" parent="Panel/VBoxContainer/BasicTextPrinter/Panel/MarginContainer/HSeparator" index="1"]
+margin_bottom = 180.0
 
 [node name="BottomMenu" type="HBoxContainer" parent="Panel/VBoxContainer"]
 margin_top = 204.0
@@ -73,6 +102,7 @@ save_button_path = NodePath("Save")
 load_button_path = NodePath("Load")
 options_button_path = NodePath("Options")
 pause_menu_path = NodePath("../../../BasicPauseMenu")
+story_director_dep_path = NodePath("../../../Dependencies/StoryDirectorDependency")
 
 [node name="History" type="Button" parent="Panel/VBoxContainer/BottomMenu"]
 margin_left = 112.0
@@ -120,8 +150,19 @@ text = "Options"
 
 [node name="BasicPauseMenu" parent="." instance=ExtResource( 4 )]
 visible = false
-story_gui_path = NodePath("..")
 
-[node name="Control" type="Control" parent="."]
-margin_right = 40.0
-margin_bottom = 40.0
+[node name="HistoryManagerDependency" parent="BasicPauseMenu/Dependencies" index="0"]
+dependency_path = NodePath("../../../Dependencies/HistoryManagerDependency")
+
+[node name="StorySaveManagerDependency" parent="BasicPauseMenu/Dependencies" index="1"]
+dependency_path = NodePath("../../../Dependencies/StorySaveManagerDependency")
+
+[node name="StoryStateManagerDependency" parent="BasicPauseMenu/Dependencies" index="2"]
+dependency_path = NodePath("../../../Dependencies/StoryStateManagerDependency")
+
+[node name="StoryGUIDependency" parent="BasicPauseMenu/Dependencies" index="3"]
+dependency_name = "StoryGUI"
+dependency_path = NodePath("../../..")
+
+[editable path="Panel/VBoxContainer/BasicTextPrinter"]
+[editable path="BasicPauseMenu"]

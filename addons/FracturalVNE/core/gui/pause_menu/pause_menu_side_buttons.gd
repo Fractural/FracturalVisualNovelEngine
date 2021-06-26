@@ -11,6 +11,7 @@ export var return_button_path: NodePath
 export var menu_manager_path: NodePath
 export var save_slots_menu_path: NodePath
 export var pause_menu_path: NodePath
+export var story_gui_dep_path: NodePath
 
 onready var history_button: Button = get_node(history_button_path)
 onready var save_button: Button = get_node(save_button_path)
@@ -21,6 +22,7 @@ onready var return_button: Button = get_node(return_button_path)
 onready var menu_manager = get_node(menu_manager_path)
 onready var save_slots_menu = get_node(save_slots_menu_path)
 onready var pause_menu = get_node(pause_menu_path)
+onready var story_gui_dep = get_node(story_gui_dep_path)
 
 
 func _ready():
@@ -49,7 +51,7 @@ func _on_options_button_pressed():
 
 
 func _on_quit_button_pressed():
-	pause_menu.story_gui.quit()
+	story_gui_dep.dependency.quit()
 
 
 func _on_return_button_pressed():

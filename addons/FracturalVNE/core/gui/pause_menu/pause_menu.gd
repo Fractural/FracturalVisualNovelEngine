@@ -4,11 +4,9 @@ extends Control
 # a specific section.  
 
 
-export var story_gui_path: NodePath
 export var menu_manager_path: NodePath
 export var save_slots_menu_path: NodePath
 
-onready var story_gui = get_node(story_gui_path)
 onready var menu_manager = get_node(menu_manager_path)
 onready var save_slots_menu = get_node(save_slots_menu_path)
 

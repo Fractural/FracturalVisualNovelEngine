@@ -3,15 +3,16 @@ extends Node
 
 export var entries_holder_path: NodePath
 export(Array, PackedScene) var entry_prefabs: Array = []
+export var history_manager_dep_path: NodePath
 
 onready var entries_holder = get_node(entries_holder_path)
-onready var history_manager = StoryServiceRegistry.get_service("HistoryManager")
+onready var history_manager_dep = get_node(history_manager_dep_path)
 
 
 func _ready():
-	history_manager.connect("entry_added", self, "_on_entry_added")
-	history_manager.connect("entry_removed", self, "_on_entry_removed")
-	history_manager.connect("entries_cleared", self, "_on_entries_cleared")
+	history_manager_dep.dependency.connect("entry_added", self, "_on_entry_added")
+	history_manager_dep.dependency.connect("entry_removed", self, "_on_entry_removed")
+	history_manager_dep.dependency.connect("entries_cleared", self, "_on_entries_cleared")
 
 
 func _get_entry_prefab(history_entry):

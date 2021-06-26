@@ -19,4 +19,5 @@ func init(history_entry):
 			name_label.bbcode_text = "[right][color=#" + history_entry.character.name_color.to_html() + "]" + history_entry.character.name + "[/color]"
 			dialogue_label.bbcode_text = "[color=#" + history_entry.character.dialogue_color.to_html() + "]" + history_entry.text + "[/color]"
 	else:
+		name_label.bbcode_text = ""
 		dialogue_label.bbcode_text = history_entry.text
