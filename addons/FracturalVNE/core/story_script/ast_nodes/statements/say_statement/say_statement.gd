@@ -43,7 +43,7 @@ func execute():
 
 func debug_string(tabs_string: String) -> String:
 	var string = ""
-	string += tabs_string + "SAY: REF ID: " + str(reference_id) 
+	string += tabs_string + "SAY:" 
 	string += "\n" + tabs_string + "{"
 	if character != null:
 		string += "\n" + tabs_string + "\tCHAR:" 
