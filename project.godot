@@ -19,11 +19,6 @@ _global_script_classes=[ {
 "language": "GDScript",
 "path": "res://addons/FracturalVNE/core/utils/dependency_injection/dependency.gd"
 }, {
-"base": "Node",
-"class": "DependencyRouter",
-"language": "GDScript",
-"path": "res://addons/FracturalVNE/core/utils/dependency_injection/dependency_router.gd"
-}, {
 "base": "Reference",
 "class": "FracturalUtils",
 "language": "GDScript",
@@ -122,7 +117,6 @@ _global_script_classes=[ {
 _global_script_class_icons={
 "DemoStory": "",
 "Dependency": "res://addons/FracturalVNE/assets/icons/dependency.png",
-"DependencyRouter": "res://addons/FracturalVNE/assets/icons/branch.png",
 "FracturalUtils": "",
 "PluginAssetsRegistry": "",
 "PluginUI": "",
