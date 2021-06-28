@@ -167,7 +167,10 @@ func run_script():
 	# TODO: Add support for playing story from editor
 	# 		PluginUI should implement it's own "StoryRunner" and manually
 	#		inject the dependency into StoryScriptEditor
-	story_runner_dep.dependency.run(persistent_data_dep.dependency.current_saved_story_path, load("res://addons/FracturalVNE/plugin/ui/story_script_editor.tscn"))
+	if not Engine.is_editor_hint():
+		story_runner_dep.dependency.run(persistent_data_dep.dependency.current_saved_story_path, load("res://addons/FracturalVNE/plugin/ui/story_script_editor.tscn"))
+	else:
+		story_runner_dep.dependency.run(persistent_data_dep.dependency.current_saved_story_path)
 
 
 func set_compiled(new_value):

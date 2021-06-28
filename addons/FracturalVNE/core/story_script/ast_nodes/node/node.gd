@@ -4,8 +4,15 @@ extends "res://addons/FracturalVNE/core/utils/typeable.gd"
 # to play an entire story.
 
 
+# ----- Typeable ----- #
+
+func is_type(type: String) -> bool:
+	return get_types().has(type)
+
 static func get_types() -> Array:
 	return ["node"]
+
+# ----- Typeable ----- #
 
 
 var reference_id

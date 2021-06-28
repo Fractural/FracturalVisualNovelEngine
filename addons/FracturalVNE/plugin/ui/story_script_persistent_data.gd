@@ -1,3 +1,4 @@
+tool
 extends Node
 # Holds persistent data for the StoryScriptEditor that lasts between the 
 # play scene and the editor scene.

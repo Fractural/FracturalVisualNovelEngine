@@ -2,8 +2,14 @@
 extends "res://addons/FracturalVNE/core/story_script/ast_nodes/executable_node/executable_node.gd"
 
 
+# ----- Typeabe ----- #
+
 static func get_types() -> Array:
-	return ._get_added_types(["block"])
+	var arr = .get_types()
+	arr.append("block")
+	return arr
+
+# ----- Typeabe ----- #
 
 
 var statements: Array
@@ -142,7 +148,6 @@ func serialize_node_state(saved_nodes):
 
 func deserialize_node_state(saved_nodes_lookup):
 	var reference_registry = get_runtime_block().get_service("StoryReferenceRegistry")
-	
 	var serialized_variables = saved_nodes_lookup[str(reference_id)]["variables"]
 	for serialized_variable in serialized_variables:
 		if serialized_variable["is_object"]:

@@ -37,4 +37,7 @@ func throw_error(error):
 
 
 func quit():
-	scene_manager_dep.dependency.transition_to_scene(quit_to_scene)
+	if quit_to_scene != null:
+		scene_manager_dep.dependency.transition_to_scene(quit_to_scene)
+	else:
+		get_tree().quit()

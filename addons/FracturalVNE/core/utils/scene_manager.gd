@@ -26,7 +26,8 @@ export var initial_scene: PackedScene
 
 
 func goto_initial_scene():
-	goto_scene(initial_scene)
+	if initial_scene != null:
+		goto_scene(initial_scene)
 
 
 func goto_scene(scene):

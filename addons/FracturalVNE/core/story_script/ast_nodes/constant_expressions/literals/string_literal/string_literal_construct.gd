@@ -1,7 +1,7 @@
 extends "res://addons/FracturalVNE/core/story_script/ast_nodes/constant_expressions/literals/literal/literal_construct.gd"
 
 
-const StringLiteralNode = preload("res://addons/FracturalVNE/core/story_script/ast_nodes/constant_expressions/literals/string_literal/string_literal.gd")
+const StringLiteralNode = preload("string_literal.gd")
 
 
 func get_parse_types():

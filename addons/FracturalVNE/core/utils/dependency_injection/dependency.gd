@@ -1,5 +1,6 @@
-extends Node
+tool
 class_name Dependency, "res://addons/FracturalVNE/assets/icons/dependency.png"
+extends Node
 # A node that represents an external node dependency of a scene
 
 
