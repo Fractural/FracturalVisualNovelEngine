@@ -49,6 +49,9 @@ onready var persistent_data_dep = get_node(persistent_data_dep_path)
 
 
 func _ready():
+	if FracturalUtils.is_in_editor_scene_tab(self):
+		return
+	
 	# If this is running standalone, then set up editor assets with a default scale of 1.
 	if not Engine.is_editor_hint():
 		_setup_editor_assets(PluginAssetsRegistry.new())

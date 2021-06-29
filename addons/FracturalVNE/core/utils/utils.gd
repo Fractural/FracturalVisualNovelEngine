@@ -73,3 +73,14 @@ static func pascal2snake(string: String) -> String:
 			result.append('_'+ch.to_lower())
 	result[0] = result[0][1]
 	return result.join('')
+
+
+static func is_in_editor_scene_tab(node):
+	if Engine.is_editor_hint():
+		# Only tested so far to work on Godot 3.3
+		if node == null:
+			return false
+		elif node.name == "@@5903":
+			return true
+		return is_in_editor_scene_tab(node.get_parent())
+	return false

@@ -31,6 +31,38 @@ dependency_path = NodePath("../../../EditorStoryRunner")
 [node name="StoryScriptPersistentDataDependency" parent="StoryScriptEditor/Dependencies" index="1"]
 dependency_path = NodePath("../../../StoryScriptPersistentData")
 
+[node name="FileMenuButton" parent="StoryScriptEditor/VSplitContainer/TopMenu/VBoxContainer/HBoxContainer/Buttons" index="2"]
+items = [ "Open", null, 0, false, false, 0, 0, "open", "", false, "", null, 0, false, false, -1, 0, null, "", true, "Save", null, 0, false, false, 2, 0, "save", "", false, "Save As", null, 0, false, false, 3, 0, "save as", "", false, "Open", null, 0, false, false, 4, 0, "open", "", false, "", null, 0, false, false, -1, 0, null, "", true, "Save", null, 0, false, false, 6, 0, "save", "", false, "Save As", null, 0, false, false, 7, 0, "save as", "", false, "Open", null, 0, false, false, 8, 0, "open", "", false, "", null, 0, false, false, -1, 0, null, "", true, "Save", null, 0, false, false, 10, 0, "save", "", false, "Save As", null, 0, false, false, 11, 0, "save as", "", false ]
+
+[node name="CompiledUI" parent="StoryScriptEditor/VSplitContainer/TopMenu/VBoxContainer/HBoxContainer/States" index="0"]
+modulate = Color( 1, 1, 1, 0.5 )
+
+[node name="SavedUI" parent="StoryScriptEditor/VSplitContainer/TopMenu/VBoxContainer/HBoxContainer/States" index="1"]
+modulate = Color( 1, 1, 1, 0.5 )
+
+[node name="EditingFileText" parent="StoryScriptEditor/VSplitContainer/TopMenu/VBoxContainer" index="1"]
+text = "Editing \"res://temp.storyscript\" "
+
+[node name="ScriptTextEdit" parent="StoryScriptEditor/VSplitContainer" index="1"]
+text = "define b = Character(name=\"Bob\", name_color=\"#fcba03\") 
+define j = Character(\"Joe\", \"#03a1fc\", \"#03a1fc\") 
+b \"Hi there, I'm bob!\" 
+j \"Hi there, I'm joeeee!\" 
+\"Tom\" \"Hi there, I'm tom!\" 
+say(b, \"This is from a function!\") 
+say(j, \"This is also from a function!\") 
+say(\"lol\", \"This is also also from a function!\") 
+label lol: 
+	b \"I'm in a label!\" 
+	j \"I'm also in a label!\" 
+	\"Tom\" \"I'm also also in a label!\" 
+	\"Here's some narration in the label!\" 
+	\"Tom\" \"Lets jump recursively back to that label!\" 
+	jump lol
+label another_one: 
+	 \"You will never reach this label!\"
+"
+
 [node name="EditorStoryRunner" type="Node" parent="."]
 script = ExtResource( 4 )
 plugin_dep_path = NodePath("../Dependencies/PluginDependency")

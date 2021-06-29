@@ -11,8 +11,10 @@ var dependency
 
 
 func _ready():
-	assert(get_node(dependency_path) != null, "Missing external dependency!")
+	if FracturalUtils.is_in_editor_scene_tab(self):
+		return
 	
+	assert(get_node(dependency_path) != null, "Missing dependency of type \"%s\" for node \"%s\"" % [dependency_name, name])
 	if get_node(dependency_path).get_script() != null and get_node(dependency_path).get_script().get_path() == get_script().get_path():
 		# Allows for the chaining of dependencies
 		dependency = get_node(dependency_path).dependency

@@ -1,15 +1,16 @@
+tool
 extends Node
 
-const ProgramNode = preload("res://addons/FracturalVNE/core/story_script/ast_nodes/misc/program_node.gd")
-const SayStatement = preload("res://addons/FracturalVNE/core/story_script/ast_nodes/statements/say_statement.gd")
-const BlockNode = preload("res://addons/FracturalVNE/core/story_script/ast_nodes/misc/block_node.gd")
+func _ready():
+	print(get_path())
+	print("IS IN SCENE TAB? " + str(_is_in_editor_scene_tab(get_parent())))
 
-func _process(delta):
-	var program = ProgramNode.new(BlockNode.new())
-	
-	for i in 10:
-		program.block.statements.append(SayStatement.new())
-	
-	program.block._init_post()
-	
-	program._init_post()
+func _is_in_editor_scene_tab(parent):
+	if Engine.is_editor_hint():
+		# Only tested so far to work on Godot 3.3
+		if parent.name == "@@5903":
+			return true
+		elif parent == null:
+			return false
+		return _is_in_editor_scene_tab(parent.get_parent())
+	return false
