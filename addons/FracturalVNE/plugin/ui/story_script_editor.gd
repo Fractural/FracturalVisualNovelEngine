@@ -63,6 +63,8 @@ func _ready():
 	compiler.connect("throw_error", script_text_edit, "display_error")
 	script_text_edit.connect("text_changed", self, "_on_script_text_changed")
 	
+	print("Creating file menu")
+	
 	file_menu.connect("menu_item_pressed", self, "_on_file_menu_item_pressed")
 	file_menu.create_shortcut("Open", "open", KEY_O, ["ctrl"])
 	file_menu.create_separator()
@@ -77,11 +79,7 @@ func _ready():
 	save_file_dialog.connect("popup_hide", self, "_on_popup_hide")
 	
 	if persistent_data_dep.dependency.current_script_path == "":
-		# TODO: Remove when done testing
 		script_text_edit.text = ""
-	#	for i in 100:
-	#		script_text_edit.text += '"Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum."'
-	#		script_text_edit.text += "\n"
 		script_text_edit.text += 'define b = Character(name="Bob", name_color="#fcba03") \n'
 		script_text_edit.text += 'define j = Character("Joe", "#03a1fc", "#03a1fc") \n'
 		script_text_edit.text += 'b "Hi there, I\'m bob!" \n'
@@ -226,5 +224,11 @@ func _setup_editor_assets(assets_registry):
 	compiled_icon.texture = assets_registry.load_asset("assets/icons/check_box.svg")
 	saved_icon.texture = assets_registry.load_asset("assets/icons/check_box.svg")
 	file_menu.icon = assets_registry.load_asset("assets/icons/load.svg")
+	
+	open_file_dialog.rect_size = open_file_dialog.rect_size * assets_registry.get_editor_scale()
+	save_file_dialog.rect_size = open_file_dialog.rect_size * assets_registry.get_editor_scale()
+	
+	open_file_dialog.set_anchors_and_margins_preset(Control.PRESET_CENTER, Control.PRESET_MODE_KEEP_SIZE)
+	save_file_dialog.set_anchors_and_margins_preset(Control.PRESET_CENTER, Control.PRESET_MODE_KEEP_SIZE)
 	
 	script_text_edit._setup_editor_assets(assets_registry)

@@ -31,9 +31,6 @@ dependency_path = NodePath("../../../EditorStoryRunner")
 [node name="StoryScriptPersistentDataDependency" parent="StoryScriptEditor/Dependencies" index="1"]
 dependency_path = NodePath("../../../StoryScriptPersistentData")
 
-[node name="FileMenuButton" parent="StoryScriptEditor/VSplitContainer/TopMenu/VBoxContainer/HBoxContainer/Buttons" index="2"]
-items = [ "Open", null, 0, false, false, 0, 0, "open", "", false, "", null, 0, false, false, -1, 0, null, "", true, "Save", null, 0, false, false, 2, 0, "save", "", false, "Save As", null, 0, false, false, 3, 0, "save as", "", false, "Open", null, 0, false, false, 4, 0, "open", "", false, "", null, 0, false, false, -1, 0, null, "", true, "Save", null, 0, false, false, 6, 0, "save", "", false, "Save As", null, 0, false, false, 7, 0, "save as", "", false, "Open", null, 0, false, false, 8, 0, "open", "", false, "", null, 0, false, false, -1, 0, null, "", true, "Save", null, 0, false, false, 10, 0, "save", "", false, "Save As", null, 0, false, false, 11, 0, "save as", "", false ]
-
 [node name="CompiledUI" parent="StoryScriptEditor/VSplitContainer/TopMenu/VBoxContainer/HBoxContainer/States" index="0"]
 modulate = Color( 1, 1, 1, 0.5 )
 

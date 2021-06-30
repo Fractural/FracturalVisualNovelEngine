@@ -11,6 +11,9 @@ onready var story_script_editor: StoryScriptEditor = get_node(story_script_edito
 
 
 func _ready():
+	if FracturalUtils.is_in_editor_scene_tab(self):
+		return
+	
 	_add_port_setting()
 
 
