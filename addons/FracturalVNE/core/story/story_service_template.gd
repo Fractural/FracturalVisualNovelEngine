@@ -2,6 +2,8 @@ extends Reference
 # A template file to create new StoryServices off of.
 
 
+# ----- StoryService ----- #
+
 # Optional
 var function_definitions = [
 	StoryScriptFuncDef.new("function1_name", [
@@ -25,3 +27,5 @@ func configure_service(program_node):
 
 func get_service_name():
 	return "DemoService"
+
+# ----- StoryService ----- #

@@ -1,5 +1,5 @@
 define b = Character(name="Bob", name_color="#fcba03") 
-define j = Character("Joe", "#03a1fc", "#03a1fc") 
+define j = Character(name="Joe", "#03a1fc", "#03a1fc") 
 b "Hi there, I'm bob!" 
 j "Hi there, I'm joeeee!" 
 "Tom" "Hi there, I'm tom!" 

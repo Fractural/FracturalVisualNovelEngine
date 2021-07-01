@@ -17,7 +17,7 @@ func get_service_name():
 # ----- StoryService ----- #
 
 
-const Character = preload("res://addons/FracturalVNE/core/character/character.gd")
+const Character = preload("character.gd")
 
 export var reference_registry_path: NodePath
 export var story_gui_configurer_path: NodePath
@@ -44,13 +44,23 @@ func add_character(character):
 
 # Used in the StoryScript to create a new character that will be serialized when 
 # the story is saved. 
-func Character(name_: String, name_color_, dialogue_color_):
+func Character(name_, name_color_, dialogue_color_):
 	if typeof(name_color_) == TYPE_STRING:
 		name_color_ = Color(name_color_)
 	if typeof(dialogue_color_) == TYPE_STRING:
 		dialogue_color_ = Color(dialogue_color_)
+	
+	# Type safety checks
+	if typeof(name_) != TYPE_STRING:
+		return StoryScriptError.new("Expected name to be a string.")
+	if typeof(name_color_) != TYPE_COLOR:
+		return StoryScriptError.new("Expected name_color to be a Color or a string.")
+	if typeof(dialogue_color_) != TYPE_COLOR:
+		return StoryScriptError.new("Expected dialogue_color to be a Color or a string.")
+	
 	var new_character = Character.new(name_, name_color_, dialogue_color_)
 	reference_registry.add_reference(new_character)
+	add_character(new_character)
 	return new_character
 
 
