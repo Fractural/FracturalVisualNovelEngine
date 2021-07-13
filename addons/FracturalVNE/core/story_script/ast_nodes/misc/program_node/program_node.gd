@@ -100,9 +100,6 @@ func add_function_holders(new_function_holders):
 # 	StoryScriptArgument.new(null, value2)
 # 	StoryScriptArgument.new("name2", value3)
 # ]
-# 
-# TODO Check for variable function_definitions in function_holders
-# and use that to assign appropriate arguments
 
 func call_function(name: String, arguments = []):
 	# Only support for native GDScript functions for now

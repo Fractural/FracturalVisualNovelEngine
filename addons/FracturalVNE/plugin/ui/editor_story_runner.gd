@@ -32,4 +32,4 @@ func run(story_file_path: String, quit_to_scene: PackedScene = null):
 		server.quit_to_scene_path = quit_to_scene.get_path()
 	
 	var plugin = plugin_dep.dependency
-	plugin.get_editor_interface().play_custom_scene("res://addons/FracturalVNE/plugin/ui/via_editor_story_init.tscn")
+	plugin.get_editor_interface().play_custom_scene("res://addons/FracturalVNE/plugin/via_editor_story_init.tscn")

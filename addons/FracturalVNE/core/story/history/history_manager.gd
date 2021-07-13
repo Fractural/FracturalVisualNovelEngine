@@ -1,6 +1,5 @@
 extends Node
 # Keeps track of a users past interactions in a story.
-# TODO: Make history_manager store only one reference to each charcter.
 
 
 # ----- StoryService ----- #

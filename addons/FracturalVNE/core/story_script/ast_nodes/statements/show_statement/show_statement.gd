@@ -1,36 +1,28 @@
 extends "res://addons/FracturalVNE/core/story_script/ast_nodes/statements/statement/statement_node.gd"
+# TODO: Finish the rest the show statement.
 
 
 # ----- Typeable ----- #
 
 static func get_types() -> Array:
 	var arr = .get_types()
-	arr.append("label")
+	arr.append("show")
 	return arr
 
 # ----- Typeable ----- #
 
 
-var name
-var block
-var parameter_group
+var visual
+var modifiers
+var animation
 
 
-func _init(position_ = null, name_ = null, block_ = null, parameter_group_ = null).(position_):
-	name = name_
-	block = block_
-	parameter_group = parameter_group_
+func _init(position_ = null, visual_ = null, modifiers_ = null, animation_ = null).(position_):
+	visual = visual_
+	modifiers = modifiers_
+	animation = animation_
 
 
-func _init_post():
-	block.connect("executed", self, "block_executed")
-	if parameter_group != null:
-		for param in parameter_group.parameters:
-			block.declare_variable(param.name, param.default_value)
-
-
-# TODO: Ensure that execute() runs even when it accepts an arguments variable 
-# 		(Since Godot has not crashed yet, I'm assuming Godot doesn't care.)
 func execute(arguments = []):
 	if parameter_group != null:
 		for arg in arguments:

@@ -126,15 +126,6 @@ func step():
 	#		would operate using events and callbacks to step.
 	#		Though tbh this is not much of a priority right now since even renpy
 	#		expected you to use it's own programming language.
-	
-	# TODO: Add support for skipping the execution of a current node.
-	#		
-	#		This is useful for play animation nodes, since the animated object must
-	#		snap to it's final position if the animation is skipped.
-	#
-	# 		Maybe create a function that can be called on each node
-	#		that terminates whatever action they are currently doing.
-	#		Something like "terminate_execute" ?
 	if curr_stepped_node.runtime_next_node != null and not curr_node_executed:
 		emit_signal("stepped")
 		

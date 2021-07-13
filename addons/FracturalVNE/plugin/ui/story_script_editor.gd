@@ -63,8 +63,6 @@ func _ready():
 	compiler.connect("throw_error", script_text_edit, "display_error")
 	script_text_edit.connect("text_changed", self, "_on_script_text_changed")
 	
-	print("Creating file menu")
-	
 	file_menu.connect("menu_item_pressed", self, "_on_file_menu_item_pressed")
 	file_menu.create_shortcut("Open", "open", KEY_O, ["ctrl"])
 	file_menu.create_separator()

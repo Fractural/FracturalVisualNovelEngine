@@ -1,4 +1,6 @@
 extends Reference
+# Stores a saved state of the story.
+
 
 var starting_node_id
 var story_tree_state
@@ -6,7 +8,6 @@ var story_file_path
 var saved_date
 var thumbnail
 
-# TODO: Add thumbnails to save_state
 
 func _init(story_file_path_ = null, starting_node_id_ = null, story_tree_state_ = null, thumbnail_ = null):
 	story_file_path = story_file_path_
@@ -14,6 +15,7 @@ func _init(story_file_path_ = null, starting_node_id_ = null, story_tree_state_ 
 	story_tree_state = story_tree_state_
 	thumbnail = thumbnail_
 	saved_date = OS.get_datetime()
+
 
 # ----- Serialization ----- #
 
@@ -43,6 +45,7 @@ func serialize():
 		"saved_date": saved_date,
 		"thumbnail": thumbnail_data,
 	}
+
 
 func deserialize(serialized_obj):
 	var instance = get_script().new()

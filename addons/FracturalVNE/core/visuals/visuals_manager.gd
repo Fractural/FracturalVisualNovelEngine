@@ -53,6 +53,20 @@ onready var visual_controllers_holder = get_node(visual_controllers_holder_path)
 
 func add_visual(visual):
 	visuals.append(visual)
+
+	# TODO NOW Part 1: Change all the visuals to
+	#			directly be a visual controller. There is no point in separating
+	#			data and behaviour for visuals using the "Visual" and "VisualController"
+	#			structure due to only using visuals at runtime. Note that serialization
+	#			should also work for nodes without any problems. 
+	
+	#			Remember to create a new instance of the node in the deserialize() 
+	# 			function of the serializable node.
+
+	# Part 2: Create the show and hide statements and let them accept modifiers after
+	#			the visual variable. Don't forget to add type checking to these statements that
+	#			throw runtime StoryScriptErrors!
+	
 	var visual_controller = Sprite.new()
 	visual_controller.visible = false
 	visual_controllers[visual] = visual_controller

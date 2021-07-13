@@ -35,4 +35,3 @@ func parse(parser):
 	else:
 		newline.message = "Expected a newline to begin a block."
 		return newline
-# TODO NOW: Port over ast_nodes following the google drawings UML diagram
