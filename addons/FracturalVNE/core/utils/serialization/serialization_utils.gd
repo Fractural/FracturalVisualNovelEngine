@@ -1,10 +1,19 @@
 class_name SerializationUtils
 extends Reference
 
-# Deserialization is not a static method because Godot does not support
-# static method overriding. >:(
+# Deserialization for each serialized object is not a static method 
+# because Godot does not support static method overriding. >:(
 static func deserialize(serialized_object):
-	return load(serialized_object["script_path"]).new().deserialize(serialized_object)
+	var temp_instance = load(serialized_object["script_path"]).new()
+	var result = temp_instance.deserialize(serialized_object)
+	
+	# Free temp_instance to prevent memory leaks incase it
+	# temp_instance is not a Reference and is just an Object 
+	# (such as with Node classes).
+	if not temp_instance is Reference:
+		temp_instance.free()
+	
+	return result
 
 # Template for serializable objects:
 

@@ -1,51 +1,71 @@
 extends "res://addons/FracturalVNE/core/story_script/ast_nodes/statements/statement/statement_construct.gd"
 
-const LabelNode = preload("res://addons/FracturalVNE/core/story_script/ast_nodes/statements/label_statement/label_statement.gd")
+const ShowNode = preload("show_statement.gd")
+const MultiVisualShowNode = preload("multi_visual_show_statement.gd")
 
 
 func get_parse_types():
 	var arr = .get_parse_types()
-	arr.append("label")
+	arr.append("show")
 	return arr
 
 
 func get_keywords() -> Array:
-	return ["label"]
-
-
-func get_punctuation() -> Array:
-	return [":"]
+	return ["show", "with"]
 
 
 func parse(parser):
 	var checkpoint = parser.save_reader_state()
-	var label = parser.expect_token("keyword", "label")
-	if parser.is_success(label):
-		var identifier = parser.expect_token("identifier")
-		if parser.is_success(identifier):
-			var colon = parser.expect_token("punctuation", ":")
-			if parser.is_success(colon):
-				var block = parser.expect("block")
-				if parser.is_success(block):
-					return LabelNode.new(label.position, identifier.symbol, block)
+	var show = parser.expect_token("keyword", "show")
+	if parser.is_success(show):
+		var visual = parser.expect("variable")
+		if parser.is_success(visual):
+			var modifier_identifier = parser.expect_token("identifier")
+			if parser.is_success(modifier_identifier):
+				# We are parsing a multi visual show statement here.
+				var modifiers_string = modifier_identifier.symbol + " "
+				modifier_identifier = parser.expect_token("identifier")
+				while parser.is_success(modifier_identifier):
+					modifiers_string += modifier_identifier.symbol + " "
+					modifier_identifier = parser.expect_token("identifier")
+				# Remove the space at the end of the string
+				modifiers_string = modifiers_string.substr(0, modifiers_string.length() - 1)
+				
+				# Parse optional animation.
+				var animation = _parse_animation(parser)
+				if not parser.is_success(animation):
+					return animation
+				
+				if parser.is_success(parser.expect_token("punctuation", "newline")):
+					return MultiVisualShowNode.new(show.position, visual, modifiers_string, animation)
 				else:
-					return parser.error(block, 4/5.0, checkpoint)
+					return parser.error("Expected a new line to conclude a statement.", 1, checkpoint)
 			else:
-				var params = parser.expect("parenthesized parameters")
-				if parser.is_success(params):
-					colon = parser.expect_token("punctuation", ":")
-					if parser.is_success(colon):
-						var block = parser.expect("block")
-						if parser.is_success(block):
-							return LabelNode.new(label.position, identifier.symbol, block, params)
-						else:
-							return parser.error(block, 4/5.0, checkpoint)
-					else:
-						return parser.error(colon, 3/5.0, checkpoint)
+				# We are parsing a normal show statement here.
+				
+				# Parse optional animation.
+				var animation = _parse_animation(parser)
+				if not parser.is_success(animation):
+					return animation
+				
+				if parser.is_success(parser.expect_token("punctuation", "newline")):
+					return ShowNode.new(show.position, visual, animation)
 				else:
-					params.message += " Expected a valid parameter group or a ':' to close a label declaration."
-					return parser.error(params, 2/5.0, checkpoint)
+					return parser.error("Expected a new line to conclude a statement.", 1, checkpoint)
 		else:
-			return parser.error(identifier, 1/5.0, checkpoint)
+			# Confidence of 1 because we are confident once we parsed 
+			# the show keyword, we are trying to parse a show statement.
+			return parser.error("Expected a variable after show.", 1, checkpoint)
 	else:
-		return parser.error(label, 0)
+		return parser.error(show, 0)
+
+
+func _parse_animation(parser):
+	var checkpoint = parser.save_reader_state()
+	var with = parser.expect_token("keyword", "with")
+	if parser.is_success(with):
+		var animation = parser.expect_token("identifier")
+		if parser.is_success(animation):
+			return animation.symbol
+		else:
+			return parser.error("Expected an animation identifier after with.", 1, checkpoint)

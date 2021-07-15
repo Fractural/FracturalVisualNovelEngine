@@ -63,7 +63,7 @@ func save_reader_state():
 	return reader.clone()
 
 func is_success(result):
-	return result != null and not result is StoryScriptError
+	return result == null or not result is StoryScriptError
 
 func peek(steps_ahead: int = 1):
 	return reader.peek(steps_ahead)

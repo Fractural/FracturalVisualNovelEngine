@@ -1,23 +1,22 @@
-extends "res://addons/FracturalVNE/core/story_script/ast_nodes/statements/statement/statement_node.gd"
+extends "show_statement.gd"
 # TODO: Finish the rest the show statement.
+
 
 # ----- Typeable ----- #
 
 static func get_types() -> Array:
 	var arr = .get_types()
-	arr.append("show")
+	arr.append("multivisual show")
 	return arr
 
 # ----- Typeable ----- #
 
 
-var visual
-var animation_string
+var modifiers_string
 
 
-func _init(position_ = null, visual_ = null, animation_string_ = null).(position_):
-	visual = visual_
-	animation_string = animation_string_
+func _init(position_ = null, visual_ = null, modifiers_string_ = null, animation_string_ = null).(position_, visual_, animation_string_):
+	modifiers_string = modifiers_string_
 
 
 func execute():
@@ -31,10 +30,12 @@ func execute():
 	var visual_result = visual.evaluate()
 	if not is_success(visual_result):
 		return visual_result
-	if typeof(visual_result) == TYPE_OBJECT and visual_result.is_type("Visual"):
-		visual_result.show(animation_string) 
+	if typeof(visual) == TYPE_OBJECT and visual.is_type("MultiVisual"):
+		if modifiers_string != null:
+			visual_result.set_sprite(modifiers_string)
+		visual_result.show(animation)
 	else: 
-		throw_error(StoryScriptError.new("Expected a visual for the show statement."))
+		throw_error(StoryScriptError.new("Expected a multi visual for show statements that have modifiers."))
 		return
 	
 	.execute()
@@ -42,9 +43,12 @@ func execute():
 
 func debug_string(tabs_string: String) -> String:
 	var string = ""
-	string += tabs_string + "SHOW :" 
+	string += tabs_string + "MULTI VISUALS SHOW :" 
 	
 	string += "\n" + tabs_string + "{"
+	
+	if modifiers_string != null:
+		string += "\n" + "MODIFIERS: " + modifiers_string
 	
 	if animation_string != null:
 		string += "\n" + "ANIMATION: " + animation_string
@@ -53,11 +57,12 @@ func debug_string(tabs_string: String) -> String:
 	return string
 
 
-func propagate_call(method, arguments = [], parent_first = false):
+func propagate_call(method: String, arguments: Array = [], parent_first: bool = false):	
 	if parent_first:
 		.propagate_call(method, arguments, parent_first)
 	
-	visual.propagate_call(method, arguments, parent_first)
+	if visual != null:
+		visual.propagate_call(method, arguments, parent_first)
 	
 	if not parent_first:
 		.propagate_call(method, arguments, parent_first)
@@ -68,15 +73,15 @@ func propagate_call(method, arguments = [], parent_first = false):
 func serialize():
 	var serialized_obj = .serialize()
 	serialized_obj["visual"] = visual.serialize()
-	serialized_obj["animation"] = animation_string
+	serialized_obj["modifiers"] = modifiers_string
 	
 	return serialized_obj
 
 
 func deserialize(serialized_obj):	
 	var instance = .deserialize(serialized_obj)
-	instance.visual = SerializationUtils.deserialize(serialized_obj["visual"])
-	instance.animation_string = serialized_obj["animation"]
+	instance.visual = serialized_obj["visual"]
+	instance.modifiers_string = serialized_obj["modifiers"]
 	
 	return instance
 

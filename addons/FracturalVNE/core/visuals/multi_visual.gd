@@ -11,6 +11,10 @@ static func get_types() -> Array:
 # ----- Typeable ----- #
 
 
+export var sprite_path: NodePath
+
+onready var sprite = get_node(sprite)
+
 # Array of textures
 var textures: Array
 # Key: Modifiers (as string)
@@ -18,11 +22,15 @@ var textures: Array
 var textures_dict: Dictionary
 
 
-func _init(textures_ = null, name_ = null).(name_):
+func init(textures_):
 	textures = textures_
-
-
-func _post_init():
+	
+	# Since MultiVisual is a node, we can operate on it's variables after
+	# setting them in init() since init() will only be called when the
+	# node is instantiated for real and not just to use the deserialize()
+	# function (Which is called by SerializationUtils as a general way to
+	# to deserialize all serializable objects).
+	
 	# Create the textures_dict to support fast lookup
 	textures_dict = {}
 	for texture in textures:
@@ -31,8 +39,8 @@ func _post_init():
 		textures_dict[_get_modifiers_string(texture.resource_path().get_basename().get_file())] = texture
 
 
-func get_texture(modifiers_string):
-	return textures_dict[modifiers_string]
+func set_sprite(modifiers_string):
+	sprite.texture = textures_dict[modifiers_string]
 
 
 func _get_modifiers_string(file_name: String) -> String:
@@ -44,3 +52,33 @@ func _get_modifiers_string(file_name: String) -> String:
 		modifiers_string += modifiers[i]
 	
 	return modifiers_string
+
+
+# ----- Serialization ----- #
+
+func serialize():
+	var texture_paths = []
+	for texture in textures:
+		texture_paths.append(texture.get_path())
+	
+	return {
+		"script_path": get_script().get_path(),
+		"name": name,
+		"texture_paths": texture_paths,
+	}
+
+
+func deserialize(serialized_object):
+	var visual_prefab = load("multi_visual.tscn")
+	
+	var instance = visual_prefab.instance()
+	
+	var textures = []
+	for texture_path in serialized_object["texture_paths"]:
+		textures.append(load(texture_path))
+	
+	instance.init(textures)
+	
+	return instance
+
+# ----- Serialization ----- #
