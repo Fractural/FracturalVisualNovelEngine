@@ -9,7 +9,9 @@ signal finished_screenshot(screenshot)
 
 export var facade_viewport_texture_rect_path: NodePath
 export var story_gui_configurer_path: NodePath
-export var gui_viewport_path: NodePath
+export var world_path: NodePath
+export var screenshot_viewport_path: NodePath
+export var screenshot_gui_holder_path: NodePath
 
 # The latest screenshot taken
 var screenshot
@@ -17,7 +19,9 @@ var is_taking_screenshot: bool = false
 
 onready var facade_viewport_texture_rect = get_node(facade_viewport_texture_rect_path)
 onready var story_gui_configurer = get_node(story_gui_configurer_path)
-onready var gui_viewport = get_node(gui_viewport_path)
+onready var world = get_node(world_path)
+onready var screenshot_viewport = get_node(screenshot_viewport_path)
+onready var screenshot_gui_holder = get_node(screenshot_gui_holder_path)
 
 
 # Screenshots the entire screen
@@ -47,9 +51,15 @@ func screenshot_gameplay():
 		return
 	
 	is_taking_screenshot = true
-	# Reparent the gui as a child of the viewport
+	
+	# Reparent the world as a child of the viewport
+	var world_holder = world.get_parent()
+	world_holder.remove_child(world)
+	screenshot_viewport.add_child(world)
+	
+	# Reparent the gui as a child of the viewport's gui holder
 	story_gui_configurer.story_gui_holder.remove_child(story_gui_configurer.story_gui)
-	gui_viewport.add_child(story_gui_configurer.story_gui)
+	screenshot_gui_holder.add_child(story_gui_configurer.story_gui)
 	
 	# Create a screenshot of the entire view before performing the actual screenshot.
 	# This preliminary screenshot will be pasted over the screen in another viewport
@@ -75,7 +85,7 @@ func screenshot_gameplay():
 
 	yield(get_tree(), "idle_frame")
 
-	var viewport_texture_image = gui_viewport.get_texture().get_data()
+	var viewport_texture_image = screenshot_viewport.get_texture().get_data()
 	viewport_texture_image.flip_y()
 
 	var viewport_texture = ImageTexture.new()
@@ -88,8 +98,12 @@ func screenshot_gameplay():
 	facade_viewport_texture_rect.visible = false
 	facade_viewport_texture_rect.texture = null
 	
-	# Move the gui outside of the viewport to it's original place
-	gui_viewport.remove_child(story_gui_configurer.story_gui)
+	# move the world outside of the viewport to it's original place
+	screenshot_viewport.remove_child(world)
+	world_holder.add_child(world)
+	
+	# Move the gui outside of the viewport gui holder to it's original place
+	screenshot_gui_holder.remove_child(story_gui_configurer.story_gui)
 	story_gui_configurer.story_gui_holder.add_child(story_gui_configurer.story_gui)
 	
 	screenshot = viewport_texture

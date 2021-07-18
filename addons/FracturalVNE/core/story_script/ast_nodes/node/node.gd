@@ -44,7 +44,8 @@ func set_runtime_block(new_value):
 
 
 func get_runtime_block():
-	return runtime_block.get_ref()
+	if runtime_block != null:
+		return runtime_block.get_ref()
 
 
 func debug_string(tabs_string: String) -> String:

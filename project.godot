@@ -9,11 +9,6 @@
 config_version=4
 
 _global_script_classes=[ {
-"base": "Reference",
-"class": "DemoStory",
-"language": "GDScript",
-"path": "res://demo/demo_story.gd"
-}, {
 "base": "Node",
 "class": "Dependency",
 "language": "GDScript",
@@ -115,7 +110,6 @@ _global_script_classes=[ {
 "path": "res://addons/FracturalVNE/plugin/ui/text_edit_theme.gd"
 } ]
 _global_script_class_icons={
-"DemoStory": "",
 "Dependency": "res://addons/FracturalVNE/assets/icons/dependency.png",
 "FracturalUtils": "",
 "PluginAssetsRegistry": "",
@@ -148,6 +142,12 @@ Port=6010
 config/name="FracturalVisualNovelEngine"
 run/main_scene="res://addons/FracturalVNE/plugin/standalone_story_editor_init.tscn"
 config/icon="res://icon.png"
+
+[display]
+
+window/dpi/allow_hidpi=true
+window/stretch/mode="2d"
+window/stretch/aspect="expand"
 
 [editor_plugins]
 

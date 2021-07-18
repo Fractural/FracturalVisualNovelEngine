@@ -20,22 +20,22 @@ func _init(position_ = null, visual_ = null, modifiers_string_ = null, animation
 
 
 func execute():
-	var animation = null
-	if animation_string != null:
-		animation = get_runtime_block().get_service("VisualsManager").get_animation(animation_string)
-		if not is_success(animation):
-			throw_error(stack_error(animation, "Expected valid animation for show statement."))
-			return
-	
 	var visual_result = visual.evaluate()
 	if not is_success(visual_result):
-		return visual_result
-	if typeof(visual) == TYPE_OBJECT and visual.is_type("MultiVisual"):
+		throw_error(stack_error(visual_result, "Could not evaluate the dynamic visual."))
+		return
+	
+	if typeof(visual) == TYPE_OBJECT and visual_result.is_type("MultiVisual"):
 		if modifiers_string != null:
-			visual_result.set_sprite(modifiers_string)
-		visual_result.show(animation)
+			var result = visual_result.set_sprite(modifiers_string)
+			if not is_success(result):
+				result.position = position
+				throw_error(result)
+				return
+		
+		# All animation is done in execute() function of the parent class (show_statement.gd)
 	else: 
-		throw_error(StoryScriptError.new("Expected a multi visual for show statements that have modifiers."))
+		throw_error(error("Expected a multi visual for show statements that have modifiers."))
 		return
 	
 	.execute()
@@ -48,10 +48,13 @@ func debug_string(tabs_string: String) -> String:
 	string += "\n" + tabs_string + "{"
 	
 	if modifiers_string != null:
-		string += "\n" + "MODIFIERS: " + modifiers_string
+		string += "\n" + tabs_string + "\tMODIFIERS: " + modifiers_string
 	
-	if animation_string != null:
-		string += "\n" + "ANIMATION: " + animation_string
+	if animation != null:
+		string += "\n" + tabs_string + "\tANIMATION: "
+		string += "\n" + tabs_string + "\t{"
+		string += "\n" + animation.debug_string(tabs_string + "\t\t")
+		string += "\n" + tabs_string + "\t}"
 
 	string += "\n" + tabs_string + "}"
 	return string
@@ -80,7 +83,7 @@ func serialize():
 
 func deserialize(serialized_obj):	
 	var instance = .deserialize(serialized_obj)
-	instance.visual = serialized_obj["visual"]
+	instance.visual = SerializationUtils.deserialize(serialized_obj["visual"])
 	instance.modifiers_string = serialized_obj["modifiers"]
 	
 	return instance

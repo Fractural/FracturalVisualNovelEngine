@@ -1,4 +1,4 @@
-[gd_scene load_steps=21 format=2]
+[gd_scene load_steps=22 format=2]
 
 [ext_resource path="res://addons/FracturalVNE/core/story/story_manager.gd" type="Script" id=1]
 [ext_resource path="res://addons/FracturalVNE/core/story/director/story_director.gd" type="Script" id=2]
@@ -13,13 +13,14 @@
 [ext_resource path="res://addons/FracturalVNE/core/utils/story_runtime_debugger.gd" type="Script" id=11]
 [ext_resource path="res://addons/FracturalVNE/assets/themes/basic_gui_theme.tres" type="Theme" id=12]
 [ext_resource path="res://addons/FracturalVNE/assets/fonts/Hack/Hack-Regular.tres" type="DynamicFont" id=13]
-[ext_resource path="res://addons/FracturalVNE/core/gui/_misc/follow_main_viewport_size.gd" type="Script" id=14]
 [ext_resource path="res://addons/FracturalVNE/core/io/story_state_manager.gd" type="Script" id=15]
 [ext_resource path="res://addons/FracturalVNE/core/gui/_misc/screenshot_manager.gd" type="Script" id=16]
 [ext_resource path="res://addons/FracturalVNE/core/io/reference_registry.gd" type="Script" id=17]
 [ext_resource path="res://addons/FracturalVNE/core/utils/dependency_injection/dependency.gd" type="Script" id=18]
 [ext_resource path="res://addons/FracturalVNE/core/utils/serialization/serialization_manager.gd" type="Script" id=19]
 [ext_resource path="res://addons/FracturalVNE/core/story/history/history_entries/say_entry/say_entry_serializer.gd" type="Script" id=20]
+[ext_resource path="res://addons/FracturalVNE/core/io/resource_loader.gd" type="Script" id=21]
+[ext_resource path="res://addons/FracturalVNE/core/visuals/visuals_manager.gd" type="Script" id=22]
 
 [node name="Story" type="Node"]
 
@@ -57,7 +58,7 @@ serializers_holder_path = NodePath(".")
 
 [node name="SayEntrySerializer" type="Node" parent="SerializationManager"]
 script = ExtResource( 20 )
-reference_registry_path = NodePath("../../StoryLoader/StoryServices/StoryReferenceRegistry")
+reference_registry_path = NodePath("../../StoryLoader/StoryServices/ReferenceRegistry")
 
 [node name="StoryLoader" type="Node" parent="."]
 script = ExtResource( 3 )
@@ -65,7 +66,7 @@ services_holder_path = NodePath("StoryServices")
 
 [node name="StoryServices" type="Node" parent="StoryLoader"]
 
-[node name="StoryReferenceRegistry" type="Node" parent="StoryLoader/StoryServices"]
+[node name="ReferenceRegistry" type="Node" parent="StoryLoader/StoryServices"]
 script = ExtResource( 17 )
 
 [node name="StoryDirector" type="Node" parent="StoryLoader/StoryServices"]
@@ -78,7 +79,7 @@ script = ExtResource( 5 )
 
 [node name="CharacterManager" type="Node" parent="StoryLoader/StoryServices"]
 script = ExtResource( 8 )
-reference_registry_path = NodePath("../StoryReferenceRegistry")
+reference_registry_path = NodePath("../ReferenceRegistry")
 story_gui_configurer_path = NodePath("../../../StoryGUIConfigurer")
 
 [node name="HistoryManager" type="Node" parent="StoryLoader/StoryServices"]
@@ -86,11 +87,21 @@ script = ExtResource( 6 )
 story_director_path = NodePath("../StoryDirector")
 serialization_manager_path = NodePath("../../../SerializationManager")
 
+[node name="ResourceLoader" type="Node" parent="StoryLoader/StoryServices"]
+script = ExtResource( 21 )
+
+[node name="VisualsManager" type="Node" parent="StoryLoader/StoryServices"]
+script = ExtResource( 22 )
+reference_registry_path = NodePath("../ReferenceRegistry")
+visuals_holder_path = NodePath("../../../WorldHolder/World/VisualsHolder")
+
 [node name="ScreenshotManager" type="Node" parent="."]
 script = ExtResource( 16 )
 facade_viewport_texture_rect_path = NodePath("FacadeViewportTextureRect")
 story_gui_configurer_path = NodePath("../StoryGUIConfigurer")
-gui_viewport_path = NodePath("ViewportContainer/GUI")
+world_path = NodePath("../WorldHolder/World")
+screenshot_viewport_path = NodePath("ViewportContainer/ScreenshotViewport")
+screenshot_gui_holder_path = NodePath("ViewportContainer/ScreenshotViewport/ScreenshotGUIHolder")
 
 [node name="ViewportContainer" type="ViewportContainer" parent="ScreenshotManager"]
 anchor_right = 1.0
@@ -100,13 +111,14 @@ __meta__ = {
 "_edit_use_anchors_": false
 }
 
-[node name="GUI" type="Viewport" parent="ScreenshotManager/ViewportContainer"]
+[node name="ScreenshotViewport" type="Viewport" parent="ScreenshotManager/ViewportContainer"]
 size = Vector2( 1024, 600 )
 handle_input_locally = false
 render_target_update_mode = 3
 physics_object_picking = true
 gui_disable_input = true
-script = ExtResource( 14 )
+
+[node name="ScreenshotGUIHolder" type="CanvasLayer" parent="ScreenshotManager/ViewportContainer/ScreenshotViewport"]
 
 [node name="FacadeViewportTextureRect" type="TextureRect" parent="ScreenshotManager"]
 visible = false
@@ -118,7 +130,17 @@ __meta__ = {
 "_edit_use_anchors_": false
 }
 
-[node name="StoryGUIConfigurer" type="Node" parent="."]
+[node name="WorldHolder" type="Node" parent="."]
+
+[node name="World" type="Node2D" parent="WorldHolder"]
+
+[node name="VisualsHolder" type="Node2D" parent="WorldHolder/World"]
+
+[node name="Camera2D" type="Camera2D" parent="WorldHolder/World"]
+current = true
+zoom = Vector2( 2, 2 )
+
+[node name="StoryGUIConfigurer" type="CanvasLayer" parent="."]
 script = ExtResource( 7 )
 story_loader_path = NodePath("../StoryLoader")
 story_gui_holder_path = NodePath(".")
@@ -137,7 +159,8 @@ dependency_path = NodePath("../../../../Dependencies/StorySaveManagerDependency"
 [node name="StoryStateManagerDependency" parent="StoryGUIConfigurer/BasicGUI/Dependencies" index="3"]
 dependency_path = NodePath("../../../../StoryStateManager")
 
-[node name="StoryRuntimeDebugger" type="Node" parent="."]
+[node name="StoryRuntimeDebugger" type="CanvasLayer" parent="."]
+layer = 10
 script = ExtResource( 11 )
 story_manager_path = NodePath("../StoryManager")
 quit_button_path = NodePath("ErrorUI/Panel/MarginContainer/VSplitContainer/QuitButton")

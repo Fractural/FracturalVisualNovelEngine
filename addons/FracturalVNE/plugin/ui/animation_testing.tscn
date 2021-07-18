@@ -1,0 +1,28 @@
+[gd_scene load_steps=6 format=2]
+
+[ext_resource path="res://addons/FracturalVNE/default_assets/images/godette_body.png" type="Texture" id=1]
+[ext_resource path="res://addons/FracturalVNE/core/visuals/visual_animator.gd" type="Script" id=2]
+[ext_resource path="res://addons/FracturalVNE/core/visuals/single_visual.gd" type="Script" id=3]
+[ext_resource path="res://addons/FracturalVNE/default_assets/animations/hide_animations/fade_out.tres" type="Animation" id=4]
+[ext_resource path="res://addons/FracturalVNE/default_assets/animations/show_animations/fade_in.tres" type="Animation" id=5]
+
+[node name="VisualAnimationTesting" type="Node2D"]
+script = ExtResource( 3 )
+visual_animator_path = NodePath("VisualAnimator")
+sprite_path = NodePath("VisualHolder/Sprite")
+
+[node name="VisualHolder" type="Node2D" parent="."]
+
+[node name="Sprite" type="Sprite" parent="VisualHolder"]
+scale = Vector2( 0.5, 0.5 )
+texture = ExtResource( 1 )
+
+[node name="VisualAnimator" type="Node" parent="."]
+script = ExtResource( 2 )
+visual_path = NodePath("..")
+animation_player_path = NodePath("AnimationPlayer")
+
+[node name="AnimationPlayer" type="AnimationPlayer" parent="VisualAnimator"]
+root_node = NodePath("../../VisualHolder")
+anims/fade_in = ExtResource( 5 )
+anims/fade_out = ExtResource( 4 )

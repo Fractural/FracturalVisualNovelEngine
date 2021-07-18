@@ -7,7 +7,7 @@ extends Node
 # ----- StoryService ----- #
 
 func get_service_name():
-	return "StoryReferenceRegistry"
+	return "ReferenceRegistry"
 
 # ----- StoryService ----- #
 

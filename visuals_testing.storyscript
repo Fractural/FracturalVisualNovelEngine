@@ -1,0 +1,43 @@
+#define godette = Visual(texture_path="res://addons/FracturalVNE/default_assets/images/godette_body.png")
+define dynamic_godette = DynamicVisual(textures_directory="res://addons/FracturalVNE/default_assets/images/dynamic_godette/")
+define godette_char = Character(name="Godette", name_color="#468cbf", dialogue_color="#ffffff")
+define fade_in = load("res://addons/FracturalVNE/default_assets/animations/show_animations/fade_in.tres")
+define fade_out = load("res://addons/FracturalVNE/default_assets/animations/hide_animations/fade_out.tres")
+
+label looped:
+	show dynamic_godette happy with fade_in
+	
+	godette_char "Hi there!"
+	
+	godette_char "My name is Godette."
+	
+	show dynamic_godette surprised
+	
+	godette_char "Uh oh, I gotta go!"
+	
+	show dynamic_godette sad
+	
+	godette_char "Byee!"
+	
+	# hide godette with fade_out
+	hide dynamic_godette with fade_out
+	
+	"That was quick..."
+	
+	"I wonder where she went..."
+	
+	"*Footsteps in the distance*"
+	
+	show dynamic_godette surprised with fade_in
+	
+	godette_char "Whew I'm back!"
+	
+	show dynamic_godette happy
+	
+	godette_char "I had to check on the engine to make sure it's working!"
+	
+	godette_char "I guess if you've gotten this far then everything must be working..."
+	
+	godette_char "Time to head back!"
+	
+	jump looped

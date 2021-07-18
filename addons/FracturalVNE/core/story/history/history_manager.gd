@@ -1,5 +1,7 @@
 extends Node
 # Keeps track of a users past interactions in a story.
+# TODO: Maybe rename HistoryManager to StoryHistoryManager for consistency
+# 		(Since other services are called StoryDirector, etc.)
 
 
 # ----- StoryService ----- #

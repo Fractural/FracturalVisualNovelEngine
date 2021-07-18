@@ -1,11 +1,12 @@
 extends "res://addons/FracturalVNE/core/story_script/ast_nodes/statements/statement/statement_node.gd"
 # TODO: Finish the rest the show statement.
 
+
 # ----- Typeable ----- #
 
 static func get_types() -> Array:
 	var arr = .get_types()
-	arr.append("show")
+	arr.append("hide")
 	return arr
 
 # ----- Typeable ----- #
@@ -17,9 +18,9 @@ var visual
 var animation
 
 
-func _init(position_ = null, visual_ = null, animation_ = null).(position_):
+func _init(position_ = null, visual_ = null, animation_string_ = null).(position_):
 	visual = visual_
-	animation = animation_
+	animation = animation_string_
 
 
 func execute():
@@ -28,7 +29,7 @@ func execute():
 		animation_result = animation.evaluate()
 		
 		if not is_success(animation_result) or not animation_result is Animation:
-			throw_error(stack_error(animation_result, "Expected valid Animation for the show statement."))
+			throw_error(stack_error(animation_result, "Expected valid Animation for the hide statement."))
 			return
 	
 	var visual_result = visual.evaluate()
@@ -37,16 +38,16 @@ func execute():
 		return
 	
 	if typeof(visual_result) == TYPE_OBJECT and visual_result.is_type("Visual"):
-		visual_result.show(animation_result) 
+		visual_result.hide(animation_result)
 		
 		if animation_result != null:
-			# TODO: Allow devs to force users to watch an animation by making the animation unskippable 
-			# 		(Will likely rarely be used since we mostly want control in the player's hands)
+			# We automatically hide the Visual if the animation is skipped (See inside of Visual), 
+			# therefore we can use a regular AnimationAction to allow the skipping of the hide animation.
 			var curr_animation_action = AnimationAction.new(visual_result.visual_animator, true)
 			visual_result.visual_animator.connect("animation_finished", self, "_on_animation_finished", [curr_animation_action], CONNECT_ONESHOT)
 			get_runtime_block().get_service("StoryDirector").add_step_action(curr_animation_action)
 	else: 
-		throw_error(error("Expected a valid visual for the show statement."))
+		throw_error(error("Expected a visual for the hide statement."))
 		return
 	
 	.execute()
@@ -60,15 +61,12 @@ func _on_animation_finished(animation_name, skipped, curr_animation_action):
 
 func debug_string(tabs_string: String) -> String:
 	var string = ""
-	string += tabs_string + "SHOW :" 
+	string += tabs_string + "HIDE :" 
 	
 	string += "\n" + tabs_string + "{"
 	
 	if animation != null:
-		string += "\n" + tabs_string + "\tANIMATION: "
-		string += "\n" + tabs_string + "\t{"
-		string += "\n" + animation.debug_string(tabs_string + "\t\t")
-		string += "\n" + tabs_string + "\t}"
+		string += "\n" + "ANIMATION: " + animation.debug_string(tabs_string)
 
 	string += "\n" + tabs_string + "}"
 	return string
@@ -97,7 +95,7 @@ func serialize():
 	return serialized_obj
 
 
-func deserialize(serialized_obj):
+func deserialize(serialized_obj):	
 	var instance = .deserialize(serialized_obj)
 	instance.visual = SerializationUtils.deserialize(serialized_obj["visual"])
 	if serialized_obj.has("animation"):

@@ -122,7 +122,7 @@ static func _add_dir_contents(dir: Directory, files: Array, directories: Array, 
 			# TODO: Maybe convert file_extensions to a hashtable if performance is necessary?
 			for file_extension in file_extensions:
 				if file_extension == path.get_extension():
-					print("Found file: %s" % path)
+					# print("Found file: %s" % path)
 					files.append(path)
 					break
 

@@ -64,8 +64,8 @@ func _parse_animation(parser):
 	var checkpoint = parser.save_reader_state()
 	var with = parser.expect_token("keyword", "with")
 	if parser.is_success(with):
-		var animation = parser.expect_token("identifier")
+		var animation = parser.expect("variable")
 		if parser.is_success(animation):
-			return animation.symbol
+			return animation
 		else:
 			return parser.error("Expected an animation identifier after with.", 1, checkpoint)

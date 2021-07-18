@@ -41,6 +41,7 @@ const VariableDeclaration = preload("res://addons/FracturalVNE/core/story_script
 const VariableAssignment = preload("res://addons/FracturalVNE/core/story_script/ast_nodes/statements/variable_assignment/variable_assignment_construct.gd")
 const SayStatement = preload("res://addons/FracturalVNE/core/story_script/ast_nodes/statements/say_statement/say_statement_construct.gd")
 const ShowStatement = preload("res://addons/FracturalVNE/core/story_script/ast_nodes/statements/show_statement/show_statement_construct.gd")
+const HideStatement = preload("res://addons/FracturalVNE/core/story_script/ast_nodes/statements/hide_statement/hide_statement_construct.gd")
 const ExpressionStatement = preload("res://addons/FracturalVNE/core/story_script/ast_nodes/statements/expression_statement/expression_statement_construct.gd")
 
 var CONSTRUCTS = [
@@ -69,6 +70,7 @@ var CONSTRUCTS = [
 	VariableAssignment.new(),
 	SayStatement.new(),
 	ShowStatement.new(),
+	HideStatement.new(),
 	ExpressionStatement.new(),
 ]
 

@@ -21,7 +21,7 @@ var is_hide_animation: bool = false
 
 
 func _ready():
-	visual_animator.connect("animation_finished", self, "_on_animation_finsihed")
+	visual_animator.connect("animation_finished", self, "_on_animation_finished")
 
 
 func init(name_):
@@ -39,12 +39,12 @@ func hide(animation = null):
 		visual_animator.play_animation(animation)
 		is_hide_animation = true
 	else:
-		visible = false	
+		visible = false
 
 
 # If we are animating the hiding of a visual, we want to only hide the 
 # visual once the hiding animation finishes. 
-func _on_animation_finsihed(animation_name):
+func _on_animation_finished(animation_name, skipped):
 	if is_hide_animation:
 		visible = false
 		is_hide_animation = false

@@ -33,10 +33,6 @@ var function_definitions = [
 	]
 
 
-func configure_service(program_node):
-	visuals = []
-
-
 func get_service_name():
 	return "VisualsManager"
 
@@ -48,14 +44,12 @@ const dynamic_visual_prefab = preload("multi_visual.tscn")
 const prefab_visual_prefab = preload("prefab_visual.tscn")
 
 export var reference_registry_path: NodePath
-export var story_gui_configurer_path: NodePath
 export var visuals_holder_path: NodePath
 
-var visuals: Array
+var visuals: Array = []
 var animations_dict: Dictionary
 
 onready var reference_registry = get_node(reference_registry_path)
-onready var story_gui_configurer = get_node(story_gui_configurer_path)
 onready var visuals_holder = get_node(visuals_holder_path)
 
 
@@ -63,11 +57,11 @@ func add_visual(visual):
 	visuals.append(visual)
 	
 	visuals_holder.add_child(visual)
-	
-	# TODO NOW: Create the show and hide statements and let them accept modifiers after
+
+
+	# TODO NOW: Create the ---show--- (Done) and hide statements and let them accept modifiers after
 	#			the visual variable. Don't forget to add type checking to these statements that
 	#			throw runtime StoryScriptErrors!
-
 
 func DynamicVisual(textures_directory):
 	if typeof(textures_directory) != TYPE_STRING:
@@ -75,7 +69,7 @@ func DynamicVisual(textures_directory):
 	
 	var new_visual = dynamic_visual_prefab.instance()
 	
-	var image_paths = FracturalUtils.get_dir_contents(textures_directory, true, ["png", "jpeg", "jpg", "bmp"])
+	var image_paths = FracturalUtils.get_dir_contents(textures_directory, true, ["png", "jpeg", "jpg", "bmp"])[0]
 	var textures = []
 	
 	for path in image_paths:
@@ -85,6 +79,8 @@ func DynamicVisual(textures_directory):
 	
 	reference_registry.add_reference(new_visual)
 	add_visual(new_visual)
+	
+	return new_visual
 
 
 func Visual(texture_path):
@@ -100,6 +96,8 @@ func Visual(texture_path):
 	
 	reference_registry.add_reference(new_visual)
 	add_visual(new_visual)
+	
+	return new_visual
 
 
 func PrefabVisual(prefab_path):
@@ -112,6 +110,8 @@ func PrefabVisual(prefab_path):
 	
 	reference_registry.add_reference(new_visual)
 	add_visual(new_visual)
+	
+	return new_visual
 
 
 func show_multi_visual(target_visual, modifiers_string = null, animation = null):
@@ -142,11 +142,13 @@ func hide_visual(target_visual, animation = null):
 		return StoryScriptError.new("Expected target_visual to be a string or a Visual.")
 
 
+# TODO: Maybe remove if we are using "show" to both animate and show a Visual
 func animate_visual(target_visual, animation_name):
 	if animations_dict.has(animation_name):
 		target_visual.visual_animator.play_animation(animations_dict[animation_name])
 	else:
 		return StoryScriptError.new("Animation named \"%s\" could not be found." % animation_name)
+
 
 # ----- Serialization ----- #
 
@@ -163,7 +165,11 @@ func serialize_state():
 
 
 func deserialize_state(serialized_state):
+	for visual in visuals:
+		visual.queue_free()
+	
 	visuals = []
+	
 	for visual_id in serialized_state["visual_ids"]:
 		add_visual(reference_registry.get_reference(visual_id))
 
