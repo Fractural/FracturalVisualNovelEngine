@@ -34,6 +34,7 @@ func _post_ready():
 			StoryScriptParameter.new("name"),
 			StoryScriptParameter.new("name_color", story_gui_configurer.story_gui.text_printer.default_name_color),
 			StoryScriptParameter.new("dialogue_color", story_gui_configurer.story_gui.text_printer.default_dialogue_color),
+			StoryScriptParameter.new("visual")
 		]),
 	]
 
@@ -44,7 +45,7 @@ func add_character(character):
 
 # Used in the StoryScript to create a new character that will be serialized when 
 # the story is saved. 
-func Character(name_, name_color_, dialogue_color_):
+func Character(name_, name_color_, dialogue_color_, visual_):
 	if typeof(name_color_) == TYPE_STRING:
 		name_color_ = Color(name_color_)
 	if typeof(dialogue_color_) == TYPE_STRING:
@@ -58,7 +59,7 @@ func Character(name_, name_color_, dialogue_color_):
 	if typeof(dialogue_color_) != TYPE_COLOR:
 		return StoryScriptError.new("Expected dialogue_color to be a Color or a string.")
 	
-	var new_character = Character.new(name_, name_color_, dialogue_color_)
+	var new_character = Character.new(name_, name_color_, dialogue_color_, visual_)
 	reference_registry.add_reference(new_character)
 	add_character(new_character)
 	return new_character

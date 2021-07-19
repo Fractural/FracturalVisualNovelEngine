@@ -1,5 +1,5 @@
 extends "res://addons/FracturalVNE/core/story_script/ast_nodes/statements/statement/statement_node.gd"
-# TODO: Finish the rest the show statement.
+# Hides a visual.
 
 
 # ----- Typeable ----- #
@@ -37,15 +37,22 @@ func execute():
 		throw_error(stack_error(visual_result, "Could not evaluate the visual."))
 		return
 	
-	if typeof(visual_result) == TYPE_OBJECT and visual_result.is_type("Visual"):
-		visual_result.hide(animation_result)
+	if typeof(visual_result) == TYPE_OBJECT:
+		if visual_result.is_type("Character"):
+			visual_result = visual_result.visual
 		
-		if animation_result != null:
-			# We automatically hide the Visual if the animation is skipped (See inside of Visual), 
-			# therefore we can use a regular AnimationAction to allow the skipping of the hide animation.
-			var curr_animation_action = AnimationAction.new(visual_result.visual_animator, true)
-			visual_result.visual_animator.connect("animation_finished", self, "_on_animation_finished", [curr_animation_action], CONNECT_ONESHOT)
-			get_runtime_block().get_service("StoryDirector").add_step_action(curr_animation_action)
+		if visual_result.is_type("Visual"):
+			visual_result.hide(animation_result)
+			
+			if animation_result != null:
+				# We automatically hide the Visual if the animation is skipped (See inside of Visual), 
+				# therefore we can use a regular AnimationAction to allow the skipping of the hide animation.
+				var curr_animation_action = AnimationAction.new(visual_result.visual_animator, true)
+				visual_result.visual_animator.connect("animation_finished", self, "_on_animation_finished", [curr_animation_action], CONNECT_ONESHOT)
+				get_runtime_block().get_service("StoryDirector").add_step_action(curr_animation_action)
+		else: 
+			throw_error(error("Expected a visual for the hide statement."))
+			return
 	else: 
 		throw_error(error("Expected a visual for the hide statement."))
 		return

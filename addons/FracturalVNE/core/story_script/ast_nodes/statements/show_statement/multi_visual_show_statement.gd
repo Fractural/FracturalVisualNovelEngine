@@ -1,5 +1,6 @@
 extends "show_statement.gd"
-# TODO: Finish the rest the show statement.
+# Shows a MultiVisual. MultiVisuals support showing with modifiers, which specifies
+# a specific texture under its texture_directory to show.
 
 
 # ----- Typeable ----- #
@@ -25,14 +26,20 @@ func execute():
 		throw_error(stack_error(visual_result, "Could not evaluate the dynamic visual."))
 		return
 	
-	if typeof(visual) == TYPE_OBJECT and visual_result.is_type("MultiVisual"):
-		if modifiers_string != null:
-			var result = visual_result.set_sprite(modifiers_string)
-			if not is_success(result):
-				result.position = position
-				throw_error(result)
-				return
+	if typeof(visual) == TYPE_OBJECT:
+		if visual_result.is_type("Character"):
+			visual_result = visual_result.visual
 		
+		if visual_result.is_type("MultiVisual"):
+			if modifiers_string != null:
+				var result = visual_result.set_sprite(modifiers_string)
+				if not is_success(result):
+					result.position = position
+					throw_error(result)
+					return
+		else: 
+			throw_error(error("Expected a multi visual for show statements that have modifiers."))
+			return
 		# All animation is done in execute() function of the parent class (show_statement.gd)
 	else: 
 		throw_error(error("Expected a multi visual for show statements that have modifiers."))

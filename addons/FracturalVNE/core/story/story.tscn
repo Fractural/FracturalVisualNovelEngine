@@ -1,4 +1,4 @@
-[gd_scene load_steps=22 format=2]
+[gd_scene load_steps=24 format=2]
 
 [ext_resource path="res://addons/FracturalVNE/core/story/story_manager.gd" type="Script" id=1]
 [ext_resource path="res://addons/FracturalVNE/core/story/director/story_director.gd" type="Script" id=2]
@@ -13,6 +13,7 @@
 [ext_resource path="res://addons/FracturalVNE/core/utils/story_runtime_debugger.gd" type="Script" id=11]
 [ext_resource path="res://addons/FracturalVNE/assets/themes/basic_gui_theme.tres" type="Theme" id=12]
 [ext_resource path="res://addons/FracturalVNE/assets/fonts/Hack/Hack-Regular.tres" type="DynamicFont" id=13]
+[ext_resource path="res://addons/FracturalVNE/core/misc/timer_registry.gd" type="Script" id=14]
 [ext_resource path="res://addons/FracturalVNE/core/io/story_state_manager.gd" type="Script" id=15]
 [ext_resource path="res://addons/FracturalVNE/core/gui/_misc/screenshot_manager.gd" type="Script" id=16]
 [ext_resource path="res://addons/FracturalVNE/core/io/reference_registry.gd" type="Script" id=17]
@@ -21,6 +22,7 @@
 [ext_resource path="res://addons/FracturalVNE/core/story/history/history_entries/say_entry/say_entry_serializer.gd" type="Script" id=20]
 [ext_resource path="res://addons/FracturalVNE/core/io/resource_loader.gd" type="Script" id=21]
 [ext_resource path="res://addons/FracturalVNE/core/visuals/visuals_manager.gd" type="Script" id=22]
+[ext_resource path="res://addons/FracturalVNE/core/character/character_serializer.gd" type="Script" id=23]
 
 [node name="Story" type="Node"]
 
@@ -60,6 +62,10 @@ serializers_holder_path = NodePath(".")
 script = ExtResource( 20 )
 reference_registry_path = NodePath("../../StoryLoader/StoryServices/ReferenceRegistry")
 
+[node name="CharacterSerializer" type="Node" parent="SerializationManager"]
+script = ExtResource( 23 )
+reference_registry_path = NodePath("../../StoryLoader/StoryServices/ReferenceRegistry")
+
 [node name="StoryLoader" type="Node" parent="."]
 script = ExtResource( 3 )
 services_holder_path = NodePath("StoryServices")
@@ -94,6 +100,9 @@ script = ExtResource( 21 )
 script = ExtResource( 22 )
 reference_registry_path = NodePath("../ReferenceRegistry")
 visuals_holder_path = NodePath("../../../WorldHolder/World/VisualsHolder")
+
+[node name="TimerRegistry" type="Node" parent="StoryLoader/StoryServices"]
+script = ExtResource( 14 )
 
 [node name="ScreenshotManager" type="Node" parent="."]
 script = ExtResource( 16 )

@@ -12,7 +12,11 @@ func get_service_name():
 # ----- StoryService ----- #
 
 
+export var serialization_manager_path: NodePath
+
 var references: Array = []
+
+onready var serialization_manager = get_node(serialization_manager_path)
 
 
 func add_reference(reference: Object):
@@ -48,13 +52,12 @@ func serialize_state():
 func deserialize_state(serialized_state):
 	references = []
 	for serialized_reference in serialized_state["references"]:
-		references.append(SerializationUtils.deserialize(serialized_reference))
+		references.append(serialization_manager.deserialize(serialized_reference, false))
 	
 	# Assign dependent references after all references are deserialized.
 	# Ensures that whatever references are needed exist when requested for.
 	for reference in references:
-		if reference.has_method("_fetch_dependencies"):
-			reference._fetch_dependencies()
+		serialization_manager.fetch_dependencies(reference)
 
 # ----- Serialization ----- #
 

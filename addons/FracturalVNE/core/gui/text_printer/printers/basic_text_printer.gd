@@ -31,6 +31,10 @@ func _ready():
 	name_text_reveal.init(text_printer.name_default_char_delay, text_printer.name_custom_char_delays);
 	dialogue_text_reveal.init(text_printer.dialogue_default_char_delay, text_printer.dialogue_custom_char_delays);
 	
+	# Clear the text fields on startup
+	name_text_reveal.bbcode_text = ""
+	dialogue_text_reveal.bbcode_text = ""
+	
 	name_text_reveal.connect("finished_reveal", self, "_on_finish_text_reveal")
 	dialogue_text_reveal.connect("finished_reveal", self, "_on_finish_text_reveal")
 

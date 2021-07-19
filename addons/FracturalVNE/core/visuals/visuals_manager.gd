@@ -59,9 +59,7 @@ func add_visual(visual):
 	visuals_holder.add_child(visual)
 
 
-	# TODO NOW: Create the ---show--- (Done) and hide statements and let them accept modifiers after
-	#			the visual variable. Don't forget to add type checking to these statements that
-	#			throw runtime StoryScriptErrors!
+	# TODO NOW: Work on Move and Scene statements 
 
 func DynamicVisual(textures_directory):
 	if typeof(textures_directory) != TYPE_STRING:
