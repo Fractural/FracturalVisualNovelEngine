@@ -74,6 +74,7 @@ services_holder_path = NodePath("StoryServices")
 
 [node name="ReferenceRegistry" type="Node" parent="StoryLoader/StoryServices"]
 script = ExtResource( 17 )
+serialization_manager_path = NodePath("../../../SerializationManager")
 
 [node name="StoryDirector" type="Node" parent="StoryLoader/StoryServices"]
 script = ExtResource( 2 )
@@ -100,6 +101,7 @@ script = ExtResource( 21 )
 script = ExtResource( 22 )
 reference_registry_path = NodePath("../ReferenceRegistry")
 visuals_holder_path = NodePath("../../../WorldHolder/World/VisualsHolder")
+story_director_path = NodePath("../StoryDirector")
 
 [node name="TimerRegistry" type="Node" parent="StoryLoader/StoryServices"]
 script = ExtResource( 14 )

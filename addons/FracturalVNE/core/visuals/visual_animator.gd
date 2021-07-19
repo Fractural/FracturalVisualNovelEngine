@@ -5,6 +5,9 @@ signal animation_finished(animation_name, skipped)
 
 export var visual_path: NodePath
 export var animation_player_path: NodePath
+export var story_director_dep_path: NodePath
+
+var curr_animation_action
 
 onready var visual = get_node(visual_path)
 onready var animation_player: AnimationPlayer = get_node(animation_player_path)
@@ -18,14 +21,24 @@ onready var animation_player: AnimationPlayer = get_node(animation_player_path)
 # 
 # The visual_holder should be the animation_player's root node.
 onready var visual_holder = animation_player.get_node(animation_player.root_node)
+onready var story_director_dep = get_node(story_director_dep_path)
 
 
 func _ready():
 	animation_player.connect("animation_finished", self, "_on_animation_finished", [false])
 
 
+func init(story_director_):
+	story_director_dep = get_node(story_director_dep_path)
+	story_director_dep.dependency_path = story_director_.get_path()
+
+
 # All animaitons played on a visual must operate on the visual_holder.
-func play_animation(animation):
+func play_animation(animation, animation_action = null):
+	if curr_animation_action != null:
+		story_director_dep.dependency.remove_step_action(curr_animation_action)
+	curr_animation_action = animation_action
+	
 	animation_player.add_animation("CurrentAnimation", animation)
 	animation_player.play("CurrentAnimation")
 
@@ -46,6 +59,10 @@ func _on_animation_finished(animation_name, skipped):
 	# reset the visual_holder's position to (0, 0) which allows 
 	# a future animation to play starting from (0, 0).
 	visual.global_position = visual_holder.global_position
-	visual_holder.position = Vector2.ZERO 
+	visual_holder.position = Vector2.ZERO
+	
+	if not skipped and curr_animation_action != null:
+		story_director_dep.dependency.remove_step_action(curr_animation_action)
+		curr_animation_action = null
 	
 	emit_signal("animation_finished", animation_name, skipped)

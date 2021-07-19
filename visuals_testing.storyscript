@@ -7,6 +7,8 @@ label looped:
 	"" # Clears the text
 	
 	show godette happy with fade_in
+	show godette sad with fade_in
+	show godette surprised with fade_in
 	
 	pause 3.0
 	

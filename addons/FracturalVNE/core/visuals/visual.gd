@@ -15,28 +15,30 @@ static func get_types() -> Array:
 
 export var visual_animator_path: NodePath
 
-onready var visual_animator = get_node(visual_animator_path)
-
+var visual_animator
 var is_hide_animation: bool = false
 
 
 func _ready():
+	if visual_animator == null:
+		visual_animator = get_node(visual_animator_path)
 	visual_animator.connect("animation_finished", self, "_on_animation_finished")
 
 
-func init(name_):
-	name = name_
+func init(story_director):
+	visual_animator = get_node(visual_animator_path)
+	visual_animator.init(story_director)
 
 
-func show(animation = null):
+func show(animation = null, animation_action = null):
 	visible = true
 	if animation != null:
-		visual_animator.play_animation(animation)
+		visual_animator.play_animation(animation, animation_action)
 
 
-func hide(animation = null):
+func hide(animation = null, animation_action = null):
 	if animation != null:
-		visual_animator.play_animation(animation)
+		visual_animator.play_animation(animation, animation_action)
 		is_hide_animation = true
 	else:
 		visible = false

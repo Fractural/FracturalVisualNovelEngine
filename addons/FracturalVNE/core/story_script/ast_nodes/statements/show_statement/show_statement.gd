@@ -42,14 +42,13 @@ func execute():
 			visual_result = visual_result.visual
 		
 		if visual_result.is_type("Visual"):
-			visual_result.show(animation_result) 
-			
+			var curr_animation_action = null
 			if animation_result != null:
 				# TODO: Allow devs to force users to watch an animation by making the animation unskippable 
 				# 		(Will likely rarely be used since we mostly want control in the player's hands)
-				var curr_animation_action = AnimationAction.new(visual_result.visual_animator, true)
-				visual_result.visual_animator.connect("animation_finished", self, "_on_animation_finished", [curr_animation_action], CONNECT_ONESHOT)
-				get_runtime_block().get_service("StoryDirector").add_step_action(curr_animation_action)
+				curr_animation_action = AnimationAction.new(visual_result.visual_animator, true)
+			
+			visual_result.show(animation_result, curr_animation_action)
 		else: 
 			throw_error(error("Expected a valid visual for the show statement."))
 			return
@@ -58,12 +57,6 @@ func execute():
 		return
 	
 	.execute()
-
-
-func _on_animation_finished(animation_name, skipped, curr_animation_action):
-	# If the animation ends naturally, then we have to remove the step_action.
-	if not skipped:
-		get_runtime_block().get_service("StoryDirector").remove_step_action(curr_animation_action)
 
 
 func debug_string(tabs_string: String) -> String:

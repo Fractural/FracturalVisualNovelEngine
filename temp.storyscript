@@ -1,7 +1,6 @@
 define b = Character(name="Bob", name_color="#fcba03") 
 define j = Character("Joe", "#03a1fc", "#03a1fc") 
 b "Hi there, I'm bob!" 
-pause 5.0
 j "Hi there, I'm joeeee!" 
 "Tom" "Hi there, I'm tom!" 
 say(b, "This is from a function!") 

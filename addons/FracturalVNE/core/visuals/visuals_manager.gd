@@ -45,12 +45,13 @@ const prefab_visual_prefab = preload("prefab_visual.tscn")
 
 export var reference_registry_path: NodePath
 export var visuals_holder_path: NodePath
+export var story_director_path: NodePath
 
 var visuals: Array = []
-var animations_dict: Dictionary
 
 onready var reference_registry = get_node(reference_registry_path)
 onready var visuals_holder = get_node(visuals_holder_path)
+onready var story_director = get_node(story_director_path)
 
 
 func add_visual(visual):
@@ -73,7 +74,7 @@ func DynamicVisual(textures_directory):
 	for path in image_paths:
 		textures.append(load(path))
 	
-	new_visual.init(textures)
+	new_visual.init_(story_director, textures)
 	
 	reference_registry.add_reference(new_visual)
 	add_visual(new_visual)
@@ -90,7 +91,7 @@ func Visual(texture_path):
 	# TODO: Replacing load() with ResourceLoader in order to handle
 	# 		cases where the resource could not be loaded. When this
 	#		happens, return a StoryScriptError.
-	new_visual.init(load(texture_path))
+	new_visual.init_(story_director, load(texture_path))
 	
 	reference_registry.add_reference(new_visual)
 	add_visual(new_visual)
@@ -104,7 +105,7 @@ func PrefabVisual(prefab_path):
 	
 	var new_visual = prefab_visual_prefab.instance()
 	
-	new_visual.init(prefab_path)
+	new_visual.init_(story_director, prefab_path)
 	
 	reference_registry.add_reference(new_visual)
 	add_visual(new_visual)
@@ -141,11 +142,8 @@ func hide_visual(target_visual, animation = null):
 
 
 # TODO: Maybe remove if we are using "show" to both animate and show a Visual
-func animate_visual(target_visual, animation_name):
-	if animations_dict.has(animation_name):
-		target_visual.visual_animator.play_animation(animations_dict[animation_name])
-	else:
-		return StoryScriptError.new("Animation named \"%s\" could not be found." % animation_name)
+func animate_visual(target_visual, animation):
+	target_visual.visual_animator.play_animation(animation)
 
 
 # ----- Serialization ----- #

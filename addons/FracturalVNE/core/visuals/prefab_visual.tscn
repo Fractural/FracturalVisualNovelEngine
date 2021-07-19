@@ -1,7 +1,8 @@
-[gd_scene load_steps=4 format=2]
+[gd_scene load_steps=5 format=2]
 
 [ext_resource path="res://addons/FracturalVNE/core/visuals/prefab_visual.gd" type="Script" id=1]
 [ext_resource path="res://addons/FracturalVNE/core/visuals/visual_animator.gd" type="Script" id=2]
+[ext_resource path="res://addons/FracturalVNE/core/utils/dependency_injection/dependency.gd" type="Script" id=3]
 
 [sub_resource type="Animation" id=1]
 resource_name = "adfasdfadf"
@@ -17,7 +18,14 @@ prefab_holder_path = NodePath("VisualHolder")
 script = ExtResource( 2 )
 visual_path = NodePath("..")
 animation_player_path = NodePath("AnimationPlayer")
+story_director_dep_path = NodePath("../Dependencies/StoryDirector")
 
 [node name="AnimationPlayer" type="AnimationPlayer" parent="VisualAnimator"]
 root_node = NodePath("../../VisualHolder")
 anims/adfasdfadf = SubResource( 1 )
+
+[node name="Dependencies" type="Node" parent="."]
+
+[node name="StoryDirector" type="Node" parent="Dependencies"]
+script = ExtResource( 3 )
+dependency_name = "StoryDirector"

@@ -13,11 +13,20 @@ static func get_types() -> Array:
 
 export var sprite_path: NodePath
 
-var sprite
 var texture: Texture
+var sprite
 
 
-func init(texture_):
+func _ready():
+	if sprite == null:
+		sprite = get_node(sprite_path)
+
+
+# Since Godot does not support method overloading, I will add "_" to methods
+# to indicate overloading.
+func init_(story_director, texture_):
+	init(story_director)
+	
 	sprite = get_node(sprite_path)
 	
 	texture = texture_

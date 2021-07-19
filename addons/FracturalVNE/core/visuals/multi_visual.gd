@@ -13,15 +13,18 @@ static func get_types() -> Array:
 
 export var sprite_path: NodePath
 
-var sprite
 # Array of textures
 var textures: Array
 # Key: Modifiers (as string)
 # Value: Corresponding texture
 var textures_dict: Dictionary
 
+onready var sprite = get_node(sprite_path)
 
-func init(textures_):
+
+func init_(story_director, textures_):
+	init(story_director)
+	
 	sprite = get_node(sprite_path)
 	
 	textures = textures_
