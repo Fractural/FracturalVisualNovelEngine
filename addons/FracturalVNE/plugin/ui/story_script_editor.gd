@@ -77,27 +77,28 @@ func _ready():
 	save_file_dialog.connect("popup_hide", self, "_on_popup_hide")
 	
 	if persistent_data_dep.dependency.current_script_path == "":
-		script_text_edit.text = ""
-		script_text_edit.text += 'define b = Character(name="Bob", name_color="#fcba03") \n'
-		script_text_edit.text += 'define j = Character("Joe", "#03a1fc", "#03a1fc") \n'
-		script_text_edit.text += 'b "Hi there, I\'m bob!" \n'
-		script_text_edit.text += 'j "Hi there, I\'m joeeee!" \n'
-		script_text_edit.text += '"Tom" "Hi there, I\'m tom!" \n'
-		script_text_edit.text += 'say(b, "This is from a function!") \n'
-		script_text_edit.text += 'say(j, "This is also from a function!") \n'
-		script_text_edit.text += 'say("lol", "This is also also from a function!") \n'
-		script_text_edit.text += 'label lol: \n'
-		script_text_edit.text += '\tb "I\'m in a label!" \n'
-		script_text_edit.text += '\tj "I\'m also in a label!" \n'
-		script_text_edit.text += '\t"Tom" "I\'m also also in a label!" \n'
-		script_text_edit.text += '\t"Here\'s some narration in the label!" \n'
-		script_text_edit.text += '\t"Tom" "Lets jump recursively back to that label!" \n'
-		script_text_edit.text += '\tjump lol\n'
-		script_text_edit.text += 'label another_one: \n'
-		script_text_edit.text += '\t "You will never reach this label!"\n'
-		
-		persistent_data_dep.dependency.current_script_path = TEMP_SCRIPT_PATH
-		set_current_script_path(persistent_data_dep.dependency.current_script_path)
+		open_file("res://visuals_testing.storyscript")
+#		script_text_edit.text = ""
+#		script_text_edit.text += 'define b = Character(name="Bob", name_color="#fcba03") \n'
+#		script_text_edit.text += 'define j = Character("Joe", "#03a1fc", "#03a1fc") \n'
+#		script_text_edit.text += 'b "Hi there, I\'m bob!" \n'
+#		script_text_edit.text += 'j "Hi there, I\'m joeeee!" \n'
+#		script_text_edit.text += '"Tom" "Hi there, I\'m tom!" \n'
+#		script_text_edit.text += 'say(b, "This is from a function!") \n'
+#		script_text_edit.text += 'say(j, "This is also from a function!") \n'
+#		script_text_edit.text += 'say("lol", "This is also also from a function!") \n'
+#		script_text_edit.text += 'label lol: \n'
+#		script_text_edit.text += '\tb "I\'m in a label!" \n'
+#		script_text_edit.text += '\tj "I\'m also in a label!" \n'
+#		script_text_edit.text += '\t"Tom" "I\'m also also in a label!" \n'
+#		script_text_edit.text += '\t"Here\'s some narration in the label!" \n'
+#		script_text_edit.text += '\t"Tom" "Lets jump recursively back to that label!" \n'
+#		script_text_edit.text += '\tjump lol\n'
+#		script_text_edit.text += 'label another_one: \n'
+#		script_text_edit.text += '\t "You will never reach this label!"\n'
+#
+#		persistent_data_dep.dependency.current_script_path = TEMP_SCRIPT_PATH
+#		set_current_script_path(persistent_data_dep.dependency.current_script_path)
 	else:
 		open_file(persistent_data_dep.dependency.current_script_path)
 	

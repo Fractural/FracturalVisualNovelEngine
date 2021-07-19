@@ -16,11 +16,15 @@ const MoveAction = preload("move_action.gd")
 
 var visual
 var target_position
+var travel_curve
+var duration
 
 
-func _init(position_ = null, visual_ = null, target_position_ = null).(position_):
+func _init(position_ = null, visual_ = null, target_position_ = null, travel_curve_ = null, duration_ = null).(position_):
 	visual = visual_
 	target_position = target_position_
+	travel_curve = travel_curve_
+	duration = duration_
 
 
 func execute():
@@ -28,26 +32,82 @@ func execute():
 	
 	if not is_success(visual_result):
 		throw_error(stack_error(visual_result, "Could not evaluate the Visual."))
+		return
 	
-	var curr_move_action = MoveAction.new(self)
+	var target_position_result = target_position.evaluate()
+	if not is_success(target_position_result):
+		throw_error(stack_error(target_position_result, "Could not evaluate the target position."))
+		return
+	if not target_position_result is Vector2:
+		throw_error(error("Expected a Vector2 for the target position in the move statement."))
+		return
 	
-	_on_move_finished(
-
-
-func _on_move_finished(curr_move_action):
-	# If the animation ends naturally, then we have to remove the step_action.
-	if not skipped:
-		get_runtime_block().get_service("StoryDirector").remove_step_action(curr_animation_action)
-	.execute()
+	var travel_curve_result = null
+	if travel_curve != null:
+		travel_curve_result = travel_curve.evaluate()
+		if not is_success(travel_curve_result):
+			throw_error(stack_error(travel_curve_result, "Could not evaluate the travel curve."))
+			return
+		if not travel_curve_result is Curve:
+			throw_error(error("Expected a Curve for the travel curve in the move statement."))
+			return
+	
+	var duration_result = null
+	if duration != null:
+		duration_result = duration.evaluate()
+		if not is_success(duration_result):
+			throw_error(stack_error(duration_result, "Could not evaluate the duration."))
+			return
+		if not (duration_result is float or duration_result is int):
+			throw_error(error("Expected a number for the duration result in the move statement."))
+			return
+	
+	if duration_result == null:
+		if travel_curve_result == null:
+			# We have no travel_curve and no duration.
+			duration_result = 0
+		else:
+			# We have a travel_curve but no duration.
+			# Therefore we must use the default duration for the travel curve, 
+			# which is 1 second
+			duration_result = 1
+	
+	if visual_result is Object:
+		if visual_result.is_type("Character"):
+			visual_result = visual_result.visual
+		
+		if visual_result.is_type("Visual"):
+			visual_result.visual_mover.move(target_position_result, travel_curve_result, duration_result, MoveAction.new(visual_result.visual_mover))
+			.execute()
+		else:
+			throw_error(error("Expected a visual for the move statement."))
+			return
+	else:
+		throw_error(error("Expected a visual for the move statement."))
+		return
+	
 
 func debug_string(tabs_string: String) -> String:
 	var string = ""
-	string += tabs_string + "HIDE :" 
+	string += tabs_string + "MOVE :" 
 	
 	string += "\n" + tabs_string + "{"
 	
-	if animation != null:
-		string += "\n" + "ANIMATION: " + animation.debug_string(tabs_string)
+	string += "\n" + tabs_string + "\tVISUAL: "
+	string += "\n" + tabs_string + "\t{"
+	string += visual.debug_string(tabs_string + "\t\t")
+	string += "\n" + tabs_string + "\t}"
+
+	string += "\n" + tabs_string + "\tTARGET POS: "
+	string += "\n" + tabs_string + "\t{"
+	string += target_position.debug_string(tabs_string + "\t\t")
+	string += "\n" + tabs_string + "\t}"
+	
+	if travel_curve != null:
+		string += "\n" + tabs_string + "\tCURVE: "
+		string += "\n" + tabs_string + "\t{"
+		string += travel_curve.debug_string(tabs_string + "\t\t")
+		string += "\n" + tabs_string + "\t}"
 
 	string += "\n" + tabs_string + "}"
 	return string
@@ -58,8 +118,9 @@ func propagate_call(method, arguments = [], parent_first = false):
 		.propagate_call(method, arguments, parent_first)
 	
 	visual.propagate_call(method, arguments, parent_first)
-	if animation != null:
-		animation.propagate_call(method, arguments, parent_first)
+	target_position.propagate_call(method, arguments, parent_first)
+	if travel_curve != null:
+		travel_curve.propagate_call(method, arguments, parent_first)
 	
 	if not parent_first:
 		.propagate_call(method, arguments, parent_first)
@@ -70,8 +131,11 @@ func propagate_call(method, arguments = [], parent_first = false):
 func serialize():
 	var serialized_obj = .serialize()
 	serialized_obj["visual"] = visual.serialize()
-	if animation != null:
-		serialized_obj["animation"] = animation.serialize()
+	serialized_obj["target_position"] = target_position.serialize()
+	if travel_curve != null:
+		serialized_obj["travel_curve"] = travel_curve.serialize()
+	if duration != null:
+		serialized_obj["duration"] = duration.serialize()
 	
 	return serialized_obj
 
@@ -79,8 +143,11 @@ func serialize():
 func deserialize(serialized_obj):	
 	var instance = .deserialize(serialized_obj)
 	instance.visual = SerializationUtils.deserialize(serialized_obj["visual"])
-	if serialized_obj.has("animation"):
-		instance.animation = SerializationUtils.deserialize(serialized_obj["animation"])
+	instance.target_position = SerializationUtils.deserialize(serialized_obj["target_position"])
+	if serialized_obj.has("travel_curve"):
+		instance.travel_curve = SerializationUtils.deserialize(serialized_obj["travel_curve"])
+	if serialized_obj.has("duration"):
+		instance.duration = SerializationUtils.deserialize(serialized_obj["duration"])
 	
 	return instance
 

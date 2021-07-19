@@ -1,4 +1,4 @@
-[gd_scene load_steps=24 format=2]
+[gd_scene load_steps=25 format=2]
 
 [ext_resource path="res://addons/FracturalVNE/core/story/story_manager.gd" type="Script" id=1]
 [ext_resource path="res://addons/FracturalVNE/core/story/director/story_director.gd" type="Script" id=2]
@@ -23,6 +23,7 @@
 [ext_resource path="res://addons/FracturalVNE/core/io/resource_loader.gd" type="Script" id=21]
 [ext_resource path="res://addons/FracturalVNE/core/visuals/visuals_manager.gd" type="Script" id=22]
 [ext_resource path="res://addons/FracturalVNE/core/character/character_serializer.gd" type="Script" id=23]
+[ext_resource path="res://addons/FracturalVNE/core/misc/general_functions.gd" type="Script" id=24]
 
 [node name="Story" type="Node"]
 
@@ -105,6 +106,9 @@ story_director_path = NodePath("../StoryDirector")
 
 [node name="TimerRegistry" type="Node" parent="StoryLoader/StoryServices"]
 script = ExtResource( 14 )
+
+[node name="GeneralFunctions" type="Node" parent="StoryLoader/StoryServices"]
+script = ExtResource( 24 )
 
 [node name="ScreenshotManager" type="Node" parent="."]
 script = ExtResource( 16 )

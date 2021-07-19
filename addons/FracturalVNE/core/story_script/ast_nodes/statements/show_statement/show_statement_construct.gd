@@ -18,7 +18,7 @@ func parse(parser):
 	var checkpoint = parser.save_reader_state()
 	var show = parser.expect_token("keyword", "show")
 	if parser.is_success(show):
-		var visual = parser.expect("variable")
+		var visual = parser.expect("expression")
 		if parser.is_success(visual):
 			var modifier_identifier = parser.expect_token("identifier")
 			if parser.is_success(modifier_identifier):
@@ -55,7 +55,7 @@ func parse(parser):
 		else:
 			# Confidence of 1 because we are confident once we parsed 
 			# the show keyword, we are trying to parse a show statement.
-			return parser.error("Expected a variable after show.", 1, checkpoint)
+			return parser.error("Expected an expression for the visual after \"show\".", 1, checkpoint)
 	else:
 		return parser.error(show, 0)
 
@@ -64,8 +64,8 @@ func _parse_animation(parser):
 	var checkpoint = parser.save_reader_state()
 	var with = parser.expect_token("keyword", "with")
 	if parser.is_success(with):
-		var animation = parser.expect("variable")
+		var animation = parser.expect("expression")
 		if parser.is_success(animation):
 			return animation
 		else:
-			return parser.error("Expected an animation identifier after with.", 1, checkpoint)
+			return parser.error("Expected an expression for the animation after \"with\".", 1, checkpoint)

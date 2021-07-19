@@ -38,6 +38,7 @@ func play_animation(animation, animation_action = null):
 	if curr_animation_action != null:
 		story_director_dep.dependency.remove_step_action(curr_animation_action)
 	curr_animation_action = animation_action
+	story_director_dep.dependency.add_step_action(curr_animation_action)
 	
 	animation_player.add_animation("CurrentAnimation", animation)
 	animation_player.play("CurrentAnimation")

@@ -14,20 +14,26 @@ static func get_types() -> Array:
 
 
 export var visual_animator_path: NodePath
+export var visual_mover_path: NodePath
 
-var visual_animator
 var is_hide_animation: bool = false
+
+onready var visual_animator = get_node(visual_animator_path)
+onready var visual_mover = get_node(visual_mover_path)
 
 
 func _ready():
-	if visual_animator == null:
-		visual_animator = get_node(visual_animator_path)
 	visual_animator.connect("animation_finished", self, "_on_animation_finished")
+	# Visuals should hide by default when first created.
+	hide()
 
 
 func init(story_director):
 	visual_animator = get_node(visual_animator_path)
+	visual_mover = get_node(visual_mover_path)
+	
 	visual_animator.init(story_director)
+	visual_mover.init(story_director)
 
 
 func show(animation = null, animation_action = null):

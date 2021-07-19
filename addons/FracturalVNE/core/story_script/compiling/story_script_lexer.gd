@@ -1,22 +1,12 @@
 tool
 class_name StoryScriptLexer
 extends Reference
+# Lexes a string of text into tokens for parsing.
+
+
+# ----- Constants ----- #
 
 const EOF = "EOF"
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 
 const USE_TABS_INDENT: bool = true
 const INDENT_SPACES : int = 4
@@ -31,21 +21,11 @@ const PERIOD = '.'
 const BACKSLASH = '\\'
 const HASHTAG = '#'
 
+# ----- Constants ----- #
 
 
+# ----- Core ----- #
 
-
-
-
-
-
-
-
-
-
-
-
-# Core
 var constructs = StoryScriptConstants.new().CONSTRUCTS
 var reader: StoryScriptReader
 
@@ -62,6 +42,7 @@ var tokens: Array
 var identifier_first_char_regex: RegEx
 var identifier_nonfirst_char_regex: RegEx
 
+
 func _init():
 	identifier_first_char_regex = RegEx.new()
 	identifier_first_char_regex.compile("^[_a-zA-Z]$")
@@ -77,10 +58,12 @@ func _init():
 		if construct.has_method("get_punctuation"):
 			_add_array(punctuation, construct.get_punctuation())
 
+
 func _add_array(array: Array, added_array: Array):
 	for added_elem in added_array:
 		if not array.has(added_elem):
 			array.append(added_elem)
+
 
 # Returns Token[]
 func generate_tokens(reader_: StoryScriptReader):
@@ -93,7 +76,7 @@ func generate_tokens(reader_: StoryScriptReader):
 		var errors = []
 		
 		if reader.peek() == HASHTAG:
-			ignore_rest_of_line()
+			add_comment()
 			continue
 		
 		if reader.peek() == SPACE or reader.peek() == TAB:
@@ -151,14 +134,19 @@ func generate_tokens(reader_: StoryScriptReader):
 		
 	return tokens
 
+
 func add_token(type: String, value = null):
 	tokens.append(StoryScriptToken.new(type, value, current_token_position.clone()))
+
 
 func consume_next_and_add_token(type: String, value = null):
 	consume()
 	add_token(type, value)
 
-# Keywords
+# ----- Core ----- #
+
+
+# ----- Keywords ----- #
 
 func is_keyword(identifier) -> bool:
 	for keyword in keywords:
@@ -166,10 +154,14 @@ func is_keyword(identifier) -> bool:
 			return true
 	return false
 
+
 func add_keyword_token(identifier):
 	add_token("keyword", identifier)
 
-# Punctuation
+# ----- Keywords ----- #
+
+
+# ----- Punctuation ----- #
 
 func add_punctuation():
 	var matches = punctuation.duplicate()
@@ -189,7 +181,10 @@ func add_punctuation():
 	consume(matches[0].length())
 	add_token("punctuation", matches[0])
 
-# Operators
+# ----- Punctuation ----- #
+
+
+# ----- Operators ----- #
 
 func add_operator():
 	var matches = operators.duplicate()
@@ -207,19 +202,26 @@ func add_operator():
 		curr_peek_index += 1
 	consume(matches[0].length())
 	add_token("operator", matches[0])
-	
 
-# Comments
+# ----- Operators ----- #
 
-func ignore_rest_of_line():
+
+# ----- Comments ----- #
+
+func add_comment():
 	# Consume hashtag
 	consume()
+	
 	while reader.peek() != NEWLINE:
 		consume()
 		if reader.is_EOF():
 			return
 
-# Identifier
+
+# ----- Comments ----- #
+
+
+# ----- Identifier ----- #
 
 func add_identifier_or_keyword():
 	if identifier_first_char_regex.search(reader.peek()) == null:
@@ -240,7 +242,10 @@ func add_identifier_or_keyword():
 func add_identifier_token(identifier):
 	add_token("identifier", identifier)
 
-# Number
+# ----- Identifier ----- #
+
+
+# ----- Number ----- #
 
 func add_number():
 	if not reader.peek() in "0123456789.":
@@ -267,7 +272,10 @@ func add_number():
 	else:
 		return error("Could not parse number. Maybe there is a stray period?", 1)
 
-# String
+# ----- Number ----- #
+
+
+# ----- String ----- #
 
 func add_string_literal():
 	if reader.peek() != QUOTATION_MARK:
@@ -325,7 +333,10 @@ func add_string_literal():
 
 	add_token("string", string_literal)
 
-# Misc
+# ----- String ----- #
+
+
+# ----- Core cont. ----- #
 
 func consume(steps_ahead: int = 1) -> String:
 	current_token_position.column += 1
@@ -335,6 +346,7 @@ func consume(steps_ahead: int = 1) -> String:
 	if steps_ahead > 1:
 		return consume(steps_ahead - 1)
 	return consumed 
+
 
 func peek_position(steps_ahead: int = 1) -> StoryScriptPosition:
 	var new_position = current_token_position.clone()
@@ -350,23 +362,36 @@ func peek_position(steps_ahead: int = 1) -> StoryScriptPosition:
 			
 	return new_position
 
+
 func new_line_setup():
 	current_token_position.line += 1
 	current_token_position.column = -1
 	# Identifiers cannot be between two linebreaks, therefore we must reset possible_identifier
 
+
 func add_newline_and_maybe_indent():
 	# Consume new line
 	consume()
 	
-	# If the previous line was not a newline or a dedent, 
-	# then add a newline token.
-	# This removes blank lines from the tokens list and
-	# the dedent check prevents a newline from trailing behind a dedent
-	# (Newlines trailing behind dedents are bad since newlines are supposed 
-	# to be markers for the end of a statement and dedents aren't statements).
-	if tokens.size() > 0 and not (tokens.back().type == "punctuation" and (tokens.back().symbol == "newline" or tokens.back().symbol == "dedent")):
+	# If the previous line was not a newline or an indent/dedent, 
+	# then add a newline token. This removes blank lines from the tokens list 
+	# and the indent/dedent check prevents a newline from trailing after a dedent
+	# (Newlines trailing after indents/dedents are bad since newlines are supposed 
+	# to be markers for the end of a statement and indents/dedents aren't statements).
+	if tokens.size() > 0 and not (tokens.back().type == "punctuation" and (tokens.back().symbol == "newline" or tokens.back().symbol == "dedent" or tokens.back().symbol == "indent")):
 		add_token("punctuation", "newline")
+	
+	# Check if the newline is just a comment line. If so, then do not parse
+	# any indentation. This removes comment only lines from the tokens list.
+	var j = 1
+	if USE_TABS_INDENT:
+		while reader.peek(j) == TAB:
+			j += 1
+	else:
+		while reader.peek(j) == SPACE:
+			j += 1
+	if reader.peek(j) == HASHTAG:
+		return
 	
 	var indent_count: int
 	if USE_TABS_INDENT:
@@ -405,11 +430,18 @@ func add_newline_and_maybe_indent():
 	
 	previous_indent_level = indent_count
 
+
 func is_success(result):
 	return not result is StoryScriptError
 
+
 func save_reader_state():
 	return reader.clone()
+
+
+func load_reader_state(state):
+	reader = state
+
 
 # Returns a StoryScriptError based on a message and an TokenPosition
 # If position is an INT, then it will return a StoryScriptError with a token position = the current position + a `position` number of steps
@@ -426,3 +458,5 @@ func error(message = null, confidence: float = 0, checkpoint = null, position = 
 	elif typeof(position) == TYPE_INT:
 		return StoryScriptError.new(message, peek_position(position), confidence)
 	assert(false, "Unknown use of error().")
+
+# ----- Core cont. ----- #

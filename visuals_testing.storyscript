@@ -1,16 +1,24 @@
-#define godette = Visual(texture_path="res://addons/FracturalVNE/default_assets/images/godette_body.png")
+define godette_single_visual = Visual(texture_path="res://addons/FracturalVNE/default_assets/images/godette_body.png")
 define godette = Character(name="Godette", name_color="#468cbf", dialogue_color="#ffffff", visual=DynamicVisual(textures_directory="res://addons/FracturalVNE/default_assets/images/dynamic_godette/"))
 define fade_in = load("res://addons/FracturalVNE/default_assets/animations/show_animations/fade_in.tres")
 define fade_out = load("res://addons/FracturalVNE/default_assets/animations/hide_animations/fade_out.tres")
+define smooth_step = load("res://addons/FracturalVNE/default_assets/curves/smooth_step.tres")
 
 label looped:
-	"" # Clears the text
+	move godette to Point(-500, 0)
 	
+	# Last show statement should override the previous ones
+	# if they are stacked together.
 	show godette happy with fade_in
 	show godette sad with fade_in
 	show godette surprised with fade_in
 	
-	pause 3.0
+	pause 0.5
+	
+	# Testing movement
+	move godette to Point(500, 0) with smooth_step for 0.5
+	
+	pause 0.5
 	
 	godette "Hi there!"
 	
@@ -46,5 +54,7 @@ label looped:
 	godette "Time to head back!"
 	
 	hide godette with fade_out
+	
+	"" # Clears the text
 	
 	jump looped

@@ -1,13 +1,21 @@
-[gd_scene load_steps=4 format=2]
+[gd_scene load_steps=5 format=2]
 
 [ext_resource path="res://addons/FracturalVNE/core/visuals/single_visual.gd" type="Script" id=1]
 [ext_resource path="res://addons/FracturalVNE/core/visuals/visual_animator.gd" type="Script" id=2]
 [ext_resource path="res://addons/FracturalVNE/core/utils/dependency_injection/dependency.gd" type="Script" id=3]
+[ext_resource path="res://addons/FracturalVNE/core/visuals/visual_mover.gd" type="Script" id=4]
 
 [node name="SingleVisual" type="Node2D"]
 script = ExtResource( 1 )
 visual_animator_path = NodePath("VisualAnimator")
+visual_mover_path = NodePath("VisualMover")
 sprite_path = NodePath("VisualHolder/Sprite")
+
+[node name="Dependencies" type="Node" parent="."]
+
+[node name="StoryDirector" type="Node" parent="Dependencies"]
+script = ExtResource( 3 )
+dependency_name = "StoryDirector"
 
 [node name="VisualHolder" type="Node2D" parent="."]
 
@@ -22,8 +30,7 @@ story_director_dep_path = NodePath("../Dependencies/StoryDirector")
 [node name="AnimationPlayer" type="AnimationPlayer" parent="VisualAnimator"]
 root_node = NodePath("../../VisualHolder")
 
-[node name="Dependencies" type="Node" parent="."]
-
-[node name="StoryDirector" type="Node" parent="Dependencies"]
-script = ExtResource( 3 )
-dependency_name = "StoryDirector"
+[node name="VisualMover" type="Node" parent="."]
+script = ExtResource( 4 )
+visual_path = NodePath("..")
+story_director_dep_path = NodePath("../Dependencies/StoryDirector")

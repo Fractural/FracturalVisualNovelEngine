@@ -11,4 +11,4 @@ func _init(type_: String, symbol_ = null, position_: StoryScriptPosition = null)
 	position = position_
 
 func _to_string() -> String:
-	return "[ TYPE: %-15s Line: %-2s[%-2s] SYMBOL: %-10s ]" % [type, str(position.line), str(position.column), str("" if symbol == null else symbol)]
+	return "[ TYPE: %-15s Line: %-3s[%-3s] SYMBOL: %-10s ]" % [type, str(position.line), str(position.column), str("" if symbol == null else symbol)]

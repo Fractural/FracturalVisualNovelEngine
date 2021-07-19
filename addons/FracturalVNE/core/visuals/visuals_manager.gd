@@ -60,8 +60,6 @@ func add_visual(visual):
 	visuals_holder.add_child(visual)
 
 
-	# TODO NOW: Work on Move and Scene statements 
-
 func DynamicVisual(textures_directory):
 	if typeof(textures_directory) != TYPE_STRING:
 		return StoryScriptError.new("Expected textures_directory to be a string.")

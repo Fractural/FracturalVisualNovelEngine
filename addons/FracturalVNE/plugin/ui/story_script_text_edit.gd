@@ -4,10 +4,20 @@ extends TextEdit
 # A special TextEdit for editing StoryScript files in.
 
 
-const ACCENT_1_KEYWORDS = [ "if", "elif", "else", "pass", "call"]
-const ACCENT_2_KEYWORDS = [ "label", "jump", "with", "show", "hide", "pause", "==", ">", "<", ">=", "<=" ]
-const ACCENT_3_KEYWORDS = [ ]
-const ACCENT_4_KEYWORDS = [ "define" ]
+const ACCENT_1_KEYWORDS = [ 
+	"if", "elif", "else", "pass", "call"
+	]
+const ACCENT_2_KEYWORDS = [ 
+	"label", "jump", "with", "show", "hide", 
+	"pause", "for", "move", "to", "scene", 
+	"==", ">", "<", ">=", "<=" 
+	]
+const ACCENT_3_KEYWORDS = [
+	
+	]
+const ACCENT_4_KEYWORDS = [ 
+	"define" 
+	]
 
 export var text_edit_theme: Resource
 export var error_label_path: NodePath

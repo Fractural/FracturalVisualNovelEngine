@@ -43,6 +43,7 @@ const SayStatement = preload("res://addons/FracturalVNE/core/story_script/ast_no
 const ShowStatement = preload("res://addons/FracturalVNE/core/story_script/ast_nodes/statements/show_statement/show_statement_construct.gd")
 const HideStatement = preload("res://addons/FracturalVNE/core/story_script/ast_nodes/statements/hide_statement/hide_statement_construct.gd")
 const PauseStatement = preload("res://addons/FracturalVNE/core/story_script/ast_nodes/statements/pause_statement/pause_statement_construct.gd")
+const MoveStatement = preload("res://addons/FracturalVNE/core/story_script/ast_nodes/statements/move_statement/move_statement_construct.gd")
 const ExpressionStatement = preload("res://addons/FracturalVNE/core/story_script/ast_nodes/statements/expression_statement/expression_statement_construct.gd")
 
 var CONSTRUCTS = [
@@ -73,6 +74,7 @@ var CONSTRUCTS = [
 	ShowStatement.new(),
 	HideStatement.new(),
 	PauseStatement.new(),
+	MoveStatement.new(),
 	ExpressionStatement.new(),
 ]
 

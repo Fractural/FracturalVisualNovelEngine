@@ -65,6 +65,11 @@ func debug_string(tabs_string: String) -> String:
 	
 	string += "\n" + tabs_string + "{"
 	
+	string += "\n" + tabs_string + "\tVISUAL: "
+	string += "\n" + tabs_string + "\t{"
+	string += "\n" + visual.debug_string(tabs_string + "\t\t")
+	string += "\n" + tabs_string + "\t}"
+	
 	if animation != null:
 		string += "\n" + tabs_string + "\tANIMATION: "
 		string += "\n" + tabs_string + "\t{"

@@ -19,7 +19,7 @@ func parse(parser):
 		if parser.is_success(newline):
 			return ExpressionStatementNode.new(expression.position, expression)
 		else:
-			newline.message = "Expected a new line to conclude an expression statement."
+			newline.message = "Expected a new line to conclude a statement."
 			return parser.error(newline, 1/2.0, checkpoint)
 	else:
 		return expression

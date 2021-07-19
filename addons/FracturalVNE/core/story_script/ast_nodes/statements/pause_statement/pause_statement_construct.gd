@@ -22,7 +22,7 @@ func parse(parser):
 			if parser.is_success(parser.expect_token("punctuation", "newline")):
 				return PauseNode.new(pause.position, duration)
 			else:
-				return parser.error("Expected a new line to conclude a pause statement")
+				return parser.error("Expected a new line to conclude a statement")
 		else:
 			return parser.error("Expected an expression after pause to indicate pause duration.", 1, checkpoint)
 	else:

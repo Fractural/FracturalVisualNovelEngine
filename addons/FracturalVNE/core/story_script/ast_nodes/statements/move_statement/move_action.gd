@@ -2,12 +2,12 @@ extends "res://addons/FracturalVNE/core/story/director/step_action.gd"
 # StepAction for the move statement
 
 
-var move_statement
+var visual_mover
 
 
-func _init(move_statement_, skippable_ = true).(skippable_):
-	move_statement = move_statement_
+func _init(visual_mover_, skippable_ = true).(skippable_):
+	visual_mover = visual_mover_
 
 
 func skip():
-	move_statement._on_movement_finished(true)
+	visual_mover._on_move_finished(true)

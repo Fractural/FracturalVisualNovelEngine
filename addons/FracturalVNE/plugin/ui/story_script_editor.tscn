@@ -239,6 +239,7 @@ syntax_highlighting = true
 show_line_numbers = true
 draw_tabs = true
 fold_gutter = true
+highlight_all_occurrences = true
 minimap_draw = true
 script = ExtResource( 3 )
 __meta__ = {
