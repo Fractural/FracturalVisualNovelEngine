@@ -13,7 +13,7 @@ static func get_types() -> Array:
 
 
 const AnimationAction = preload("res://addons/FracturalVNE/core/visuals/animation/animation_action.gd")
-const animation_player_visual_animation_prefab = preload("res://addons/FracturalVNE/default_assets/animations/animation_player_visual_animation.tscn") #TODO: Preload this
+const animation_player_visual_animation_prefab = preload("res://addons/FracturalVNE/core/visuals/animation/types/animation_player_visual_animation.tscn")
 
 var visual
 var animation
@@ -41,7 +41,7 @@ func execute():
 			animation_player.assigned_animation = animation_name
 		elif animation_result is PackedScene:
 			visual_animation_result = animation_result.instance()
-			if not FracturalUtils.is_type(visual_animation_result, "VisualAnimation"):
+			if not FracVNE.Utils.is_type(visual_animation_result, "VisualAnimation"):
 				throw_error(stack_error(visual_animation_result, "Expected valid VisualAnimation for the animate statement."))
 				return
 	
@@ -51,10 +51,10 @@ func execute():
 		return
 	
 	if visual_result is Object:
-		if FracturalUtils.is_type(visual_result, "Character"):
+		if FracVNE.Utils.is_type(visual_result, "Character"):
 			visual_result = visual_result.visual
 		
-		if FracturalUtils.is_type(visual_result, "Visual"):
+		if FracVNE.Utils.is_type(visual_result, "Visual"):
 			var curr_animation_action = null
 			if visual_animation_result != null:
 				curr_animation_action = AnimationAction.new(visual_animation_result, true)

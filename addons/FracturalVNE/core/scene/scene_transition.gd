@@ -50,8 +50,14 @@ func _on_transition_finished(skipped):
 #	[ ]	PosLeft and PosRight to represent Vector2 on right and left side of
 #		the screen. These constants could then be used in move statements.
 
-#	[ ] Use FracturalUtils.is_type(object, type) whenever you do a type check
+#	[ ] Use FracVNE.Utils.is_type(object, type) whenever you do a type check
 
-#	[ ] When saving, make StoryDirector skip all current actions before saving.
+#	[X] When saving, make StoryDirector skip all current actions before saving.
 
-#	[ ] Pause the world when the pause menu si up
+#	[X] Pause the world when the pause menu is up
+
+#	[ ] Finish Scene Statement parsing
+
+#	[ ] Add custom methods to create animations and visuals to make them look cleaner.
+#		(Maybe add Animation(), Scene(), and Curve() functions similar to how visuals 
+#		are loaded with Visual() and DynamicVisual()?).

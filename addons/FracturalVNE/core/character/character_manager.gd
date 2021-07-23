@@ -30,11 +30,11 @@ onready var story_gui_configurer = get_node(story_gui_configurer_path)
 
 func _post_ready():
 	function_definitions = [
-		StoryScriptFuncDef.new("Character", [
-			StoryScriptParameter.new("name"),
-			StoryScriptParameter.new("name_color", story_gui_configurer.story_gui.text_printer.default_name_color),
-			StoryScriptParameter.new("dialogue_color", story_gui_configurer.story_gui.text_printer.default_dialogue_color),
-			StoryScriptParameter.new("visual")
+		FracVNE.StoryScript.FuncDef.new("Character", [
+			FracVNE.StoryScript.Param.new("name"),
+			FracVNE.StoryScript.Param.new("name_color", story_gui_configurer.story_gui.text_printer.default_name_color),
+			FracVNE.StoryScript.Param.new("dialogue_color", story_gui_configurer.story_gui.text_printer.default_dialogue_color),
+			FracVNE.StoryScript.Param.new("visual")
 		]),
 	]
 
@@ -53,11 +53,11 @@ func Character(name_, name_color_, dialogue_color_, visual_):
 	
 	# Type safety checks
 	if typeof(name_) != TYPE_STRING:
-		return StoryScriptError.new("Expected name to be a string.")
+		return FracVNE.StoryScript.Error.new("Expected name to be a string.")
 	if typeof(name_color_) != TYPE_COLOR:
-		return StoryScriptError.new("Expected name_color to be a Color or a string.")
+		return FracVNE.StoryScript.Error.new("Expected name_color to be a Color or a string.")
 	if typeof(dialogue_color_) != TYPE_COLOR:
-		return StoryScriptError.new("Expected dialogue_color to be a Color or a string.")
+		return FracVNE.StoryScript.Error.new("Expected dialogue_color to be a Color or a string.")
 	
 	var new_character = Character.new(name_, name_color_, dialogue_color_, visual_)
 	reference_registry.add_reference(new_character)

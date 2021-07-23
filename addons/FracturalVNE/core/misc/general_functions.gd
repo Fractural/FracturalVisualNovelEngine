@@ -5,9 +5,9 @@ extends Node
 # ----- StoryService ----- #
 
 var function_definitions = [
-	StoryScriptFuncDef.new("Point", [
-		StoryScriptParameter.new("x"),
-		StoryScriptParameter.new("y"),
+	FracVNE.StoryScript.FuncDef.new("Point", [
+		FracVNE.StoryScript.Param.new("x"),
+		FracVNE.StoryScript.Param.new("y"),
 		]),
 ]
 

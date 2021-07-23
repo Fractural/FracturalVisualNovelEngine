@@ -2,15 +2,15 @@
 
 importer="texture"
 type="StreamTexture"
-path="res://.import/godette_happy.png-d33b9f8530c3831492ea5ec6035a6f77.stex"
+path="res://.import/godette_happy.png-279cb268f513797892df4113dbdef420.stex"
 metadata={
 "vram_texture": false
 }
 
 [deps]
 
-source_file="res://addons/FracturalVNE/default_assets/images/dynamic_godette/godette_happy.png"
-dest_files=[ "res://.import/godette_happy.png-d33b9f8530c3831492ea5ec6035a6f77.stex" ]
+source_file="res://addons/FracturalVNE/default_assets/visuals/images/dynamic_godette/godette_happy.png"
+dest_files=[ "res://.import/godette_happy.png-279cb268f513797892df4113dbdef420.stex" ]
 
 [params]
 

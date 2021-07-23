@@ -6,13 +6,13 @@ extends Node
 # ----- StoryService ----- #
 
 var function_definitions = [
-	StoryScriptFuncDef.new("skip"),
-	StoryScriptFuncDef.new("say", [
-		StoryScriptParameter.new("character"),
-		StoryScriptParameter.new("text"),
+	FracVNE.StoryScript.FuncDef.new("skip"),
+	FracVNE.StoryScript.FuncDef.new("say", [
+		FracVNE.StoryScript.Param.new("character"),
+		FracVNE.StoryScript.Param.new("text"),
 	], true),
-	StoryScriptFuncDef.new("narrate", [
-		StoryScriptParameter.new("text"),
+	FracVNE.StoryScript.FuncDef.new("narrate", [
+		FracVNE.StoryScript.Param.new("text"),
 	], true)
 ]
 

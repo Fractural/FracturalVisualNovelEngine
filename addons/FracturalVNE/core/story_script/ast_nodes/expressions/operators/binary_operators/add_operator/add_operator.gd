@@ -23,4 +23,4 @@ func evaluate():
 	elif typeof(left_result) == TYPE_STRING and typeof(right_result) == TYPE_STRING:
 		# String concatnation
 		return left_result + right_result
-	return error('Cannot add "%s" with "%s".' % [FracturalUtils.get_type_name(left_result), FracturalUtils.get_type_name(right_result)])
+	return error('Cannot add "%s" with "%s".' % [FracVNE.Utils.get_type_name(left_result), FracVNE.Utils.get_type_name(right_result)])

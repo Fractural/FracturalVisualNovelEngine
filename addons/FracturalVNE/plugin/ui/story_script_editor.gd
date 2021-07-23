@@ -49,7 +49,7 @@ onready var persistent_data_dep = get_node(persistent_data_dep_path)
 
 
 func _ready():
-	if FracturalUtils.is_in_editor_scene_tab(self):
+	if FracVNE.Utils.is_in_editor_scene_tab(self):
 		return
 	
 	# If this is running standalone, then set up editor assets with a default scale of 1.
@@ -135,7 +135,7 @@ func save_current_file():
 func compile_script():
 	var ast_tree = compiler.compile(script_text_edit.text)
 	
-	if ast_tree is StoryScriptError:
+	if ast_tree is FracVNE.StoryScript.Error:
 		script_text_edit.display_error(ast_tree)
 		set_compiled(false)
 	else:

@@ -1,4 +1,4 @@
-extends "res://addons/FracturalVNE/core/visuals/visual.gd"
+extends "res://addons/FracturalVNE/core/visuals/types/visual.gd"
 
 
 # ----- Typeable ----- #

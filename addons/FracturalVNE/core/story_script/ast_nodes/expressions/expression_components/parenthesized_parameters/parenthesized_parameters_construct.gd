@@ -37,13 +37,13 @@ func parse(parser):
 						if parser.is_success(constant_expression):
 							var evaluated_expression = constant_expression.evaluate()
 							if parser.is_success(evaluated_expression):
-								parameters[param_identifier.symbol] = StoryScriptParameter.new(param_identifier.symbol, evaluated_expression)
+								parameters[param_identifier.symbol] = FracVNE.StoryScript.Param.new(param_identifier.symbol, evaluated_expression)
 							else:
 								return parser.error(evaluated_expression, 1, checkpoint)
 						else:
 							return parser.error("Expected an expression that does not contain variables or function calls.", 1, checkpoint)
 					else:
-						parameters[param_identifier.symbol] = StoryScriptParameter.new(param_identifier.symbol)
+						parameters[param_identifier.symbol] = FracVNE.StoryScript.Param.new(param_identifier.symbol)
 				else:
 					return parser.error(param_identifier, 1, checkpoint)
 				

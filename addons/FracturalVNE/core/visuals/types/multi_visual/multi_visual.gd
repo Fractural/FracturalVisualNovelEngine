@@ -1,4 +1,4 @@
-extends "res://addons/FracturalVNE/core/visuals/visual.gd"
+extends "res://addons/FracturalVNE/core/visuals/types/visual.gd"
 
 
 # ----- Typeable ----- #
@@ -49,7 +49,7 @@ func set_sprite(modifiers_string):
 	if textures_dict.has(modifiers_string):
 		sprite.texture = textures_dict[modifiers_string]
 	else:
-		return StoryScriptError.new("Could not find the texture with the modifiers \"%s\" for this MultiVisual." % modifiers_string)
+		return FracVNE.StoryScript.Error.new("Could not find the texture with the modifiers \"%s\" for this MultiVisual." % modifiers_string)
 
 
 func _get_modifiers_string(file_name: String) -> String:

@@ -8,18 +8,18 @@ extends Node
 # ----- StoryService Info ----- #
 
 var function_definitions = [
-	StoryScriptFuncDef.new("step"),
-	StoryScriptFuncDef.new("start_step", [
+	FracVNE.StoryScript.FuncDef.new("step"),
+	FracVNE.StoryScript.FuncDef.new("start_step", [
 		"ast_node"
 	]),
-	StoryScriptFuncDef.new("call_label", [
+	FracVNE.StoryScript.FuncDef.new("call_label", [
 		"label_name",
 		"arguments",
 	]),
-	StoryScriptFuncDef.new("jump_to_label", [
+	FracVNE.StoryScript.FuncDef.new("jump_to_label", [
 		"label_name"
 	]),
-	StoryScriptFuncDef.new("add_label", [
+	FracVNE.StoryScript.FuncDef.new("add_label", [
 		"label_node"
 	]),
 ]
@@ -201,21 +201,21 @@ func call_label(label_name: String, arguments = []):
 	if label_dict.has(label_name):
 		label_dict[label_name].execute(arguments)
 	else:
-		return StoryScriptError.new("Cannot call \"%s\" label since the label could not be found." % [label_name])
+		return FracVNE.StoryScript.Error.new("Cannot call \"%s\" label since the label could not be found." % [label_name])
 
 
 func jump_to_label(label_name: String):
 	if label_dict.has(label_name):
 		label_dict[label_name].execute()
 	else:
-		return StoryScriptError.new("Cannot jump to \"%s\" label since the label could not be found." % [label_name])
+		return FracVNE.StoryScript.Error.new("Cannot jump to \"%s\" label since the label could not be found." % [label_name])
 
 
 func add_label(label_node):
 	if not label_dict.has(label_node.name):
 		label_dict[label_node.name] = label_node
 	else:
-		return StoryScriptError.new("Cannot add \"%s\" label since label named \"%s\" already exists." % [label_node.name, label_node.name])
+		return FracVNE.StoryScript.Error.new("Cannot add \"%s\" label since label named \"%s\" already exists." % [label_node.name, label_node.name])
 
 
 func _step_completed():

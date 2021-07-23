@@ -63,7 +63,7 @@ func save_reader_state():
 	return reader.clone()
 
 func is_success(result):
-	return result == null or not result is StoryScriptError
+	return FracVNE.StoryScript.Utils.is_success(result)
 
 func peek(steps_ahead: int = 1):
 	return reader.peek(steps_ahead)
@@ -84,8 +84,8 @@ func error(error, confidence: float = 0, checkpoint = null):
 		load_reader_state(checkpoint)
 	
 	if typeof(error) == TYPE_STRING:
-		return StoryScriptError.new(error, position, confidence)
-	elif error is StoryScriptError:
+		return FracVNE.StoryScript.Error.new(error, position, confidence)
+	elif error is FracVNE.StoryScript.Error:
 		error.confidence = confidence
 		return error
 	else:

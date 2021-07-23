@@ -1,11 +1,13 @@
-class_name StoryScriptError
 extends Reference
 # Stores an error that occured in a StoryScript whether during compile time
 # or during execution.
 
 
+const Position = preload("res://addons/FracturalVNE/core/story_script/story_script_position.gd")
+
+
 var message: String
-var position: StoryScriptPosition
+var position: Position
 var confidence: float
 
 
@@ -22,7 +24,7 @@ func _to_string():
 func runtime_error_string():
 	var position_text
 	if position != null:
-		# StoryScriptPosition uses 0-based numbering so to make it more readable, it will
+		# FracVNE.StoryScript.Position uses 0-based numbering so to make it more readable, it will
 		# be displayed as 1-based numbering (Since the script editor's line and columns 
 		# are numbers starting from 1)
 		position_text = "@%-20s" % ["(Line:%s, Col:%s)" % [position.line + 1, position.column + 1]]
@@ -32,7 +34,7 @@ func runtime_error_string():
 
 
 class ErrorStack extends Reference:
-	# Stores a stack of StoryScriptErrors and is used to generate stack traces
+	# Stores a stack of FracVNE.StoryScript.Errors and is used to generate stack traces
 	# to debug a StoryScript.
 	
 	
@@ -43,7 +45,7 @@ class ErrorStack extends Reference:
 		errors = errors_
 	
 	
-	func add_error(error: StoryScriptError):
+	func add_error(error):
 		errors.append(error)
 	
 	

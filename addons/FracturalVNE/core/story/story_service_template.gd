@@ -6,16 +6,16 @@ extends Reference
 
 # Optional
 var function_definitions = [
-	StoryScriptFuncDef.new("function1_name", [
-		StoryScriptParameter.new("arg_name1"),
-		StoryScriptParameter.new("arg_name2", 0.1230),
+	FracVNE.StoryScript.FuncDef.new("function1_name", [
+		FracVNE.StoryScript.Param.new("arg_name1"),
+		FracVNE.StoryScript.Param.new("arg_name2", 0.1230),
 		]),
-	StoryScriptFuncDef.new("function2_name", [
-		StoryScriptParameter.new("arg_name1", "default"),
-		StoryScriptParameter.new("arg_name2", 0.1230),
+	FracVNE.StoryScript.FuncDef.new("function2_name", [
+		FracVNE.StoryScript.Param.new("arg_name1", "default"),
+		FracVNE.StoryScript.Param.new("arg_name2", 0.1230),
 		]),
-	StoryScriptFuncDef.new("function3_name", [
-		StoryScriptParameter.new("arg_name1"),
+	FracVNE.StoryScript.FuncDef.new("function3_name", [
+		FracVNE.StoryScript.Param.new("arg_name1"),
 	]),
 ]
 

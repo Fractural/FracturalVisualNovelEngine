@@ -83,7 +83,7 @@ func load_text_edit_theme(new_theme: Resource = text_edit_theme):
 	add_color_override("number_color", text_edit_theme.number_color)
 
 
-func display_error(error: StoryScriptError):
+func display_error(error: FracVNE.StoryScript.Error):
 	# As of now there is no way to highlight a line, therefore we cannot highlight
 	# an error in the code right now
 	error_label.bbcode_text = '[url={"line":%s, "column":%s}]error(%s,%s): %s[/url]' % [str(error.position.line), str(error.position.column), str(error.position.line + 1), str(error.position.column + 1), error.message]

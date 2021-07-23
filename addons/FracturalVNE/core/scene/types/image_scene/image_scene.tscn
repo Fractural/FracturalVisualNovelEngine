@@ -1,0 +1,9 @@
+[gd_scene load_steps=2 format=2]
+
+[ext_resource path="res://addons/FracturalVNE/core/scene/types/image_scene/image_scene.gd" type="Script" id=1]
+
+[node name="ImageScene" type="Node2D"]
+script = ExtResource( 1 )
+sprite_path = NodePath("Sprite")
+
+[node name="Sprite" type="Sprite" parent="."]

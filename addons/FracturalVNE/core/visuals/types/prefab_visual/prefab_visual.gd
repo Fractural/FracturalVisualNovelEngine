@@ -1,4 +1,4 @@
-extends "res://addons/FracturalVNE/core/visuals/visual.gd"
+extends "res://addons/FracturalVNE/core/visuals/types/visual.gd"
 
 
 # ----- Typeable ----- #
@@ -13,7 +13,7 @@ static func get_types() -> Array:
 
 export var prefab_holder_path: NodePath
 
-var prefab_path: String
+var prefab_instance
 var prefab_holder
 
 
@@ -22,12 +22,13 @@ func _ready():
 		prefab_holder = get_node(prefab_holder_path)
 
 
-func init_(story_director, prefab_path):
-	init(story_director)
+func init_(story_director_, prefab_instance_):
+	init(story_director_)
 	
 	prefab_holder = get_node(prefab_holder_path)
 	
-	prefab_holder.add_child(load(prefab_path).instance())
+	prefab_instance = prefab_instance_
+	prefab_holder.add_child(prefab_instance)
 
 
 # ----- Serialization ----- #

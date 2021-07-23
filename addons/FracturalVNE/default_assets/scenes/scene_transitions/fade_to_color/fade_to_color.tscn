@@ -1,6 +1,6 @@
 [gd_scene load_steps=3 format=2]
 
-[ext_resource path="res://addons/FracturalVNE/default_assets/scene_transitions/fade_to_color/fade_to_color.gd" type="Script" id=1]
+[ext_resource path="res://addons/FracturalVNE/default_assets/scenes/scene_transitions/fade_to_color/fade_to_color.gd" type="Script" id=1]
 [ext_resource path="res://addons/FracturalVNE/default_assets/curves/ease_in.tres" type="Curve" id=2]
 
 [node name="FadeToColor" type="Node"]

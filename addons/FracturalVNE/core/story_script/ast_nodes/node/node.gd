@@ -17,10 +17,10 @@ static func get_types() -> Array:
 
 var reference_id
 var runtime_block setget set_runtime_block, get_runtime_block
-var position: StoryScriptPosition
+var position: FracVNE.StoryScript.Position
 
 
-func _init(position_ = StoryScriptPosition.new()):
+func _init(position_ = FracVNE.StoryScript.Position.new()):
 	position = position_
 
 
@@ -55,11 +55,11 @@ func debug_string(tabs_string: String) -> String:
 # ----- Error ----- #
 
 func is_success(result):
-	return not result is StoryScriptError and not result is StoryScriptError.ErrorStack
+	return FracVNE.StoryScript.Utils.is_success(result)
 
 
 func error(message: String):
-	return StoryScriptError.new(message, position)
+	return FracVNE.StoryScript.Error.new(message, position)
 
 
 func throw_error(error):
@@ -71,11 +71,11 @@ func throw_error(error):
 
 
 func stack_error(error, message = ""):
-	if error is StoryScriptError.ErrorStack:
+	if error is FracVNE.StoryScript.Error.ErrorStack:
 		error.add_error(error(message))
 		return error
-	elif error is StoryScriptError:
-		var err_stack = StoryScriptError.ErrorStack.new([error])
+	elif error is FracVNE.StoryScript.Error:
+		var err_stack = FracVNE.StoryScript.Error.ErrorStack.new([error])
 		err_stack.add_error(error(message))
 		return err_stack
 	else:

@@ -13,13 +13,13 @@ func _init():
 
 func compile(script_text: String):
 	var lexed_tokens = lexer.generate_tokens(StoryScriptReader.new(script_text))	
-	if lexed_tokens is StoryScriptError:
+	if lexed_tokens is FracVNE.StoryScript.Error:
 		return lexed_tokens
 	return parser.generate_abstract_syntax_tree(StoryScriptTokensReader.new(lexed_tokens))
 	
 # Compiles a story script that is given in raw text format
 # If succesful, returns the compiled syntax tree
-# If it fails to compile, returns a `StoryScriptError`
+# If it fails to compile, returns a `FracVNE.StoryScript.Error`
 func test_compile(script_text: String):
 	var print_results = true
 	# Clears console
@@ -37,7 +37,7 @@ func test_compile(script_text: String):
 	var lex_time = time_end - time_start
 	print("Lex time: %sms" % str(lex_time))
 	
-	if lexed_tokens is StoryScriptError:
+	if lexed_tokens is FracVNE.StoryScript.Error:
 		print("Compilation Failed")
 		return lexed_tokens
 		
@@ -60,7 +60,7 @@ func test_compile(script_text: String):
 	var parse_time = time_end - time_start
 	print("Parse time: %sms" % str(parse_time))
 	
-	if parse_tree is StoryScriptError:
+	if parse_tree is FracVNE.StoryScript.Error:
 		print("Compilation Failed")
 		return parse_tree
 	

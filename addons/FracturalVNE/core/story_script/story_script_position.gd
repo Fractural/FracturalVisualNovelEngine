@@ -1,4 +1,3 @@
-class_name StoryScriptPosition
 extends Reference
 # Stores the position for something in a StoryScript using the line and column it appears in.
 
@@ -12,7 +11,7 @@ func _init(line_: int = 0, column_: int = 0):
 	column = column_
 
 
-func clone() -> StoryScriptPosition:
+func clone():
 	return get_script().new(line, column)
 
 

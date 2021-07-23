@@ -3,9 +3,9 @@ extends Reference
 
 var type: String
 var symbol
-var position: StoryScriptPosition
+var position: FracVNE.StoryScript.Position
 
-func _init(type_: String, symbol_ = null, position_: StoryScriptPosition = null):
+func _init(type_: String, symbol_ = null, position_: FracVNE.StoryScript.Position = null):
 	symbol = symbol_
 	type = type_
 	position = position_

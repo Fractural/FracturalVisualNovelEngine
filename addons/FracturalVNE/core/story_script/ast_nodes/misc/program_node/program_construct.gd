@@ -17,4 +17,4 @@ func parse(parser):
 		if not parser.is_success(statement):
 			return parser.error(statement, 1, checkpoint)
 		statements.append(statement)
-	return ProgramNode.new(BlockNode.new(StoryScriptPosition.new(0, 0), statements))
+	return ProgramNode.new(BlockNode.new(FracVNE.StoryScript.Position.new(0, 0), statements))

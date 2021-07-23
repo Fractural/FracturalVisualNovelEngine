@@ -5,8 +5,8 @@ extends Node
 
 # Optional
 var function_definitions = [
-	StoryScriptFuncDef.new("load", [
-		StoryScriptParameter.new("path"),
+	FracVNE.StoryScript.FuncDef.new("load", [
+		FracVNE.StoryScript.Param.new("path"),
 		])
 ]
 
@@ -22,6 +22,6 @@ func load(path):
 	# use will be efficient.
 	var result = ResourceLoader.load(path)
 	if result == null:
-		return StoryScriptError.new("Could not load resource at path \"%s\"" % path)
+		return FracVNE.StoryScript.Error.new("Could not load resource at path \"%s\"" % path)
 	else:
 		return result

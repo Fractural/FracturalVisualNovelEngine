@@ -11,7 +11,7 @@ var dependency
 
 
 func _ready():
-	if FracturalUtils.is_in_editor_scene_tab(self):
+	if FracVNE.Utils.is_in_editor_scene_tab(self):
 		return
 	
 	assert(get_node(dependency_path) != null, "Missing dependency of type \"%s\" for node \"%s\"" % [dependency_name, name])

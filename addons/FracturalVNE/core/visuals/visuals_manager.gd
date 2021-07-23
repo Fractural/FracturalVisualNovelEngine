@@ -8,27 +8,27 @@ extends Node
 # ----- StoryService ----- #
 
 var function_definitions = [
-		StoryScriptFuncDef.new("Visual", [
-			StoryScriptParameter.new("texture_path"),
+		FracVNE.StoryScript.FuncDef.new("Visual", [
+			FracVNE.StoryScript.Param.new("texture_path"),
 		]),
-		StoryScriptFuncDef.new("DynamicVisual", [
-			StoryScriptParameter.new("textures_directory"),
+		FracVNE.StoryScript.FuncDef.new("DynamicVisual", [
+			FracVNE.StoryScript.Param.new("textures_directory"),
 		]),
-		StoryScriptFuncDef.new("PrefabVisual", [
-			StoryScriptParameter.new("prefab_path"),
+		FracVNE.StoryScript.FuncDef.new("PrefabVisual", [
+			FracVNE.StoryScript.Param.new("prefab_path"),
 		]),
-		StoryScriptFuncDef.new("show_multi_visual", [
-			StoryScriptParameter.new("visual"),
-			StoryScriptParameter.new("modifiers"),
-			StoryScriptParameter.new("animation"),
+		FracVNE.StoryScript.FuncDef.new("show_multi_visual", [
+			FracVNE.StoryScript.Param.new("visual"),
+			FracVNE.StoryScript.Param.new("modifiers"),
+			FracVNE.StoryScript.Param.new("animation"),
 		]),
-		StoryScriptFuncDef.new("show_visual", [
-			StoryScriptParameter.new("visual"),
-			StoryScriptParameter.new("animation"),
+		FracVNE.StoryScript.FuncDef.new("show_visual", [
+			FracVNE.StoryScript.Param.new("visual"),
+			FracVNE.StoryScript.Param.new("animation"),
 		]),
-		StoryScriptFuncDef.new("hide_visual", [
-			StoryScriptParameter.new("visual"),
-			StoryScriptParameter.new("animation"),
+		FracVNE.StoryScript.FuncDef.new("hide_visual", [
+			FracVNE.StoryScript.Param.new("visual"),
+			FracVNE.StoryScript.Param.new("animation"),
 		]),
 	]
 
@@ -70,11 +70,19 @@ func add_visual(visual):
 
 func DynamicVisual(textures_directory):
 	if typeof(textures_directory) != TYPE_STRING:
-		return StoryScriptError.new("Expected textures_directory to be a string.")
+		return FracVNE.StoryScript.Error.new("Expected textures_directory to be a string.")
 	
 	var new_visual = dynamic_visual_prefab.instance()
 	
-	var image_paths = FracturalUtils.get_dir_contents(textures_directory, true, ["png", "jpeg", "jpg", "bmp"])[0]
+	var image_paths = FracVNE.StoryScript.Utils.get_dir_contents(textures_directory, true, ["png", "jpeg", "jpg", "bmp"])
+	
+	if not FracVNE.StoryScript.Utils.is_success(image_paths):
+		return FracVNE.StoryScript.Error.ErrorStack.new([image_paths, FracVNE.StoryScript.Error.new("Could not load the texture directory of \"%s\"." % textures_directory)])
+	# get_dir_contents() returns an arr formatted as: 
+	# [files, directories]
+	# We only want the files (Which are images), so we use the 0 index.
+	image_paths = image_paths[0]
+	
 	var textures = []
 	
 	for path in image_paths:
@@ -93,14 +101,15 @@ func DynamicVisual(textures_directory):
 
 func Visual(texture_path):
 	if typeof(texture_path) != TYPE_STRING:
-		return StoryScriptError.new("Expected texture_path to be a string.")
+		return FracVNE.StoryScript.Error.new("Expected texture_path to be a string.")
 	
 	var new_visual = single_visual_prefab.instance()
 	
-	# TODO: Replacing load() with ResourceLoader in order to handle
-	# 		cases where the resource could not be loaded. When this
-	#		happens, return a StoryScriptError.
-	new_visual.init_(story_director, load(texture_path))
+	var texture_result = ResourceLoader.load(texture_path)
+	if texture_result == null:
+		return FracVNE.StoryScript.Error.new("Could not load the texture at path \"%s\"" % texture_path)
+	
+	new_visual.init_(story_director, texture_result)
 	
 	reference_registry.add_reference(new_visual)
 	add_visual(new_visual)
@@ -112,11 +121,14 @@ func Visual(texture_path):
 
 func PrefabVisual(prefab_path):
 	if typeof(prefab_path) != TYPE_STRING:
-		return StoryScriptError.new("Expected prefab_path to be a string.")
+		return FracVNE.StoryScript.Error.new("Expected prefab_path to be a string.")
+	
+	var visual_prefab_result = ResourceLoader.load(prefab_path)
+	if visual_prefab_result == null:
+		return FracVNE.StoryScript.Error.new("Could not load the visual prefab at path \"%s\"" % visual_prefab_result)
 	
 	var new_visual = prefab_visual_prefab.instance()
-	
-	new_visual.init_(story_director, prefab_path)
+	new_visual.init_(story_director, visual_prefab_result.instance())
 	
 	reference_registry.add_reference(new_visual)
 	add_visual(new_visual)
@@ -140,7 +152,7 @@ func show_visual(target_visual, animation = null):
 			add_visual(target_visual)
 		target_visual.show(animation)
 	else:
-		return StoryScriptError.new("Expected target_visual to be a string or a Visual.")
+		return FracVNE.StoryScript.Error.new("Expected target_visual to be a string or a Visual.")
 
 
 func hide_visual(target_visual, animation = null):
@@ -151,7 +163,7 @@ func hide_visual(target_visual, animation = null):
 			add_visual(target_visual)
 		target_visual.hide(animation)
 	else:
-		return StoryScriptError.new("Expected target_visual to be a string or a Visual.")
+		return FracVNE.StoryScript.Error.new("Expected target_visual to be a string or a Visual.")
 
 
 # TODO: Maybe remove if we are using "show" to both animate and show a Visual
