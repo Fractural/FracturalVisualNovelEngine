@@ -41,7 +41,7 @@ func get_reference_id(reference: Object):
 func serialize_state():
 	var serialized_references = []
 	for reference in references:
-		serialized_references.append(reference.serialize())
+		serialized_references.append(serialization_manager.serialize(reference))
 	
 	return {
 		"service_name": get_service_name(),
@@ -51,13 +51,15 @@ func serialize_state():
 
 func deserialize_state(serialized_state):
 	references = []
+	
+	var partly_serialized_objects = []
 	for serialized_reference in serialized_state["references"]:
-		references.append(serialization_manager.deserialize(serialized_reference, false))
+		partly_serialized_objects.append(serialization_manager.deserialize(serialized_reference, false))
 	
 	# Assign dependent references after all references are deserialized.
 	# Ensures that whatever references are needed exist when requested for.
-	for reference in references:
-		serialization_manager.fetch_dependencies(reference)
+	for partly_serialized_object in partly_serialized_objects:
+		references.append(serialization_manager.fetch_dependencies(partly_serialized_object))
 
 # ----- Serialization ----- #
 

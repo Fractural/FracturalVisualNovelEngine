@@ -1,4 +1,4 @@
-extends "res://addons/FracturalVNE/core/story_script/ast_nodes/statements/statement/statement_node.gd"
+extends "res://addons/FracturalVNE/core/story_script/ast_nodes/statements/stepped_node/stepped_node.gd"
 # TODO: Finish the rest the show statement.
 
 
@@ -22,7 +22,8 @@ var _finished
 
 func _init(position_ = null, duration_ = null).(position_):
 	duration = duration_
-
+	# Pause statements will automatically step
+	auto_step = true
 
 func execute():
 	_finished = false
@@ -75,15 +76,15 @@ func propagate_call(method, arguments = [], parent_first = false):
 # ----- Serialization ----- #
 
 func serialize():
-	var serialized_obj = .serialize()
-	serialized_obj["duration"] = duration.serialize()
+	var serialized_object = .serialize()
+	serialized_object["duration"] = duration.serialize()
 	
-	return serialized_obj
+	return serialized_object
 
 
-func deserialize(serialized_obj):	
-	var instance = .deserialize(serialized_obj)
-	instance.duration = SerializationUtils.deserialize(serialized_obj["duration"])
+func deserialize(serialized_object):	
+	var instance = .deserialize(serialized_object)
+	instance.duration = SerializationUtils.deserialize(serialized_object["duration"])
 	
 	return instance
 

@@ -79,20 +79,20 @@ func propagate_call(method, arguments = [], parent_first = false):
 # ----- Serialization ----- #
 
 func serialize():
-	var serialized_obj = .serialize()
-	serialized_obj["name"] = name
-	serialized_obj["block"] = block.serialize()
+	var serialized_object = .serialize()
+	serialized_object["name"] = name
+	serialized_object["block"] = block.serialize()
 	if parameter_group != null:
-		serialized_obj["parameter_group"] = parameter_group.serialize()
-	return serialized_obj
+		serialized_object["parameter_group"] = parameter_group.serialize()
+	return serialized_object
 
 
-func deserialize(serialized_obj):	
-	var instance = .deserialize(serialized_obj)
-	instance.name = serialized_obj["name"]
-	instance.block = SerializationUtils.deserialize(serialized_obj["block"])
-	if serialized_obj.has("parameter_group"):
-		instance.parameter_group = SerializationUtils.deserialize(serialized_obj["parameter_group"])
+func deserialize(serialized_object):	
+	var instance = .deserialize(serialized_object)
+	instance.name = serialized_object["name"]
+	instance.block = SerializationUtils.deserialize(serialized_object["block"])
+	if serialized_object.has("parameter_group"):
+		instance.parameter_group = SerializationUtils.deserialize(serialized_object["parameter_group"])
 	instance._init_post()
 	return instance
 

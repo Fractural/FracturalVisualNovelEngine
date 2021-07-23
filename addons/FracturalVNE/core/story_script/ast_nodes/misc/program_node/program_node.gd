@@ -47,6 +47,7 @@ func start_runtime_initialize():
 
 
 func execute():
+	get_service("StoryDirector").curr_stepped_node = self
 	block.execute()
 
 
@@ -173,14 +174,14 @@ func deserialize_state(serialized_state):
 
 
 func serialize():
-	var serialized_obj = .serialize()
-	serialized_obj["block"] = block.serialize()
-	return serialized_obj
+	var serialized_object = .serialize()
+	serialized_object["block"] = block.serialize()
+	return serialized_object
 
 
-func deserialize(serialized_obj):
-	var instance = .deserialize(serialized_obj)
-	instance.block = SerializationUtils.deserialize(serialized_obj["block"])
+func deserialize(serialized_object):
+	var instance = .deserialize(serialized_object)
+	instance.block = SerializationUtils.deserialize(serialized_object["block"])
 	instance._init_post()
 	# No need to assign runtime_block since that is assgined at runtime
 	return instance

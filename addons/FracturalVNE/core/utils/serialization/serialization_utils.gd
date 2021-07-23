@@ -15,6 +15,15 @@ static func deserialize(serialized_object):
 	
 	return result
 
+static func serialize_vec2(vector: Vector2):
+	return { 
+		"x": vector.x,
+		"y": vector.y,
+	}
+
+static func deserialize_vec2(serialized_vector):
+	return Vector2(serialized_vector["x"], serialized_vector["y"])
+
 # Template for serializable objects:
 
 ## ----- Serialization ----- #

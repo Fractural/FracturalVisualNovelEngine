@@ -22,13 +22,13 @@ func debug_string(tabs_string: String) -> String:
 # ----- Serialization ----- #
 
 func serialize():
-	var serialized_obj = .serialize()
-	serialized_obj["name"] = name
-	return serialized_obj
+	var serialized_object = .serialize()
+	serialized_object["name"] = name
+	return serialized_object
 
-func deserialize(serialized_obj):	
-	var instance = .deserialize(serialized_obj)
-	instance.name = serialized_obj["name"]
+func deserialize(serialized_object):	
+	var instance = .deserialize(serialized_object)
+	instance.name = serialized_object["name"]
 	return instance
 
 # ----- Serialization ----- #

@@ -93,9 +93,9 @@ func serialize():
 	}
 
 
-func deserialize(serialized_obj):
+func deserialize(serialized_object):
 	var instance = get_script().new()
-	instance.position = SerializationUtils.deserialize(serialized_obj["position"])
+	instance.position = SerializationUtils.deserialize(serialized_object["position"])
 	# No need to assign runtime_block since that is assgined at runtime
 	return instance
 

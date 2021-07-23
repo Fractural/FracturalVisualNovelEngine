@@ -47,21 +47,21 @@ func serialize():
 	}
 
 
-func deserialize(serialized_obj):
+func deserialize(serialized_object):
 	var instance = get_script().new()
-	instance.story_file_path = serialized_obj["story_file_path"]
-	instance.starting_node_id = serialized_obj["starting_node_id"]
-	instance.story_tree_state = serialized_obj["story_tree_state"]
-	instance.saved_date = serialized_obj["saved_date"]
+	instance.story_file_path = serialized_object["story_file_path"]
+	instance.starting_node_id = serialized_object["starting_node_id"]
+	instance.story_tree_state = serialized_object["story_tree_state"]
+	instance.saved_date = serialized_object["saved_date"]
 	
 	# thumbnail deserialization start
 	
-	var t_image = serialized_obj["thumbnail"]["image"]
-	var t_size = serialized_obj["thumbnail"]["size"]
-	var t_width = serialized_obj["thumbnail"]["width"]
-	var t_height = serialized_obj["thumbnail"]["height"]
-	var t_mipmap = serialized_obj["thumbnail"]["mipmap"]
-	var t_format = serialized_obj["thumbnail"]["format"]
+	var t_image = serialized_object["thumbnail"]["image"]
+	var t_size = serialized_object["thumbnail"]["size"]
+	var t_width = serialized_object["thumbnail"]["width"]
+	var t_height = serialized_object["thumbnail"]["height"]
+	var t_mipmap = serialized_object["thumbnail"]["mipmap"]
+	var t_format = serialized_object["thumbnail"]["format"]
 
 	var array = Marshalls.base64_to_raw(t_image)
 	array = array.decompress(t_size, File.COMPRESSION_DEFLATE)

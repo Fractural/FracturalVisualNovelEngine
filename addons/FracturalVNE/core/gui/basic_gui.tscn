@@ -161,7 +161,6 @@ dependency_path = NodePath("../../../Dependencies/StorySaveManagerDependency")
 dependency_path = NodePath("../../../Dependencies/StoryStateManagerDependency")
 
 [node name="StoryGUIDependency" parent="BasicPauseMenu/Dependencies" index="3"]
-dependency_name = "StoryGUI"
 dependency_path = NodePath("../../..")
 
 [editable path="Panel/VBoxContainer/BasicTextPrinter"]

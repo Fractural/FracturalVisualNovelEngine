@@ -1,0 +1,17 @@
+[gd_scene load_steps=3 format=2]
+
+[ext_resource path="res://addons/FracturalVNE/default_assets/scene_transitions/cross_fade/cross_fade.gd" type="Script" id=1]
+[ext_resource path="res://addons/FracturalVNE/default_assets/curves/ease_in.tres" type="Curve" id=2]
+
+[node name="CrossFade" type="Node"]
+script = ExtResource( 1 )
+new_scene_holder_path = NodePath("Holders/NewBGSceneHolder")
+old_scene_holder_path = NodePath("Holders/OldBGSceneHolder")
+fade_in_curve = ExtResource( 2 )
+fade_out_curve = ExtResource( 2 )
+
+[node name="Holders" type="Node2D" parent="."]
+
+[node name="OldBGSceneHolder" type="Node2D" parent="Holders"]
+
+[node name="NewBGSceneHolder" type="Node2D" parent="Holders"]

@@ -59,6 +59,8 @@ func fetch_dependencies(partly_serialized_object):
 	for serializer in serializers_holder.get_children():
 		if serializer.has_method("can_fetch_dependencies") and serializer.can_fetch_dependencies(partly_serialized_object.object):
 			serializer.fetch_dependencies(partly_serialized_object.object, partly_serialized_object.serialized_object)
+			break
+	return partly_serialized_object.object 
 
 
 class PartlySerializedObject extends Reference:

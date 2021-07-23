@@ -1,8 +1,20 @@
+# ----- Characters ----- #
 define godette_single_visual = Visual(texture_path="res://addons/FracturalVNE/default_assets/images/godette_body.png")
 define godette = Character(name="Godette", name_color="#468cbf", dialogue_color="#ffffff", visual=DynamicVisual(textures_directory="res://addons/FracturalVNE/default_assets/images/dynamic_godette/"))
+
+
+# ----- Transitions ----- #
 define fade_in = load("res://addons/FracturalVNE/default_assets/animations/show_animations/fade_in.tres")
 define fade_out = load("res://addons/FracturalVNE/default_assets/animations/hide_animations/fade_out.tres")
+
+
+# ----- Animations ----- #
+define hop = load("res://addons/FracturalVNE/default_assets/animations/hop.tres")
+
+
+# ----- Curves ----- #
 define smooth_step = load("res://addons/FracturalVNE/default_assets/curves/smooth_step.tres")
+
 
 label looped:
 	move godette to Point(-500, 0)
@@ -16,9 +28,11 @@ label looped:
 	pause 0.5
 	
 	# Testing movement
-	move godette to Point(500, 0) with smooth_step for 0.5
+	move godette to Point(500, 0) with smooth_step for 10
 	
-	pause 0.5
+	pause 10
+	
+	animate godette with hop
 	
 	godette "Hi there!"
 	

@@ -12,7 +12,8 @@ static func get_types() -> Array:
 # ----- Typeable ----- #
 
 
-const AnimationAction = preload("res://addons/FracturalVNE/core/visuals/animation_action.gd")
+const AnimationAction = preload("res://addons/FracturalVNE/core/visuals/animation/animation_action.gd")
+const animation_player_visual_animation_prefab = preload("res://addons/FracturalVNE/default_assets/animations/animation_player_visual_animation.tscn") #TODO: Preload this
 
 var visual
 var animation
@@ -24,13 +25,25 @@ func _init(position_ = null, visual_ = null, animation_ = null).(position_):
 
 
 func execute():
-	var animation_result = null
+	var visual_animation_result = null
 	if animation != null:
-		animation_result = animation.evaluate()
+		var animation_result = animation.evaluate()
 		
-		if not is_success(animation_result) or not animation_result is Animation:
-			throw_error(stack_error(animation_result, "Expected valid Animation for the show statement."))
+		if not is_success(animation_result) or not (animation_result is Animation or animation_result is PackedScene):
+			throw_error(stack_error(animation_result, "Expected valid Animation or VisualAnimation for the animate statement."))
 			return
+		
+		if animation_result is Animation:
+			visual_animation_result = animation_player_visual_animation_prefab.instance()
+			var animation_name: String = animation_result.get_path().get_basename().get_file()
+			var animation_player = visual_animation_result.get_node(visual_animation_result.animation_player_path)
+			animation_player.add_animation(animation_name, animation_result)
+			animation_player.assigned_animation = animation_name
+		elif animation_result is PackedScene:
+			visual_animation_result = animation_result.instance()
+			if not FracturalUtils.is_type(visual_animation_result, "VisualAnimation"):
+				throw_error(stack_error(visual_animation_result, "Expected valid VisualAnimation for the animate statement."))
+				return
 	
 	var visual_result = visual.evaluate()
 	if not is_success(visual_result):
@@ -43,12 +56,10 @@ func execute():
 		
 		if visual_result.is_type("Visual"):
 			var curr_animation_action = null
-			if animation_result != null:
-				# TODO: Allow devs to force users to watch an animation by making the animation unskippable 
-				# 		(Will likely rarely be used since we mostly want control in the player's hands)
-				curr_animation_action = AnimationAction.new(visual_result.visual_animator, true)
+			if visual_animation_result != null:
+				curr_animation_action = AnimationAction.new(visual_animation_result)
 			
-			visual_result.show(animation_result, curr_animation_action)
+			visual_result.show(visual_animation_result, curr_animation_action)
 		else: 
 			throw_error(error("Expected a valid visual for the show statement."))
 			return
@@ -95,19 +106,19 @@ func propagate_call(method, arguments = [], parent_first = false):
 # ----- Serialization ----- #
 
 func serialize():
-	var serialized_obj = .serialize()
-	serialized_obj["visual"] = visual.serialize()
+	var serialized_object = .serialize()
+	serialized_object["visual"] = visual.serialize()
 	if animation != null:
-		serialized_obj["animation"] = animation.serialize()
+		serialized_object["animation"] = animation.serialize()
 	
-	return serialized_obj
+	return serialized_object
 
 
-func deserialize(serialized_obj):
-	var instance = .deserialize(serialized_obj)
-	instance.visual = SerializationUtils.deserialize(serialized_obj["visual"])
-	if serialized_obj.has("animation"):
-		instance.animation = SerializationUtils.deserialize(serialized_obj["animation"])
+func deserialize(serialized_object):
+	var instance = .deserialize(serialized_object)
+	instance.visual = SerializationUtils.deserialize(serialized_object["visual"])
+	if serialized_object.has("animation"):
+		instance.animation = SerializationUtils.deserialize(serialized_object["animation"])
 	
 	return instance
 

@@ -1,4 +1,4 @@
-extends "visual.gd"
+extends "res://addons/FracturalVNE/core/visuals/visual.gd"
 
 
 # ----- Typeable ----- #
@@ -65,42 +65,6 @@ func _get_modifiers_string(file_name: String) -> String:
 
 # ----- Serialization ----- #
 
-func serialize():
-	var texture_paths = []
-	
-	var current_texture_index = -1
-	var i = 0
-	for texture in textures:
-		if sprite.texture == texture:
-			current_texture_index = i
-		texture_paths.append(texture.get_path())
-		i += 1
-	
-	return {
-		"script_path": get_script().get_path(),
-		"name": name,
-		"texture_paths": texture_paths,
-		"current_texture_id": current_texture_index,
-		"visible": visible,
-	}
-
-
-func deserialize(serialized_obj):
-	var visual_prefab = load("res://addons/FracturalVNE/core/visuals/multi_visual.tscn")
-	
-	var instance = visual_prefab.instance()
-	
-	var textures = []
-	for texture_path in serialized_obj["texture_paths"]:
-		textures.append(load(texture_path))
-	
-	instance.init(textures)
-	
-	if serialized_obj["current_texture_id"] > -1:
-		instance.sprite.texture = textures[serialized_obj["current_texture_id"]]
-	
-	instance.visible = serialized_obj["visible"]
-	
-	return instance
+# multi_visual_serializer.gd
 
 # ----- Serialization ----- #

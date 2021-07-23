@@ -30,10 +30,10 @@ func serialize():
 	}
 
 
-func deserialize(serialized_obj):
+func deserialize(serialized_object):
 	var instance = get_script().new()
-	instance.line = serialized_obj["line"]
-	instance.column = serialized_obj["column"]
+	instance.line = serialized_object["line"]
+	instance.column = serialized_object["column"]
 	return instance
 
 # ----- Serialization ----- #

@@ -1,4 +1,4 @@
-extends "visual.gd"
+extends "res://addons/FracturalVNE/core/visuals/visual.gd"
 
 
 # ----- Typeable ----- #
@@ -32,22 +32,6 @@ func init_(story_director, prefab_path):
 
 # ----- Serialization ----- #
 
-func serialize():	
-	return {
-		"script_path": get_script().get_path(),
-		"prefab_path": prefab_path,
-		"visible": visible,
-	}
-
-
-func deserialize(serialized_obj):
-	var visual_prefab = load("res://addons/FracturalVNE/core/visuals/prefab_visual.tscn")
-	
-	var instance = visual_prefab.new()
-	
-	instance.init(serialized_obj["prefab_path"])
-	instance.visible = serialized_obj["visible"]
-	
-	return instance
+# prefab_visual_serializer.gd
 
 # ----- Serialization ----- #

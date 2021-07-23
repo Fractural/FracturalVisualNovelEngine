@@ -20,10 +20,10 @@ func serialize():
 		"default_value": default_value,
 	}
 
-func deserialize(serialized_obj):
+func deserialize(serialized_object):
 	var instance = get_script().new()
-	instance.name = serialized_obj["name"]
-	instance.default_value = serialized_obj["default_value"]
+	instance.name = serialized_object["name"]
+	instance.default_value = serialized_object["default_value"]
 	return instance
 
 # ----- Serialization ----- #

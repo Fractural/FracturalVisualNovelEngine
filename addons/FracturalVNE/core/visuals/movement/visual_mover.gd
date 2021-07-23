@@ -17,6 +17,10 @@ onready var visual = get_node(visual_path)
 onready var story_director_dep = get_node(story_director_dep_path)
 
 
+func _ready():
+	set_process(false)
+
+
 func init(story_director):
 	story_director_dep = get_node(story_director_dep_path)
 	story_director_dep.dependency_path = story_director.get_path()
@@ -54,7 +58,7 @@ func move(target_position_: Vector2, travel_curve_: Curve = null, duration_: flo
 func _on_move_finished(skipped):
 	visual.position = target_position
 	
-	if not skipped:
+	if not skipped and _curr_move_action != null:
 		story_director_dep.dependency.remove_step_action(_curr_move_action)
 	_curr_move_action = null
 	

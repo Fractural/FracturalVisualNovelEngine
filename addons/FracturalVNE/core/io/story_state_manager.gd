@@ -24,6 +24,8 @@ onready var story_save_manager_dep = get_node(story_save_manager_dep_path)
 
 
 func save_current_state(save_slot_id: int):
+	story_director.skip(true)
+	
 	screenshot_manager.screenshot_gameplay()
 	
 	yield(screenshot_manager, "finished_screenshot")
@@ -38,6 +40,9 @@ func save_current_state(save_slot_id: int):
 	var state = SaveState.new(story_manager.story_file_path, story_director.curr_stepped_node.reference_id, serialized_state, thumbnail)
 	
 	story_save_manager_dep.dependency.save_state(state, save_slot_id)
+	
+	story_director.release_queued_steps()
+	
 	emit_signal("state_saved", state, save_slot_id)
 
 
@@ -49,6 +54,8 @@ func load_save_slot(save_slot_id: int):
 	# The StoryDirector is primed to go the the next node, since the
 	# StoryDirector calls the execute method of the next node
 	story_director.start_step(ast_node_locator.find_node_with_id(state.starting_node_id))
+	if story_director.curr_stepped_node.auto_step == true:
+		story_director.step()
 	emit_signal("state_loaded", state, save_slot_id)
 
 

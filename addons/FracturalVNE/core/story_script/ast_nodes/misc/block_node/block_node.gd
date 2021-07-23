@@ -170,21 +170,21 @@ func deserialize_node_state(saved_nodes_lookup):
 
 
 func serialize():
-	var serialized_obj = .serialize()
+	var serialized_object = .serialize()
 	
 	var serialized_statements = []
 	for statement in statements:
 		serialized_statements.append(statement.serialize())
 	
-	serialized_obj["statements"] = serialized_statements
-	return serialized_obj
+	serialized_object["statements"] = serialized_statements
+	return serialized_object
 
 
-func deserialize(serialized_obj):	
-	var instance = .deserialize(serialized_obj)
+func deserialize(serialized_object):	
+	var instance = .deserialize(serialized_object)
 	
 	var statements = []
-	for serialized_statement in serialized_obj["statements"]:
+	for serialized_statement in serialized_object["statements"]:
 		statements.append(SerializationUtils.deserialize(serialized_statement))
 	
 	# No need to assign runtime_block since that is assgined at runtime

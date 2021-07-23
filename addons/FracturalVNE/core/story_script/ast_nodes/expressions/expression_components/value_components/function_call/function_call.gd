@@ -61,16 +61,16 @@ func propagate_call(method: String, arguments: Array = [], parent_first: bool = 
 # ----- Serialization ----- #
 
 func serialize():
-	var serialized_obj = .serialize()
-	serialized_obj["name"] = name
-	serialized_obj["argument_group"] = argument_group.serialize()
-	return serialized_obj
+	var serialized_object = .serialize()
+	serialized_object["name"] = name
+	serialized_object["argument_group"] = argument_group.serialize()
+	return serialized_object
 
 
-func deserialize(serialized_obj):	
-	var instance = .deserialize(serialized_obj)
-	instance.name = serialized_obj["name"]
-	instance.argument_group = SerializationUtils.deserialize(serialized_obj["argument_group"])
+func deserialize(serialized_object):	
+	var instance = .deserialize(serialized_object)
+	instance.name = serialized_object["name"]
+	instance.argument_group = SerializationUtils.deserialize(serialized_object["argument_group"])
 	return instance
 
 # ----- Serialization ----- #

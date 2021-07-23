@@ -12,7 +12,7 @@ static func get_types() -> Array:
 # ----- Typeable ----- #
 
 
-const MoveAction = preload("move_action.gd")
+const MoveAction = preload("res://addons/FracturalVNE/core/visuals/movement/move_action.gd")
 
 var visual
 var target_position
@@ -129,25 +129,25 @@ func propagate_call(method, arguments = [], parent_first = false):
 # ----- Serialization ----- #
 
 func serialize():
-	var serialized_obj = .serialize()
-	serialized_obj["visual"] = visual.serialize()
-	serialized_obj["target_position"] = target_position.serialize()
+	var serialized_object = .serialize()
+	serialized_object["visual"] = visual.serialize()
+	serialized_object["target_position"] = target_position.serialize()
 	if travel_curve != null:
-		serialized_obj["travel_curve"] = travel_curve.serialize()
+		serialized_object["travel_curve"] = travel_curve.serialize()
 	if duration != null:
-		serialized_obj["duration"] = duration.serialize()
+		serialized_object["duration"] = duration.serialize()
 	
-	return serialized_obj
+	return serialized_object
 
 
-func deserialize(serialized_obj):	
-	var instance = .deserialize(serialized_obj)
-	instance.visual = SerializationUtils.deserialize(serialized_obj["visual"])
-	instance.target_position = SerializationUtils.deserialize(serialized_obj["target_position"])
-	if serialized_obj.has("travel_curve"):
-		instance.travel_curve = SerializationUtils.deserialize(serialized_obj["travel_curve"])
-	if serialized_obj.has("duration"):
-		instance.duration = SerializationUtils.deserialize(serialized_obj["duration"])
+func deserialize(serialized_object):	
+	var instance = .deserialize(serialized_object)
+	instance.visual = SerializationUtils.deserialize(serialized_object["visual"])
+	instance.target_position = SerializationUtils.deserialize(serialized_object["target_position"])
+	if serialized_object.has("travel_curve"):
+		instance.travel_curve = SerializationUtils.deserialize(serialized_object["travel_curve"])
+	if serialized_object.has("duration"):
+		instance.duration = SerializationUtils.deserialize(serialized_object["duration"])
 	
 	return instance
 

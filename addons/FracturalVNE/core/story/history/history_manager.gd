@@ -64,6 +64,7 @@ func serialize_state():
 func deserialize_state(serialized_state):
 	clear_entries()
 	for serialized_entry in serialized_state["history_stack"]:
-		add_entry(serialization_manager.deserialize(serialized_entry))
+		var x = serialization_manager.deserialize(serialized_entry)
+		add_entry(x)
 
 # ----- Serialization ----- #

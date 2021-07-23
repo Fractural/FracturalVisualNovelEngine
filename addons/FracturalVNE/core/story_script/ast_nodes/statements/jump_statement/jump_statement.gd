@@ -39,14 +39,14 @@ func debug_string(tabs_string: String) -> String:
 # ----- Serialization ----- #
 
 func serialize():
-	var serialized_obj = .serialize()
-	serialized_obj["label_name"] = label_name
-	return serialized_obj
+	var serialized_object = .serialize()
+	serialized_object["label_name"] = label_name
+	return serialized_object
 
 
-func deserialize(serialized_obj):	
-	var instance = .deserialize(serialized_obj)
-	instance.label_name = serialized_obj["label_name"]
+func deserialize(serialized_object):	
+	var instance = .deserialize(serialized_object)
+	instance.label_name = serialized_object["label_name"]
 	return instance
 
 # ----- Serialization ----- #

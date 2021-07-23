@@ -56,6 +56,12 @@ var _auto_step_timer: Timer
 var _skip_timer: Timer
 var curr_active_step_actions: Array
 
+# Prevents step() from running and increases queue_steps by 1 for every
+# step() that is ran and stopped while override_step is true.
+var override_step: bool = false
+# Number of steps ran while override_step is true.
+var queued_steps: int
+
 # curr_node_executed prevents repeated stepping if the program terminates on an executable node that
 # is not steppable. (This means the current step node never reaches another step node to replace
 # it as curr_stepped_node).
@@ -121,6 +127,20 @@ func try_step():
 
 
 func step():
+	# If we are saving and we are skipping, we do not want to step, 
+	# even if the statement normally automatically steps (Like with
+	# pause statements, which automatically step after they are finished).
+	# Therefore in those cases we would enabled override_step to allow skipping
+	# but not stepping. 
+	# This allows us to use pause statements as save points since they will
+	# be assigned to curr_stepped_node whenever they are running.
+	if override_step:
+		queued_steps += 1
+		return
+	
+	if queued_steps > 0:
+		release_queued_steps()
+	
 	# TODO: Consider decoupling story director from nodes to follow single responsibility principle.
 	#		That is, a story director should not know about the existance of a node and instead
 	#		would operate using events and callbacks to step.
@@ -137,14 +157,34 @@ func step():
 		return
 
 
-func skip():
+func skip(override_auto_step: bool = false):
+	if override_auto_step:
+		override_step = true
+	
 	for i in range(curr_active_step_actions.size() - 1, -1, -1):
 		if curr_active_step_actions[i].skippable:
 			curr_active_step_actions[i].skip()
 			curr_active_step_actions.remove(i)
 	
+	if override_auto_step:
+		override_step = false
+	
 	if step_state == StepState.AUTO_STEP:
 		_auto_step_timer.start()
+
+
+# Executes step() for the number times step was queued while override_step
+# was true.
+func release_queued_steps():
+	# number_of_steps is a temp variable that allows us to set queued_steps
+	# to 0 while still being able to iterate through the number of queued_steps.
+	# queued_steps must be 0 to prevent a recursive call from happening
+	# which is caused by step() calling release_queued_steps() when
+	# queued_steps > 0.
+	var number_of_steps = queued_steps
+	queued_steps = 0
+	for i in number_of_steps:
+		step()
 
 
 func add_step_action(step_action):

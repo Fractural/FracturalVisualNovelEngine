@@ -48,14 +48,14 @@ func propagate_call(method, arguments = [], parent_first = false):
 # ----- Serialization ----- #
 
 func serialize():
-	var serialized_obj = .serialize()
-	serialized_obj["expression"] = expression.serialize()
-	return serialized_obj
+	var serialized_object = .serialize()
+	serialized_object["expression"] = expression.serialize()
+	return serialized_object
 
 
-func deserialize(serialized_obj):	
-	var instance = .deserialize(serialized_obj)
-	instance.expression = SerializationUtils.deserialize(serialized_obj["expression"])
+func deserialize(serialized_object):	
+	var instance = .deserialize(serialized_object)
+	instance.expression = SerializationUtils.deserialize(serialized_object["expression"])
 	return instance
 
 # ----- Serialization ----- #

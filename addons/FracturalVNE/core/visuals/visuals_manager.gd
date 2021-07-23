@@ -33,15 +33,21 @@ var function_definitions = [
 	]
 
 
+func configure_service(program_node):
+	for visual in visuals:
+		visual.queue_free()
+	visuals = []
+
+
 func get_service_name():
 	return "VisualsManager"
 
 # ----- StoryService ----- #
 
 
-const single_visual_prefab = preload("single_visual.tscn")
-const dynamic_visual_prefab = preload("multi_visual.tscn")
-const prefab_visual_prefab = preload("prefab_visual.tscn")
+const single_visual_prefab = preload("types/single_visual/single_visual.tscn")
+const dynamic_visual_prefab = preload("types/multi_visual/multi_visual.tscn")
+const prefab_visual_prefab = preload("types/prefab_visual/prefab_visual.tscn")
 
 export var reference_registry_path: NodePath
 export var visuals_holder_path: NodePath
@@ -57,7 +63,9 @@ onready var story_director = get_node(story_director_path)
 func add_visual(visual):
 	visuals.append(visual)
 	
+	var global_pos = visual.position
 	visuals_holder.add_child(visual)
+	visual.global_position = global_pos
 
 
 func DynamicVisual(textures_directory):
@@ -77,6 +85,9 @@ func DynamicVisual(textures_directory):
 	reference_registry.add_reference(new_visual)
 	add_visual(new_visual)
 	
+	# Visuals should hide by default when first created.
+	new_visual.hide()
+	
 	return new_visual
 
 
@@ -94,6 +105,8 @@ func Visual(texture_path):
 	reference_registry.add_reference(new_visual)
 	add_visual(new_visual)
 	
+	new_visual.hide()
+	
 	return new_visual
 
 
@@ -107,6 +120,8 @@ func PrefabVisual(prefab_path):
 	
 	reference_registry.add_reference(new_visual)
 	add_visual(new_visual)
+	
+	new_visual.hide()
 	
 	return new_visual
 
@@ -161,7 +176,6 @@ func serialize_state():
 func deserialize_state(serialized_state):
 	for visual in visuals:
 		visual.queue_free()
-	
 	visuals = []
 	
 	for visual_id in serialized_state["visual_ids"]:

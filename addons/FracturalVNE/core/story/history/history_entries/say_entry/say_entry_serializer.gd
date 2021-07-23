@@ -31,14 +31,20 @@ func can_deserialize(serialized_object):
 func deserialize(serialized_object):
 	var instance = load(_script_path()).new()
 	
+	instance.text = serialized_object["text"]
+	
+	return instance
+
+
+func can_fetch_dependencies(object):
+	return object.get_script().get_path() == _script_path()
+
+
+func fetch_dependencies(instance, serialized_object):
 	if serialized_object.has("character_id"):
 		instance.character = reference_registry.get_reference(serialized_object["character_id"])
 	else:
 		instance.character = serialized_object["character_name"]
-	
-	instance.text = serialized_object["text"]
-	
-	return instance
 
 
 func _script_path():

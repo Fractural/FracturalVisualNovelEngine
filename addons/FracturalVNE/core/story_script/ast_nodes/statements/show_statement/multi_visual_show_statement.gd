@@ -23,10 +23,10 @@ func _init(position_ = null, visual_ = null, modifiers_string_ = null, animation
 func execute():
 	var visual_result = visual.evaluate()
 	if not is_success(visual_result):
-		throw_error(stack_error(visual_result, "Could not evaluate the dynamic visual."))
+		throw_error(stack_error(visual_result, "Could not evaluate the multi visual."))
 		return
 	
-	if typeof(visual) == TYPE_OBJECT:
+	if visual is Object:
 		if visual_result.is_type("Character"):
 			visual_result = visual_result.visual
 		
@@ -40,11 +40,11 @@ func execute():
 		else: 
 			throw_error(error("Expected a multi visual for show statements that have modifiers."))
 			return
-		# All animation is done in execute() function of the parent class (show_statement.gd)
 	else: 
 		throw_error(error("Expected a multi visual for show statements that have modifiers."))
 		return
 	
+	# All animation is done in execute() function of the parent class (show_statement.gd)
 	.execute()
 
 
@@ -86,17 +86,17 @@ func propagate_call(method: String, arguments: Array = [], parent_first: bool = 
 # ----- Serialization ----- #
 
 func serialize():
-	var serialized_obj = .serialize()
-	serialized_obj["visual"] = visual.serialize()
-	serialized_obj["modifiers"] = modifiers_string
+	var serialized_object = .serialize()
+	serialized_object["visual"] = visual.serialize()
+	serialized_object["modifiers"] = modifiers_string
 	
-	return serialized_obj
+	return serialized_object
 
 
-func deserialize(serialized_obj):	
-	var instance = .deserialize(serialized_obj)
-	instance.visual = SerializationUtils.deserialize(serialized_obj["visual"])
-	instance.modifiers_string = serialized_obj["modifiers"]
+func deserialize(serialized_object):	
+	var instance = .deserialize(serialized_object)
+	instance.visual = SerializationUtils.deserialize(serialized_object["visual"])
+	instance.modifiers_string = serialized_object["modifiers"]
 	
 	return instance
 

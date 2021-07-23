@@ -24,8 +24,6 @@ onready var visual_mover = get_node(visual_mover_path)
 
 func _ready():
 	visual_animator.connect("animation_finished", self, "_on_animation_finished")
-	# Visuals should hide by default when first created.
-	hide()
 
 
 func init(story_director):

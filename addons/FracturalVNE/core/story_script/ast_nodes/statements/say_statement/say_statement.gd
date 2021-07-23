@@ -72,18 +72,18 @@ func propagate_call(method: String, arguments: Array = [], parent_first: bool = 
 # ----- Serialization ----- #
 
 func serialize():
-	var serialized_obj = .serialize()
+	var serialized_object = .serialize()
 	if character != null:
-		serialized_obj["character"] = character.serialize()
-	serialized_obj["text"] = text
-	return serialized_obj
+		serialized_object["character"] = character.serialize()
+	serialized_object["text"] = text
+	return serialized_object
 
 
-func deserialize(serialized_obj):	
-	var instance = .deserialize(serialized_obj)
-	if serialized_obj.has("character"):
-		instance.character = SerializationUtils.deserialize(serialized_obj["character"])
-	instance.text = serialized_obj["text"]
+func deserialize(serialized_object):	
+	var instance = .deserialize(serialized_object)
+	if serialized_object.has("character"):
+		instance.character = SerializationUtils.deserialize(serialized_object["character"])
+	instance.text = serialized_object["text"]
 	return instance
 
 # ----- Serialization ----- #

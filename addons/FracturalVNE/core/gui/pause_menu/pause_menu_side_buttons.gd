@@ -51,6 +51,7 @@ func _on_options_button_pressed():
 
 
 func _on_quit_button_pressed():
+	get_tree().paused = false
 	story_gui_dep.dependency.quit()
 
 

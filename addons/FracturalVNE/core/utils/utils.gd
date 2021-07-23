@@ -32,6 +32,10 @@ static func get_type_name(p_value):
 			return TYPE_STR_MAPPING[typeof(p_value)]
 
 
+static func is_type(object, type):
+	return object is Object and object.has_method("is_type") and object.is_type(type)
+
+
 # Snakecase conversions source:
 # https://gist.github.com/me2beats/443b40ba79d5b589a96a16c565952419
 

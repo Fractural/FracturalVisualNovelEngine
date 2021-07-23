@@ -4,8 +4,8 @@ extends Reference
 var skippable: bool
 
 
-func _init(_skippable = true):
-	skippable = _skippable
+func _init(skippable_ = true):
+	skippable = skippable_
 
 
 func skip():

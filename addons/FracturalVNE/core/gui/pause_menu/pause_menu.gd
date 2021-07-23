@@ -13,6 +13,7 @@ onready var save_slots_menu = get_node(save_slots_menu_path)
 
 func toggle(enabled):
 	visible = enabled
+	get_tree().paused = enabled
 
 
 func show_options():
