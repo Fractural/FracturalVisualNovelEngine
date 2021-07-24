@@ -6,8 +6,10 @@ var pause_statement
 
 
 func _init(pause_statement_, skippable_ = true).(skippable_):
-	pause_statement = pause_statement_
+	# To avoid memory leaks, we must obtain only weak references of
+	# nodes from the AST. Otherwise we would create a cylical dependency. 
+	pause_statement = weakref(pause_statement_)
 
 
 func skip():
-	pause_statement._on_pause_finished(true)
+	pause_statement.get_ref()._on_pause_finished(true)

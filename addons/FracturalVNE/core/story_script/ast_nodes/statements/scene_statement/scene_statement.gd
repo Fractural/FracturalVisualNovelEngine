@@ -1,5 +1,5 @@
 extends "res://addons/FracturalVNE/core/story_script/ast_nodes/statements/statement/statement_node.gd"
-# Animates a visual.
+# Transitions to a BGScene.
 
 
 # ----- Typeable ----- #
@@ -25,7 +25,8 @@ func _init(position_, scene_, animation_).(position_):
 
 func execute():
 	var scene_result = scene.evaluate()
-	if not is_success(scene_result) or not FracVNE.Utils.is_type(scene_result, "Scene"
+	if not is_success(scene_result) or not (scene_result is PackedScene or scene_result is Texture):
+		throw_error(stack_error(scene_result, "Expected a valid PackedScene or Texture for the scene statement."))
 
 
 func debug_string(tabs_string: String) -> String:
@@ -53,7 +54,7 @@ func propagate_call(method, arguments = [], parent_first = false):
 	if parent_first:
 		.propagate_call(method, arguments, parent_first)
 	
-	visual.propagate_call(method, arguments, parent_first)
+	scene.propagate_call(method, arguments, parent_first)
 	if animation != null:
 		animation.propagate_call(method, arguments, parent_first)
 	

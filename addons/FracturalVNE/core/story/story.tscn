@@ -130,6 +130,7 @@ script = ExtResource( 24 )
 script = ExtResource( 25 )
 scene_holder_path = NodePath("../../../WorldHolder/World/BGSceneHolder")
 story_director_path = NodePath("../StoryDirector")
+resource_loader_path = NodePath("../ResourceLoader")
 
 [node name="ScreenshotManager" type="Node" parent="."]
 script = ExtResource( 16 )

@@ -11,15 +11,12 @@ static func get_types() -> Array:
 # ----- Typeable ----- #
 
 
-func overrides_story_flow():
-	return true
-
-
 var label_name
 
 
 func _init(position_ = null, label_name_ = null).(position_):
 	label_name = label_name_
+	overrides_story_flow = true
 
 
 func execute():

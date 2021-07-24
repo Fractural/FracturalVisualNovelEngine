@@ -47,6 +47,7 @@ onready var popup_dim: ColorRect = get_node(popup_dim_path)
 onready var story_runner_dep = get_node(story_runner_dep_path)
 onready var persistent_data_dep = get_node(persistent_data_dep_path)
 
+var counter = 0
 
 func _ready():
 	if FracVNE.Utils.is_in_editor_scene_tab(self):
@@ -134,7 +135,6 @@ func save_current_file():
 
 func compile_script():
 	var ast_tree = compiler.compile(script_text_edit.text)
-	
 	if ast_tree is FracVNE.StoryScript.Error:
 		script_text_edit.display_error(ast_tree)
 		set_compiled(false)
@@ -142,6 +142,8 @@ func compile_script():
 		script_text_edit.clear_error()
 		set_compiled(true)
 		save_ast_to_file(ast_tree, persistent_data_dep.dependency.current_script_path.trim_suffix(".storyscript") + ".story")
+	
+	print("Compiled... Static Memory Usage: " + str(Performance.get_monitor(Performance.MEMORY_STATIC) / 1.049e6) + " MiB")
 
 
 func save_ast_to_file(ast_tree, file_path):

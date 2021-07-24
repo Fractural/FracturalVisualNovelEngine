@@ -17,6 +17,7 @@ func compile(script_text: String):
 		return lexed_tokens
 	return parser.generate_abstract_syntax_tree(StoryScriptTokensReader.new(lexed_tokens))
 	
+	
 # Compiles a story script that is given in raw text format
 # If succesful, returns the compiled syntax tree
 # If it fails to compile, returns a `FracVNE.StoryScript.Error`

@@ -46,6 +46,11 @@ func Scene(texture_path):
 	if FracVNE.StoryScript.Utils.is_success(resource_loader):
 		return FracVNE.StoryScript.Error.new("Could not load")
 		# TODO NOW: Finish Scene and PrefabScene
+		#			Allow Scenes and Visuals to override caching
+		#			Create dedicated StoryService called "CacheManager" (Maybe merge with resource loader?), which is in charge of
+		#			handling caching images etc. This will have the option to load a resource with or without caching.
+		#			Note that in order for this to work, ALL REFERENCES of the resource must be removed. Using Visuals as an
+		#			example, the texture on the sprite must be set to null even if the Visual is invisible.
 
 func PrefabScene(scene_path):
 	pass

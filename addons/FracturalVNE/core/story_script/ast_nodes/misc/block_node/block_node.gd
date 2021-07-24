@@ -36,7 +36,7 @@ func _init_post():
 	#
 	# Do not bind if the statement overrides the story flow (such as with
 	# a jump statement).
-	if not statements.back().overrides_story_flow():
+	if not statements.back().overrides_story_flow:
 		statements.back().connect("executed", self, "block_completed")
 
 

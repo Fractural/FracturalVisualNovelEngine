@@ -20,7 +20,7 @@ func _init(story_file_path_ = null, starting_node_id_ = null, story_tree_state_ 
 # ----- Serialization ----- #
 
 func serialize():
-	# thumbnail serialization start
+	# ----- Thumbnail Serialization ----- #
 	
 	var thumbnail_image = thumbnail.get_data()
 	
@@ -35,7 +35,7 @@ func serialize():
 	
 	var thumbnail_data = {"image" : sg_saved_img, "size" : sg_u_size, "width" : sg_width, "height" : sg_height, "mipmap" : sg_mipmap, "format" : sg_format}
 	
-	# thumbnail serialization end
+	# ----- Thumbnail Serialization ----- #
 	
 	return {
 		"script_path": "res://addons/FracturalVNE/core/io/save_state.gd",
@@ -54,7 +54,7 @@ func deserialize(serialized_object):
 	instance.story_tree_state = serialized_object["story_tree_state"]
 	instance.saved_date = serialized_object["saved_date"]
 	
-	# thumbnail deserialization start
+	# ----- Thumbnail Deserialization ----- #
 	
 	var t_image = serialized_object["thumbnail"]["image"]
 	var t_size = serialized_object["thumbnail"]["size"]
@@ -74,7 +74,7 @@ func deserialize(serialized_object):
 	
 	instance.thumbnail = thumbnail_texture
 	
-	# thumbnail deserialization end	
+	# ----- Thumbnail Deserialization ----- #
 	
 	return instance
 

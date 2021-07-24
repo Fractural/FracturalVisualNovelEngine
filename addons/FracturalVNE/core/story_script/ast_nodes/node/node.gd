@@ -1,4 +1,4 @@
-extends "res://addons/FracturalVNE/core/utils/typeable.gd"
+extends Reference
 # Base class for all nodes. Represents a node on an abstract sytax tree (AST) for a story.
 # The root of this tree executes it's children, which execute their own children, etc. in order
 # to play an entire story.

@@ -39,17 +39,8 @@ var previous_indent_level: int
 
 var tokens: Array
 
-var identifier_first_char_regex: RegEx
-var identifier_nonfirst_char_regex: RegEx
 
-
-func _init():
-	identifier_first_char_regex = RegEx.new()
-	identifier_first_char_regex.compile("^[_a-zA-Z]$")
-	
-	identifier_nonfirst_char_regex = RegEx.new()
-	identifier_nonfirst_char_regex.compile("^[_a-zA-Z0-9]$")
-	
+func _init():	
 	for construct in constructs:
 		if construct.has_method("get_keywords"):
 			_add_array(keywords, construct.get_keywords())
@@ -78,35 +69,35 @@ func generate_tokens(reader_: StoryScriptReader):
 		if reader.peek() == HASHTAG:
 			add_comment()
 			continue
-		
+
 		if reader.peek() == SPACE or reader.peek() == TAB:
 			consume()
 			continue
-		
+
 		errors.append(add_string_literal())
 		if is_success(errors.back()):
 			continue
 		elif errors.back().confidence == 1:
 			return errors.back()
-		
+
 		errors.append(add_number())
 		if is_success(errors.back()):
 			continue
 		elif errors.back().confidence == 1:
 			return errors.back()
-		
+
 		errors.append(add_punctuation())
 		if is_success(errors.back()):
 			continue
 		elif errors.back().confidence == 1:
 			return errors.back()
-		
+
 		errors.append(add_operator())
 		if is_success(errors.back()):
 			continue
 		elif errors.back().confidence == 1:
 			return errors.back()
-		
+
 		# We check identifiers and keywords together, since they share the
 		# same rules (Since keywords are special identifiers determined
 		# by the language)
@@ -115,22 +106,23 @@ func generate_tokens(reader_: StoryScriptReader):
 			continue
 		elif errors.back().confidence == 1:
 			return errors.back()
-		
+
 		if reader.peek() == NEWLINE:
 			var error = add_newline_and_maybe_indent()
 			if is_success(error):
 				continue
 			return error
-		
+
 		var closest_error = errors.front()
 		for error in errors:
 			if error.confidence > closest_error.confidence:
 				closest_error = error
-		
+
 		if closest_error.confidence == 0:
 			return error("Unexpected symbol.", 1, null, 1)
 		else:
 			return closest_error
+		consume()
 		
 	return tokens
 
@@ -169,7 +161,7 @@ func add_punctuation():
 	var confidence = 0
 	while true:
 		for i in range(matches.size() - 1, -1, -1):
-			var ahead = reader.peek(curr_peek_index) + reader.peek(curr_peek_index + 1) + reader.peek(curr_peek_index + 2) + reader.peek(curr_peek_index + 3)
+#			var ahead = reader.peek(curr_peek_index) + reader.peek(curr_peek_index + 1) + reader.peek(curr_peek_index + 2) + reader.peek(curr_peek_index + 3)
 			if matches[i][curr_peek_index - 1] != reader.peek(curr_peek_index):
 				matches.remove(i)
 		if matches.size() == 0:
@@ -223,13 +215,24 @@ func add_comment():
 
 # ----- Identifier ----- #
 
+func is_identifier_first_char(character):
+	return character == "_" or (ord("a") <= ord(character) and ord(character) <= ord("z")) or (ord("A") <= ord(character) and ord(character) <= ord("Z"))
+
+
+func is_identifier_nonfirst_char(character):
+	return is_identifier_first_char(character) or (ord("0") <= ord(character) and ord(character) <= ord("9"))
+
+
 func add_identifier_or_keyword():
-	if identifier_first_char_regex.search(reader.peek()) == null:
+	# Apparently Regex causes memory leaks.
+	# Regex was very performance intensive anyways so I've switched to
+	# using good old boolean statements.
+	if not is_identifier_first_char(reader.peek()):
 		return error()
 	
 	var possible_identifier: String = consume()
 	
-	while identifier_nonfirst_char_regex.search(reader.peek()) != null:
+	while is_identifier_nonfirst_char(reader.peek()):
 		possible_identifier += consume()
 		if reader.is_EOF():
 			break
@@ -238,6 +241,7 @@ func add_identifier_or_keyword():
 		add_keyword_token(possible_identifier)
 	else:
 		add_identifier_token(possible_identifier)
+
 
 func add_identifier_token(identifier):
 	add_token("identifier", identifier)
