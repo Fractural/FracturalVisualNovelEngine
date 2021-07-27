@@ -7,6 +7,7 @@ export var signal_name: String
 export var connections: Array
 # DO NOT DELETE! dummy_path
 export var dummy_path: NodePath
+export var dummy_icon_fetch_path: NodePath
 
 
 func _ready():

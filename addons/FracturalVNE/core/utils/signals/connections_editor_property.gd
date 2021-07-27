@@ -19,6 +19,11 @@ var curr_assign_connection_index = -1
 var node_path_editor_prop = null
 var node_path_assigned_button = null
 
+var icon_fetch_prop = null
+var icon_fetch_assigned_button = null
+
+var set_connection_icon_queue = []
+
 
 func _ready():
 	connections_holder = VBoxContainer.new()
@@ -56,8 +61,13 @@ func _ready():
 	set_bottom_collapsed(false)
 
 
+func _process(delta):
+	if set_connection_icon_queue.size() > 0:
+		var set_connection_icon_obj = set_connection_icon_queue.pop_front()
+		set_connection_icon(set_connection_icon_obj.connection, set_connection_icon_obj.index)
+
+
 func show_node_path_selector(index):
-	print("Showing Path Selector")
 	curr_assign_connection_index = index
 	var assign_node_path_button = get_node("../EditorPropertyNodePath/HBoxContainer/Button")
 	if assign_node_path_button != null:
@@ -67,8 +77,6 @@ func show_node_path_selector(index):
 func update_property():
 	if node_path_editor_prop == null:
 		return
-	
-	print("UPD PROP")
 	
 	var new_connections_array = get_edited_object()[get_edited_property()]
 	
@@ -81,7 +89,6 @@ func update_property():
 	var connection_uis = connections_holder.get_children()
 	if new_connections_array.size() >= connection_uis.size():
 		for i in new_connections_array.size():
-			yield(get_tree(), "idle_frame")
 			if i < connection_uis.size():
 				set_connection(new_connections_array[i], i)
 			else:
@@ -137,24 +144,39 @@ func add_connection(connection, index: int):
 
 
 func set_connection(connection, index):
-	print("Setting CONNECTION")
 	var connection_ui = connections_holder.get_child(index)
 	var assign_button = connection_ui.get_node("AssignButton")
 	var function_line_edit = connection_ui.get_node("FunctionLineEdit")
 	
 	if not connection.listener_path.is_empty():
 		assign_button.text = connection.listener_path.get_name(connection.listener_path.get_name_count() - 1)
-		node_path_editor_prop.emit_changed(node_path_editor_prop.get_edited_property(), connection.listener_path, "", false)
-	
-		yield(get_tree(), "idle_frame")
-		
-		assign_button.icon = node_path_assigned_button.icon
 	else:
 		assign_button.text = "Assign..."
-		assign_button.icon = null
 	
 	if function_line_edit.text != connection.func_name:
 		function_line_edit.text = connection.func_name
+	
+	for i in range(set_connection_icon_queue.size() - 1, 0, -1):
+		if set_connection_icon_queue[i].index == index:
+			return
+	
+	set_connection_icon_queue.append({
+		"connection": connection,
+		"index": index
+	})
+
+
+func set_connection_icon(connection, index):
+	var connection_ui = connections_holder.get_child(index)
+	var assign_button = connection_ui.get_node("AssignButton")
+	
+	if not connection.listener_path.is_empty():
+		icon_fetch_prop.emit_changed(icon_fetch_prop.get_edited_property(), connection.listener_path)
+		yield(get_tree(), "idle_frame")
+		yield(get_tree(), "idle_frame")
+		assign_button.icon = icon_fetch_assigned_button.icon
+	else:
+		assign_button.icon = null
 
 
 func set_bottom_collapsed(collapsed_):
@@ -173,30 +195,27 @@ func toggle_bottom_collapsed():
 
 func clear_connections():
 	for connection in connections_holder.get_children():
-		connection.queue_free()
+		connection.set_connection_icon_queue_free()
 
 
 func _on_node_selected(property, selected_node_path, field, changing):
 	if updating:
 		return
 	
-	print("THIS IS CURSED! Selected NodePath: " + str(selected_node_path))
 	_on_connection_listener_path_changed(selected_node_path, curr_assign_connection_index)
 
 
 func _hijack_dummy_node_path_editor_prop():
-	print("Jacking in")
-	
-	#_dump_tree(get_parent(), "")
+	#_dump_tree(get_parent(), "", true)
 	
 	node_path_editor_prop = get_node("../EditorPropertyNodePath")
 	node_path_editor_prop.connect("property_changed", self, "_on_node_selected")
 	
-	print("MAIN PROP " + str(node_path_editor_prop))
-	
 	node_path_assigned_button = node_path_editor_prop.get_node("HBoxContainer/Button")
 	node_path_assigned_button.emit_signal("pressed")
 
+	icon_fetch_prop =  get_node("../EditorPropertyNodePath2")
+	icon_fetch_assigned_button = icon_fetch_prop.get_node("HBoxContainer/Button")
 #	var node_dialog = get_node("../EditorPropertyNodePath/SceneTreeDialog")
 #	node_dialog.connect("popup_hide", self, "_on_node_selection_closed")
 
@@ -207,10 +226,9 @@ func _hijack_dummy_node_path_editor_prop():
 #	cancel_button.connect("pressed", self, "_on_node_selection_closed")
 	
 	#hide_button.emit_signal("pressed")
-	
-	#_dump_tree(get_node("../EditorPropertyNodePath"))
-	
+		
 	node_path_editor_prop.visible = false
+	icon_fetch_prop.visible = false
 	
 	# Hijacking happens after the data is first set, therefore we must
 	# set the icons (Since they could not fetched when the data was first set).
@@ -232,11 +250,9 @@ func _spin_changed(value):
 
 
 func _on_connection_listener_path_changed(new_listener_path, index):
-	print("Connection LISTENER. is UPDATING? " + str(updating))
 	if updating:
 		return
 	
-	print("Listener changed")
 	var edited_array = get_edited_object()[get_edited_property()]
 	edited_array[index].listener_path = new_listener_path
 	emit_changed(get_edited_property(), edited_array)
@@ -289,5 +305,5 @@ func __dump_tree(n: Node, ind: String="", allow: bool = false) -> void:
 # ----- Scene Walking/Debug ----- #
 
 # TODO NOW: Implement another dummy NodePath export var which will serve
-#			as a node dedicated to fetching icons. There will be a queue
+#			as a node dedicated to fetching icons. There will be a set_connection_icon_queue
 #			of icon requests that this node will slowly satisfy.
