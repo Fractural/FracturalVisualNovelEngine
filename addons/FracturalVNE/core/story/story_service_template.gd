@@ -5,17 +5,21 @@ extends Reference
 # ----- StoryService ----- #
 
 # Optional
+const FuncDef = FracVNE.StoryScript.FuncDef
+const Param = FracVNE.StoryScript.Param
+
+# Optional
 var function_definitions = [
-	FracVNE.StoryScript.FuncDef.new("function1_name", [
-		FracVNE.StoryScript.Param.new("arg_name1"),
-		FracVNE.StoryScript.Param.new("arg_name2", 0.1230),
+	FuncDef.new("function1_name", [
+		Param.new("arg_name1"),
+		Param.new("arg_name2", 0.1230),
 		]),
-	FracVNE.StoryScript.FuncDef.new("function2_name", [
-		FracVNE.StoryScript.Param.new("arg_name1", "default"),
-		FracVNE.StoryScript.Param.new("arg_name2", 0.1230),
+	FuncDef.new("function2_name", [
+		Param.new("arg_name1", "default"),
+		Param.new("arg_name2", 0.1230),
 		]),
-	FracVNE.StoryScript.FuncDef.new("function3_name", [
-		FracVNE.StoryScript.Param.new("arg_name1"),
+	FuncDef.new("function3_name", [
+		Param.new("arg_name1"),
 	]),
 ]
 

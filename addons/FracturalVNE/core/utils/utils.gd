@@ -35,6 +35,11 @@ static func is_type(object, type):
 	return object is Object and object.has_method("is_type") and object.is_type(type)
 
 
+static func reparent(node: Node, new_parent: Node):
+	node.get_parent().remove_child(node)
+	new_parent.add_child(node)
+
+
 # Snakecase conversions source:
 # https://gist.github.com/me2beats/443b40ba79d5b589a96a16c565952419
 

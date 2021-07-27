@@ -20,3 +20,9 @@ func _ready():
 		dependency = get_node(dependency_path).dependency
 	else:
 		dependency = get_node(dependency_path)
+
+# TODO NOW:
+# Refactor ReplaceTransition and SingleTransition to use
+# dependency.gd and signals.
+# Maybe even consider creating a custom node that binds signals except done
+# directly from the inspector. (Editing with the Node inspector is just too weird).

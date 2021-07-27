@@ -1,7 +1,7 @@
 extends Node
 
 
-signal animation_finished(animation_name, skipped)
+signal animation_finished(skipped)
 
 export var visual_path: NodePath
 export var visual_holder_path: NodePath
@@ -56,3 +56,5 @@ func _on_animation_finished(skipped):
 	
 	curr_visual_animation.queue_free()
 	curr_visual_animation = null
+	
+	emit_signal("animation_finished", skipped)

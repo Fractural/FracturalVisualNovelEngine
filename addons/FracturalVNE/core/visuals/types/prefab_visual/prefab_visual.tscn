@@ -2,7 +2,7 @@
 
 [ext_resource path="res://addons/FracturalVNE/core/visuals/animation/visual_animator.gd" type="Script" id=1]
 [ext_resource path="res://addons/FracturalVNE/core/visuals/movement/visual_mover.gd" type="Script" id=2]
-[ext_resource path="res://addons/FracturalVNE/core/visuals/types/prefab_visual/prefab_visual.gd" type="Script" id=3]
+[ext_resource path="res://addons/FracturalVNE/core/visuals/types/prefab_visual/prefab_visual_controller.gd" type="Script" id=3]
 [ext_resource path="res://addons/FracturalVNE/core/utils/dependency_injection/dependency.gd" type="Script" id=4]
 
 [node name="PrefabVisual" type="Node2D"]

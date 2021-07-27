@@ -12,6 +12,7 @@ static func get_types() -> Array:
 # ----- Typeable ----- #
 
 
+const Utils = FracVNE.Utils
 const AnimationAction = preload("res://addons/FracturalVNE/core/visuals/animation/animation_action.gd")
 const animation_player_visual_animation_prefab = preload("res://addons/FracturalVNE/core/visuals/animation/types/animation_player_visual_animation.tscn")
 
@@ -41,7 +42,7 @@ func execute():
 			animation_player.assigned_animation = animation_name
 		elif animation_result is PackedScene:
 			visual_animation_result = animation_result.instance()
-			if not FracVNE.Utils.is_type(visual_animation_result, "VisualAnimation"):
+			if not Utils.is_type(visual_animation_result, "VisualAnimation"):
 				throw_error(stack_error(visual_animation_result, "Expected valid VisualAnimation for the animate statement."))
 				return
 	
@@ -50,16 +51,17 @@ func execute():
 		throw_error(stack_error(visual_result, "Could not evaluate the visual."))
 		return
 	
-	if typeof(visual_result) == TYPE_OBJECT:
-		if visual_result.is_type("Character"):
+	if visual_result is Object:
+		if Utils.is_type(visual_result, "Character"):
 			visual_result = visual_result.visual
 		
-		if visual_result.is_type("Visual"):
+		if Utils.is_type(visual_result, "Visual"):
 			var curr_animation_action = null
 			if visual_animation_result != null:
 				curr_animation_action = AnimationAction.new(visual_animation_result)
 			
-			visual_result.show(visual_animation_result, curr_animation_action)
+			var visual_controller = get_runtime_block().get_service("VisualManager").get_or_load_visual_controller(visual_result)
+			visual_controller.show(visual_animation_result, curr_animation_action)
 		else: 
 			throw_error(error("Expected a valid visual for the show statement."))
 			return

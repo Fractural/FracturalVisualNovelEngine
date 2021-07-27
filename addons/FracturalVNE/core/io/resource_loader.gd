@@ -3,10 +3,12 @@ extends Node
 
 # ----- StoryService ----- #
 
-# Optional
+const FuncDef = FracVNE.StoryScript.FuncDef
+const Param = FracVNE.StoryScript.Param
+
 var function_definitions = [
-	FracVNE.StoryScript.FuncDef.new("load", [
-		FracVNE.StoryScript.Param.new("path"),
+	FuncDef.new("load", [
+		Param.new("path"),
 		])
 ]
 

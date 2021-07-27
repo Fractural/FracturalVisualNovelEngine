@@ -48,7 +48,7 @@ func deserialize(serialized_object, auto_fetch_dependencies = true):
 	var partly_serialized_object = PartlySerializedObject.new(result, serialized_object)
 	if auto_fetch_dependencies:
 		fetch_dependencies(result)
-	return result
+	return partly_serialized_object
 
 
 # Fetches the dependencies of an object after it is serialized.

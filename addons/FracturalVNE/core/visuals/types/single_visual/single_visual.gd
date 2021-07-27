@@ -1,4 +1,5 @@
 extends "res://addons/FracturalVNE/core/visuals/types/visual.gd"
+# Builds SingleVisuals.
 
 
 # ----- Typeable ----- #
@@ -11,30 +12,27 @@ static func get_types() -> Array:
 # ----- Typeable ----- #
 
 
-export var sprite_path: NodePath
+const SSUtils = FracVNE.StoryScript.Utils
+const single_visual_prefab = preload("single_visual.tscn")
 
-var texture: Texture
-var sprite
-
-
-func _ready():
-	if sprite == null:
-		sprite = get_node(sprite_path)
+var texture_path
 
 
-# Since Godot does not support method overloading, I will add "_" to methods
-# to indicate overloading.
-func init_(story_director, texture_):
-	init(story_director)
-	
-	sprite = get_node(sprite_path)
-	
-	texture = texture_
-	sprite.texture = texture
+func _init(cached_ = null, texture_path_ = null).(cached_):
+	texture_path = texture_path_
 
 
 # ----- Serialization ----- #
 
-# single_visual_serializer.gd
+func serialize():
+	var serialized_object = .serialize()
+	serialized_object["texture_path"] = texture_path
+	return serialized_object
+
+
+func deserialize(serialized_object):
+	var instance = .deserialize(serialized_object)
+	instance.texture_path = serialized_object["texture_path"]
+	return instance
 
 # ----- Serialization ----- #

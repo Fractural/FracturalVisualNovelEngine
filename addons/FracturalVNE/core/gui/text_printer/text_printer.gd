@@ -5,18 +5,6 @@ extends Node
 
 # ----- StoryService ----- #
 
-var function_definitions = [
-	FracVNE.StoryScript.FuncDef.new("skip"),
-	FracVNE.StoryScript.FuncDef.new("say", [
-		FracVNE.StoryScript.Param.new("character"),
-		FracVNE.StoryScript.Param.new("text"),
-	], true),
-	FracVNE.StoryScript.FuncDef.new("narrate", [
-		FracVNE.StoryScript.Param.new("text"),
-	], true)
-]
-
-
 func get_service_name():
 	return "TextPrinter"
 

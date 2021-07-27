@@ -1,0 +1,80 @@
+[gd_scene load_steps=12 format=2]
+
+[ext_resource path="res://addons/FracturalVNE/core/transitions/transition.gd" type="Script" id=1]
+[ext_resource path="res://addons/FracturalVNE/default_assets/transitions/fade_to_color/tint_color.shader" type="Shader" id=2]
+[ext_resource path="res://addons/FracturalVNE/core/transitions/merged_replace_transition.gd" type="Script" id=3]
+[ext_resource path="res://addons/FracturalVNE/default_assets/transitions/fade_to_color/single_fade_to_color_transition.gd" type="Script" id=4]
+[ext_resource path="res://addons/FracturalVNE/default_assets/curves/linear.tres" type="Curve" id=5]
+[ext_resource path="res://addons/FracturalVNE/core/transitions/show_hide.gd" type="Script" id=6]
+[ext_resource path="res://addons/FracturalVNE/core/transitions/simultaneous_merged_replace_transition.gd" type="Script" id=7]
+[ext_resource path="res://addons/FracturalVNE/core/utils/dependency_injection/dependency.gd" type="Script" id=8]
+[ext_resource path="res://addons/FracturalVNE/core/utils/signals/signal_connector.gd" type="Script" id=9]
+[ext_resource path="res://addons/FracturalVNE/core/utils/node_select/node_select.gd" type="Script" id=10]
+
+[sub_resource type="ShaderMaterial" id=1]
+shader = ExtResource( 2 )
+shader_param/tint_color = Color( 0, 0, 0, 1 )
+shader_param/tint_amount = null
+
+[node name="FadeToColor" type="Node2D"]
+script = ExtResource( 1 )
+show_transition_path = NodePath("ShowSingleTransition")
+hide_transition_path = NodePath("HideSingleTransition")
+replace_transition_path = NodePath("ReplaceTransition")
+
+[node name="ShowSingleTransition" type="Node2D" parent="."]
+material = SubResource( 1 )
+script = ExtResource( 4 )
+fade_curve = ExtResource( 5 )
+node_holder_path = NodePath(".")
+
+[node name="Show" type="Node" parent="ShowSingleTransition"]
+script = ExtResource( 6 )
+single_transition_path = NodePath("..")
+
+[node name="HideSingleTransition" type="Node2D" parent="."]
+material = SubResource( 1 )
+script = ExtResource( 4 )
+transition_type = 1
+fade_curve = ExtResource( 5 )
+node_holder_path = NodePath(".")
+
+[node name="Hide" type="Node" parent="HideSingleTransition"]
+script = ExtResource( 6 )
+single_transition_path = NodePath("..")
+transition_type = 1
+
+[node name="ReplaceTransition" type="Node2D" parent="."]
+script = ExtResource( 3 )
+
+[node name="Dependencies" type="Node" parent="ReplaceTransition"]
+
+[node name="ShowDependency" type="Node" parent="ReplaceTransition/Dependencies"]
+script = ExtResource( 8 )
+dependency_name = "SingleTransition"
+dependency_path = NodePath("../../../ShowSingleTransition")
+
+[node name="HideDependency" type="Node" parent="ReplaceTransition/Dependencies"]
+script = ExtResource( 8 )
+dependency_name = "SingleTransition"
+dependency_path = NodePath("../../../HideSingleTransition")
+
+[node name="SimultaneousTransition" type="Node" parent="ReplaceTransition"]
+script = ExtResource( 7 )
+show_transition_dep_path = NodePath("../Dependencies/ShowDependency")
+hide_transition_dep_path = NodePath("../Dependencies/HideDependency")
+replace_transition_path = NodePath("..")
+
+[node name="SignalConnector" type="Node" parent="."]
+script = ExtResource( 9 )
+signal_name = "2342"
+dummy_path = NodePath("../Tree")
+
+[node name="Tree" type="Tree" parent="."]
+margin_right = 305.0
+margin_bottom = 230.0
+script = ExtResource( 10 )
+__meta__ = {
+"_edit_use_anchors_": false
+}
+tree_path = NodePath(".")

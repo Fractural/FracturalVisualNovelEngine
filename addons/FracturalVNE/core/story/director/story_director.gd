@@ -7,20 +7,23 @@ extends Node
 
 # ----- StoryService Info ----- #
 
+const FuncDef = FracVNE.StoryScript.FuncDef
+const Param = FracVNE.StoryScript.Param
+
 var function_definitions = [
-	FracVNE.StoryScript.FuncDef.new("step"),
-	FracVNE.StoryScript.FuncDef.new("start_step", [
-		"ast_node"
+	FuncDef.new("step"),
+	FuncDef.new("start_step", [
+		Param.new("ast_node"),
 	]),
-	FracVNE.StoryScript.FuncDef.new("call_label", [
-		"label_name",
-		"arguments",
+	FuncDef.new("call_label", [
+		Param.new("label_name"),
+		Param.new("arguments"),
 	]),
-	FracVNE.StoryScript.FuncDef.new("jump_to_label", [
-		"label_name"
+	FuncDef.new("jump_to_label", [
+		Param.new("label_name"),
 	]),
-	FracVNE.StoryScript.FuncDef.new("add_label", [
-		"label_node"
+	FuncDef.new("add_label", [
+		Param.new("label_node"),
 	]),
 ]
 
@@ -60,7 +63,7 @@ var curr_active_step_actions: Array
 # step() that is ran and stopped while override_step is true.
 var override_step: bool = false
 # Number of steps ran while override_step is true.
-var queued_steps: int
+var queued_overridden_steps: int
 
 # curr_node_executed prevents repeated stepping if the program terminates on an executable node that
 # is not steppable. (This means the current step node never reaches another step node to replace
@@ -135,11 +138,11 @@ func step():
 	# This allows us to use pause statements as save points since they will
 	# be assigned to curr_stepped_node whenever they are running.
 	if override_step:
-		queued_steps += 1
+		queued_overridden_steps += 1
 		return
 	
-	if queued_steps > 0:
-		release_queued_steps()
+	if queued_overridden_steps > 0:
+		release_queued_overridden_steps()
 	
 	# TODO: Consider decoupling story director from nodes to follow single responsibility principle.
 	#		That is, a story director should not know about the existance of a node and instead
@@ -175,14 +178,14 @@ func skip(override_auto_step: bool = false):
 
 # Executes step() for the number times step was queued while override_step
 # was true.
-func release_queued_steps():
-	# number_of_steps is a temp variable that allows us to set queued_steps
-	# to 0 while still being able to iterate through the number of queued_steps.
-	# queued_steps must be 0 to prevent a recursive call from happening
-	# which is caused by step() calling release_queued_steps() when
-	# queued_steps > 0.
-	var number_of_steps = queued_steps
-	queued_steps = 0
+func release_queued_overridden_steps():
+	# number_of_steps is a temp variable that allows us to set queued_overridden_steps
+	# to 0 while still being able to iterate through the number of queued_overridden_steps.
+	# queued_overridden_steps must be 0 to prevent a recursive call from happening
+	# which is caused by step() calling release_queued_overridden_steps() when
+	# queued_overridden_steps > 0.
+	var number_of_steps = queued_overridden_steps
+	queued_overridden_steps = 0
 	for i in number_of_steps:
 		step()
 

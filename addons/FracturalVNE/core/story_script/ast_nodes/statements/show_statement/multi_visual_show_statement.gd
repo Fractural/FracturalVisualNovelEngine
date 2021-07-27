@@ -27,12 +27,13 @@ func execute():
 		return
 	
 	if visual is Object:
-		if visual_result.is_type("Character"):
+		if Utils.is_type(visual_result, "Character"):
 			visual_result = visual_result.visual
 		
-		if visual_result.is_type("MultiVisual"):
+		if Utils.is_type(visual_result, "MultiVisual"):
 			if modifiers_string != null:
-				var result = visual_result.set_sprite(modifiers_string)
+				var visual_controller = get_runtime_block().get_service("VisualManager").get_or_load_visual_controller(visual_result)
+				var result = visual_controller.set_sprite(modifiers_string)
 				if not is_success(result):
 					result.position = position
 					throw_error(result)

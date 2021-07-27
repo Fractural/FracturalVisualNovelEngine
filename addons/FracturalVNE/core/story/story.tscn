@@ -1,4 +1,4 @@
-[gd_scene load_steps=29 format=2]
+[gd_scene load_steps=31 format=2]
 
 [ext_resource path="res://addons/FracturalVNE/core/story/story_manager.gd" type="Script" id=1]
 [ext_resource path="res://addons/FracturalVNE/core/story/director/story_director.gd" type="Script" id=2]
@@ -21,13 +21,15 @@
 [ext_resource path="res://addons/FracturalVNE/core/utils/serialization/serialization_manager.gd" type="Script" id=19]
 [ext_resource path="res://addons/FracturalVNE/core/story/history/history_entries/say_entry/say_entry_serializer.gd" type="Script" id=20]
 [ext_resource path="res://addons/FracturalVNE/core/io/resource_loader.gd" type="Script" id=21]
-[ext_resource path="res://addons/FracturalVNE/core/visuals/visuals_manager.gd" type="Script" id=22]
+[ext_resource path="res://addons/FracturalVNE/core/visuals/visual_manager.gd" type="Script" id=22]
 [ext_resource path="res://addons/FracturalVNE/core/character/character_serializer.gd" type="Script" id=23]
 [ext_resource path="res://addons/FracturalVNE/core/misc/general_functions.gd" type="Script" id=24]
 [ext_resource path="res://addons/FracturalVNE/core/scene/bg_scene_manager.gd" type="Script" id=25]
-[ext_resource path="res://addons/FracturalVNE/core/visuals/types/prefab_visual/prefab_visual_serializer.gd" type="Script" id=26]
-[ext_resource path="res://addons/FracturalVNE/core/visuals/types/single_visual/single_visual_serializer.gd" type="Script" id=27]
-[ext_resource path="res://addons/FracturalVNE/core/visuals/types/multi_visual/multi_visual_serializer.gd" type="Script" id=28]
+[ext_resource path="res://addons/FracturalVNE/core/visuals/types/prefab_visual/prefab_visual_controller_serializer.gd" type="Script" id=26]
+[ext_resource path="res://addons/FracturalVNE/core/visuals/types/single_visual/single_visual_controller_serializer.gd" type="Script" id=27]
+[ext_resource path="res://addons/FracturalVNE/core/visuals/types/multi_visual/multi_visual_controller_serializer.gd" type="Script" id=28]
+[ext_resource path="res://addons/FracturalVNE/core/scene/types/image_scene/image_scene_controller_serializer.gd" type="Script" id=29]
+[ext_resource path="res://addons/FracturalVNE/core/scene/types/prefab_scene/prefab_scene_controller_serializer.gd" type="Script" id=30]
 
 [node name="Story" type="Node"]
 
@@ -71,17 +73,23 @@ reference_registry_path = NodePath("../../StoryLoader/StoryServices/ReferenceReg
 script = ExtResource( 23 )
 reference_registry_path = NodePath("../../StoryLoader/StoryServices/ReferenceRegistry")
 
-[node name="SingleVisualSerializer" type="Node" parent="SerializationManager"]
+[node name="SingleVisualControllerSerializer" type="Node" parent="SerializationManager"]
 script = ExtResource( 27 )
 story_director_path = NodePath("../../StoryLoader/StoryServices/StoryDirector")
 
-[node name="PrefabVisualSerializer" type="Node" parent="SerializationManager"]
+[node name="PrefabVisualControllerSerializer" type="Node" parent="SerializationManager"]
 script = ExtResource( 26 )
 story_director_path = NodePath("../../StoryLoader/StoryServices/StoryDirector")
 
-[node name="MultiVisualSerializer" type="Node" parent="SerializationManager"]
+[node name="MultiVisualControllerSerializer" type="Node" parent="SerializationManager"]
 script = ExtResource( 28 )
 story_director_path = NodePath("../../StoryLoader/StoryServices/StoryDirector")
+
+[node name="ImageSceneControllerSerializer" type="Node" parent="SerializationManager"]
+script = ExtResource( 29 )
+
+[node name="PrefabSceneControllerSerializer" type="Node" parent="SerializationManager"]
+script = ExtResource( 30 )
 
 [node name="StoryLoader" type="Node" parent="."]
 script = ExtResource( 3 )
@@ -114,11 +122,12 @@ serialization_manager_path = NodePath("../../../SerializationManager")
 [node name="ResourceLoader" type="Node" parent="StoryLoader/StoryServices"]
 script = ExtResource( 21 )
 
-[node name="VisualsManager" type="Node" parent="StoryLoader/StoryServices"]
+[node name="VisualManager" type="Node" parent="StoryLoader/StoryServices"]
 script = ExtResource( 22 )
 reference_registry_path = NodePath("../ReferenceRegistry")
 visuals_holder_path = NodePath("../../../WorldHolder/World/VisualsHolder")
 story_director_path = NodePath("../StoryDirector")
+serialization_manager_path = NodePath("../../../SerializationManager")
 
 [node name="TimerRegistry" type="Node" parent="StoryLoader/StoryServices"]
 script = ExtResource( 14 )
@@ -128,7 +137,7 @@ script = ExtResource( 24 )
 
 [node name="BGSceneManager" type="Node" parent="StoryLoader/StoryServices"]
 script = ExtResource( 25 )
-scene_holder_path = NodePath("../../../WorldHolder/World/BGSceneHolder")
+scenes_holder_path = NodePath("../../../WorldHolder/World/BGScenesHolder")
 story_director_path = NodePath("../StoryDirector")
 resource_loader_path = NodePath("../ResourceLoader")
 
@@ -171,7 +180,7 @@ __meta__ = {
 
 [node name="World" type="Node2D" parent="WorldHolder"]
 
-[node name="BGSceneHolder" type="Node2D" parent="WorldHolder/World"]
+[node name="BGScenesHolder" type="Node2D" parent="WorldHolder/World"]
 
 [node name="VisualsHolder" type="Node2D" parent="WorldHolder/World"]
 

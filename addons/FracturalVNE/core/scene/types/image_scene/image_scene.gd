@@ -11,6 +11,25 @@ func get_types():
 # ----- Typeable ----- #
 
 
-export var sprite_path: NodePath
+var texture_path
 
-onready var sprite = get_node(sprite)
+
+func _init(texture_path_ = null):
+	controller_prefab = preload("image_scene.tscn")
+	texture_path = texture_path_
+
+
+# ----- Serialization ----- #
+
+func serialize():
+	var serialized_object = .serialize()
+	serialized_object["texture_path"] = texture_path
+	return serialized_object
+
+
+func deserialize(serialized_object):
+	var instance = .deserialize(serialized_object)
+	instance.texture_path = load(serialized_object["texture_path"])
+	return instance
+
+# ----- Serialization ----- #

@@ -142,8 +142,6 @@ func compile_script():
 		script_text_edit.clear_error()
 		set_compiled(true)
 		save_ast_to_file(ast_tree, persistent_data_dep.dependency.current_script_path.trim_suffix(".storyscript") + ".story")
-	
-	print("Compiled... Static Memory Usage: " + str(Performance.get_monitor(Performance.MEMORY_STATIC) / 1.049e6) + " MiB")
 
 
 func save_ast_to_file(ast_tree, file_path):

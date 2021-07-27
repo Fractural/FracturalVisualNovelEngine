@@ -41,7 +41,7 @@ func save_current_state(save_slot_id: int):
 	
 	story_save_manager_dep.dependency.save_state(state, save_slot_id)
 	
-	story_director.release_queued_steps()
+	story_director.release_queued_overridden_steps()
 	
 	emit_signal("state_saved", state, save_slot_id)
 

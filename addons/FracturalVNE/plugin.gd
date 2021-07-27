@@ -17,6 +17,8 @@ const Settings: Script = preload("plugin/settings.gd")
 const Docker: Script = preload("plugin/ui/docker.gd")
 const PluginUIScene: PackedScene = preload("plugin/ui/plugin_ui.tscn")
 
+var inspector_plugins = []
+
 var plugin_ui: PluginUI
 var docker: Docker
 var settings: Settings
@@ -29,6 +31,7 @@ func _init():
 
 
 func _enter_tree():
+	#get_tree().root.print_tree_pretty()
 	plugin_ui = PluginUIScene.instance()
 	
 	plugin_ui.get_node("Dependencies/PluginDependency").dependency_path = get_path()
@@ -36,6 +39,9 @@ func _enter_tree():
 	
 	docker = Docker.new(self, settings, plugin_ui)
 	add_child(docker)
+	
+	inspector_plugins = []
+	_setup_inspector_plugins()
 
 
 func _ready():
@@ -45,6 +51,21 @@ func _ready():
 func _exit_tree():
 	docker.free()
 	plugin_ui.free()
+	
+	for inspector_plugin in inspector_plugins:
+		remove_inspector_plugin(inspector_plugin)
+
+
+func _setup_inspector_plugins():
+		add_custom_inspector_plugin(load("res://addons/FracturalVNE/core/utils/signals/signal_connector_inspector.gd").new())
+
+
+func add_custom_inspector_plugin(instance: EditorInspectorPlugin):
+	if instance.has_method("_setup_editor_assets"):
+		print("Setting up with " + str(assets_registry))
+		instance._setup_editor_assets(assets_registry)
+	add_inspector_plugin(instance)
+	inspector_plugins.append(instance)
 
 
 func has_main_screen():

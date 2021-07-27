@@ -77,7 +77,8 @@ func execute():
 			visual_result = visual_result.visual
 		
 		if visual_result.is_type("Visual"):
-			visual_result.visual_mover.move(target_position_result, travel_curve_result, duration_result, MoveAction.new(visual_result.visual_mover))
+			var visual_controller = get_runtime_block().get_service("VisualManager").get_or_load_visual_controller(visual_result)
+			visual_controller.visual_mover.move(target_position_result, travel_curve_result, duration_result, MoveAction.new(visual_controller.visual_mover))
 			.execute()
 		else:
 			throw_error(error("Expected a visual for the move statement."))

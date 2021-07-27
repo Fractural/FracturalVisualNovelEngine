@@ -8,7 +8,7 @@ const ACCENT_1_KEYWORDS = [
 	"if", "elif", "else", "pass", "call"
 	]
 const ACCENT_2_KEYWORDS = [ 
-	"label", "jump", "with", "show", "hide", "animate",
+	"label", "jump", "with", "show", "hide", "remove", "animate",
 	"pause", "for", "move", "to", "scene", 
 	"==", ">", "<", ">=", "<=" 
 	]

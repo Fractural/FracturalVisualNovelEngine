@@ -4,6 +4,9 @@ extends Node
 
 # ----- StoryService ----- #
 
+const FuncDef = FracVNE.StoryScript.FuncDef
+const Param = FracVNE.StoryScript.Param
+
 var function_definitions
 
 
@@ -30,11 +33,11 @@ onready var story_gui_configurer = get_node(story_gui_configurer_path)
 
 func _post_ready():
 	function_definitions = [
-		FracVNE.StoryScript.FuncDef.new("Character", [
-			FracVNE.StoryScript.Param.new("name"),
-			FracVNE.StoryScript.Param.new("name_color", story_gui_configurer.story_gui.text_printer.default_name_color),
-			FracVNE.StoryScript.Param.new("dialogue_color", story_gui_configurer.story_gui.text_printer.default_dialogue_color),
-			FracVNE.StoryScript.Param.new("visual")
+		FuncDef.new("Character", [
+			Param.new("name"),
+			Param.new("name_color", story_gui_configurer.story_gui.text_printer.default_name_color),
+			Param.new("dialogue_color", story_gui_configurer.story_gui.text_printer.default_dialogue_color),
+			Param.new("visual")
 		]),
 	]
 

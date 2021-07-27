@@ -11,28 +11,26 @@ static func get_types() -> Array:
 # ----- Typeable ----- #
 
 
-export var prefab_holder_path: NodePath
+const prefab_visual_prefab = preload("prefab_visual.tscn")
 
-var prefab_instance
-var prefab_holder
-
-
-func _ready():
-	if prefab_holder == null:
-		prefab_holder = get_node(prefab_holder_path)
+var prefab_path
 
 
-func init_(story_director_, prefab_instance_):
-	init(story_director_)
-	
-	prefab_holder = get_node(prefab_holder_path)
-	
-	prefab_instance = prefab_instance_
-	prefab_holder.add_child(prefab_instance)
+func _init(cached_ = null, prefab_path_ = null).(cached_):
+	prefab_path = prefab_path_
 
 
 # ----- Serialization ----- #
 
-# prefab_visual_serializer.gd
+func serialize():
+	var serialized_object = .serialize()
+	serialized_object["prefab_path"] = prefab_path
+	return serialized_object
+
+
+func deserialize(serialized_object):
+	var instance = .deserialize(serialized_object)
+	instance.prefab_path = serialized_object["prefab_path"]
+	return instance
 
 # ----- Serialization ----- #
