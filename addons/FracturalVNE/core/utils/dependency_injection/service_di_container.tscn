@@ -4,7 +4,7 @@
 [ext_resource path="res://addons/FracturalVNE/core/io/story_save_manager.gd" type="Script" id=2]
 [ext_resource path="res://addons/FracturalVNE/core/story/story_runner.gd" type="Script" id=3]
 [ext_resource path="res://addons/FracturalVNE/core/utils/dependency_injection/dependency_injection_container.gd" type="Script" id=4]
-[ext_resource path="res://addons/FracturalVNE/core/utils/scene_manager.gd" type="Script" id=5]
+[ext_resource path="res://addons/FracturalVNE/core/misc/scene_manager.gd" type="Script" id=5]
 
 [node name="ServiceDIContainer" type="Node"]
 script = ExtResource( 4 )

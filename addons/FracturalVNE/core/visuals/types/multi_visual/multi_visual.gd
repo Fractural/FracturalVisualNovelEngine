@@ -11,13 +11,15 @@ static func get_types() -> Array:
 # ----- Typeable ----- #
 
 
-const multi_visual_prefab = preload("multi_visual.tscn")
-
 var textures_directory
 
 
 func _init(cached_ = null, textures_directory_ = null).(cached_):
 	textures_directory = textures_directory_
+
+
+func _get_visual_prefab():
+	return preload("multi_visual.tscn")
 
 
 # ----- Serialization ----- #

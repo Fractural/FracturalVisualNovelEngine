@@ -11,13 +11,15 @@ static func get_types() -> Array:
 # ----- Typeable ----- #
 
 
-const prefab_visual_prefab = preload("prefab_visual.tscn")
-
 var prefab_path
 
 
 func _init(cached_ = null, prefab_path_ = null).(cached_):
 	prefab_path = prefab_path_
+
+
+func _get_visual_prefab():
+	return preload("prefab_visual.tscn")
 
 
 # ----- Serialization ----- #

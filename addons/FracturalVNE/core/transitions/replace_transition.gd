@@ -8,7 +8,7 @@ func is_type(type: String) -> bool:
 	return get_types().has(type)
 
 static func get_types() -> Array:
-	return ["ReplaceTransition"]
+	return ["ReplaceTransition", "Transition"]
 
 # ----- Typeable ----- #
 
@@ -16,7 +16,6 @@ static func get_types() -> Array:
 signal transition_finished()
 
 signal _transition()
-signal _transition_finished()
 
 var is_transitioning: bool = false
 var new_node: Node2D
@@ -36,7 +35,5 @@ func transition(new_node_: Node2D, old_node_: Node2D, duration_: float):
 
 
 func _on_transition_finished():
-	emit_signal("_pre_transition_finished")
-	
 	is_transitioning = false
 	emit_signal("transition_finished")

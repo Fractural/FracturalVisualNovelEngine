@@ -21,4 +21,4 @@ func evaluate():
 	
 	if (typeof(left_result) == TYPE_INT or typeof(left_result) == TYPE_REAL) and (typeof(right_result) == TYPE_INT or typeof(right_result) == TYPE_REAL):
 		return left_result / right_result
-	return error('Cannot divide "%s" by "%s".' % [FracVNE.Utils.get_type_name(left_result), FracVNE.Utils.get_type_name(right_result)])
+	return error('Cannot divide "%s" by "%s".' % [FracUtils.get_type_name(left_result), FracUtils.get_type_name(right_result)])

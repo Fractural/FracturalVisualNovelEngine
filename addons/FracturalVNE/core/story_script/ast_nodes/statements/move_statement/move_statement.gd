@@ -78,6 +78,9 @@ func execute():
 		
 		if visual_result.is_type("Visual"):
 			var visual_controller = get_runtime_block().get_service("VisualManager").get_or_load_visual_controller(visual_result)
+			if not is_success(visual_controller):
+				throw_error(stack_error(visual_controller, "Could not load visual controller for the move statement."))
+				return
 			visual_controller.visual_mover.move(target_position_result, travel_curve_result, duration_result, MoveAction.new(visual_controller.visual_mover))
 			.execute()
 		else:

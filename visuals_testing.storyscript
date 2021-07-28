@@ -1,11 +1,19 @@
 # ----- Characters ----- #
 #define godette_single_visual = Visual(texture_path="res://addons/FracturalVNE/default_assets/visuals/images/godette_body.png")
 define godette = Character(name="Godette", name_color="#468cbf", dialogue_color="#ffffff", visual=DynamicVisual(textures_directory="res://addons/FracturalVNE/default_assets/visuals/images/dynamic_godette/"))
+define godette2 = Character(name="Godette", name_color="#468cbf", dialogue_color="#ffffff", visual=DynamicVisual(textures_directory="res://addons/FracturalVNE/default_assets/visuals/images/dynamic_godette/"))
+define godette3 = Character(name="Godette", name_color="#468cbf", dialogue_color="#ffffff", visual=DynamicVisual(textures_directory="res://addons/FracturalVNE/default_assets/visuals/images/dynamic_godette/"))
+define godette4 = Character(name="Godette", name_color="#468cbf", dialogue_color="#ffffff", visual=DynamicVisual(textures_directory="res://addons/FracturalVNE/default_assets/visuals/images/dynamic_godette/"))
+define godette5 = Character(name="Godette", name_color="#468cbf", dialogue_color="#ffffff", visual=DynamicVisual(textures_directory="res://addons/FracturalVNE/default_assets/visuals/images/dynamic_godette/"))
 
+define godette6 = Character(name="Godette", name_color="#468cbf", dialogue_color="#ffffff", visual=DynamicVisual(textures_directory="res://addons/FracturalVNE/default_assets/visuals/images/dynamic_godette/"))
+define godette7 = Character(name="Godette", name_color="#468cbf", dialogue_color="#ffffff", visual=DynamicVisual(textures_directory="res://addons/FracturalVNE/default_assets/visuals/images/dynamic_godette/"))
+define godette8 = Character(name="Godette", name_color="#468cbf", dialogue_color="#ffffff", visual=DynamicVisual(textures_directory="res://addons/FracturalVNE/default_assets/visuals/images/dynamic_godette/"))
+define godette9 = Character(name="Godette", name_color="#468cbf", dialogue_color="#ffffff", visual=DynamicVisual(textures_directory="res://addons/FracturalVNE/default_assets/visuals/images/dynamic_godette/"))
+define godette10 = Character(name="Godette", name_color="#468cbf", dialogue_color="#ffffff", visual=DynamicVisual(textures_directory="res://addons/FracturalVNE/default_assets/visuals/images/dynamic_godette/"))
 
 # ----- Transitions ----- #
-define fade_in = load("res://addons/FracturalVNE/default_assets/visuals/visual_animations/show_animations/fade_in.tres")
-define fade_out = load("res://addons/FracturalVNE/default_assets/visuals/visual_animations/hide_animations/fade_out.tres")
+define fade_to_black = load("res://addons/FracturalVNE/default_assets/transitions/fade_to_color/fade_to_black.tscn")
 
 
 # ----- Animations ----- #
@@ -17,58 +25,33 @@ define smooth_step = load("res://addons/FracturalVNE/default_assets/curves/smoot
 
 
 label looped:
+	pause 3
 	move godette to Point(-500, 0)
+	move godette2 to Point(-400, 0)
+	move godette3 to Point(-300, 0)
+	move godette4 to Point(-200, 0)
+	move godette5 to Point(-100, 0)
+	move godette10 to Point(500, 0)
+	
+	move godette9 to Point(400, 0)
+	move godette8 to Point(300, 0)
+	move godette7 to Point(200, 0)
+	move godette6 to Point(100, 0)
 	
 	# Last show statement should override the previous ones
 	# if they are stacked together.
-	show godette happy with fade_in
-	show godette sad with fade_in
-	show godette surprised with fade_in
+	#show godette happy with fade_to_black
+	#show godette sad with fade_to_black
+	show godette surprised with fade_to_black
+	show godette2 surprised with fade_to_black
+	show godette3 surprised with fade_to_black
+	show godette4 surprised with fade_to_black
+	show godette5 surprised with fade_to_black
 	
-	pause 0.5
-	
-	# Testing movement
-	move godette to Point(500, 0) with smooth_step for 3
-	
-	pause 3
-	
-	animate godette with hop
+	show godette6 surprised with fade_to_black
+	show godette7 surprised with fade_to_black
+	show godette8 surprised with fade_to_black
+	show godette9 surprised with fade_to_black
+	show godette10 surprised with fade_to_black
 	
 	godette "Hi there!"
-	
-	godette "My name is Godette."
-	
-	show godette surprised
-	
-	godette "Uh oh, I gotta go!"
-	
-	show godette sad
-	
-	godette "Byee!"
-	
-	# hide godette with fade_out
-	hide godette with fade_out
-	
-	"That was quick..."
-	
-	"I wonder where she went..."
-	
-	"*Footsteps in the distance*"
-	
-	show godette surprised with fade_in
-	
-	godette "Whew I'm back!"
-	
-	show godette happy
-	
-	godette "I had to check on the engine to make sure it's working!"
-	
-	godette "I guess if you've gotten this far then everything must be working..."
-	
-	godette "Time to head back!"
-	
-	hide godette with fade_out
-	
-	"" # Clears the text
-	
-	jump looped

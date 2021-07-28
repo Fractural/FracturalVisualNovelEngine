@@ -27,12 +27,15 @@ func execute():
 		return
 	
 	if visual is Object:
-		if Utils.is_type(visual_result, "Character"):
+		if FracUtils.is_type(visual_result, "Character"):
 			visual_result = visual_result.visual
 		
-		if Utils.is_type(visual_result, "MultiVisual"):
+		if FracUtils.is_type(visual_result, "MultiVisual"):
 			if modifiers_string != null:
 				var visual_controller = get_runtime_block().get_service("VisualManager").get_or_load_visual_controller(visual_result)
+				if not is_success(visual_controller):
+					throw_error(stack_error(visual_controller, "Could not load visual controller."))
+					return
 				var result = visual_controller.set_sprite(modifiers_string)
 				if not is_success(result):
 					result.position = position

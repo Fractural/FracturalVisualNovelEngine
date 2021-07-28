@@ -6,7 +6,10 @@ extends Reference
 # Replace 'demo_plugin' with your plugin's name
 const PLUGIN_ABSOLUTE_PATH_PREFIX = "res://addons/FracturalVNE/"
 
-var plugin: EditorPlugin
+# We cannot assign plugin as an EditorPlugin
+# since Editor related classes are not
+# shipped with release builds.
+var plugin
 
 # Stores already loaded assets so multiple loads of the same asset 
 # do not duplicate the same asset multiple times.  

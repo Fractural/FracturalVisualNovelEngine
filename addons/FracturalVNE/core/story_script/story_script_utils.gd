@@ -21,16 +21,16 @@ static func stack_error(old_error, message_or_error):
 	var new_error
 	if message_or_error is String:
 		new_error = error(message_or_error)
-	elif message_or_error is old_error:
+	elif message_or_error is Error:
 		new_error = message_or_error
 	else:
 		 assert(false, "Unknown of stack_error()")
 	
-	if old_error is old_error.ErrorStack:
+	if old_error is Error.ErrorStack:
 		old_error.add_error(new_error)
 		return old_error
-	elif old_error is old_error:
-		var err_stack = old_error.ErrorStack.new([old_error])
+	elif old_error is Error:
+		var err_stack = Error.ErrorStack.new([old_error])
 		err_stack.add_error(new_error)
 		return err_stack
 	else:

@@ -19,7 +19,7 @@ var services: Dictionary = {}
 var block
 
 
-func _init(block_ = null).(FracVNE.StoryScript.Position.new(0, 0)):
+func _init(block_ = null).(StoryScriptPosition.new(0, 0)):
 	block = block_
 
 
@@ -79,11 +79,11 @@ func has_variable(name: String):
 
 
 func get_variable(name: String):
-	return FracVNE.StoryScript.Error.new('Variable named "%s" could not be found.' % name)
+	return StoryScriptError.new('Variable named "%s" could not be found.' % name)
 
 
 func set_variable(name: String, value):
-	FracVNE.StoryScript.Error.new('Variable named "%s" could not be found.' % name)
+	StoryScriptError.new('Variable named "%s" could not be found.' % name)
 
 
 func add_function_holder(new_function_holder):

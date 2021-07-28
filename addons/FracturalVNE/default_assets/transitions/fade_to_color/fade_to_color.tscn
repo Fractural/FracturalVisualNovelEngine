@@ -1,71 +1,209 @@
-[gd_scene load_steps=11 format=2]
+[gd_scene load_steps=23 format=2]
 
-[ext_resource path="res://addons/FracturalVNE/core/transitions/transition.gd" type="Script" id=1]
+[ext_resource path="res://addons/FracturalVNE/core/transitions/story_script_transition.gd" type="Script" id=1]
 [ext_resource path="res://addons/FracturalVNE/default_assets/transitions/fade_to_color/tint_color.shader" type="Shader" id=2]
-[ext_resource path="res://addons/FracturalVNE/core/transitions/merged_replace_transition.gd" type="Script" id=3]
-[ext_resource path="res://addons/FracturalVNE/default_assets/transitions/fade_to_color/single_fade_to_color_transition.gd" type="Script" id=4]
+[ext_resource path="res://addons/FracturalVNE/core/transitions/replace_transition.gd" type="Script" id=3]
+[ext_resource path="res://addons/FracturalVNE/default_assets/transitions/fade_to_color/fade_to_color.gd" type="Script" id=4]
 [ext_resource path="res://addons/FracturalVNE/default_assets/curves/linear.tres" type="Curve" id=5]
-[ext_resource path="res://addons/FracturalVNE/core/transitions/show_hide.gd" type="Script" id=6]
-[ext_resource path="res://addons/FracturalVNE/core/transitions/simultaneous_merged_replace_transition.gd" type="Script" id=7]
-[ext_resource path="res://addons/FracturalVNE/core/utils/dependency_injection/dependency.gd" type="Script" id=8]
-[ext_resource path="res://addons/FracturalVNE/core/utils/signals/signal_connector.gd" type="Script" id=9]
+[ext_resource path="res://addons/FracturalVNE/core/utils/node_variable/color_node_variable.gd" type="Script" id=6]
+[ext_resource path="res://addons/FracturalVNE/core/transitions/runnable_behaviours/replace_transition/merged_replace_transition.gd" type="Script" id=7]
+[ext_resource path="res://addons/FracturalVNE/core/transitions/single_transition.gd" type="Script" id=8]
+[ext_resource path="res://addons/FracturalVNE/core/transitions/runnable_data/replace_transition/paired_transition.gd" type="Script" id=9]
+[ext_resource path="res://addons/FracturalVNE/core/runnable_behaviour/call_behaviour.gd" type="Script" id=10]
+[ext_resource path="res://addons/FracturalVNE/core/runnable_behaviour/runnable_chain.gd" type="Script" id=11]
+[ext_resource path="res://addons/FracturalVNE/core/transitions/runnable_behaviours/transition_runnable_root.gd" type="Script" id=12]
+[ext_resource path="res://addons/FracturalVNE/core/runnable_behaviour/timer_iterator_behaviour.gd" type="Script" id=13]
+[ext_resource path="res://addons/FracturalVNE/core/transitions/runnable_behaviours/single_transition/set_visibility.gd" type="Script" id=14]
+[ext_resource path="res://addons/FracturalVNE/core/transitions/runnable_behaviours/single_transition/reparent_transitioning_node.gd" type="Script" id=15]
+[ext_resource path="res://addons/FracturalVNE/core/transitions/runnable_behaviours/single_transition/reparent_back_transitioning_node.gd" type="Script" id=16]
+[ext_resource path="res://addons/FracturalVNE/core/utils/node_variable/float_node_variable.gd" type="Script" id=17]
+[ext_resource path="res://addons/FracturalVNE/core/utils/node_variable/node_node_variable.gd" type="Script" id=18]
+[ext_resource path="res://addons/FracturalVNE/core/utils/node_variable/curve_node_variable.gd" type="Script" id=19]
+[ext_resource path="res://addons/FracturalVNE/core/utils/node_variable/bool_node_variable.gd" type="Script" id=20]
+[ext_resource path="res://addons/FracturalVNE/core/transitions/runnable_behaviours/single_transition/single_transition_node_variable_setter.gd" type="Script" id=21]
 
 [sub_resource type="ShaderMaterial" id=1]
 shader = ExtResource( 2 )
-shader_param/tint_color = Color( 0, 0, 0, 1 )
+shader_param/tint_color = null
 shader_param/tint_amount = null
 
 [node name="FadeToColor" type="Node2D"]
 script = ExtResource( 1 )
-show_transition_path = NodePath("ShowSingleTransition")
-hide_transition_path = NodePath("HideSingleTransition")
-replace_transition_path = NodePath("ReplaceTransition")
+show_transition_path = NodePath("Transitions/ShowSingleTransition")
+hide_transition_path = NodePath("Transitions/HideSingleTransition")
+replace_transition_path = NodePath("Transitions/ReplaceTransition")
 
-[node name="ShowSingleTransition" type="Node2D" parent="."]
-material = SubResource( 1 )
-script = ExtResource( 4 )
-fade_curve = ExtResource( 5 )
-node_holder_path = NodePath(".")
+[node name="Variables" type="Node" parent="."]
 
-[node name="Show" type="Node" parent="ShowSingleTransition"]
+[node name="Color" type="Node" parent="Variables"]
 script = ExtResource( 6 )
-single_transition_path = NodePath("..")
 
-[node name="HideSingleTransition" type="Node2D" parent="."]
+[node name="NodeHolder" type="Node" parent="Variables"]
+script = ExtResource( 18 )
+path = NodePath("../../TransNodeHolder")
+
+[node name="TransCurve" type="Node" parent="Variables"]
+script = ExtResource( 19 )
+value = ExtResource( 5 )
+
+[node name="TransNodeHolder" type="Node2D" parent="."]
 material = SubResource( 1 )
+
+[node name="Transitions" type="Node" parent="."]
+
+[node name="ShowSingleTransition" type="Node" parent="Transitions"]
+script = ExtResource( 8 )
+
+[node name="ShowDuration" type="Node" parent="Transitions/ShowSingleTransition"]
+script = ExtResource( 17 )
+
+[node name="ShowTransNode" type="Node" parent="Transitions/ShowSingleTransition"]
+script = ExtResource( 18 )
+
+[node name="Start" type="Node" parent="Transitions/ShowSingleTransition"]
+script = ExtResource( 12 )
+runnable_path = NodePath("Chain")
+transition_path = NodePath("..")
+
+[node name="Chain" type="Node" parent="Transitions/ShowSingleTransition/Start"]
+script = ExtResource( 11 )
+
+[node name="SingleTransitionVariableSetter" type="Node" parent="Transitions/ShowSingleTransition/Start/Chain"]
+script = ExtResource( 21 )
+single_transition_path = NodePath("../../..")
+duration_var_path = NodePath("../../../ShowDuration")
+trans_node_var_path = NodePath("../../../ShowTransNode")
+
+[node name="ReparentTransNode" type="Node" parent="Transitions/ShowSingleTransition/Start/Chain"]
+script = ExtResource( 15 )
+single_transition_path = NodePath("../../..")
+new_parent_path = NodePath("../../../../../TransNodeHolder")
+
+[node name="ShowTransNode" type="Node" parent="Transitions/ShowSingleTransition/Start/Chain"]
+script = ExtResource( 14 )
+single_transition_path = NodePath("../../..")
+visibility = true
+
+[node name="Iterator" type="Node" parent="Transitions/ShowSingleTransition/Start/Chain"]
+script = ExtResource( 13 )
+iterated_runnable_path = NodePath("FadeToColor")
+duration_path = NodePath("../../../ShowDuration")
+percentage_path = NodePath("ShowPercentage")
+
+[node name="ShowPercentage" type="Node" parent="Transitions/ShowSingleTransition/Start/Chain/Iterator"]
+script = ExtResource( 17 )
+
+[node name="FadeToColor" type="Node" parent="Transitions/ShowSingleTransition/Start/Chain/Iterator"]
 script = ExtResource( 4 )
-transition_type = 1
-fade_curve = ExtResource( 5 )
-node_holder_path = NodePath(".")
+fade_curve_var_path = NodePath("../../../../../../Variables/TransCurve")
+reverse_curve_var_path = NodePath("ShowReverseCurve")
+node_holder_var_path = NodePath("../../../../../../Variables/NodeHolder")
+percentage_var_path = NodePath("../ShowPercentage")
+color_var_path = NodePath("../../../../../../Variables/Color")
 
-[node name="Hide" type="Node" parent="HideSingleTransition"]
-script = ExtResource( 6 )
-single_transition_path = NodePath("..")
-transition_type = 1
+[node name="ShowReverseCurve" type="Node" parent="Transitions/ShowSingleTransition/Start/Chain/Iterator/FadeToColor"]
+script = ExtResource( 20 )
+value = true
 
-[node name="ReplaceTransition" type="Node2D" parent="."]
+[node name="ReparentBackTransNode" type="Node" parent="Transitions/ShowSingleTransition/Start/Chain"]
+script = ExtResource( 16 )
+single_transition_path = NodePath("../../..")
+reparent_behaviour_path = NodePath("../ReparentTransNode")
+
+[node name="Finish" type="Node" parent="Transitions/ShowSingleTransition/Start/Chain"]
+script = ExtResource( 10 )
+receiver_path = NodePath("../../..")
+function_name = "_on_transition_finished"
+
+[node name="HideSingleTransition" type="Node" parent="Transitions"]
+script = ExtResource( 8 )
+
+[node name="HideDuration" type="Node" parent="Transitions/HideSingleTransition"]
+script = ExtResource( 17 )
+
+[node name="HideTransNode" type="Node" parent="Transitions/HideSingleTransition"]
+script = ExtResource( 18 )
+
+[node name="Start" type="Node" parent="Transitions/HideSingleTransition"]
+script = ExtResource( 12 )
+runnable_path = NodePath("Chain")
+transition_path = NodePath("..")
+
+[node name="Chain" type="Node" parent="Transitions/HideSingleTransition/Start"]
+script = ExtResource( 11 )
+
+[node name="SingleTransitionVariableSetter" type="Node" parent="Transitions/HideSingleTransition/Start/Chain"]
+script = ExtResource( 21 )
+single_transition_path = NodePath("../../..")
+duration_var_path = NodePath("../../../HideDuration")
+trans_node_var_path = NodePath("../../../HideTransNode")
+
+[node name="ReparentTransNode" type="Node" parent="Transitions/HideSingleTransition/Start/Chain"]
+script = ExtResource( 15 )
+single_transition_path = NodePath("../../..")
+new_parent_path = NodePath("../../../../../TransNodeHolder")
+
+[node name="ShowTransNode" type="Node" parent="Transitions/HideSingleTransition/Start/Chain"]
+script = ExtResource( 14 )
+single_transition_path = NodePath("../../..")
+visibility = true
+
+[node name="Iterator" type="Node" parent="Transitions/HideSingleTransition/Start/Chain"]
+script = ExtResource( 13 )
+iterated_runnable_path = NodePath("FadeToColor")
+duration_path = NodePath("../../../HideDuration")
+percentage_path = NodePath("HidePercentage")
+
+[node name="HidePercentage" type="Node" parent="Transitions/HideSingleTransition/Start/Chain/Iterator"]
+script = ExtResource( 17 )
+
+[node name="FadeToColor" type="Node" parent="Transitions/HideSingleTransition/Start/Chain/Iterator"]
+script = ExtResource( 4 )
+fade_curve_var_path = NodePath("../../../../../../Variables/TransCurve")
+reverse_curve_var_path = NodePath("HideReverseCurve")
+node_holder_var_path = NodePath("../../../../../../Variables/NodeHolder")
+percentage_var_path = NodePath("../HidePercentage")
+color_var_path = NodePath("../../../../../../Variables/Color")
+
+[node name="HideReverseCurve" type="Node" parent="Transitions/HideSingleTransition/Start/Chain/Iterator/FadeToColor"]
+script = ExtResource( 20 )
+
+[node name="HideTransNode" type="Node" parent="Transitions/HideSingleTransition/Start/Chain"]
+script = ExtResource( 14 )
+single_transition_path = NodePath("../../..")
+
+[node name="ReparentBackTransNode" type="Node" parent="Transitions/HideSingleTransition/Start/Chain"]
+script = ExtResource( 16 )
+single_transition_path = NodePath("../../..")
+reparent_behaviour_path = NodePath("../ReparentTransNode")
+
+[node name="Finish" type="Node" parent="Transitions/HideSingleTransition/Start/Chain"]
+script = ExtResource( 10 )
+receiver_path = NodePath("../../..")
+function_name = "_on_transition_finished"
+
+[node name="ReplaceTransition" type="Node" parent="Transitions"]
 script = ExtResource( 3 )
 
-[node name="Dependencies" type="Node" parent="ReplaceTransition"]
-
-[node name="ShowDependency" type="Node" parent="ReplaceTransition/Dependencies"]
-script = ExtResource( 8 )
-dependency_name = "SingleTransition"
-dependency_path = NodePath("../../../ShowSingleTransition")
-
-[node name="HideDependency" type="Node" parent="ReplaceTransition/Dependencies"]
-script = ExtResource( 8 )
-dependency_name = "SingleTransition"
-dependency_path = NodePath("../../../HideSingleTransition")
-
-[node name="SimultaneousTransition" type="Node" parent="ReplaceTransition"]
-script = ExtResource( 7 )
-show_transition_dep_path = NodePath("../Dependencies/ShowDependency")
-hide_transition_dep_path = NodePath("../Dependencies/HideDependency")
-replace_transition_path = NodePath("..")
-
-[node name="SignalConnector" type="Node" parent="."]
+[node name="PairedTransition" type="Node" parent="Transitions/ReplaceTransition"]
 script = ExtResource( 9 )
-signal_name = "2342"
-dummy_path = NodePath("../ShowSingleTransition")
-dummy_icon_fetch_path = NodePath("../ShowSingleTransition")
+show_transition_path = NodePath("../../ShowSingleTransition")
+hide_transition_path = NodePath("../../HideSingleTransition")
+
+[node name="Start" type="Node" parent="Transitions/ReplaceTransition"]
+script = ExtResource( 12 )
+runnable_path = NodePath("Chain")
+transition_path = NodePath("..")
+
+[node name="Chain" type="Node" parent="Transitions/ReplaceTransition/Start"]
+script = ExtResource( 11 )
+
+[node name="MergedShowHide" type="Node" parent="Transitions/ReplaceTransition/Start/Chain"]
+script = ExtResource( 7 )
+replace_transition_path = NodePath("../../..")
+transition_pair_path = NodePath("../../../PairedTransition")
+
+[node name="Finish" type="Node" parent="Transitions/ReplaceTransition/Start/Chain"]
+script = ExtResource( 10 )
+receiver_path = NodePath("../../..")
+function_name = "_on_transition_finished"

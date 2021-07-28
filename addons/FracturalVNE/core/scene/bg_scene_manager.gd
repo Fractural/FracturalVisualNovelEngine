@@ -41,7 +41,6 @@ func get_service_name():
 const SSUtils = FracVNE.StoryScript.Utils
 const ImageScene = preload("res://addons/FracturalVNE/core/scene/types/image_scene/image_scene.gd")
 const PrefabScene = preload("res://addons/FracturalVNE/core/scene/types/prefab_scene/prefab_scene.gd")
-const EmptyScene = preload("res://addons/FracturalVNE/core/scene/types/empty_scene/empty_scene.gd")
 
 export var scenes_holder_path: NodePath
 export var story_director_path: NodePath

@@ -1,4 +1,4 @@
-[gd_scene load_steps=31 format=2]
+[gd_scene load_steps=32 format=2]
 
 [ext_resource path="res://addons/FracturalVNE/core/story/story_manager.gd" type="Script" id=1]
 [ext_resource path="res://addons/FracturalVNE/core/story/director/story_director.gd" type="Script" id=2]
@@ -30,6 +30,7 @@
 [ext_resource path="res://addons/FracturalVNE/core/visuals/types/multi_visual/multi_visual_controller_serializer.gd" type="Script" id=28]
 [ext_resource path="res://addons/FracturalVNE/core/scene/types/image_scene/image_scene_controller_serializer.gd" type="Script" id=29]
 [ext_resource path="res://addons/FracturalVNE/core/scene/types/prefab_scene/prefab_scene_controller_serializer.gd" type="Script" id=30]
+[ext_resource path="res://addons/FracturalVNE/core/utils/fps_counter.gd" type="Script" id=31]
 
 [node name="Story" type="Node"]
 
@@ -87,9 +88,11 @@ story_director_path = NodePath("../../StoryLoader/StoryServices/StoryDirector")
 
 [node name="ImageSceneControllerSerializer" type="Node" parent="SerializationManager"]
 script = ExtResource( 29 )
+reference_registry_path = NodePath("../../StoryLoader/StoryServices/ReferenceRegistry")
 
 [node name="PrefabSceneControllerSerializer" type="Node" parent="SerializationManager"]
 script = ExtResource( 30 )
+reference_registry_path = NodePath("../../StoryLoader/StoryServices/ReferenceRegistry")
 
 [node name="StoryLoader" type="Node" parent="."]
 script = ExtResource( 3 )
@@ -140,6 +143,8 @@ script = ExtResource( 25 )
 scenes_holder_path = NodePath("../../../WorldHolder/World/BGScenesHolder")
 story_director_path = NodePath("../StoryDirector")
 resource_loader_path = NodePath("../ResourceLoader")
+reference_registry_path = NodePath("../ReferenceRegistry")
+serialization_manager_path = NodePath("../../../SerializationManager")
 
 [node name="ScreenshotManager" type="Node" parent="."]
 script = ExtResource( 16 )
@@ -290,6 +295,22 @@ text = "Quit"
 __meta__ = {
 "_edit_use_anchors_": false
 }
+
+[node name="FPSCounter" type="Control" parent="StoryRuntimeDebugger"]
+anchor_right = 1.0
+anchor_bottom = 1.0
+mouse_filter = 2
+script = ExtResource( 31 )
+__meta__ = {
+"_edit_use_anchors_": false
+}
+label_path = NodePath("Label")
+
+[node name="Label" type="Label" parent="StoryRuntimeDebugger/FPSCounter"]
+margin_right = 22.0
+margin_bottom = 14.0
+rect_scale = Vector2( 5, 5 )
+text = "FPS COUNTER"
 
 [node name="StoryRunnerListener" type="Node" parent="."]
 script = ExtResource( 9 )

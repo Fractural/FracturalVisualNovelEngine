@@ -17,7 +17,6 @@ static func get_types() -> Array:
 
 const SSUtils = FracVNE.StoryScript.Utils
 
-var visual_prefab
 var cached = false
 
 
@@ -26,11 +25,16 @@ func _init(cached_ = null):
 
 
 func instantiate_controller(story_director):
-	var instance = visual_prefab.instance()
+	var instance = _get_visual_prefab().instance()
 	var init_result = instance.init(self, story_director)
 	if not SSUtils.is_success(init_result):
 		return init_result
 	return instance
+
+
+func _get_visual_prefab():
+	pass
+
 
 
 # ----- Serialization ----- #

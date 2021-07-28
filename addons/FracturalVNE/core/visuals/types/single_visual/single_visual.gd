@@ -12,14 +12,15 @@ static func get_types() -> Array:
 # ----- Typeable ----- #
 
 
-const SSUtils = FracVNE.StoryScript.Utils
-const single_visual_prefab = preload("single_visual.tscn")
-
 var texture_path
 
 
 func _init(cached_ = null, texture_path_ = null).(cached_):
 	texture_path = texture_path_
+
+
+func _get_visual_prefab():
+	return preload("single_visual.tscn")
 
 
 # ----- Serialization ----- #

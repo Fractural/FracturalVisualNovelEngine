@@ -72,7 +72,7 @@ func parse(parser):
 # You can steal a rightmost value if the `checked_precedence` > the rightmost 
 # value's precedence
 func _find_rightmost_stealable_operator(curr_value, checked_precedence: int):
-	if not FracVNE.Utils.is_type(curr_value, "binary operator"):
+	if not Utils.is_type(curr_value, "binary operator"):
 		return null
 	if curr_value.get_precedence() >= checked_precedence:
 		return null

@@ -13,4 +13,4 @@ func evaluate():
 	
 	if typeof(result) == TYPE_INT or typeof(result) == TYPE_REAL:
 		return result * -1
-	return error('Cannot flip sign of type "%s".' % FracVNE.Utils.get_type_name(result))
+	return error('Cannot flip sign of type "%s".' % FracUtils.get_type_name(result))

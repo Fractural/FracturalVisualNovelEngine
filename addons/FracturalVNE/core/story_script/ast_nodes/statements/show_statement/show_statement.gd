@@ -12,9 +12,8 @@ static func get_types() -> Array:
 # ----- Typeable ----- #
 
 
-const Utils = FracVNE.Utils
-const AnimationAction = preload("res://addons/FracturalVNE/core/visuals/animation/animation_action.gd")
-const animation_player_visual_animation_prefab = preload("res://addons/FracturalVNE/core/visuals/animation/types/animation_player_visual_animation.tscn")
+const TransitionAction = preload("res://addons/FracturalVNE/core/transitions/transition_action.gd")
+# const animation_player_visual_animation_prefab = preload("res://addons/FracturalVNE/core/visuals/animation/types/animation_player_visual_animation.tscn")
 
 var visual
 var animation
@@ -26,24 +25,19 @@ func _init(position_ = null, visual_ = null, animation_ = null).(position_):
 
 
 func execute():
-	var visual_animation_result = null
+	var transition_result = null
 	if animation != null:
 		var animation_result = animation.evaluate()
 		
-		if not is_success(animation_result) or not (animation_result is Animation or animation_result is PackedScene):
-			throw_error(stack_error(animation_result, "Expected valid Animation or VisualAnimation for the animate statement."))
-			return
 		
-		if animation_result is Animation:
-			visual_animation_result = animation_player_visual_animation_prefab.instance()
-			var animation_name: String = animation_result.get_path().get_basename().get_file()
-			var animation_player = visual_animation_result.get_node(visual_animation_result.animation_player_path)
-			animation_player.add_animation(animation_name, animation_result)
-			animation_player.assigned_animation = animation_name
-		elif animation_result is PackedScene:
-			visual_animation_result = animation_result.instance()
-			if not Utils.is_type(visual_animation_result, "VisualAnimation"):
-				throw_error(stack_error(visual_animation_result, "Expected valid VisualAnimation for the animate statement."))
+		if not is_success(animation_result) or not animation_result is PackedScene:
+			throw_error(stack_error(animation_result, "Expected valid StoryScriptTransition for the show statement."))
+			return
+		 
+		if animation_result is PackedScene:
+			transition_result = animation_result.instance()
+			if not FracUtils.is_type(transition_result, "StoryScriptTransition"):
+				throw_error(stack_error(transition_result, "Expected valid StoryScriptTransition for the show statement."))
 				return
 	
 	var visual_result = visual.evaluate()
@@ -52,16 +46,19 @@ func execute():
 		return
 	
 	if visual_result is Object:
-		if Utils.is_type(visual_result, "Character"):
+		if FracUtils.is_type(visual_result, "Character"):
 			visual_result = visual_result.visual
 		
-		if Utils.is_type(visual_result, "Visual"):
-			var curr_animation_action = null
-			if visual_animation_result != null:
-				curr_animation_action = AnimationAction.new(visual_animation_result)
+		if FracUtils.is_type(visual_result, "Visual"):
+			var curr_transition_action = null
+			if transition_result != null:
+				curr_transition_action = TransitionAction.new(transition_result)
 			
 			var visual_controller = get_runtime_block().get_service("VisualManager").get_or_load_visual_controller(visual_result)
-			visual_controller.show(visual_animation_result, curr_animation_action)
+			if not is_success(visual_controller):
+				throw_error(stack_error(visual_controller, "Could not load visual controller for the show statement."))
+				return
+			visual_controller.show(transition_result, curr_transition_action)
 		else: 
 			throw_error(error("Expected a valid visual for the show statement."))
 			return

@@ -6,9 +6,12 @@
 [ext_resource path="res://addons/FracturalVNE/core/utils/dependency_injection/dependency.gd" type="Script" id=4]
 
 [node name="MultiVisual" type="Node2D"]
+use_parent_material = true
 script = ExtResource( 3 )
 visual_animator_path = NodePath("VisualAnimator")
 visual_mover_path = NodePath("VisualMover")
+visual_holder_path = NodePath("VisualHolder")
+story_director_dep_path = NodePath("Dependencies/StoryDirector")
 sprite_path = NodePath("VisualHolder/Sprite")
 
 [node name="Dependencies" type="Node" parent="."]
@@ -18,8 +21,10 @@ script = ExtResource( 4 )
 dependency_name = "StoryDirector"
 
 [node name="VisualHolder" type="Node2D" parent="."]
+use_parent_material = true
 
 [node name="Sprite" type="Sprite" parent="VisualHolder"]
+use_parent_material = true
 
 [node name="VisualAnimator" type="Node" parent="."]
 script = ExtResource( 1 )

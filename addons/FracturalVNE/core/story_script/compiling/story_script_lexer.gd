@@ -4,6 +4,17 @@ extends Reference
 # Lexes a string of text into tokens for parsing.
 
 
+# ----- Definitions ----- #
+
+const StoryScriptReader = preload("res://addons/FracturalVNE/core/story_script/compiling/story_script_reader.gd")
+const StoryScriptConstants = preload("res://addons/FracturalVNE/core/story_script/story_script_constants.gd")
+const StoryScriptPosition = preload("res://addons/FracturalVNE/core/story_script/story_script_position.gd")
+const StoryScriptError = preload("res://addons/FracturalVNE/core/story_script/story_script_error.gd")
+const StoryScriptUtils = preload("res://addons/FracturalVNE/core/story_script/story_script_utils.gd")
+
+# ----- Definitions ----- #
+
+
 # ----- Constants ----- #
 
 const EOF = "EOF"
@@ -34,7 +45,7 @@ var operators = []
 var punctuation = []
 
 # Lines and columns use 0 indexing 
-var current_token_position = FracVNE.StoryScript.Position.new()
+var current_token_position = StoryScriptPosition.new()
 var previous_indent_level: int
 
 var tokens: Array
@@ -352,7 +363,7 @@ func consume(steps_ahead: int = 1) -> String:
 	return consumed 
 
 
-func peek_position(steps_ahead: int = 1) -> FracVNE.StoryScript.Position:
+func peek_position(steps_ahead: int = 1) -> StoryScriptPosition:
 	var new_position = current_token_position.clone()
 	for i in range(1, steps_ahead + 1):
 		if reader.peek(i) == EOF:
@@ -436,7 +447,7 @@ func add_newline_and_maybe_indent():
 
 
 func is_success(result):
-	return FracVNE.StoryScript.Utils.is_success(result)
+	return StoryScriptUtils.is_success(result)
 
 
 func save_reader_state():
@@ -447,20 +458,20 @@ func load_reader_state(state):
 	reader = state
 
 
-# Returns a FracVNE.StoryScript.Error based on a message and an TokenPosition
-# If position is an INT, then it will return a FracVNE.StoryScript.Error with a token position = the current position + a `position` number of steps
-# If position is not inputted, then it will return a FracVNE.StoryScript.Error with the current token position 
+# Returns a StoryScriptError based on a message and an TokenPosition
+# If position is an INT, then it will return a StoryScriptError with a token position = the current position + a `position` number of steps
+# If position is not inputted, then it will return a StoryScriptError with the current token position 
 func error(message = null, confidence: float = 0, checkpoint = null, position = current_token_position):
 	if checkpoint != null:
 		reader = checkpoint
 	
 	if message == null:
-		return FracVNE.StoryScript.Error.new("", position, confidence)
+		return StoryScriptError.new("", position, confidence)
 	
-	if position is FracVNE.StoryScript.Position:
-		return FracVNE.StoryScript.Error.new(message, position.clone(), confidence)
+	if position is StoryScriptPosition:
+		return StoryScriptError.new(message, position.clone(), confidence)
 	elif typeof(position) == TYPE_INT:
-		return FracVNE.StoryScript.Error.new(message, peek_position(position), confidence)
+		return StoryScriptError.new(message, peek_position(position), confidence)
 	assert(false, "Unknown use of error().")
 
 # ----- Core cont. ----- #

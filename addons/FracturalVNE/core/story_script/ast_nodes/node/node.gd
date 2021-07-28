@@ -15,12 +15,17 @@ static func get_types() -> Array:
 # ----- Typeable ----- #
 
 
+const StoryScriptPosition = preload("res://addons/FracturalVNE/core/story_script/story_script_position.gd")
+const StoryScriptError = preload("res://addons/FracturalVNE/core/story_script/story_script_error.gd")
+const StoryScriptUtils = preload("res://addons/FracturalVNE/core/story_script/story_script_utils.gd")
+const FracUtils = preload("res://addons/FracturalVNE/core/utils/utils.gd")
+
 var reference_id
 var runtime_block setget set_runtime_block, get_runtime_block
-var position: FracVNE.StoryScript.Position
+var position: StoryScriptPosition
 
 
-func _init(position_ = FracVNE.StoryScript.Position.new()):
+func _init(position_ = StoryScriptPosition.new()):
 	position = position_
 
 
@@ -55,11 +60,11 @@ func debug_string(tabs_string: String) -> String:
 # ----- Error ----- #
 
 func is_success(result):
-	return FracVNE.StoryScript.Utils.is_success(result)
+	return StoryScriptUtils.is_success(result)
 
 
 func error(message: String):
-	return FracVNE.StoryScript.Error.new(message, position)
+	return StoryScriptError.new(message, position)
 
 
 func throw_error(error):
@@ -71,11 +76,11 @@ func throw_error(error):
 
 
 func stack_error(error, message = ""):
-	if error is FracVNE.StoryScript.Error.ErrorStack:
+	if error is StoryScriptError.ErrorStack:
 		error.add_error(error(message))
 		return error
-	elif error is FracVNE.StoryScript.Error:
-		var err_stack = FracVNE.StoryScript.Error.ErrorStack.new([error])
+	elif error is StoryScriptError:
+		var err_stack = StoryScriptError.ErrorStack.new([error])
 		err_stack.add_error(error(message))
 		return err_stack
 	else:

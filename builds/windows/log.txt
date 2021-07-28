@@ -1,0 +1,45 @@
+Godot Engine v3.3.2.stable.mono.official - https://godotengine.org
+OpenGL ES 2.0 Renderer: NVIDIA Quadro T2000 with Max-Q Design/PCIe/SSE2
+OpenGL ES Batching: ON
+ 
+Mono: Log file is: 'C:/Users/Alan/AppData/Roaming/Godot/app_userdata/FracturalVisualNovelEngine/mono/mono_logs/2021-07-28_18.43.35_84280.log'
+SCRIPT ERROR: GDScript::load_byte_code: Parse Error: The identifier "EditorPlugin" isn't a valid type (not a script or class), or couldn't be found on base "self".
+          At: res://addons/FracturalVNE/plugin/plugin_assets_registry.gdc:10
+ERROR: load_byte_code: Method failed. Returning: ERR_PARSE_ERROR
+   At: modules/gdscript/gdscript.cpp:785
+ERROR: Cannot load byte code from file 'res://addons/FracturalVNE/plugin/plugin_assets_registry.gdc'.
+   At: modules/gdscript/gdscript.cpp:2235
+ERROR: Failed loading resource: res://addons/FracturalVNE/plugin/plugin_assets_registry.gdc. Make sure resources have been imported by opening the project in the editor at least once.
+   At: core/io/resource_loader.cpp:282
+SCRIPT ERROR: GDScript::load_byte_code: Parse Error: Can't preload resource at path: res://addons/FracturalVNE/plugin/plugin_assets_registry.gd
+          At: res://addons/FracturalVNE/plugin/ui/story_script_editor.gdc:11
+ERROR: load_byte_code: Method failed. Returning: ERR_PARSE_ERROR
+   At: modules/gdscript/gdscript.cpp:785
+ERROR: Cannot load byte code from file 'res://addons/FracturalVNE/plugin/ui/story_script_editor.gdc'.
+   At: modules/gdscript/gdscript.cpp:2235
+ERROR: Failed loading resource: res://addons/FracturalVNE/plugin/ui/story_script_editor.gdc. Make sure resources have been imported by opening the project in the editor at least once.
+   At: core/io/resource_loader.cpp:282
+ERROR: poll: res://addons/FracturalVNE/plugin/ui/story_script_editor.tscn:7 - Parse Error: [ext_resource] referenced nonexistent resource at: res://addons/FracturalVNE/plugin/ui/story_script_editor.gd
+   At: scene/resources/resource_format_text.cpp:440
+ERROR: Failed to load resource 'res://addons/FracturalVNE/plugin/ui/story_script_editor.tscn'.
+   At: core/io/resource_loader.cpp:212
+ERROR: Failed loading resource: res://addons/FracturalVNE/plugin/ui/story_script_editor.tscn. Make sure resources have been imported by opening the project in the editor at least once.
+   At: core/io/resource_loader.cpp:282
+ERROR: poll: res://addons/FracturalVNE/plugin/standalone_story_editor_init.tscn:3 - Parse Error: [ext_resource] referenced nonexistent resource at: res://addons/FracturalVNE/plugin/ui/story_script_editor.tscn
+   At: scene/resources/resource_format_text.cpp:440
+ERROR: Failed to load resource 'res://addons/FracturalVNE/plugin/standalone_story_editor_init.tscn'.
+   At: core/io/resource_loader.cpp:212
+ERROR: Failed loading resource: res://addons/FracturalVNE/plugin/standalone_story_editor_init.tscn. Make sure resources have been imported by opening the project in the editor at least once.
+   At: core/io/resource_loader.cpp:282
+ERROR: Failed loading scene: res://addons/FracturalVNE/plugin/standalone_story_editor_init.tscn
+   At: main/main.cpp:1961
+ERROR: ~List: Condition "_first != __null" is true.
+   At: ./core/self_list.h:112
+ERROR: ~List: Condition "_first != __null" is true.
+   At: ./core/self_list.h:112
+WARNING: cleanup: ObjectDB instances leaked at exit (run with --verbose for details).
+     At: core/object.cpp:2132
+ERROR: clear: Resources still in use at exit (run with --verbose for details).
+   At: core/resource.cpp:450
+ERROR: There are still MemoryPool allocs in use at exit!
+   At: core/pool_vector.cpp:66

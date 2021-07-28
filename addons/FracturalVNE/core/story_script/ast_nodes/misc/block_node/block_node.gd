@@ -66,7 +66,7 @@ func get_variable(name: String):
 	elif get_runtime_block() != null:
 		return get_runtime_block().get_variable(name)
 	else:
-		return FracVNE.StoryScript.Error.new('Variable named "%s" could not be found.' % name)
+		return StoryScriptError.new('Variable named "%s" could not be found.' % name)
 
 
 func set_variable(name: String, value):
@@ -75,7 +75,7 @@ func set_variable(name: String, value):
 	elif get_runtime_block() != null:
 		get_runtime_block().set_variable(name)
 	else:
-		FracVNE.StoryScript.Error.new('Variable named "%s" could not be found.' % name)
+		StoryScriptError.new('Variable named "%s" could not be found.' % name)
 
 
 func declare_variable(name: String, value = null):
