@@ -5,7 +5,7 @@ extends "res://addons/FracturalVNE/core/story_script/ast_nodes/statements/steppe
 
 # ----- Typeable ----- #
 
-static func get_types() -> Array:
+func get_types() -> Array:
 	var arr = .get_types()
 	arr.append("say")
 	return arr
@@ -17,26 +17,30 @@ const SayEntry = preload("res://addons/FracturalVNE/core/story/history/history_e
 
 var character
 var text
+var printer
 
 
-func _init(position_ = null, character_ = null, text_ = null).(position_):
+func _init(position_ = null, character_ = null, text_ = null, printer_ = null).(position_):
 	character = character_
 	text = text_
+	printer = printer_
 
 
 func execute():
-	var text_printer = get_runtime_block().get_service("TextPrinter")
+	var text_printer_controller
+	if printer == null:
+		text_printer_controller = get_runtime_block().get_service("TextPrinterManager").get_default_text_printer_controller()
 	var history_manager = get_runtime_block().get_service("HistoryManager")
 	
 	if character == null:
-		text_printer.narrate(text)
+		text_printer_controller.narrate(text)
 		history_manager.add_entry(SayEntry.new(null, text))
 	else:
 		var character_result = character.evaluate()
 		if not is_success(character_result):
 			throw_error(character_result)
 			return
-		text_printer.say(character_result, text)
+		text_printer_controller.say(character_result, text)
 		history_manager.add_entry(SayEntry.new(character_result, text))
 	.execute()
 

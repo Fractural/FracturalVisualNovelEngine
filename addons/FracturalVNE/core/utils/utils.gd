@@ -32,7 +32,7 @@ static func get_type_name(p_value):
 
 
 static func is_type(object, type):
-	return object is Object and object.has_method("is_type") and object.is_type(type)
+	return object is Object and object.has_method("get_types") and object.get_types().has(type)
 
 
 static func reparent(node: Node, new_parent: Node):

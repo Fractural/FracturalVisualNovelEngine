@@ -1,10 +1,10 @@
 extends "res://addons/FracturalVNE/core/story_script/ast_nodes/statements/statement/statement_node.gd"
-# Moves a visual to a position with an optional smoothing.
+# Moves an actor to a position with an optional smoothing.
 
 
 # ----- Typeable ----- #
 
-static func get_types() -> Array:
+func get_types() -> Array:
 	var arr = .get_types()
 	arr.append("move")
 	return arr
@@ -12,26 +12,26 @@ static func get_types() -> Array:
 # ----- Typeable ----- #
 
 
-const MoveAction = preload("res://addons/FracturalVNE/core/visuals/movement/move_action.gd")
+const MoveAction = preload("res://addons/FracturalVNE/core/actor/movement/move_action.gd")
 
-var visual
+var actor
 var target_position
 var travel_curve
 var duration
 
 
-func _init(position_ = null, visual_ = null, target_position_ = null, travel_curve_ = null, duration_ = null).(position_):
-	visual = visual_
+func _init(position_ = null, actor_ = null, target_position_ = null, travel_curve_ = null, duration_ = null).(position_):
+	actor = actor_
 	target_position = target_position_
 	travel_curve = travel_curve_
 	duration = duration_
 
 
 func execute():
-	var visual_result = visual.evaluate()
+	var actor_result = actor.evaluate()
 	
-	if not is_success(visual_result):
-		throw_error(stack_error(visual_result, "Could not evaluate the Visual."))
+	if not is_success(actor_result):
+		throw_error(stack_error(actor_result, "Could not evaluate the actor."))
 		return
 	
 	var target_position_result = target_position.evaluate()
@@ -72,22 +72,22 @@ func execute():
 			# which is 1 second
 			duration_result = 1
 	
-	if visual_result is Object:
-		if visual_result.is_type("Character"):
-			visual_result = visual_result.visual
+	if actor_result is Object:
+		if FracUtils.is_type(actor_result, "Character"):
+			actor_result = actor_result.visual
 		
-		if visual_result.is_type("Visual"):
-			var visual_controller = get_runtime_block().get_service("VisualManager").get_or_load_visual_controller(visual_result)
-			if not is_success(visual_controller):
-				throw_error(stack_error(visual_controller, "Could not load visual controller for the move statement."))
+		if FracUtils.is_type(actor_result, "Actor"):
+			var actor_controller = get_runtime_block().get_service("ActorManager").get_or_load_actor_controller(actor_result)
+			if not is_success(actor_controller):
+				throw_error(stack_error(actor_controller, "Could not load actor controller for the move statement."))
 				return
-			visual_controller.visual_mover.move(target_position_result, travel_curve_result, duration_result, MoveAction.new(visual_controller.visual_mover))
+			actor_controller.actor_mover.move(target_position_result, travel_curve_result, duration_result, MoveAction.new(actor_controller.actor_mover))
 			.execute()
 		else:
-			throw_error(error("Expected a visual for the move statement."))
+			throw_error(error("Expected an actor for the move statement."))
 			return
 	else:
-		throw_error(error("Expected a visual for the move statement."))
+		throw_error(error("Expected an actor for the move statement."))
 		return
 	
 
@@ -97,9 +97,9 @@ func debug_string(tabs_string: String) -> String:
 	
 	string += "\n" + tabs_string + "{"
 	
-	string += "\n" + tabs_string + "\tVISUAL: "
+	string += "\n" + tabs_string + "\tactor: "
 	string += "\n" + tabs_string + "\t{"
-	string += visual.debug_string(tabs_string + "\t\t")
+	string += actor.debug_string(tabs_string + "\t\t")
 	string += "\n" + tabs_string + "\t}"
 
 	string += "\n" + tabs_string + "\tTARGET POS: "
@@ -121,7 +121,7 @@ func propagate_call(method, arguments = [], parent_first = false):
 	if parent_first:
 		.propagate_call(method, arguments, parent_first)
 	
-	visual.propagate_call(method, arguments, parent_first)
+	actor.propagate_call(method, arguments, parent_first)
 	target_position.propagate_call(method, arguments, parent_first)
 	if travel_curve != null:
 		travel_curve.propagate_call(method, arguments, parent_first)
@@ -134,7 +134,7 @@ func propagate_call(method, arguments = [], parent_first = false):
 
 func serialize():
 	var serialized_object = .serialize()
-	serialized_object["visual"] = visual.serialize()
+	serialized_object["actor"] = actor.serialize()
 	serialized_object["target_position"] = target_position.serialize()
 	if travel_curve != null:
 		serialized_object["travel_curve"] = travel_curve.serialize()
@@ -146,7 +146,7 @@ func serialize():
 
 func deserialize(serialized_object):	
 	var instance = .deserialize(serialized_object)
-	instance.visual = SerializationUtils.deserialize(serialized_object["visual"])
+	instance.actor = SerializationUtils.deserialize(serialized_object["actor"])
 	instance.target_position = SerializationUtils.deserialize(serialized_object["target_position"])
 	if serialized_object.has("travel_curve"):
 		instance.travel_curve = SerializationUtils.deserialize(serialized_object["travel_curve"])

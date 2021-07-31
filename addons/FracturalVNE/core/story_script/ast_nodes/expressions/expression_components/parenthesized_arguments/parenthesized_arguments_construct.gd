@@ -57,7 +57,7 @@ func parse(parser):
 				elif parser.is_success(parser.expect_token("punctuation", ")")):
 					break
 				else:
-					return parser.error('Expected a "," or a ")" after a argument.', 1, checkpoint)
+					return parser.error('Expected a "," or a ")" after an argument.', 1, checkpoint)
 		return ArgumentGroupNode.new(open_paren.position, arguments)
 	else:
 		return open_paren

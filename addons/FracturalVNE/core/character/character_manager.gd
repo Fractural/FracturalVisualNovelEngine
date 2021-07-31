@@ -23,20 +23,20 @@ func get_service_name():
 const Character = preload("character.gd")
 
 export var reference_registry_path: NodePath
-export var story_gui_configurer_path: NodePath
+export var text_printer_manager_path: NodePath
 
 var characters: Array
 
 onready var reference_registry = get_node(reference_registry_path)
-onready var story_gui_configurer = get_node(story_gui_configurer_path)
+onready var text_printer_manager = get_node(text_printer_manager_path)
 
 
 func _post_ready():
 	function_definitions = [
 		FuncDef.new("Character", [
 			Param.new("name"),
-			Param.new("name_color", story_gui_configurer.story_gui.text_printer.default_name_color),
-			Param.new("dialogue_color", story_gui_configurer.story_gui.text_printer.default_dialogue_color),
+			Param.new("name_color", text_printer_manager.get_default_text_printer().default_name_color),
+			Param.new("dialogue_color", text_printer_manager.get_default_text_printer().default_dialogue_color),
 			Param.new("visual")
 		]),
 	]

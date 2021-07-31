@@ -1,10 +1,11 @@
+class_name FracVNE_SingleVisual
 extends "res://addons/FracturalVNE/core/visuals/types/visual.gd"
 # Builds SingleVisuals.
 
 
 # ----- Typeable ----- #
 
-static func get_types() -> Array:
+func get_types() -> Array:
 	var arr = .get_types()
 	arr.append("SingleVisual")
 	return arr
@@ -12,14 +13,14 @@ static func get_types() -> Array:
 # ----- Typeable ----- #
 
 
-var texture_path
+export var texture_path: String
 
 
-func _init(cached_ = null, texture_path_ = null).(cached_):
+func _init(cached_ = false, texture_path_ = "").(cached_):
 	texture_path = texture_path_
 
 
-func _get_visual_prefab():
+func _get_controller_prefab_path():
 	return preload("single_visual.tscn")
 
 

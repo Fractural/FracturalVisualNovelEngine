@@ -1,26 +1,43 @@
-[gd_scene load_steps=18 format=2]
+[gd_scene load_steps=5 format=2]
 
 [ext_resource path="res://addons/FracturalVNE/default_assets/transitions/cross_fade/cross_fade.gd" type="Script" id=1]
-[ext_resource path="res://addons/FracturalVNE/core/transitions/story_script_transition.gd" type="Script" id=2]
-[ext_resource path="res://addons/FracturalVNE/default_assets/transitions/fade_to_color/tint_color.shader" type="Shader" id=3]
-[ext_resource path="res://addons/FracturalVNE/core/transitions/runnable_behaviours/single_transition/reparent_transitioning_node.gd" type="Script" id=4]
-[ext_resource path="res://addons/FracturalVNE/core/runnable_behaviour/call_behaviour.gd" type="Script" id=5]
-[ext_resource path="res://addons/FracturalVNE/core/transitions/runnable_behaviours/replace_transition/simultaneous_replace_transition.gd" type="Script" id=6]
-[ext_resource path="res://addons/FracturalVNE/core/transitions/runnable_data/replace_transition/paired_transition.gd" type="Script" id=7]
-[ext_resource path="res://addons/FracturalVNE/core/transitions/runnable_behaviours/single_transition/reparent_back_transitioning_node.gd" type="Script" id=8]
-[ext_resource path="res://addons/FracturalVNE/core/transitions/replace_transition.gd" type="Script" id=9]
-[ext_resource path="res://addons/FracturalVNE/core/runnable_behaviour/runnable_chain.gd" type="Script" id=10]
-[ext_resource path="res://addons/FracturalVNE/core/transitions/single_transition.gd" type="Script" id=12]
-[ext_resource path="res://addons/FracturalVNE/core/runnable_behaviour/timer_iterator_behaviour.gd" type="Script" id=13]
-[ext_resource path="res://addons/FracturalVNE/core/transitions/runnable_behaviours/single_transition/set_visibility.gd" type="Script" id=14]
-[ext_resource path="res://addons/FracturalVNE/core/transitions/runnable_behaviours/transition_runnable_root.gd" type="Script" id=15]
+[ext_resource path="res://addons/FracturalVNE/core/actor/transition/actor_transition.gd" type="Script" id=2]
 [ext_resource path="res://addons/FracturalVNE/default_assets/curves/linear.tres" type="Curve" id=16]
-[ext_resource path="res://addons/FracturalVNE/core/utils/node_variable/node_variable.gd" type="Script" id=17]
 
-[sub_resource type="ShaderMaterial" id=1]
-shader = ExtResource( 3 )
-shader_param/tint_color = null
-shader_param/tint_amount = null
+[sub_resource type="GDScript" id=1]
+script/source = "extends Node
+# Base class for ReplaceTransitions
+
+
+# ----- Typeable ----- #
+static func get_types() -> Array:
+	return [\"ReplaceTransition\", \"Transition\"]
+
+# ----- Typeable ----- #
+
+
+signal transition_finished()
+
+var is_transitioning: bool = false
+var new_node: Node2D
+var old_node: Node2D
+var duration: float
+
+
+func transition(new_node_: Node2D, old_node_: Node2D, duration_: float):
+	if is_transitioning:
+		return false
+	is_transitioning = true
+	
+	new_node = new_node_
+	old_node = old_node_
+	duration = duration_
+
+
+func _on_transition_finished(skipped):
+	is_transitioning = false
+	emit_signal(\"transition_finished\")
+"
 
 [node name="CrossFade" type="Node2D"]
 script = ExtResource( 2 )
@@ -28,127 +45,20 @@ show_transition_path = NodePath("ShowSingleTransition")
 hide_transition_path = NodePath("HideSingleTransition")
 replace_transition_path = NodePath("ReplaceTransition")
 
-[node name="TODO-Finish building node tree if it" type="Node" parent="."]
-
-[node name="is performant enough" type="Node" parent="TODO-Finish building node tree if it"]
-
 [node name="ShowSingleTransition" type="Node2D" parent="."]
-script = ExtResource( 12 )
-
-[node name="TransNodeHolder" type="Node2D" parent="ShowSingleTransition"]
-material = SubResource( 1 )
-
-[node name="Start" type="Node" parent="ShowSingleTransition"]
-script = ExtResource( 15 )
-runnable_path = NodePath("Chain")
-
-[node name="Chain" type="Node" parent="ShowSingleTransition/Start"]
-script = ExtResource( 10 )
-
-[node name="ReparentTransNode" type="Node" parent="ShowSingleTransition/Start/Chain"]
-script = ExtResource( 4 )
-single_transition_path = NodePath("../../..")
-new_parent_path = NodePath("../../../../HideSingleTransition/TransNodeHolder")
-
-[node name="ShowTransNode" type="Node" parent="ShowSingleTransition/Start/Chain"]
-script = ExtResource( 14 )
-single_transition_path = NodePath("../../..")
-visibility = true
-
-[node name="Iterator" type="Node" parent="ShowSingleTransition/Start/Chain"]
-script = ExtResource( 13 )
-iterated_runnable_path = NodePath("Fade")
-
-[node name="Fade" type="Node" parent="ShowSingleTransition/Start/Chain/Iterator"]
 script = ExtResource( 1 )
 fade_curve = ExtResource( 16 )
-iterator_behaviour_path = NodePath("..")
-node_holder_path = NodePath("../../../../TransNodeHolder")
+node_holder_path = NodePath("ShowNodeHolder")
 
-[node name="ReparentBackTransNode" type="Node" parent="ShowSingleTransition/Start/Chain"]
-script = ExtResource( 8 )
-single_transition_path = NodePath("../../..")
-reparent_behaviour_path = NodePath("../ReparentTransNode")
-
-[node name="Finish" type="Node" parent="ShowSingleTransition/Start/Chain"]
-script = ExtResource( 5 )
-receiver_path = NodePath("../../..")
-function_name = "_on_transition_finished"
+[node name="ShowNodeHolder" type="Node2D" parent="ShowSingleTransition"]
 
 [node name="HideSingleTransition" type="Node2D" parent="."]
-script = ExtResource( 12 )
-
-[node name="TransNodeHolder" type="Node2D" parent="HideSingleTransition"]
-material = SubResource( 1 )
-
-[node name="NodeVariables" type="Node" parent="HideSingleTransition"]
-
-[node name="TransNode" type="Node" parent="HideSingleTransition/NodeVariables"]
-script = ExtResource( 17 )
-
-[node name="Start" type="Node" parent="HideSingleTransition"]
-script = ExtResource( 15 )
-runnable_path = NodePath("Chain")
-transition_path = NodePath("..")
-
-[node name="Chain" type="Node" parent="HideSingleTransition/Start"]
-script = ExtResource( 10 )
-
-[node name="ReparentTransNode" type="Node" parent="HideSingleTransition/Start/Chain"]
-script = ExtResource( 4 )
-single_transition_path = NodePath("../../..")
-new_parent_path = NodePath("../../../TransNodeHolder")
-
-[node name="ShowTransNode" type="Node" parent="HideSingleTransition/Start/Chain"]
-script = ExtResource( 14 )
-single_transition_path = NodePath("../../..")
-visibility = true
-
-[node name="Iterator" type="Node" parent="HideSingleTransition/Start/Chain"]
-script = ExtResource( 13 )
-iterated_runnable_path = NodePath("Fade")
-
-[node name="Fade" type="Node" parent="HideSingleTransition/Start/Chain/Iterator"]
 script = ExtResource( 1 )
+transition_type = 1
 fade_curve = ExtResource( 16 )
-reverse_curve = true
-iterator_behaviour_path = NodePath("..")
-node_holder_path = NodePath("../../../../TransNodeHolder")
+node_holder_path = NodePath("HideNodeHolder")
 
-[node name="HideTransNode" type="Node" parent="HideSingleTransition/Start/Chain"]
-script = ExtResource( 14 )
-single_transition_path = NodePath("../../..")
-
-[node name="ReparentBackTransNode" type="Node" parent="HideSingleTransition/Start/Chain"]
-script = ExtResource( 8 )
-single_transition_path = NodePath("../../..")
-reparent_behaviour_path = NodePath("../ReparentTransNode")
-
-[node name="Finish" type="Node" parent="HideSingleTransition/Start/Chain"]
-script = ExtResource( 5 )
-receiver_path = NodePath("../../..")
-function_name = "_on_transition_finished"
+[node name="HideNodeHolder" type="Node2D" parent="HideSingleTransition"]
 
 [node name="ReplaceTransition" type="Node" parent="."]
-script = ExtResource( 9 )
-
-[node name="PairedTransition" type="Node" parent="ReplaceTransition"]
-script = ExtResource( 7 )
-
-[node name="Start" type="Node" parent="ReplaceTransition"]
-script = ExtResource( 15 )
-runnable_path = NodePath("Chain")
-transition_path = NodePath("..")
-
-[node name="Chain" type="Node" parent="ReplaceTransition/Start"]
-script = ExtResource( 10 )
-
-[node name="SimultaneousShowHide" type="Node" parent="ReplaceTransition/Start/Chain"]
-script = ExtResource( 6 )
-replace_transition_path = NodePath("../../..")
-transition_pair_path = NodePath("../../../PairedTransition")
-
-[node name="Finish" type="Node" parent="ReplaceTransition/Start/Chain"]
-script = ExtResource( 5 )
-receiver_path = NodePath("../../..")
-function_name = "_on_transition_finished"
+script = SubResource( 1 )

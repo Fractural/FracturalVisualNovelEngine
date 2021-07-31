@@ -1,5 +1,6 @@
 extends "res://addons/FracturalVNE/core/story_script/ast_nodes/statements/statement/statement_construct.gd"
 
+
 const AnimateStatement = preload("animate_statement.gd")
 
 

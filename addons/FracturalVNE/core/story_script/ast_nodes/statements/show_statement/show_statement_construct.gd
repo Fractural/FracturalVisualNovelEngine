@@ -1,5 +1,6 @@
 extends "res://addons/FracturalVNE/core/story_script/ast_nodes/statements/statement/statement_construct.gd"
 
+
 const ShowNode = preload("show_statement.gd")
 const MultiVisualShowNode = preload("multi_visual_show_statement.gd")
 
@@ -31,25 +32,25 @@ func parse(parser):
 				# Remove the space at the end of the string
 				modifiers_string = modifiers_string.substr(0, modifiers_string.length() - 1)
 				
-				# Parse optional animation.
-				var animation = _parse_animation(parser)
-				if not parser.is_success(animation):
-					return animation
+				# Parse optional transition.
+				var transition = _parse_transition(parser)
+				if not parser.is_success(transition):
+					return transition
 				
 				if parser.is_success(parser.expect_token("punctuation", "newline")):
-					return MultiVisualShowNode.new(show.position, visual, modifiers_string, animation)
+					return MultiVisualShowNode.new(show.position, visual, modifiers_string, transition)
 				else:
 					return parser.error("Expected a new line to conclude a statement.", 1, checkpoint)
 			else:
 				# We are parsing a normal show statement here.
 				
-				# Parse optional animation.
-				var animation = _parse_animation(parser)
-				if not parser.is_success(animation):
-					return animation
+				# Parse optional transition.
+				var transition = _parse_transition(parser)
+				if not parser.is_success(transition):
+					return transition
 				
 				if parser.is_success(parser.expect_token("punctuation", "newline")):
-					return ShowNode.new(show.position, visual, animation)
+					return ShowNode.new(show.position, visual, transition)
 				else:
 					return parser.error("Expected a new line to conclude a statement.", 1, checkpoint)
 		else:
@@ -60,12 +61,12 @@ func parse(parser):
 		return parser.error(show, 0)
 
 
-func _parse_animation(parser):
+func _parse_transition(parser):
 	var checkpoint = parser.save_reader_state()
 	var with = parser.expect_token("keyword", "with")
 	if parser.is_success(with):
-		var animation = parser.expect("expression")
-		if parser.is_success(animation):
-			return animation
+		var transition = parser.expect("expression")
+		if parser.is_success(transition):
+			return transition
 		else:
-			return parser.error("Expected an expression for the animation after \"with\".", 1, checkpoint)
+			return parser.error("Expected an expression for the transition after \"with\".", 1, checkpoint)

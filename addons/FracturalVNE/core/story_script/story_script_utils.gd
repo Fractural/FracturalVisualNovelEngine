@@ -90,7 +90,6 @@ static func _add_dir_contents(dir: Directory, files: Array, directories: Array, 
 
 	while (file_name != ""):
 		var path = dir.get_current_dir() + "/" + file_name
-
 		if dir.current_is_dir():
 			var subDir = Directory.new()
 			subDir.open(path)
@@ -102,9 +101,14 @@ static func _add_dir_contents(dir: Directory, files: Array, directories: Array, 
 		else:
 			# TODO: Maybe convert file_extensions to a hashtable if performance is necessary?
 			for file_extension in file_extensions:
+				if not Engine.is_editor_hint():
+					# Only .import files are available in the exported builds,
+					# therefore we have to look for those instead.
+					path = path.trim_suffix(".import")
 				if file_extension == path.get_extension():
 					# print("Found file: %s" % path)
-					files.append(path)
+					if not files.has(path):
+						files.append(path)
 					break
 
 		file_name = dir.get_next()

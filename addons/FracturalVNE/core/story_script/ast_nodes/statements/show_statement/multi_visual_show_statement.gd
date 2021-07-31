@@ -5,7 +5,7 @@ extends "show_statement.gd"
 
 # ----- Typeable ----- #
 
-static func get_types() -> Array:
+func get_types() -> Array:
 	var arr = .get_types()
 	arr.append("multivisual show")
 	return arr
@@ -16,39 +16,39 @@ static func get_types() -> Array:
 var modifiers_string
 
 
-func _init(position_ = null, visual_ = null, modifiers_string_ = null, animation_string_ = null).(position_, visual_, animation_string_):
+func _init(position_ = null, actor_ = null, modifiers_string_ = null, transition_ = null).(position_, actor_, transition_):
 	modifiers_string = modifiers_string_
 
 
 func execute():
-	var visual_result = visual.evaluate()
-	if not is_success(visual_result):
-		throw_error(stack_error(visual_result, "Could not evaluate the multi visual."))
+	var actor_result = actor.evaluate()
+	if not is_success(actor_result):
+		throw_error(stack_error(actor_result, "Could not evaluate the multi actor."))
 		return
 	
-	if visual is Object:
-		if FracUtils.is_type(visual_result, "Character"):
-			visual_result = visual_result.visual
+	if actor is Object:
+		if FracUtils.is_type(actor_result, "Character"):
+			actor_result = actor_result.visual
 		
-		if FracUtils.is_type(visual_result, "MultiVisual"):
+		if FracUtils.is_type(actor_result, "MultiVisual"):
 			if modifiers_string != null:
-				var visual_controller = get_runtime_block().get_service("VisualManager").get_or_load_visual_controller(visual_result)
-				if not is_success(visual_controller):
-					throw_error(stack_error(visual_controller, "Could not load visual controller."))
+				var actor_controller = get_runtime_block().get_service("VisualManager").get_or_load_visual_controller(actor_result)
+				if not is_success(actor_controller):
+					throw_error(stack_error(actor_controller, "Could not load actor controller."))
 					return
-				var result = visual_controller.set_sprite(modifiers_string)
+				var result = actor_controller.set_sprite(modifiers_string)
 				if not is_success(result):
 					result.position = position
 					throw_error(result)
 					return
 		else: 
-			throw_error(error("Expected a multi visual for show statements that have modifiers."))
+			throw_error(error("Expected a multi actor for show statements that have modifiers."))
 			return
 	else: 
-		throw_error(error("Expected a multi visual for show statements that have modifiers."))
+		throw_error(error("Expected a multi actor for show statements that have modifiers."))
 		return
 	
-	# All animation is done in execute() function of the parent class (show_statement.gd)
+	# All transition is done in execute() function of the parent class (show_statement.gd)
 	.execute()
 
 
@@ -60,16 +60,16 @@ func debug_string(tabs_string: String) -> String:
 	
 	string += "\n" + tabs_string + "\tVISUAL: "
 	string += "\n" + tabs_string + "\t{"
-	string += "\n" + visual.debug_string(tabs_string + "\t\t")
+	string += "\n" + actor.debug_string(tabs_string + "\t\t")
 	string += "\n" + tabs_string + "\t}"
 	
 	if modifiers_string != null:
 		string += "\n" + tabs_string + "\tMODIFIERS: " + modifiers_string
 	
-	if animation != null:
-		string += "\n" + tabs_string + "\tANIMATION: "
+	if transition != null:
+		string += "\n" + tabs_string + "\tTRANSITION: "
 		string += "\n" + tabs_string + "\t{"
-		string += "\n" + animation.debug_string(tabs_string + "\t\t")
+		string += "\n" + transition.debug_string(tabs_string + "\t\t")
 		string += "\n" + tabs_string + "\t}"
 
 	string += "\n" + tabs_string + "}"
@@ -80,8 +80,8 @@ func propagate_call(method: String, arguments: Array = [], parent_first: bool = 
 	if parent_first:
 		.propagate_call(method, arguments, parent_first)
 	
-	if visual != null:
-		visual.propagate_call(method, arguments, parent_first)
+	if actor != null:
+		actor.propagate_call(method, arguments, parent_first)
 	
 	if not parent_first:
 		.propagate_call(method, arguments, parent_first)
@@ -91,7 +91,7 @@ func propagate_call(method: String, arguments: Array = [], parent_first: bool = 
 
 func serialize():
 	var serialized_object = .serialize()
-	serialized_object["visual"] = visual.serialize()
+	serialized_object["actor"] = actor.serialize()
 	serialized_object["modifiers"] = modifiers_string
 	
 	return serialized_object
@@ -99,7 +99,7 @@ func serialize():
 
 func deserialize(serialized_object):	
 	var instance = .deserialize(serialized_object)
-	instance.visual = SerializationUtils.deserialize(serialized_object["visual"])
+	instance.actor = SerializationUtils.deserialize(serialized_object["actor"])
 	instance.modifiers_string = serialized_object["modifiers"]
 	
 	return instance

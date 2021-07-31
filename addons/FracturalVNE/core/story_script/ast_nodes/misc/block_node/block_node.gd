@@ -4,7 +4,7 @@ extends "res://addons/FracturalVNE/core/story_script/ast_nodes/executable_node/e
 
 # ----- Typeabe ----- #
 
-static func get_types() -> Array:
+func get_types() -> Array:
 	var arr = .get_types()
 	arr.append("block")
 	return arr

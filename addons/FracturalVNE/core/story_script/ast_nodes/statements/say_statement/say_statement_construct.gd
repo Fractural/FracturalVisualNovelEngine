@@ -1,6 +1,8 @@
 extends "res://addons/FracturalVNE/core/story_script/ast_nodes/statements/stepped_node/stepped_node_construct.gd"
 # Parses a say statement in a story script.
 
+# TODO: Add support for specifying the printer to print in
+
 
 const SayNode = preload("res://addons/FracturalVNE/core/story_script/ast_nodes/statements/say_statement/say_statement.gd")
 

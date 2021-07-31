@@ -4,7 +4,7 @@ extends "res://addons/FracturalVNE/core/story_script/ast_nodes/statements/statem
 
 # ----- Typeable ----- #
 
-static func get_types() -> Array:
+func get_types() -> Array:
 	var arr = .get_types()
 	arr.append("scene")
 	return arr

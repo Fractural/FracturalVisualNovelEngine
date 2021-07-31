@@ -1,10 +1,10 @@
 extends "res://addons/FracturalVNE/core/story_script/ast_nodes/statements/statement/statement_node.gd"
-# Shows a visual.
+# Shows a actor.
 
 
 # ----- Typeable ----- #
 
-static func get_types() -> Array:
+func get_types() -> Array:
 	var arr = .get_types()
 	arr.append("show")
 	return arr
@@ -12,58 +12,60 @@ static func get_types() -> Array:
 # ----- Typeable ----- #
 
 
-const TransitionAction = preload("res://addons/FracturalVNE/core/transitions/transition_action.gd")
-# const animation_player_visual_animation_prefab = preload("res://addons/FracturalVNE/core/visuals/animation/types/animation_player_visual_animation.tscn")
+const TransitionAction = preload("res://addons/FracturalVNE/core/actor/transition/transition_action.gd")
+const ANIMATION_PLAYER_TRANSITION_PREFAB = preload("res://addons/FracturalVNE/core/actor/transition/types/animation_player_transition/animation_player_transition.tscn")
 
-var visual
-var animation
+var actor
+var transition
 
 
-func _init(position_ = null, visual_ = null, animation_ = null).(position_):
-	visual = visual_
-	animation = animation_
+func _init(position_ = null, actor_ = null, transition_ = null).(position_):
+	actor = actor_
+	transition = transition_
 
 
 func execute():
-	var transition_result = null
-	if animation != null:
-		var animation_result = animation.evaluate()
+	var transition_instance = null
+	if transition != null:
+		var transition_result = transition.evaluate()
 		
-		
-		if not is_success(animation_result) or not animation_result is PackedScene:
-			throw_error(stack_error(animation_result, "Expected valid StoryScriptTransition for the show statement."))
+		if not is_success(transition_result) or not transition_result is PackedScene:
+			throw_error(stack_error(transition_result, "Expected valid ActorTransition for the show statement."))
 			return
-		 
-		if animation_result is PackedScene:
-			transition_result = animation_result.instance()
-			if not FracUtils.is_type(transition_result, "StoryScriptTransition"):
-				throw_error(stack_error(transition_result, "Expected valid StoryScriptTransition for the show statement."))
+		
+		if transition_result is Animation:
+			transition_instance = ANIMATION_PLAYER_TRANSITION_PREFAB.instance()
+			transition_instance.get_node("HideSingleTransition").animation = transition_result
+		if transition_result is PackedScene:
+			transition_instance = transition_result.instance()
+			if not FracUtils.is_type(transition_instance, "ActorTransition"):
+				throw_error(error("Expected valid ActorTransition for the show statement."))
 				return
 	
-	var visual_result = visual.evaluate()
-	if not is_success(visual_result):
-		throw_error(stack_error(visual_result, "Could not evaluate the visual."))
+	var actor_result = actor.evaluate()
+	if not is_success(actor_result):
+		throw_error(stack_error(actor_result, "Could not evaluate the actor."))
 		return
 	
-	if visual_result is Object:
-		if FracUtils.is_type(visual_result, "Character"):
-			visual_result = visual_result.visual
+	if actor_result is Object:
+		if FracUtils.is_type(actor_result, "Character"):
+			actor_result = actor_result.visual
 		
-		if FracUtils.is_type(visual_result, "Visual"):
+		if FracUtils.is_type(actor_result, "Actor"):
 			var curr_transition_action = null
-			if transition_result != null:
-				curr_transition_action = TransitionAction.new(transition_result)
+			if transition_instance != null:
+				curr_transition_action = TransitionAction.new(transition_instance)
 			
-			var visual_controller = get_runtime_block().get_service("VisualManager").get_or_load_visual_controller(visual_result)
-			if not is_success(visual_controller):
-				throw_error(stack_error(visual_controller, "Could not load visual controller for the show statement."))
+			var actor_controller = get_runtime_block().get_service("ActorManager").get_or_load_actor_controller(actor_result)
+			if not is_success(actor_controller):
+				throw_error(stack_error(actor_controller, "Could not load actor controller for the show statement."))
 				return
-			visual_controller.show(transition_result, curr_transition_action)
+			actor_controller.actor_transitioner.show(transition_instance, curr_transition_action)
 		else: 
-			throw_error(error("Expected a valid visual for the show statement."))
+			throw_error(error("Expected a valid actor for the show statement."))
 			return
 	else: 
-		throw_error(error("Expected a valid visual for the show statement."))
+		throw_error(error("Expected a valid actor for the show statement."))
 		return
 	
 	.execute()
@@ -75,15 +77,15 @@ func debug_string(tabs_string: String) -> String:
 	
 	string += "\n" + tabs_string + "{"
 	
-	string += "\n" + tabs_string + "\tVISUAL: "
+	string += "\n" + tabs_string + "\tACTOR: "
 	string += "\n" + tabs_string + "\t{"
-	string += "\n" + visual.debug_string(tabs_string + "\t\t")
+	string += "\n" + actor.debug_string(tabs_string + "\t\t")
 	string += "\n" + tabs_string + "\t}"
 	
-	if animation != null:
-		string += "\n" + tabs_string + "\tANIMATION: "
+	if transition != null:
+		string += "\n" + tabs_string + "\tTRANSITION: "
 		string += "\n" + tabs_string + "\t{"
-		string += "\n" + animation.debug_string(tabs_string + "\t\t")
+		string += "\n" + transition.debug_string(tabs_string + "\t\t")
 		string += "\n" + tabs_string + "\t}"
 
 	string += "\n" + tabs_string + "}"
@@ -94,9 +96,9 @@ func propagate_call(method, arguments = [], parent_first = false):
 	if parent_first:
 		.propagate_call(method, arguments, parent_first)
 	
-	visual.propagate_call(method, arguments, parent_first)
-	if animation != null:
-		animation.propagate_call(method, arguments, parent_first)
+	actor.propagate_call(method, arguments, parent_first)
+	if transition != null:
+		transition.propagate_call(method, arguments, parent_first)
 	
 	if not parent_first:
 		.propagate_call(method, arguments, parent_first)
@@ -106,18 +108,18 @@ func propagate_call(method, arguments = [], parent_first = false):
 
 func serialize():
 	var serialized_object = .serialize()
-	serialized_object["visual"] = visual.serialize()
-	if animation != null:
-		serialized_object["animation"] = animation.serialize()
+	serialized_object["actor"] = actor.serialize()
+	if transition != null:
+		serialized_object["transition"] = transition.serialize()
 	
 	return serialized_object
 
 
 func deserialize(serialized_object):
 	var instance = .deserialize(serialized_object)
-	instance.visual = SerializationUtils.deserialize(serialized_object["visual"])
-	if serialized_object.has("animation"):
-		instance.animation = SerializationUtils.deserialize(serialized_object["animation"])
+	instance.actor = SerializationUtils.deserialize(serialized_object["actor"])
+	if serialized_object.has("transition"):
+		instance.transition = SerializationUtils.deserialize(serialized_object["transition"])
 	
 	return instance
 

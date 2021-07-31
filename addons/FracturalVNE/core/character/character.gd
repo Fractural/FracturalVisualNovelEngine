@@ -1,23 +1,21 @@
-extends Reference
+class_name FracVNE_Character, "res://addons/FracturalVNE/assets/icons/character.svg"
+extends Resource
 # Stores data about a character.
 # Is used by classes such as TextPrinter. 
 
 
 # ----- Typeable ----- #
 
-func is_type(type: String) -> bool:
-	return get_types().has(type)
-
-static func get_types() -> Array:
+func get_types() -> Array:
 	return ["Character"]
 
 # ----- Typeable ----- #
 
 
-var name
-var name_color
-var dialogue_color
-var visual
+export var name: String
+export var name_color: Color
+export var dialogue_color: Color
+export var visual: Resource
 
 
 func _init(name_ = null, name_color_ = null, dialogue_color_ = null, visual_ = null):

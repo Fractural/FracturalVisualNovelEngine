@@ -1,12 +1,9 @@
-extends Reference
+class_name FracVNE_BGScene, "res://addons/FracturalVNE/assets/icons/bg_scene.svg"
+extends Resource
 # Base class for all scenes
 
 
 # ----- Typeable ----- #
-
-func is_type(type):
-	return get_types().has(type)
-
 
 func get_types():
 	return ["BGScene"]

@@ -1,6 +1,6 @@
 extends "res://addons/FracturalVNE/core/story_script/ast_nodes/expressions/expression_components/value_components/value_component/value_component.gd"
 
-static func get_types():
+func get_types():
 	var arr = .get_types()
 	arr.append("variable")
 	return arr

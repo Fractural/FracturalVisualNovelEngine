@@ -1,9 +1,10 @@
+class_name FracVNE_PrefabVisual
 extends "res://addons/FracturalVNE/core/visuals/types/visual.gd"
 
 
 # ----- Typeable ----- #
 
-static func get_types() -> Array:
+func get_types() -> Array:
 	var arr = .get_types()
 	arr.append("PrefabVisual")
 	return arr
@@ -11,14 +12,14 @@ static func get_types() -> Array:
 # ----- Typeable ----- #
 
 
-var prefab_path
+export var prefab_path: String
 
 
-func _init(cached_ = null, prefab_path_ = null).(cached_):
+func _init(cached_ = false, prefab_path_ = "").(cached_):
 	prefab_path = prefab_path_
 
 
-func _get_visual_prefab():
+func _get_controller_prefab_path():
 	return preload("prefab_visual.tscn")
 
 

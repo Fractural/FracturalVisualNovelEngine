@@ -1,4 +1,4 @@
-[gd_scene load_steps=32 format=2]
+[gd_scene load_steps=35 format=2]
 
 [ext_resource path="res://addons/FracturalVNE/core/story/story_manager.gd" type="Script" id=1]
 [ext_resource path="res://addons/FracturalVNE/core/story/director/story_director.gd" type="Script" id=2]
@@ -31,6 +31,9 @@
 [ext_resource path="res://addons/FracturalVNE/core/scene/types/image_scene/image_scene_controller_serializer.gd" type="Script" id=29]
 [ext_resource path="res://addons/FracturalVNE/core/scene/types/prefab_scene/prefab_scene_controller_serializer.gd" type="Script" id=30]
 [ext_resource path="res://addons/FracturalVNE/core/utils/fps_counter.gd" type="Script" id=31]
+[ext_resource path="res://addons/FracturalVNE/core/gui/text_printer/text_printer_manager.gd" type="Script" id=32]
+[ext_resource path="res://addons/FracturalVNE/core/gui/text_printer/printers/basic_text_printer/basic_text_printer_controller_serializer.gd" type="Script" id=33]
+[ext_resource path="res://addons/FracturalVNE/core/actor/actor_manager.gd" type="Script" id=34]
 
 [node name="Story" type="Node"]
 
@@ -77,14 +80,17 @@ reference_registry_path = NodePath("../../StoryLoader/StoryServices/ReferenceReg
 [node name="SingleVisualControllerSerializer" type="Node" parent="SerializationManager"]
 script = ExtResource( 27 )
 story_director_path = NodePath("../../StoryLoader/StoryServices/StoryDirector")
+reference_registry_path = NodePath("../../StoryLoader/StoryServices/ReferenceRegistry")
 
 [node name="PrefabVisualControllerSerializer" type="Node" parent="SerializationManager"]
 script = ExtResource( 26 )
 story_director_path = NodePath("../../StoryLoader/StoryServices/StoryDirector")
+reference_registry_path = NodePath("../../StoryLoader/StoryServices/ReferenceRegistry")
 
 [node name="MultiVisualControllerSerializer" type="Node" parent="SerializationManager"]
 script = ExtResource( 28 )
 story_director_path = NodePath("../../StoryLoader/StoryServices/StoryDirector")
+reference_registry_path = NodePath("../../StoryLoader/StoryServices/ReferenceRegistry")
 
 [node name="ImageSceneControllerSerializer" type="Node" parent="SerializationManager"]
 script = ExtResource( 29 )
@@ -92,6 +98,11 @@ reference_registry_path = NodePath("../../StoryLoader/StoryServices/ReferenceReg
 
 [node name="PrefabSceneControllerSerializer" type="Node" parent="SerializationManager"]
 script = ExtResource( 30 )
+reference_registry_path = NodePath("../../StoryLoader/StoryServices/ReferenceRegistry")
+
+[node name="BasicTextPrinterControllerSerializer" type="Node" parent="SerializationManager"]
+script = ExtResource( 33 )
+story_director_path = NodePath("../../StoryLoader/StoryServices/StoryDirector")
 reference_registry_path = NodePath("../../StoryLoader/StoryServices/ReferenceRegistry")
 
 [node name="StoryLoader" type="Node" parent="."]
@@ -112,10 +123,26 @@ skip_speed = 0.01
 [node name="ASTNodeLocator" type="Node" parent="StoryLoader/StoryServices"]
 script = ExtResource( 5 )
 
+[node name="ActorManager" type="Node" parent="StoryLoader/StoryServices"]
+script = ExtResource( 34 )
+reference_registry_path = NodePath("../ReferenceRegistry")
+node_2d_actors_holder_path = NodePath("../../../WorldHolder/World/Node2DActorsHolder")
+control_actors_holder_path = NodePath("../../../WorldHolder/ControlActorsHolder")
+story_director_path = NodePath("../StoryDirector")
+serialization_manager_path = NodePath("../../../SerializationManager")
+
+[node name="TextPrinterManager" type="Node" parent="StoryLoader/StoryServices"]
+script = ExtResource( 32 )
+actor_manager_path = NodePath("../ActorManager")
+
+[node name="VisualManager" type="Node" parent="StoryLoader/StoryServices"]
+script = ExtResource( 22 )
+actor_manager_path = NodePath("../ActorManager")
+
 [node name="CharacterManager" type="Node" parent="StoryLoader/StoryServices"]
 script = ExtResource( 8 )
 reference_registry_path = NodePath("../ReferenceRegistry")
-story_gui_configurer_path = NodePath("../../../StoryGUIConfigurer")
+text_printer_manager_path = NodePath("../TextPrinterManager")
 
 [node name="HistoryManager" type="Node" parent="StoryLoader/StoryServices"]
 script = ExtResource( 6 )
@@ -124,13 +151,6 @@ serialization_manager_path = NodePath("../../../SerializationManager")
 
 [node name="ResourceLoader" type="Node" parent="StoryLoader/StoryServices"]
 script = ExtResource( 21 )
-
-[node name="VisualManager" type="Node" parent="StoryLoader/StoryServices"]
-script = ExtResource( 22 )
-reference_registry_path = NodePath("../ReferenceRegistry")
-visuals_holder_path = NodePath("../../../WorldHolder/World/VisualsHolder")
-story_director_path = NodePath("../StoryDirector")
-serialization_manager_path = NodePath("../../../SerializationManager")
 
 [node name="TimerRegistry" type="Node" parent="StoryLoader/StoryServices"]
 script = ExtResource( 14 )
@@ -187,11 +207,18 @@ __meta__ = {
 
 [node name="BGScenesHolder" type="Node2D" parent="WorldHolder/World"]
 
-[node name="VisualsHolder" type="Node2D" parent="WorldHolder/World"]
+[node name="Node2DActorsHolder" type="Node2D" parent="WorldHolder/World"]
 
 [node name="Camera2D" type="Camera2D" parent="WorldHolder/World"]
 current = true
 zoom = Vector2( 2, 2 )
+
+[node name="ControlActorsHolder" type="Control" parent="WorldHolder"]
+anchor_right = 1.0
+anchor_bottom = 1.0
+__meta__ = {
+"_edit_use_anchors_": false
+}
 
 [node name="StoryGUIConfigurer" type="CanvasLayer" parent="."]
 script = ExtResource( 7 )
@@ -211,6 +238,21 @@ dependency_path = NodePath("../../../../Dependencies/StorySaveManagerDependency"
 
 [node name="StoryStateManagerDependency" parent="StoryGUIConfigurer/BasicGUI/Dependencies" index="3"]
 dependency_path = NodePath("../../../../StoryStateManager")
+
+[node name="TextPrinterManagerDependency" parent="StoryGUIConfigurer/BasicGUI/Dependencies" index="4"]
+dependency_path = NodePath("../../../../StoryLoader/StoryServices/TextPrinterManager")
+
+[node name="Holder" parent="StoryGUIConfigurer/BasicGUI/Panel/VBoxContainer/TextPrinterHolder/BasicTextPrinter" index="0"]
+margin_right = 0.0
+
+[node name="HSeparator" parent="StoryGUIConfigurer/BasicGUI/Panel/VBoxContainer/TextPrinterHolder/BasicTextPrinter/Holder/Panel/MarginContainer" index="0"]
+margin_right = 824.0
+
+[node name="NameTextReveal" parent="StoryGUIConfigurer/BasicGUI/Panel/VBoxContainer/TextPrinterHolder/BasicTextPrinter/Holder/Panel/MarginContainer/HSeparator" index="0"]
+margin_right = 824.0
+
+[node name="DialogueTextReveal" parent="StoryGUIConfigurer/BasicGUI/Panel/VBoxContainer/TextPrinterHolder/BasicTextPrinter/Holder/Panel/MarginContainer/HSeparator" index="1"]
+margin_right = 824.0
 
 [node name="StoryRuntimeDebugger" type="CanvasLayer" parent="."]
 layer = 100
@@ -318,5 +360,6 @@ story_manager_path = NodePath("../StoryManager")
 story_runner_dep_path = NodePath("../Dependencies/StoryRunnerDependency")
 
 [editable path="StoryGUIConfigurer/BasicGUI"]
-[editable path="StoryGUIConfigurer/BasicGUI/Panel/VBoxContainer/BasicTextPrinter"]
+[editable path="StoryGUIConfigurer/BasicGUI/Panel/VBoxContainer/TextPrinterHolder/BasicTextPrinter"]
+[editable path="StoryGUIConfigurer/BasicGUI/Panel/VBoxContainer/TextPrinterHolder/BasicTextPrinter/BaseActor"]
 [editable path="StoryGUIConfigurer/BasicGUI/BasicPauseMenu"]

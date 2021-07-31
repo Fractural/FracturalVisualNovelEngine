@@ -303,7 +303,3 @@ func __dump_tree(n: Node, ind: String="", allow: bool = false) -> void:
 		__dump_tree(chld, ind + "    ", allow)
 
 # ----- Scene Walking/Debug ----- #
-
-# TODO NOW: Implement another dummy NodePath export var which will serve
-#			as a node dedicated to fetching icons. There will be a set_connection_icon_queue
-#			of icon requests that this node will slowly satisfy.

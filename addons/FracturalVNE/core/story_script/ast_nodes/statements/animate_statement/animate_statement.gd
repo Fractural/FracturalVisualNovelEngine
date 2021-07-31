@@ -1,10 +1,10 @@
 extends "res://addons/FracturalVNE/core/story_script/ast_nodes/statements/statement/statement_node.gd"
-# Animates a visual.
+# Animates an actor.
 
 
 # ----- Typeable ----- #
 
-static func get_types() -> Array:
+func get_types() -> Array:
 	var arr = .get_types()
 	arr.append("animate")
 	return arr
@@ -12,63 +12,63 @@ static func get_types() -> Array:
 # ----- Typeable ----- #
 
 
-const AnimationAction = preload("res://addons/FracturalVNE/core/visuals/animation/animation_action.gd")
-const animation_player_visual_animation_prefab = preload("res://addons/FracturalVNE/core/visuals/animation/types/animation_player_visual_animation.tscn")
+const AnimationAction = preload("res://addons/FracturalVNE/core/actor/animation/animation_action.gd")
+const ANIMATION_PLAYER_ANIMATION_PREFAB = preload("res://addons/FracturalVNE/core/actor/animation/types/animation_player_animation/animation_player_animation.tscn")
 
-var visual
+var actor
 var animation
 
 
-func _init(position_ = null, visual_ = null, animation_string_ = null).(position_):
-	visual = visual_
+func _init(position_ = null, actor_ = null, animation_string_ = null).(position_):
+	actor = actor_
 	animation = animation_string_
 
 
 func execute():
-	var visual_animation_result = null
+	var actor_animation_result = null
 	if animation != null:
 		var animation_result = animation.evaluate()
 		
 		if not is_success(animation_result) or not (animation_result is Animation or animation_result is PackedScene):
-			throw_error(stack_error(animation_result, "Expected valid Animation or VisualAnimation for the animate statement."))
+			throw_error(stack_error(animation_result, "Expected valid Animation or ActorAnimation for the animate statement."))
 			return
 		
 		if animation_result is Animation:
-			visual_animation_result = animation_player_visual_animation_prefab.instance()
+			actor_animation_result = ANIMATION_PLAYER_ANIMATION_PREFAB.instance()
 			var animation_name: String = animation_result.get_path().get_basename().get_file()
-			var animation_player = visual_animation_result.get_node(visual_animation_result.animation_player_path)
+			var animation_player = actor_animation_result.get_node(actor_animation_result.animation_player_path)
 			animation_player.add_animation(animation_name, animation_result)
 			animation_player.assigned_animation = animation_name
 		elif animation_result is PackedScene:
-			visual_animation_result = animation_result.instance()
-			if not FracUtils.is_type(visual_animation_result, "VisualAnimation"):
-				throw_error(stack_error(visual_animation_result, "Expected valid VisualAnimation for the animate statement."))
+			actor_animation_result = animation_result.instance()
+			if not FracUtils.is_type(actor_animation_result, "ActorAnimation"):
+				throw_error(stack_error(actor_animation_result, "Expected valid ActorAnimation for the animate statement."))
 				return
 	
-	var visual_result = visual.evaluate()
-	if not is_success(visual_result):
-		throw_error(stack_error(visual_result, "Could not evaluate the visual."))
+	var actor_result = actor.evaluate()
+	if not is_success(actor_result):
+		throw_error(stack_error(actor_result, "Could not evaluate the actor."))
 		return
 	
-	if visual_result is Object:
-		if FracUtils.is_type(visual_result, "Character"):
-			visual_result = visual_result.visual
+	if actor_result is Object:
+		if FracUtils.is_type(actor_result, "Character"):
+			actor_result = actor_result.visual
 		
-		if FracUtils.is_type(visual_result, "Visual"):
+		if FracUtils.is_type(actor_result, "Actor"):
 			var curr_animation_action = null
-			if visual_animation_result != null:
-				curr_animation_action = AnimationAction.new(visual_animation_result, true)
+			if actor_animation_result != null:
+				curr_animation_action = AnimationAction.new(actor_animation_result, true)
 			
-			var visual_controller = get_runtime_block().get_service("VisualManager").get_or_load_visual_controller(visual_result)
-			if not is_success(visual_controller):
-				throw_error(stack_error(visual_controller, "Could not load visual controller for the animate statement."))
+			var actor_controller = get_runtime_block().get_service("ActorManager").get_or_load_actor_controller(actor_result)
+			if not is_success(actor_controller):
+				throw_error(stack_error(actor_controller, "Could not load actor controller for the animate statement."))
 				return
-			visual_controller.visual_animator.play_animation(visual_animation_result, curr_animation_action)
+			actor_controller.actor_animator.play_animation(actor_animation_result, curr_animation_action)
 		else: 
-			throw_error(error("Expected a visual for the animate statement."))
+			throw_error(error("Expected an actor for the animate statement."))
 			return
 	else: 
-		throw_error(error("Expected a visual for the animate statement."))
+		throw_error(error("Expected an actor for the animate statement."))
 		return
 	
 	.execute()
@@ -80,9 +80,9 @@ func debug_string(tabs_string: String) -> String:
 	
 	string += "\n" + tabs_string + "{"
 	
-	string += "\n" + tabs_string + "\tVISUAL: "
+	string += "\n" + tabs_string + "\tACTOR: "
 	string += "\n" + tabs_string + "\t{"
-	string += "\n" + visual.debug_string(tabs_string + "\t\t")
+	string += "\n" + actor.debug_string(tabs_string + "\t\t")
 	string += "\n" + tabs_string + "\t}"
 	
 	if animation != null:
@@ -99,7 +99,7 @@ func propagate_call(method, arguments = [], parent_first = false):
 	if parent_first:
 		.propagate_call(method, arguments, parent_first)
 	
-	visual.propagate_call(method, arguments, parent_first)
+	actor.propagate_call(method, arguments, parent_first)
 	if animation != null:
 		animation.propagate_call(method, arguments, parent_first)
 	
@@ -111,7 +111,7 @@ func propagate_call(method, arguments = [], parent_first = false):
 
 func serialize():
 	var serialized_object = .serialize()
-	serialized_object["visual"] = visual.serialize()
+	serialized_object["actor"] = actor.serialize()
 	if animation != null:
 		serialized_object["animation"] = animation.serialize()
 	
@@ -120,7 +120,7 @@ func serialize():
 
 func deserialize(serialized_object):	
 	var instance = .deserialize(serialized_object)
-	instance.visual = SerializationUtils.deserialize(serialized_object["visual"])
+	instance.actor = SerializationUtils.deserialize(serialized_object["actor"])
 	if serialized_object.has("animation"):
 		instance.animation = SerializationUtils.deserialize(serialized_object["animation"])
 	

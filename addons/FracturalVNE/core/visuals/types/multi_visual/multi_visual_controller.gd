@@ -3,7 +3,7 @@ extends "res://addons/FracturalVNE/core/visuals/types/visual_controller.gd"
 
 # ----- Typeable ----- #
 
-static func get_types() -> Array:
+func get_types() -> Array:
 	var arr = .get_types()
 	arr.append("MultiVisualController")
 	return arr
@@ -24,14 +24,19 @@ var textures_dict: Dictionary
 onready var sprite = get_node(sprite_path)
 
 
-func init(visual_, story_director_):
+func init(visual_ = null, story_director_ = null):
 	.init(visual_, story_director_)
 	
 	sprite = get_node(sprite_path)
 	
-	var image_paths = SSUtils.get_dir_files(visual.textures_directory, true, ["png", "jpeg", "jpg", "bmp"])
+	var image_paths
+	var image_extensions = ["png", "jpeg", "jpg", "bmp"]
+	
+	image_paths = SSUtils.get_dir_files(get_visual().textures_directory, true, image_extensions)
+	
+	print("image paths: %s" % str(image_paths))
 	if not SSUtils.is_success(image_paths):
-		return SSUtils.stack_error(image_paths, "Could not load the texture directory of \"%s\"." % visual.textures_directory)
+		return SSUtils.stack_error(image_paths, "Could not load the texture directory of \"%s\"." % get_visual().textures_directory)
 	
 	textures = []
 	for path in image_paths:

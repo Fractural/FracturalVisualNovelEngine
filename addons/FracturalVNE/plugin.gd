@@ -4,10 +4,7 @@ extends EditorPlugin
 
 # ----- Typeable ----- #
 
-func is_type(type: String) -> bool:
-	return get_types().has(type)
-
-static func get_types() -> Array:
+func get_types() -> Array:
 	return ["Plugin"]
 
 # ----- Typeable ----- #
@@ -62,7 +59,6 @@ func _setup_inspector_plugins():
 
 func add_custom_inspector_plugin(instance: EditorInspectorPlugin):
 	if instance.has_method("_setup_editor_assets"):
-		print("Setting up with " + str(assets_registry))
 		instance._setup_editor_assets(assets_registry)
 	add_inspector_plugin(instance)
 	inspector_plugins.append(instance)

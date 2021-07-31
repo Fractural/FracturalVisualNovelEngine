@@ -19,4 +19,3 @@ func _ready():
 	# which facilitates quick drag-and-drop implementation of new StoryGUI. 
 	assert(story_gui_holder.get_child_count() == 1 and (story_gui_holder.get_child(0) is StoryGUI), "StoryGUIConfigurer must have a single StoryGUI node as a child.")
 	story_gui = story_gui_holder.get_child(0)
-	story_loader.services.append(story_gui.text_printer)

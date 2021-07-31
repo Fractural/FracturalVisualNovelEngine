@@ -6,7 +6,7 @@ signal executed()
 
 # ----- Typeable ----- #
 
-static func get_types() -> Array:
+func get_types() -> Array:
 	var arr = .get_types()
 	arr.append("executable")
 	return arr

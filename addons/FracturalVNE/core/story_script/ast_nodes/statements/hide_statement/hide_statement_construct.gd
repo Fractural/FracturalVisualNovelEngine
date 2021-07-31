@@ -1,5 +1,6 @@
 extends "res://addons/FracturalVNE/core/story_script/ast_nodes/statements/statement/statement_construct.gd"
 
+
 const HideNode = preload("hide_statement.gd")
 
 
@@ -19,13 +20,13 @@ func parse(parser):
 	if parser.is_success(hide):
 		var visual = parser.expect("expression")
 		if parser.is_success(visual):
-			# Parse optional animation.
-			var animation = _parse_animation(parser)
-			if not parser.is_success(animation):
-				return animation
+			# Parse optional transition.
+			var transition = _parse_transition(parser)
+			if not parser.is_success(transition):
+				return transition
 			
 			if parser.is_success(parser.expect_token("punctuation", "newline")):
-				return HideNode.new(hide.position, visual, animation)
+				return HideNode.new(hide.position, visual, transition)
 			else:
 				return parser.error("Expected a new line to conclude a statement.", 1, checkpoint)
 		else:
@@ -36,12 +37,12 @@ func parse(parser):
 		return parser.error(hide, 0)
 
 
-func _parse_animation(parser):
+func _parse_transition(parser):
 	var checkpoint = parser.save_reader_state()
 	var with = parser.expect_token("keyword", "with")
 	if parser.is_success(with):
-		var animation = parser.expect("expression")
-		if parser.is_success(animation):
-			return animation
+		var transition = parser.expect("expression")
+		if parser.is_success(transition):
+			return transition
 		else:
-			return parser.error("Expected an expression for the animation after \"with\".", 1, checkpoint)
+			return parser.error("Expected an expression for the transition after \"with\".", 1, checkpoint)

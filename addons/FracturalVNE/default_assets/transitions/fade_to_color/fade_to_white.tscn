@@ -4,5 +4,5 @@
 
 [node name="FadeToBlack" instance=ExtResource( 1 )]
 
-[node name="Color" parent="Variables" index="0"]
-value = Color( 1, 1, 1, 1 )
+[node name="NodeHolder" parent="." index="0"]
+tint_color = Color( 1, 1, 1, 1 )

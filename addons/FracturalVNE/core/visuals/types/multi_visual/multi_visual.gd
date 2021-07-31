@@ -1,9 +1,10 @@
+class_name FracVNE_MultiVisual
 extends "res://addons/FracturalVNE/core/visuals/types/visual.gd"
 
 
 # ----- Typeable ----- #
 
-static func get_types() -> Array:
+func get_types() -> Array:
 	var arr = .get_types()
 	arr.append("MultiVisual")
 	return arr
@@ -11,14 +12,14 @@ static func get_types() -> Array:
 # ----- Typeable ----- #
 
 
-var textures_directory
+export var textures_directory: String
 
 
-func _init(cached_ = null, textures_directory_ = null).(cached_):
+func _init(cached_ = false, textures_directory_ = "").(cached_):
 	textures_directory = textures_directory_
 
 
-func _get_visual_prefab():
+func _get_controller_prefab_path():
 	return preload("multi_visual.tscn")
 
 

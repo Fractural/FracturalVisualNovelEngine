@@ -4,10 +4,6 @@ extends Node2D
 
 # ----- Typeable ----- #
 
-func is_type(type):
-	return get_types().has(type)
-
-
 func get_types():
 	return ["BGSceneController"]
 
