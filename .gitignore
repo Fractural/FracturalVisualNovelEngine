@@ -12,3 +12,6 @@ data_*/
 
 # VS Code
 .vscode/
+
+# Builds
+builds/
