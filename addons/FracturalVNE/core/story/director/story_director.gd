@@ -55,12 +55,17 @@ export var skip_speed: float = 0.05
 var label_dict: Dictionary
 var curr_stepped_node
 var step_state: int = StepState.MANUAL setget set_step_state
+var curr_active_step_actions: Array
 var _auto_step_timer: Timer
 var _skip_timer: Timer
-var curr_active_step_actions: Array
 
-# Prevents step() from running and increases queue_steps by 1 for every
-# step() that is ran and stopped while override_step is true.
+# If true this will only allow skipping the current active
+# actions while preventing stepping to the next node -- even if
+# the current node is an autostep node.
+#
+# For each step attempted while paused, the queue_steps increases by 1.
+# This feature has so far bene used by the SaveStateManager to enable
+# saving on pause statements.
 var override_step: bool = false
 # Number of steps ran while override_step is true.
 var queued_overridden_steps: int
@@ -160,20 +165,33 @@ func step():
 		return
 
 
+# Skips all current active step actions. If override_auto_step
+# is true, this also prevents auto stepped nodes from automatically
+# calling the next step, and will queue their steps instead to be
+# released manually by release_queued_overridden_steps.
 func skip(override_auto_step: bool = false):
 	if override_auto_step:
 		override_step = true
 	
-	for i in range(curr_active_step_actions.size() - 1, -1, -1):
-		if curr_active_step_actions[i].skippable:
+	var active = curr_active_step_actions;
+	
+	var i = 0
+	var curr_active_step_actions_size = curr_active_step_actions.size()
+	while i < curr_active_step_actions.size() and curr_active_step_actions_size > 0:
+		while curr_active_step_actions[i].skippable: 
 			curr_active_step_actions[i].skip()
 			curr_active_step_actions.remove(i)
+			curr_active_step_actions_size -= 1
+			if i >= curr_active_step_actions.size() or curr_active_step_actions_size <= 0:
+				break
+		i += 1
+		curr_active_step_actions_size -= 1
+	
+	# When pause is removed it causes 0 statements to be left, which
+	# makes auto step activate. How can we get around this?
 	
 	if override_auto_step:
 		override_step = false
-	
-	if step_state == StepState.AUTO_STEP:
-		_auto_step_timer.start()
 
 
 # Executes step() for the number times step was queued while override_step
@@ -197,7 +215,12 @@ func add_step_action(step_action):
 func remove_step_action(step_action):
 	curr_active_step_actions.erase(step_action)
 	if curr_active_step_actions.size() == 0:
-		_step_completed()
+		if curr_stepped_node.is_auto_step():
+			step()
+		else:
+			# Completed autostepped steps are not considered
+			# a normal completed step.
+			_normal_step_completed()
 
 
 func call_label(label_name: String, arguments = []):
@@ -221,6 +244,6 @@ func add_label(label_node):
 		return FracVNE.StoryScript.Error.new("Cannot add \"%s\" label since label named \"%s\" already exists." % [label_node.name, label_node.name])
 
 
-func _step_completed():
+func _normal_step_completed():
 	if step_state == StepState.AUTO_STEP:
 		_auto_step_timer.start()

@@ -34,7 +34,6 @@ func init(visual_ = null, story_director_ = null):
 	
 	image_paths = SSUtils.get_dir_files(get_visual().textures_directory, true, image_extensions)
 	
-	print("image paths: %s" % str(image_paths))
 	if not SSUtils.is_success(image_paths):
 		return SSUtils.stack_error(image_paths, "Could not load the texture directory of \"%s\"." % get_visual().textures_directory)
 	

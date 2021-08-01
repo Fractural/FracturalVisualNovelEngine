@@ -58,7 +58,7 @@ story_director_dep_path = NodePath("../Dependencies/StoryDirectorDependency")
 anchor_top = 1.0
 anchor_right = 1.0
 anchor_bottom = 1.0
-margin_top = -244.0
+margin_top = -240.0
 mouse_filter = 2
 __meta__ = {
 "_edit_use_anchors_": false
@@ -66,7 +66,7 @@ __meta__ = {
 
 [node name="VBoxContainer" type="VBoxContainer" parent="Panel"]
 margin_right = 1024.0
-margin_bottom = 244.0
+margin_bottom = 240.0
 mouse_filter = 2
 custom_constants/separation = 0
 alignment = 2
@@ -76,7 +76,8 @@ __meta__ = {
 
 [node name="TextPrinterHolder" type="Control" parent="Panel/VBoxContainer"]
 margin_right = 1024.0
-margin_bottom = 204.0
+margin_bottom = 200.0
+rect_min_size = Vector2( 0, 200 )
 mouse_filter = 2
 size_flags_vertical = 3
 script = ExtResource( 6 )
@@ -85,22 +86,20 @@ story_director_dep_path = NodePath("../../../Dependencies/StoryDirectorDependenc
 text_printer_manager_dep_path = NodePath("../../../Dependencies/TextPrinterManagerDependency")
 
 [node name="BasicTextPrinter" parent="Panel/VBoxContainer/TextPrinterHolder" instance=ExtResource( 1 )]
-anchor_right = 0.0
-anchor_bottom = 0.0
-margin_right = 1024.0
-margin_bottom = 214.0
+rect_min_size = Vector2( 0, 0 )
+size_flags_horizontal = 3
 size_flags_vertical = 3
 
 [node name="HSeparator" parent="Panel/VBoxContainer/TextPrinterHolder/BasicTextPrinter/Holder/Panel/MarginContainer" index="0"]
-margin_bottom = 194.0
+margin_bottom = 180.0
 
 [node name="DialogueTextReveal" parent="Panel/VBoxContainer/TextPrinterHolder/BasicTextPrinter/Holder/Panel/MarginContainer/HSeparator" index="1"]
-margin_bottom = 194.0
+margin_bottom = 180.0
 
 [node name="Panel" type="Panel" parent="Panel/VBoxContainer"]
-margin_top = 204.0
+margin_top = 200.0
 margin_right = 1024.0
-margin_bottom = 244.0
+margin_bottom = 240.0
 rect_min_size = Vector2( 0, 40 )
 mouse_filter = 2
 

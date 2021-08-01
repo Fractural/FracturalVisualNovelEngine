@@ -198,6 +198,7 @@ enabled=PoolStringArray( "res://addons/FracturalVNE/plugin.cfg" )
 [global]
 
 debug=false
+input=false
 
 [network]
 

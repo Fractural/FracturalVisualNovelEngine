@@ -32,6 +32,10 @@ func narrate(text: String, skippable: bool = true):
 	story_director.add_step_action(curr_print_text_action)
 
 
+func skip():
+	pass
+
+
 func get_text_printer():
 	return get_actor()
 

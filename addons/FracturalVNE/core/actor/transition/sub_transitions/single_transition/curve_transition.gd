@@ -25,7 +25,6 @@ func _process(delta):
 			progress = time / duration
 		_tick(fade_curve.interpolate(progress))
 	else:
-		set_process(false)
 		_on_transition_finished(false)
 
 
@@ -52,6 +51,7 @@ func _final_tick(final_percentage):
 
 
 func _on_transition_finished(skipped):
+	set_process(false)
 	_final_tick(1 if transition_type == TransitionType.SHOW else 0)
 	
 	var original_parent_path = original_node_parent.get_path()

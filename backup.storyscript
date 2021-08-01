@@ -1,0 +1,29 @@
+# ----- Characters ----- #
+#define godette_single_visual = Visual(texture_path="res://addons/FracturalVNE/default_assets/visuals/images/godette_body.png")
+define godette = Character(name="Godette", name_color="#468cbf", dialogue_color="#ffffff", visual=DynamicVisual(textures_directory="res://addons/FracturalVNE/default_assets/visuals/images/dynamic_godette/"))
+
+# ----- Transitions ----- #
+define fade_to_black = load("res://addons/FracturalVNE/default_assets/transitions/fade_to_color/fade_to_black.tscn")
+define cross_fade = load("res://addons/FracturalVNE/default_assets/transitions/cross_fade/cross_fade.tscn")
+
+# ----- Animations ----- #
+define hop = load("res://addons/FracturalVNE/default_assets/visuals/visual_animations/hop.tres")
+
+
+# ----- Curves ----- #
+define smooth_step = load("res://addons/FracturalVNE/default_assets/curves/smooth_step.tres")
+
+
+label looped:
+	# Last show statement should override the previous ones
+	# if they are stacked together.
+	# show godette happy with cross_fade
+	# show godette sad with cross_fade
+	show godette surprised with cross_fade
+	
+	godette "Hi there!"
+	
+	hide godette with cross_fade
+	pause 1
+	
+	jump looped

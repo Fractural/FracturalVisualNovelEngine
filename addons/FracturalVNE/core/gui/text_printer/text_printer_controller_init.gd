@@ -12,6 +12,5 @@ onready var text_printer_manager_dep = get_node(text_printer_manager_dep_path)
 
 
 func _ready():
-	print("Printer init running!")
 	get_child(0).init(text_printer, story_director_dep.dependency)
 	text_printer_manager_dep.dependency.default_text_printer_controller = get_child(0)

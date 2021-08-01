@@ -50,11 +50,8 @@ func load_save_slot(save_slot_id: int):
 	var state = story_save_manager_dep.dependency.get_save_slot(save_slot_id)
 	story_manager.load_story(state.story_file_path)
 	story_manager.story_tree.deserialize_state(state.story_tree_state)
-	# ast_node_locator.find_node_with_id(state.starting_node_id).execute()
-	# The StoryDirector is primed to go the the next node, since the
-	# StoryDirector calls the execute method of the next node
 	story_director.start_step(ast_node_locator.find_node_with_id(state.starting_node_id))
-	if story_director.curr_stepped_node.auto_step == true:
+	if story_director.curr_stepped_node.is_auto_step() == true:
 		story_director.step()
 	emit_signal("state_loaded", state, save_slot_id)
 

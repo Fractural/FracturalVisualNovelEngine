@@ -145,16 +145,14 @@ func _on_transition_finished(skipped):
 
 #	[ ]	Add global constants such as:
 
-#	[ ]	PosLeft and PosRight to represent Vector2 on right and left side of
-#		the screen. These constants could then be used in move statements.
+#		[ ]	PosLeft and PosRight to represent Vector2 on right and left side of
+#			the screen. These constants could then be used in move statements.
 
 #	[X] Use FracVNE.Utils.is_type(object, type) whenever you do a type check
 
 #	[X] When saving, make StoryDirector skip all current actions before saving.
 
 #	[X] Pause the world when the pause menu is up
-
-#	[ ] Finish Scene TransitionTypement parsing
 
 #	[ ] Add custom methods to create animations and scenes to make them look cleaner.
 #		(Maybe add Animation(), Scene(), and Curve() functions similar to how visuals 
@@ -174,4 +172,10 @@ func _on_transition_finished(skipped):
 #		accept a type as a string. If this parameter is blank
 #		then the StoryScript.Param will accept any type.  
 #	[X] Refactor Visual and Scene transitions to use the same universal transition class.
-#	[ ]
+#	[ ] FIX BUGGY AF STORY DIRECTOR
+#		[ ] Find cause of parenting issues with transitions (Likely due to order of execution?)
+#		[ ] Find the cause of auto step skipping the first pause statement in visuals_testing.story_script
+#	[ ] Refactor AST constructs to return arrays of nodes. This allows for statements to return more than
+#		one node to compose new behaviour. Or maybe consider making a special block statement that wraps
+#		around groups of statements to allow for multi-statement returning in the current impelemtnation of
+#		AST construction. 

@@ -20,10 +20,10 @@ var _curr_pause_timer
 var _curr_pause_action
 var _finished
 
+
 func _init(position_ = null, duration_ = null).(position_):
 	duration = duration_
-	# Pause statements will automatically step
-	auto_step = true
+
 
 func execute():
 	_finished = false
@@ -35,6 +35,7 @@ func execute():
 	
 	_curr_pause_action = PauseAction.new(self, true)
 	get_runtime_block().get_service("StoryDirector").add_step_action(_curr_pause_action)
+	get_runtime_block().get_service("StoryDirector").start_step(self)
 	
 	# Might be inefficient if there is a lot of pause statements that last a short time (leading to the creation
 	# and destruciton of a lot of timers)
@@ -45,17 +46,26 @@ func execute():
 	_on_pause_finished(false)
 
 
+func is_auto_step():
+	# Pause statements will automatically step, meaning you can save a save state on
+	# them but they will immediately play when you load a save state on them. 
+	return true
+
+
 func _on_pause_finished(skipped):
 	if not _finished:
 		_finished = true
-	
+		
 		get_runtime_block().get_service("TimerRegistry").remove_timer(_curr_pause_timer)
 		
+		get_runtime_block().get_service("StoryDirector").step()
+		# Remove pause_action last to prevent no actions being present (Since no actions
+		# after removal is used by the auto atepper to check if the current step has finished.)
+		# Not sure if this has any side effects.
 		if not skipped:
 			get_runtime_block().get_service("StoryDirector").remove_step_action(_curr_pause_action)
+		emit_signal("executed")
 		
-		.execute()
-
 
 func debug_string(tabs_string: String) -> String:
 	var string = ""

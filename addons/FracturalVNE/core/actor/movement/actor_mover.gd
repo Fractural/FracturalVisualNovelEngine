@@ -37,8 +37,13 @@ func _process(delta):
 func move(target_position_: Vector2, travel_curve_: Curve = null, duration_: float = 0, move_action = null):
 	if _curr_move_action != null:
 		story_director.remove_step_action(_curr_move_action)
-	_curr_move_action = move_action
-	story_director.add_step_action(_curr_move_action)
+		_curr_move_action = null
+	if travel_curve_ != null:
+		# We have a transition so we have to add a move_action
+		# step action. Any action that does not take time should not
+		# add a step action to the story_director.
+		_curr_move_action = move_action
+		story_director.add_step_action(_curr_move_action)
 	
 	set_process(true)
 	target_position = target_position_
