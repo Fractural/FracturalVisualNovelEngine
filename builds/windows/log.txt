@@ -1,5 +1,0 @@
-Godot Engine v3.3.2.stable.mono.official - https://godotengine.org
-OpenGL ES 2.0 Renderer: NVIDIA Quadro T2000 with Max-Q Design/PCIe/SSE2
-OpenGL ES Batching: ON
- 
-Mono: Log file is: 'C:/Users/Alan/AppData/Roaming/Godot/app_userdata/FracturalVisualNovelEngine/mono/mono_logs/2021-07-28_20.48.40_44352.log'
