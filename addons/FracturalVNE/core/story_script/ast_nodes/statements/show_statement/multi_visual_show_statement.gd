@@ -20,36 +20,23 @@ func _init(position_ = null, actor_ = null, modifiers_string_ = null, transition
 	modifiers_string = modifiers_string_
 
 
-func execute():
-	var actor_result = actor.evaluate()
+func _run_show_transition(actor_transition):
+	var actor_result = evaluate_type("MultiVisual", actor)
 	if not is_success(actor_result):
-		throw_error(stack_error(actor_result, "Could not evaluate the multi actor."))
+		throw_error(stack_error(actor_result, "Could not evaluate the multi visual for the multi visual show statement."))
 		return
 	
-	if actor is Object:
-		if FracUtils.is_type(actor_result, "Character"):
-			actor_result = actor_result.visual
-		
-		if FracUtils.is_type(actor_result, "MultiVisual"):
-			if modifiers_string != null:
-				var actor_controller = get_runtime_block().get_service("VisualManager").get_or_load_visual_controller(actor_result)
-				if not is_success(actor_controller):
-					throw_error(stack_error(actor_controller, "Could not load actor controller."))
-					return
-				var result = actor_controller.set_sprite(modifiers_string)
-				if not is_success(result):
-					result.position = position
-					throw_error(result)
-					return
-		else: 
-			throw_error(error("Expected a multi actor for show statements that have modifiers."))
+	if modifiers_string != null:
+		var actor_controller = get_runtime_block().get_service("VisualManager").get_or_load_visual_controller(actor_result)
+		if not is_success(actor_controller):
+			throw_error(stack_error(actor_controller, "Could not load MultiVisualController."))
 			return
-	else: 
-		throw_error(error("Expected a multi actor for show statements that have modifiers."))
-		return
+		var result = actor_controller.set_sprite(modifiers_string, actor_transition)
+		if not is_success(result):
+			throw_error(stack_error(result, "Could not set MultiVisual sprite."))
+			return
 	
-	# All transition is done in execute() function of the parent class (show_statement.gd)
-	.execute()
+	_finish_execute()
 
 
 func debug_string(tabs_string: String) -> String:

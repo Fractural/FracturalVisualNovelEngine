@@ -32,6 +32,7 @@ func execute():
 	
 	if not is_success(duration_result) or not (duration_result is float or duration_result is int):
 		throw_error(stack_error(duration_result, "Expected a valid number for the duration."))
+		return
 	
 	_curr_pause_action = PauseAction.new(self, true)
 	get_runtime_block().get_service("StoryDirector").add_step_action(_curr_pause_action)

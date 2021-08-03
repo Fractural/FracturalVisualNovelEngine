@@ -1,7 +1,18 @@
 extends Node
+# Animates an actor
+
+
+# ----- Typeable ----- #
+
+func get_types() -> Array:
+	return ["ActorAnimator"]
+
+# ----- Typeable ----- #
 
 
 signal animation_finished(skipped)
+
+const AnimationAction = preload("res://addons/FracturalVNE/core/actor/animation/animation_action.gd")
 
 export var actor_path: NodePath
 export var actor_holder_path: NodePath
@@ -25,10 +36,10 @@ func init(story_director_):
 	story_director = story_director_
 
 
-func play_animation(actor_animation, animation_action = null):
+func play_animation(actor_animation):
 	if curr_animation_action != null:
 		story_director.remove_step_action(curr_animation_action)
-	curr_animation_action = animation_action
+	curr_animation_action = AnimationAction.new(actor_animation)
 	story_director.add_step_action(curr_animation_action)
 	
 	if curr_actor_animation != null:

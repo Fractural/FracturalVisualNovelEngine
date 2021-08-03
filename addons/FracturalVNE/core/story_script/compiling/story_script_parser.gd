@@ -7,14 +7,14 @@ extends Reference
 
 const EOF = "EOF"
 
-const StoryScriptConstants = preload("res://addons/FracturalVNE/core/story_script/story_script_constants.gd")
+const NodeConstructConstants = preload("res://addons/FracturalVNE/core/story_script/node_construct_constants.gd")
 const StoryScriptError = preload("res://addons/FracturalVNE/core/story_script/story_script_error.gd")
 const StoryScriptUtils = preload("res://addons/FracturalVNE/core/story_script/story_script_utils.gd")
 const TokensReader = preload("res://addons/FracturalVNE/core/story_script/compiling/story_script_tokens_reader.gd")
 
 var reader: TokensReader
 
-var constructs_dict = StoryScriptConstants.new().CONSTRUCTS_DICT
+var constructs_dict = NodeConstructConstants.new().CONSTRUCTS_DICT
 
 
 func generate_abstract_syntax_tree(reader_: TokensReader):

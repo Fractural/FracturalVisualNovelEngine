@@ -1,42 +1,33 @@
-extends "replace_transition.gd"
+extends "res://addons/FracturalVNE/core/actor/transition/sub_transitions/single_transition/single_transition.gd"
 # Shows a node with a curve
 
 
 const Utils = preload("res://addons/FracturalVNE/core/utils/utils.gd")
 
-export var new_node_holder_path: NodePath
-export var old_node_holder_path: NodePath
-export var replace_holder_path: NodePath
-
 export var animation_player_path: NodePath
+export var node_holder_path: NodePath
 export var play_animation_backwards: bool = false
 export var animation: Animation
 
 var time
-var original_new_node_parent: Node
-var original_old_node_parent: Node
-
-onready var new_node_holder = get_node(new_node_holder_path)
-onready var old_node_holder = get_node(old_node_holder_path)
+var original_node_parent: Node
 
 onready var animation_player: AnimationPlayer = get_node(animation_player_path)
+onready var node_holder = get_node(node_holder_path)
 
 
 func _ready():
 	animation_player.connect("animation_finished", self, "_on_animation_finished")
-	animation_player.root_node = replace_holder_path
+	animation_player.root_node = node_holder_path
 	animation_player.add_animation("Animation", animation)
 
 
-func transition(new_node_: Node, old_node_: Node, duration_: float):
-	if not .transition(new_node_, old_node_, duration_):
+func transition(node_: Node, duration_: float):
+	if not .transition(node_, duration_):
 		return false
 	
-	original_new_node_parent = new_node.get_parent()
-	Utils.reparent(new_node, new_node_holder)
-	
-	original_old_node_parent = old_node.get_parent()
-	Utils.reparent(old_node, old_node_holder)
+	original_node_parent = node.get_parent()
+	Utils.reparent(node, node_holder)
 	
 	if play_animation_backwards:
 		animation_player.play_backwards("Animation")
@@ -61,7 +52,6 @@ func _on_transition_finished(skipped):
 		else:
 			animation_player.seek(animation_player.current_animation_length, true)
 	
-	Utils.reparent(new_node, original_new_node_parent)
-	Utils.reparent(old_node, original_old_node_parent)
+	Utils.reparent(node, original_node_parent)
 	
 	._on_transition_finished(skipped)

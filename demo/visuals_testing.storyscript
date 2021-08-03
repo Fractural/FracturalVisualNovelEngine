@@ -13,11 +13,11 @@ define godette9 = Character(name="Godette", name_color="#468cbf", dialogue_color
 define godette10 = Character(name="Godette", name_color="#468cbf", dialogue_color="#ffffff", visual=DynamicVisual(textures_directory="res://addons/FracturalVNE/default_assets/visuals/images/dynamic_godette/"))
 
 # ----- Transitions ----- #
-define fade_to_black = load("res://addons/FracturalVNE/default_assets/transitions/fade_to_color/fade_to_black.tscn")
-define cross_fade = load("res://addons/FracturalVNE/default_assets/transitions/cross_fade/cross_fade.tscn")
+define fade_to_black = load("res://addons/FracturalVNE/default_assets/transitions/fade_to_color/fade_to_black/fade_to_black.tres")
+define cross_fade = load("res://addons/FracturalVNE/default_assets/transitions/cross_fade/cross_fade.tres")
 
 # ----- Animations ----- #
-define hop = load("res://addons/FracturalVNE/default_assets/visuals/visual_animations/hop.tres")
+define hop = load("res://addons/FracturalVNE/default_assets/animations/hop.tres")
 
 
 # ----- Curves ----- #

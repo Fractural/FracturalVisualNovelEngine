@@ -12,8 +12,10 @@ func get_types() -> Array:
 
 
 const SSUtils = FracVNE.StoryScript.Utils
+const FracUtils = FracVNE.Utils
 
 export var sprite_path: NodePath
+export var old_sprite_path: NodePath
 
 # Array of textures
 var textures: Array
@@ -22,12 +24,11 @@ var textures: Array
 var textures_dict: Dictionary
 
 onready var sprite = get_node(sprite_path)
+onready var old_sprite = get_node(old_sprite_path)
 
 
 func init(visual_ = null, story_director_ = null):
 	.init(visual_, story_director_)
-	
-	sprite = get_node(sprite_path)
 	
 	var image_paths
 	var image_extensions = ["png", "jpeg", "jpg", "bmp"]
@@ -60,11 +61,37 @@ func init(visual_ = null, story_director_ = null):
 		textures_dict[_get_modifiers_string(texture.get_path().get_basename().get_file())] = texture
 
 
-func set_sprite(modifiers_string):
+func set_sprite(modifiers_string, actor_transition: FracVNE_ActorTransition = null):
 	if textures_dict.has(modifiers_string):
+		old_sprite.texture = sprite.texture
 		sprite.texture = textures_dict[modifiers_string]
+		
+		# ----- Optional Transitioning ----- #
+		
+		if old_sprite.texture == sprite.texture:
+			# No need for a transition since the two textures
+			# are the same
+			return
+		
+		if actor_transition != null:
+			# Perform a transition since a actor_transition exists
+			# and the two textures are not the same.
+			if sprite.texture != null:
+				# Perform a replace actor_transition.
+				var replace_transition_instance = actor_transition.replace_transition.instance()
+				if not FracUtils.is_type(replace_transition_instance, "ReplaceTransition"):
+					return SSUtils.error("Expected a ReplaceTransition for showing a new texture on a MultiVisual.")
+				get_actor_transitioner().replace(replace_transition_instance)
+			else:
+				# Perform a show actor_transition.
+				var show_transition_instance = actor_transition.show_transition.instance()
+				if not FracUtils.is_type(show_transition_instance, "SingleTransition"):
+					return SSUtils.error("Expected a SingleTransition for showing a new texture on a MultiVisual.")
+				get_actor_transitioner().show(show_transition_instance)
+			
+			# ----- Optional Transitioning ----- #
 	else:
-		return FracVNE.StoryScript.Error.new("Could not find the texture with the modifiers \"%s\" for this MultiVisual." % modifiers_string)
+		return SSUtils.error("Could not find the texture with the modifiers \"%s\" for this MultiVisual." % modifiers_string)
 
 
 func _get_modifiers_string(file_name: String) -> String:

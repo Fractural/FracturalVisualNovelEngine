@@ -19,7 +19,7 @@ _global_script_classes=[ {
 "language": "GDScript",
 "path": "res://addons/FracturalVNE/core/namespace.gd"
 }, {
-"base": "Node2D",
+"base": "Resource",
 "class": "FracVNE_ActorTransition",
 "language": "GDScript",
 "path": "res://addons/FracturalVNE/core/actor/transition/actor_transition.gd"
@@ -99,11 +99,6 @@ _global_script_classes=[ {
 "language": "GDScript",
 "path": "res://addons/FracturalVNE/core/story_script/compiling/story_script_compiler.gd"
 }, {
-"base": "Reference",
-"class": "StoryScriptConstants",
-"language": "GDScript",
-"path": "res://addons/FracturalVNE/core/story_script/story_script_constants.gd"
-}, {
 "base": "Node",
 "class": "StoryScriptEditor",
 "language": "GDScript",
@@ -163,7 +158,6 @@ _global_script_class_icons={
 "SignalConnector": "res://addons/FracturalVNE/assets/icons/signal.svg",
 "StoryScriptArgument": "",
 "StoryScriptCompiler": "",
-"StoryScriptConstants": "",
 "StoryScriptEditor": "",
 "StoryScriptLexer": "",
 "StoryScriptParser": "",

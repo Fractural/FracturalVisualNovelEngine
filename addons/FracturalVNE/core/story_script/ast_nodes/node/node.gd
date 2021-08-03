@@ -49,6 +49,10 @@ func get_runtime_block():
 		return runtime_block.get_ref()
 
 
+func evaluate_type(type_name, expression_node):
+	get_runtime_block().get_service("ExpressionNodeEvaluator").evaluate(type_name, expression_node)
+
+
 func debug_string(tabs_string: String) -> String:
 	return "N/A"
 

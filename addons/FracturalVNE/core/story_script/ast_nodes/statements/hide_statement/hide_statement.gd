@@ -12,8 +12,7 @@ func get_types() -> Array:
 # ----- Typeable ----- #
 
 
-const TransitionAction = preload("res://addons/FracturalVNE/core/actor/transition/transition_action.gd")
-const ANIMATION_PLAYER_TRANSITION_PREFAB = preload("res://addons/FracturalVNE/core/actor/transition/types/animation_player_transition/animation_player_transition.tscn")
+const ANIMATION_PLAYER_HIDE_TRANSITION_PREFAB = preload("res://addons/FracturalVNE/core/actor/transition/types/animation_player_transition/hide.tscn")
 
 var actor
 var transition
@@ -25,50 +24,43 @@ func _init(position_ = null, actor_ = null, transition_ = null).(position_):
 
 
 func execute():
+	var transition_instance = _get_transition_instance()
+	
+	if not is_success(transition_instance):
+		throw_error(transition_instance)
+		return
+	
+	var result = _run_hide_transition(transition_instance)
+	
+	if not is_success(result):
+		throw_error(result)
+		return
+	
+	_finish_execute()
+
+
+func _run_hide_transition(transition_instance):
+	var actor_result = evaluate_type("Actor", actor)
+	if not is_success(actor_result):
+		return stack_error(actor_result, "Could not evaluate the actor for the hide statement.")
+	
+	var actor_controller = get_runtime_block().get_service("ActorManager").get_or_load_actor_controller(actor_result)
+	if not is_success(actor_controller):
+		return stack_error(actor_controller, "Could not load the ActorController for the hide statement.")
+	actor_controller.actor_transitioner.hide(transition_instance)
+
+
+func _get_transition_instance():
 	var transition_instance = null
 	if transition != null:
-		var transition_result = transition.evaluate()
+		var transition_result = evaluate_type("ActorTransition", transition)
+		if not is_success(transition_result):
+			return stack_error(transition_result, "Could not evaluate transition_result for the hide statement.")
 		
-		if not is_success(transition_result) or not transition_result is PackedScene:
-			throw_error(stack_error(transition_result, "Expected valid ActorTransition for the hide statement."))
-			return
-		
-		if transition_result is Animation:
-			transition_instance = ANIMATION_PLAYER_TRANSITION_PREFAB.instance()
-			transition_instance.get_node("ShowSingleTransition").animation = transition_result
-		elif transition_result is PackedScene:
-			transition_instance = transition_result.instance()
-			if not FracUtils.is_type(transition_instance, "ActorTransition"):
-				throw_error(stack_error(transition_instance, "Expected valid ActorTransition for the hide statement."))
-				return
-	
-	var actor_result = actor.evaluate()
-	if not is_success(actor_result):
-		throw_error(stack_error(actor_result, "Could not evaluate the actor."))
-		return
-	
-	if actor_result is Object:
-		if FracUtils.is_type(actor_result, "Character"):
-			actor_result = actor_result.visual
-		
-		if FracUtils.is_type(actor_result, "Actor"):
-			var curr_transition_action = null
-			if transition_instance != null:
-				curr_transition_action = TransitionAction.new(transition_instance)
-			
-			var actor_controller = get_runtime_block().get_service("ActorManager").get_or_load_actor_controller(actor_result)
-			if not is_success(actor_controller):
-				throw_error(stack_error(actor_controller, "Could not load actor controller for the hide statement."))
-				return
-			actor_controller.actor_transitioner.hide(transition_instance, curr_transition_action)
-		else: 
-			throw_error(error("Expected a actor for the hide statement."))
-			return
-	else: 
-		throw_error(error("Expected a actor for the hide statement."))
-		return
-	
-	.execute()
+		transition_instance = transition_result.hide_transition.instance()
+		if not FracUtils.is_type(transition_instance, "SingleTransition"):
+			return error("Expected valid SingleTransition for the hide statement.")
+	return transition_instance
 
 
 func debug_string(tabs_string: String) -> String:

@@ -3,6 +3,14 @@ extends Node
 # TODO: Implement rotation and scaling
 
 
+# ----- Typeable ----- #
+
+func get_types() -> Array:
+	return ["ActorMover"]
+
+# ----- Typeable ----- #
+
+
 export var actor_path: NodePath
 
 var target_position: Vector2

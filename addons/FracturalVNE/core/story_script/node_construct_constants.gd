@@ -1,4 +1,3 @@
-class_name StoryScriptConstants
 extends Reference
 
 # Expression Components

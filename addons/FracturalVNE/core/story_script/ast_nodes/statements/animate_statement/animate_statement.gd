@@ -12,7 +12,6 @@ func get_types() -> Array:
 # ----- Typeable ----- #
 
 
-const AnimationAction = preload("res://addons/FracturalVNE/core/actor/animation/animation_action.gd")
 const ANIMATION_PLAYER_ANIMATION_PREFAB = preload("res://addons/FracturalVNE/core/actor/animation/types/animation_player_animation/animation_player_animation.tscn")
 
 var actor
@@ -55,15 +54,11 @@ func execute():
 			actor_result = actor_result.visual
 		
 		if FracUtils.is_type(actor_result, "Actor"):
-			var curr_animation_action = null
-			if actor_animation_result != null:
-				curr_animation_action = AnimationAction.new(actor_animation_result, true)
-			
 			var actor_controller = get_runtime_block().get_service("ActorManager").get_or_load_actor_controller(actor_result)
 			if not is_success(actor_controller):
 				throw_error(stack_error(actor_controller, "Could not load actor controller for the animate statement."))
 				return
-			actor_controller.actor_animator.play_animation(actor_animation_result, curr_animation_action)
+			actor_controller.actor_animator.play_animation(actor_animation_result)
 		else: 
 			throw_error(error("Expected an actor for the animate statement."))
 			return

@@ -1,8 +1,10 @@
 extends Reference
 tool
 
+
 # Prefix that groups together all settings added through this script
 var _plugin_prefix
+
 
 func _init(pluginName: String, pluginPrefix: String) -> void:
 	_plugin_prefix = pluginPrefix + "/";
@@ -10,9 +12,11 @@ func _init(pluginName: String, pluginPrefix: String) -> void:
 	push_warning("You may change any setting for " + pluginName + " in Project -> ProjectSettings -> General -> " + pluginPrefix.replace("_", " "))
 
 	ProjectSettings.save()
-	
+
+
 func _get_prefixed_name(name: String) -> String:
 	return _plugin_prefix + name
+
 
 # Adds a setting to the Project Settings
 func add_setting(name: String, type: int, value, hint_type: int = -1, hint_string = "") -> void:
@@ -32,17 +36,21 @@ func add_setting(name: String, type: int, value, hint_type: int = -1, hint_strin
 		prop["hint_string"] = hint_string
 	ProjectSettings.add_property_info(prop)
 
+
 # Returns `true` if the setting specified by name exists, `false` otherwise.
 func has_setting(name: String) -> bool:
 	return ProjectSettings.has_setting(_get_prefixed_name(name))
+
 
 # Sets the value of a setting.
 func set_setting(name: String, value):
 	ProjectSettings.set_setting(_get_prefixed_name(name), value)
 
+
 # Returns the value of a setting.
 func get_setting(name: String):
 	return ProjectSettings.get_setting(_get_prefixed_name(name))
+
 
 # Saves the Project Settings
 func save():

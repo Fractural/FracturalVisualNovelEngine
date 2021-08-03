@@ -5,7 +5,7 @@
 [ext_resource path="res://addons/FracturalVNE/core/visuals/types/single_visual/single_visual_controller.gd" type="Script" id=3]
 [ext_resource path="res://addons/FracturalVNE/default_assets/visuals/visual_animations/hide_animations/fade_out.tres" type="Animation" id=4]
 [ext_resource path="res://addons/FracturalVNE/default_assets/visuals/visual_animations/show_animations/fade_in.tres" type="Animation" id=5]
-[ext_resource path="res://addons/FracturalVNE/default_assets/visuals/visual_animations/hop.tres" type="Animation" id=6]
+[ext_resource path="res://addons/FracturalVNE/default_assets/animations/hop.tres" type="Animation" id=6]
 
 [node name="VisualAnimationTesting" type="Node2D"]
 script = ExtResource( 3 )

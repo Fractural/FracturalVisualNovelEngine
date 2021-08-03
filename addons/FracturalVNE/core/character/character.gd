@@ -6,6 +6,18 @@ extends Resource
 
 # ----- Typeable ----- #
 
+func can_cast(type: String) -> bool:
+	return type == "Visual"
+
+
+func cast(type: String):
+	match type:
+		"Visual":
+			return visual
+		_:
+			return null
+
+
 func get_types() -> Array:
 	return ["Character"]
 

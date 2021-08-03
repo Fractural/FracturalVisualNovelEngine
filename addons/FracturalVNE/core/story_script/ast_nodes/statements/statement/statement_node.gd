@@ -16,6 +16,10 @@ func _init(position_ = null).(position_):
 
 
 func execute():
+	_finish_execute()
+
+
+func _finish_execute():
 	emit_signal("executed")
 	if runtime_next_node != null:
 		runtime_next_node.execute()
