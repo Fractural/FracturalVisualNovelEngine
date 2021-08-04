@@ -1,6 +1,11 @@
+# ----- BGScenes ----- #
+define bg_library1 = Scene(texture_path="res://addons/FracturalVNE/default_assets/bg_images/library_1.png")
+define bg_library2 = Scene("res://addons/FracturalVNE/default_assets/bg_images/library_2.png")
+define bg_library3 = Scene(texture_path="res://addons/FracturalVNE/default_assets/bg_images/library_3.png")
+
 # ----- Characters ----- #
 #define godette_single_visual = Visual(texture_path="res://addons/FracturalVNE/default_assets/visuals/images/godette_body.png")
-define godette = Character(name="Godette", name_color="#468cbf", dialogue_color="#ffffff", visual=DynamicVisual(textures_directory="res://addons/FracturalVNE/default_assets/images/dynamic_godette/"))
+define godette = Character("Godette", "#468cbf", "#ffffff", visual=DynamicVisual(textures_directory="res://addons/FracturalVNE/default_assets/images/dynamic_godette/"))
 define godette2 = Character(name="Godette", name_color="#468cbf", dialogue_color="#ffffff", visual=DynamicVisual(textures_directory="res://addons/FracturalVNE/default_assets/images/dynamic_godette/"))
 define godette3 = Character(name="Godette", name_color="#468cbf", dialogue_color="#ffffff", visual=DynamicVisual(textures_directory="res://addons/FracturalVNE/default_assets/images/dynamic_godette/"))
 define godette4 = Character(name="Godette", name_color="#468cbf", dialogue_color="#ffffff", visual=DynamicVisual(textures_directory="res://addons/FracturalVNE/default_assets/images/dynamic_godette/"))
@@ -25,6 +30,16 @@ define smooth_step = load("res://addons/FracturalVNE/default_assets/curves/smoot
 
 
 label looped:
+	scene bg_library1 with fade_to_black
+	
+	pause 1
+	
+	scene bg_library2 with fade_to_black
+	
+	pause 1 
+	
+	scene bg_library1 with fade_to_black
+	
 	move godette to Point(-500, 0)
 	move godette2 to Point(-400, 0)
 	move godette3 to Point(-300, 0)
@@ -53,6 +68,8 @@ label looped:
 	show godette10 surprised with cross_fade
 	
 	godette "Hi there!"
+	
+	scene bg_library2 with fade_to_black
 	
 	show godette6 happy with cross_fade
 	show godette7 happy with cross_fade
@@ -85,6 +102,8 @@ label looped:
 	
 	godette "Time for us to leave!"
 	
+	scene bg_library3 with fade_to_black
+	
 	hide godette with cross_fade
 	pause 0.1
 	hide godette2 with cross_fade
@@ -104,6 +123,6 @@ label looped:
 	hide godette9 with cross_fade
 	pause 0.1
 	hide godette10 with cross_fade
-	pause 1
+	pause 2
 	
 	jump looped

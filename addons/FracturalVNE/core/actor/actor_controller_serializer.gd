@@ -15,7 +15,7 @@ func can_serialize(object):
 
 
 func serialize(object):
-	return {
+	var obj = {
 		"script_path": _script_path(),
 		"parent_path": object.get_parent().get_path(),
 		"actor_id": reference_registry.get_reference_id(object.actor),
@@ -24,6 +24,7 @@ func serialize(object):
 		"scale": SerializationUtils.serialize_vec2(object.standard_scale),
 		"rotation": object.standard_rotation,
 	}
+	return obj
 
 
 func can_deserialize(serialized_object):

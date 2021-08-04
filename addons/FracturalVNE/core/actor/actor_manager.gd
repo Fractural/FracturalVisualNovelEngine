@@ -24,8 +24,7 @@ const FracUtils = FracVNE.Utils
 const SSUtils = FracVNE.StoryScript.Utils
 
 export var reference_registry_path: NodePath
-export var node_2d_actors_holder_path: NodePath
-export var control_actors_holder_path: NodePath
+export var actors_holder_path: NodePath
 export var story_director_path: NodePath
 export var serialization_manager_path: NodePath
 
@@ -40,18 +39,9 @@ var actor_controller_lookup: Dictionary = {}
 var actors: Array = []
 
 onready var reference_registry = get_node(reference_registry_path)
-onready var node_2d_actors_holder = get_node(node_2d_actors_holder_path)
-onready var control_actors_holder = get_node(control_actors_holder_path)
+onready var actors_holder = get_node(actors_holder_path)
 onready var story_director = get_node(story_director_path)
 onready var serialization_manager = get_node(serialization_manager_path)
-
-
-func get_actors_holder(actor_controller):
-	assert(FracUtils.is_type(actor_controller, "ActorController"), 
-		"Expected actor_controller to be an ActorController.")
-	if actor_controller is Control:
-		return control_actors_holder
-	return node_2d_actors_holder
 
 
 func add_actor(actor):
@@ -66,7 +56,7 @@ func remove_actor(actor):
 
 
 # -- StoryScriptErrorable -- #
-func load_actor_controller(actor, actor_holder = null):
+func load_actor_controller(actor, actor_parent = null):
 	var actor_controller = actor.instantiate_controller(story_director)
 
 	if not SSUtils.is_success(actor_controller):
@@ -74,10 +64,10 @@ func load_actor_controller(actor, actor_holder = null):
 
 	actor_controller_lookup[actor] = actor_controller
 	
-	if actor_holder == null:
-		get_actors_holder(actor_controller).add_child(actor_controller)
+	if actor_parent != null:
+		actor_parent.add_child(actor_controller)
 	else:
-		actor_holder.add_child(actor_controller)
+		actors_holder.add_child(actor_controller)
 	
 	return actor_controller
 

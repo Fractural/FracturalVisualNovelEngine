@@ -69,8 +69,9 @@ func set_sprite_show(modifiers_string, standard_transition: FracVNE_StandardNode
 		# ----- Optional Transitioning ----- #
 		
 		var result
-		if old_sprite.texture != sprite.texture and old_sprite.texture != null:
-			# Perform a replace standard_transition.
+		if visible and old_sprite.texture != null and old_sprite.texture != sprite.texture:
+			# Perform a replace transition if we are visible
+			# and we have a new and different texture.
 			result = get_actor_transitioner().replace(standard_transition)
 		else:
 			# Default to show transition.

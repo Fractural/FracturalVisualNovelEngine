@@ -32,9 +32,7 @@ func transition(node_: Node, duration_: float):
 	if not _setup_transition(node_, duration_):
 		return
 	
-	original_node_parent = node.get_parent()
-	var original_parent_path = original_node_parent.get_path()
-	FracVNE.Utils.reparent(node, node_holder)
+	original_node_parent = FracVNE.Utils.reparent(node, node_holder)
 	
 	time = 0
 	
@@ -53,7 +51,6 @@ func _on_transition_finished(skipped):
 	set_process(false)
 	_final_tick(1 if transition_type == TransitionType.SHOW else 0)
 	
-	var original_parent_path = original_node_parent.get_path()
 	FracVNE.Utils.reparent(node, original_node_parent)
 	
 	._on_transition_finished(skipped)

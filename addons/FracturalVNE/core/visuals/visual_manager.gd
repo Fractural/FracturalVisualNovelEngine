@@ -56,7 +56,7 @@ func remove_visual(visual):
 # -- StoryScriptErrorable -- #
 func load_visual_controller(visual):
 	assert(FracVNE.Utils.is_type(visual, "Visual"))
-	actor_manager.load_actor_controller(visual)
+	return actor_manager.load_actor_controller(visual)
 
 
 func remove_visual_controller(visual):

@@ -13,9 +13,8 @@ old_sprite_path = NodePath("OldHolder/OldSprite")
 
 [node name="Holder" parent="." index="0"]
 script = ExtResource( 5 )
-standard_scale = Vector2( 0, 0 )
 global_standard_position = Vector2( 0, 0 )
-global_standard_scale = Vector2( 0, 0 )
+global_standard_scale = Vector2( 1, 1 )
 global_standard_rotation = 0.0
 textured_node_path = NodePath("Sprite")
 

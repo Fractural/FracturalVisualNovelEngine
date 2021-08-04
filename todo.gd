@@ -51,3 +51,8 @@
 # 	[X] Implement multiple printers and saving (Make each printer saves it's own dialog) 
 #		[ ] Make it optional to add such dialog to the dialog history)
 #	[ ] Some transitions like crossfade will not support prefab transitions by default for performance reason
+#	[ ] Combine Node2DStandardNode2D and ControlStandardNode2D into one StandardNode2D class.
+#		We can get around type checking by using our FracUtils class (Since that would be checking type
+#		outside of the scope of the object).
+#	[ ] FIX GAME BREAKING, EDITOR CRASHING, BUG WHEN RUNNING REPLACE TRANSITION ON BGSCENE.
+#		Maybe abandon making the background an actor. 

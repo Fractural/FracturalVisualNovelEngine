@@ -36,8 +36,13 @@ func init(actor_ = null, story_director = null):
 	actor_mover.init(story_director)
 	actor_transitioner.init(story_director)
 	
+	actor_transitioner.connect("transition_started", self, "_on_transition_started")
 	actor_transitioner.connect("transition_finished", self, "_on_transition_finished")
-	
+
+
+func get_node_holder():
+	return node_holder
+
 
 func get_actor_animator():
 	return actor_animator
@@ -53,6 +58,10 @@ func get_actor_transitioner():
 
 func get_actor():
 	return actor
+
+
+func _on_transition_started():
+	visible = true
 
 
 func _on_transition_finished(skipped):

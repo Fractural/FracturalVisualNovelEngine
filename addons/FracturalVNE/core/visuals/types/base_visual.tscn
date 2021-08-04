@@ -14,7 +14,6 @@ node_holder_path = NodePath("Holder")
 [node name="Holder" type="Node2D" parent="."]
 use_parent_material = true
 script = ExtResource( 3 )
-standard_scale = Vector2( 1, 1 )
 global_standard_position = null
 global_standard_scale = null
 global_standard_rotation = null

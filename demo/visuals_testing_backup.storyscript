@@ -1,15 +1,14 @@
 # ----- Characters ----- #
-define godette_single_visual = Visual(texture_path="res://addons/FracturalVNE/default_assets/visuals/images/godette_body.png")
-define godette = Character(name="Godette", name_color="#468cbf", dialogue_color="#ffffff", visual=DynamicVisual(textures_directory="res://addons/FracturalVNE/default_assets/visuals/images/dynamic_godette/"))
+define godette_single_visual = Visual(texture_path="res://addons/FracturalVNE/default_assets/images/godette_body.png")
+define godette = Character(name="Godette", name_color="#468cbf", dialogue_color="#ffffff", visual=DynamicVisual(textures_directory="res://addons/FracturalVNE/default_assets/images/dynamic_godette/"))
 
 
 # ----- Transitions ----- #
-define fade_in = load("res://addons/FracturalVNE/default_assets/visuals/visual_animations/show_animations/fade_in.tres")
-define fade_out = load("res://addons/FracturalVNE/default_assets/visuals/visual_animations/hide_animations/fade_out.tres")
+define cross_fade = load("res://addons/FracturalVNE/default_assets/transitions/cross_fade/cross_fade.tres")
 
 
 # ----- Animations ----- #
-define hop = load("res://addons/FracturalVNE/default_assets/visuals/visual_animations/hop.tres")
+define hop = load("res://addons/FracturalVNE/default_assets/animations/hop.tres")
 
 
 # ----- Curves ----- #
@@ -21,9 +20,9 @@ label looped:
 	
 	# Last show statement should override the previous ones
 	# if they are stacked together.
-	show godette happy with fade_in
-	show godette sad with fade_in
-	show godette surprised with fade_in
+	#show godette happy with cross_fade
+	#show godette sad with cross_fade
+	show godette surprised
 	
 	pause 0.5
 	
@@ -47,7 +46,7 @@ label looped:
 	godette "Byee!"
 	
 	# hide godette with fade_out
-	hide godette with fade_out
+	hide godette with cross_fade
 	
 	"That was quick..."
 	
@@ -55,7 +54,7 @@ label looped:
 	
 	"*Footsteps in the distance*"
 	
-	show godette surprised with fade_in
+	show godette surprised with cross_fade
 	
 	godette "Whew I'm back!"
 	
@@ -67,7 +66,7 @@ label looped:
 	
 	godette "Time to head back!"
 	
-	hide godette with fade_out
+	hide godette with cross_fade
 	
 	"" # Clears the text
 	

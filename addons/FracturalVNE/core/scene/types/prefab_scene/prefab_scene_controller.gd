@@ -19,6 +19,9 @@ onready var prefab_holder = get_node(prefab_holder_path)
 
 func init(scene_ = null, story_director_ = null):
 	.init(scene_, story_director_)
+	
+	prefab_holder = get_node(prefab_holder_path)
+	
 	prefab_holder.add_child(scene_.prefab.instance())
 
 

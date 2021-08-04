@@ -33,16 +33,6 @@ func hide():
 
 # ----- Serialization ----- #
 
-func serialize():
-	return {
-		"script_path": get_script().get_path(),
-		"visible": visible,
-	}
-
-
-func deserialize(serialized_object):
-	var instance = get_script().new()
-	instance.visible = serialized_object["visible"]
-	return instance
+# scene_controller_serializer.gd
 
 # ----- Serialization ----- #

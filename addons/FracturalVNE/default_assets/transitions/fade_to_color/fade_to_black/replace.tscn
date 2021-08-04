@@ -5,6 +5,8 @@
 [ext_resource path="res://addons/FracturalVNE/default_assets/transitions/fade_to_color/fade_to_black/hide.tscn" type="PackedScene" id=3]
 
 [node name="Replace" type="Control"]
+anchor_right = 1.0
+anchor_bottom = 1.0
 script = ExtResource( 1 )
 __meta__ = {
 "_edit_use_anchors_": false
@@ -13,6 +15,8 @@ show_transition_path = NodePath("Show")
 hide_transition_path = NodePath("Hide")
 
 [node name="Show" parent="." instance=ExtResource( 2 )]
+anchor_right = 1.0
+anchor_bottom = 1.0
 
 [node name="Hide" parent="." instance=ExtResource( 3 )]
 node_holder_path = NodePath("../Show/NodeHolder")

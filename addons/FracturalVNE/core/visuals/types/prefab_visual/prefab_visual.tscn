@@ -8,8 +8,8 @@ script = ExtResource( 3 )
 prefab_holder_path = NodePath("Holder")
 
 [node name="Holder" parent="." index="0"]
-global_standard_position = null
-global_standard_scale = null
-global_standard_rotation = null
+global_standard_position = Vector2( 0, 0 )
+global_standard_scale = Vector2( 1, 1 )
+global_standard_rotation = 0.0
 
 [editable path="BaseActor"]

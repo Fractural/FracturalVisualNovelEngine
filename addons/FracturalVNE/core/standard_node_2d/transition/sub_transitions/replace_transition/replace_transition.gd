@@ -22,6 +22,7 @@ func transition(new_node_: Node, old_node_: Node, duration_: float):
 	if not _setup_transition(new_node_, old_node_, duration_):
 		return
 
+
 func _setup_transition(new_node_: Node, old_node_: Node, duration_: float):
 	if is_transitioning:
 		return false

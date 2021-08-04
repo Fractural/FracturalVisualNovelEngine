@@ -130,8 +130,7 @@ script = ExtResource( 5 )
 [node name="ActorManager" type="Node" parent="StoryLoader/StoryServices"]
 script = ExtResource( 34 )
 reference_registry_path = NodePath("../ReferenceRegistry")
-node_2d_actors_holder_path = NodePath("../../../WorldHolder/World/Node2DActorsHolder")
-control_actors_holder_path = NodePath("../../../WorldHolder/ControlActorsHolder")
+actors_holder_path = NodePath("../../../WorldHolder/World/ActorsHolder")
 story_director_path = NodePath("../StoryDirector")
 serialization_manager_path = NodePath("../../../SerializationManager")
 
@@ -143,7 +142,7 @@ reference_registry_path = NodePath("../ReferenceRegistry")
 [node name="VisualManager" type="Node" parent="StoryLoader/StoryServices"]
 script = ExtResource( 22 )
 actor_manager_path = NodePath("../ActorManager")
-visuals_holder_path = NodePath("../../../WorldHolder/World/Node2DActorsHolder")
+visuals_holder_path = NodePath("../../../WorldHolder/World/ActorsHolder")
 
 [node name="CharacterManager" type="Node" parent="StoryLoader/StoryServices"]
 script = ExtResource( 8 )
@@ -167,42 +166,36 @@ script = ExtResource( 24 )
 [node name="BGSceneManager" type="Node" parent="StoryLoader/StoryServices"]
 script = ExtResource( 25 )
 actor_manager_path = NodePath("../ActorManager")
-scenes_holder_path = NodePath("../../../WorldHolder/World/BGScenesHolder")
+story_director_path = NodePath("../StoryDirector")
+scenes_holder_path = NodePath("../../../WorldHolder/World/BGLayer/BGScenesHolder")
 replaceable_transitioner_path = NodePath("ReplaceableTransitioner")
 reference_registry_path = NodePath("../ReferenceRegistry")
-current_scene_holder_path = NodePath("../../../WorldHolder/World/BGScenesHolder/CurrentSceneHolder")
-old_scene_holder_path = NodePath("../../../WorldHolder/World/BGScenesHolder/OldSceneHolder")
+current_scene_holder_path = NodePath("../../../WorldHolder/World/BGLayer/BGScenesHolder/CurrentSceneHolder")
+old_scene_holder_path = NodePath("../../../WorldHolder/World/BGLayer/BGScenesHolder/OldSceneHolder")
 
 [node name="ReplaceableTransitioner" type="Node" parent="StoryLoader/StoryServices/BGSceneManager"]
 script = ExtResource( 35 )
-node_holder_path = NodePath("../../../../WorldHolder/World/BGScenesHolder/CurrentSceneHolder")
-transition_holder_path = NodePath("../../../../WorldHolder/World/BGScenesHolder")
-old_node_holder_path = NodePath("../../../../WorldHolder/World/BGScenesHolder/OldSceneHolder")
+node_holder_path = NodePath("../../../../WorldHolder/World/BGLayer/BGScenesHolder/CurrentSceneHolder")
+transition_holder_path = NodePath("../../../../WorldHolder/World/BGLayer/BGScenesHolder")
+old_node_holder_path = NodePath("../../../../WorldHolder/World/BGLayer/BGScenesHolder/OldSceneHolder")
 
 [node name="ScreenshotManager" type="Node" parent="."]
 script = ExtResource( 16 )
 facade_viewport_texture_rect_path = NodePath("FacadeViewportTextureRect")
 story_gui_configurer_path = NodePath("../StoryGUIConfigurer")
 world_path = NodePath("../WorldHolder/World")
-screenshot_viewport_path = NodePath("ViewportContainer/ScreenshotViewport")
-screenshot_gui_holder_path = NodePath("ViewportContainer/ScreenshotViewport/ScreenshotGUIHolder")
+screenshot_viewport_path = NodePath("ScreenshotViewport")
+screenshot_gui_holder_path = NodePath("ScreenshotViewport/ScreenshotGUIHolder")
 
-[node name="ViewportContainer" type="ViewportContainer" parent="ScreenshotManager"]
-anchor_right = 1.0
-anchor_bottom = 1.0
-mouse_filter = 2
-__meta__ = {
-"_edit_use_anchors_": false
-}
-
-[node name="ScreenshotViewport" type="Viewport" parent="ScreenshotManager/ViewportContainer"]
+[node name="ScreenshotViewport" type="Viewport" parent="ScreenshotManager"]
 size = Vector2( 1024, 600 )
 handle_input_locally = false
-render_target_update_mode = 3
+render_target_update_mode = 0
 physics_object_picking = true
 gui_disable_input = true
 
-[node name="ScreenshotGUIHolder" type="CanvasLayer" parent="ScreenshotManager/ViewportContainer/ScreenshotViewport"]
+[node name="ScreenshotGUIHolder" type="CanvasLayer" parent="ScreenshotManager/ScreenshotViewport"]
+layer = 10
 
 [node name="FacadeViewportTextureRect" type="TextureRect" parent="ScreenshotManager"]
 visible = false
@@ -217,46 +210,59 @@ __meta__ = {
 [node name="WorldHolder" type="Node" parent="."]
 
 [node name="World" type="Control" parent="WorldHolder"]
+anchor_right = 1.0
+anchor_bottom = 1.0
+mouse_filter = 2
 __meta__ = {
 "_edit_use_anchors_": false
 }
 
-[node name="BGScenesHolder" type="Control" parent="WorldHolder/World"]
+[node name="BGLayer" type="CanvasLayer" parent="WorldHolder/World"]
+layer = -10
+
+[node name="BGScenesHolder" type="Control" parent="WorldHolder/World/BGLayer"]
+anchor_right = 1.0
+anchor_bottom = 1.0
+mouse_filter = 2
 __meta__ = {
 "_edit_use_anchors_": false
 }
 
-[node name="OldSceneHolder" type="Control" parent="WorldHolder/World/BGScenesHolder"]
-margin_right = 40.0
-margin_bottom = 40.0
+[node name="OldSceneHolder" type="Control" parent="WorldHolder/World/BGLayer/BGScenesHolder"]
+anchor_right = 1.0
+anchor_bottom = 1.0
+mouse_filter = 2
 script = ExtResource( 36 )
 __meta__ = {
 "_edit_use_anchors_": false
 }
-standard_scale = Vector2( 1, 1 )
 global_standard_position = null
 global_standard_scale = null
 global_standard_rotation = null
 
-[node name="CurrentSceneHolder" type="Control" parent="WorldHolder/World/BGScenesHolder"]
-margin_right = 40.0
-margin_bottom = 40.0
+[node name="CurrentSceneHolder" type="Control" parent="WorldHolder/World/BGLayer/BGScenesHolder"]
+anchor_right = 1.0
+anchor_bottom = 1.0
+mouse_filter = 2
 script = ExtResource( 36 )
 __meta__ = {
 "_edit_use_anchors_": false
 }
-standard_scale = Vector2( 1, 1 )
 global_standard_position = null
 global_standard_scale = null
 global_standard_rotation = null
 
-[node name="Node2DActorsHolder" type="Control" parent="WorldHolder/World"]
+[node name="ActorsHolder" type="Control" parent="WorldHolder/World"]
+mouse_filter = 2
+__meta__ = {
+"_edit_use_anchors_": false
+}
 
 [node name="Camera2D" type="Camera2D" parent="WorldHolder/World"]
 current = true
 zoom = Vector2( 2, 2 )
 
-[node name="ControlActorsHolder" type="Control" parent="WorldHolder"]
+[node name="UIHolder" type="Control" parent="WorldHolder"]
 anchor_right = 1.0
 anchor_bottom = 1.0
 mouse_filter = 2
@@ -265,6 +271,7 @@ __meta__ = {
 }
 
 [node name="StoryGUIConfigurer" type="CanvasLayer" parent="."]
+layer = 20
 script = ExtResource( 7 )
 story_loader_path = NodePath("../StoryLoader")
 story_gui_holder_path = NodePath(".")

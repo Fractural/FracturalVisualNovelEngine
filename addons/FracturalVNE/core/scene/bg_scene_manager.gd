@@ -38,6 +38,7 @@ const ImageScene = preload("res://addons/FracturalVNE/core/scene/types/image_sce
 const PrefabScene = preload("res://addons/FracturalVNE/core/scene/types/prefab_scene/prefab_scene.gd")
 
 export var actor_manager_path: NodePath
+export var story_director_path: NodePath
 export var scenes_holder_path: NodePath
 export var replaceable_transitioner_path: NodePath
 export var reference_registry_path: NodePath
@@ -49,6 +50,7 @@ var _old_scene
 var _keep_old_scene: bool
 
 onready var actor_manager = get_node(actor_manager_path)
+onready var story_director = get_node(story_director_path)
 onready var scenes_holder = get_node(scenes_holder_path)
 onready var replaceable_transitioner = get_node(replaceable_transitioner_path)
 onready var reference_registry = get_node(reference_registry_path)
@@ -57,6 +59,7 @@ onready var old_scene_holder = get_node(old_scene_holder_path)
 
 
 func _ready():
+	replaceable_transitioner.init(story_director)
 	replaceable_transitioner.connect("transition_finished", self, "_on_transition_finished")
 
 
@@ -74,7 +77,7 @@ func remove_scene(scene):
 
 func load_scene_controller(scene):
 	assert(FracVNE.Utils.is_type(scene, "BGScene"))
-	actor_manager.load_actor_controller(scene)
+	return actor_manager.load_actor_controller(scene)
 
 
 func remove_scene_controller(scene):
@@ -84,12 +87,12 @@ func remove_scene_controller(scene):
 
 func get_or_load_scene_controller(scene):
 	assert(FracVNE.Utils.is_type(scene, "BGScene"))
-	actor_manager.get_or_load_actor_controller(scene)
+	return actor_manager.get_or_load_actor_controller(scene)
 
 
 func get_scene_controller(scene):
 	assert(FracVNE.Utils.is_type(scene, "BGScene"))
-	actor_manager.get_actor_controller(scene)
+	return actor_manager.get_actor_controller(scene)
 
 
 func add_new_scene_with_controller(scene, scene_controller):
@@ -105,7 +108,6 @@ func add_new_scene_with_controller(scene, scene_controller):
 func Scene(texture_path, cached):
 	if not texture_path is String:
 		return SSUtils.error("Expected textures_directory to be a string.")
-	
 	
 	var texture = SSUtils.load(texture_path)
 	if not SSUtils.is_success(texture):
@@ -159,24 +161,28 @@ func show_scene(scene, transition = null, keep_old_scene = false):
 	
 	current_scene = scene
 	
-	var old_scene_controller = get_or_load_scene_controller(_old_scene)
-	var current_scene_controller = get_scene_controller(current_scene)
+	var current_scene_controller = get_or_load_scene_controller(current_scene)
+	var old_scene_controller = null
+	if _old_scene != null:
+		old_scene_controller = get_scene_controller(_old_scene)
 	
-	FracVNE.Utils.reparent(current_scene, current_scene_holder)
-	FracVNE.Utils.reparent(_old_scene, old_scene_holder)
+	FracVNE.Utils.reparent(current_scene_controller, current_scene_holder)
+	if _old_scene != null:
+		FracVNE.Utils.reparent(old_scene_controller, old_scene_holder)
 	
 	if old_scene_controller != null and current_scene_controller != null:
-		replaceable_transitioner.replace(transition)
+		return replaceable_transitioner.replace(transition, 1)
 	elif current_scene_controller != null:
-		replaceable_transitioner.show(transition)
+		return replaceable_transitioner.show(transition)
 
 
 func _on_transition_finished(skipped):
-	if not _keep_old_scene:
-		remove_scene_controller(_old_scene)
-	else:
-		# Reparent the unused scene back to the scenes holder
-		FracVNE.Utils.reparent(get_scene_controller(_old_scene), scenes_holder)
+	if _old_scene != null:
+		if not _keep_old_scene:
+			remove_scene_controller(_old_scene)
+		else:
+			# Reparent the unused scene back to the scenes holder
+			FracVNE.Utils.reparent(get_scene_controller(_old_scene), scenes_holder)
 	
 	# No need to reparent the current scene since it's already attached
 	# to the current_scene_holder

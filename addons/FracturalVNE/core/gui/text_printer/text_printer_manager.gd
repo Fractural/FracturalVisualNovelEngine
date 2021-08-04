@@ -79,7 +79,12 @@ func remove_text_printer_controller(text_printer):
 
 func load_text_printer_controller(text_printer):
 	assert(FracVNE.Utils.is_type(text_printer, "TextPrinter"))
-	actor_manager.load_actor_controller(text_printer)
+	return actor_manager.load_actor_controller(text_printer)
+
+
+func get_text_printer_controller(text_printer):
+	assert(FracVNE.Utils.is_type(text_printer, "TextPrinter"))
+	return actor_manager.get_actor_controller(text_printer)
 
 
 # Returns the TextPrinterController that belongs to the text_printer. If there is none

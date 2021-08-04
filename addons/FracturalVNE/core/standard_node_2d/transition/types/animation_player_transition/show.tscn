@@ -3,6 +3,9 @@
 [ext_resource path="res://addons/FracturalVNE/core/standard_node_2d/transition/types/animation_player_transition/animation_player_transition.gd" type="Script" id=1]
 
 [node name="Show" type="Control"]
+anchor_right = 1.0
+anchor_bottom = 1.0
+mouse_filter = 2
 script = ExtResource( 1 )
 __meta__ = {
 "_edit_use_anchors_": false
@@ -13,5 +16,6 @@ node_holder_path = NodePath("Holder")
 [node name="AnimationPlayer" type="AnimationPlayer" parent="."]
 
 [node name="Holder" type="Control" parent="."]
-margin_right = 40.0
-margin_bottom = 40.0
+anchor_right = 1.0
+anchor_bottom = 1.0
+mouse_filter = 2

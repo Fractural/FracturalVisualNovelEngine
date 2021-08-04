@@ -22,6 +22,10 @@ func _init(cached_ = false):
 
 
 func instantiate_controller(story_director):
+	# TODO: Maybe refactor to call init after ready?
+	# 		Feels kinda like an inconvenience to have to manually
+	# 		assign node paths again in init because ready
+	# 		wasn't called... :/
 	var instance = _get_controller_prefab().instance()
 	var init_result = instance.init(self, story_director)
 	if not SSUtils.is_success(init_result):

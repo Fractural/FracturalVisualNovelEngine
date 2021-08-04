@@ -44,6 +44,7 @@ const HideStatement = preload("res://addons/FracturalVNE/core/story_script/ast_n
 const AnimateStatement = preload("res://addons/FracturalVNE/core/story_script/ast_nodes/statements/animate_statement/animate_statement_construct.gd")
 const PauseStatement = preload("res://addons/FracturalVNE/core/story_script/ast_nodes/statements/pause_statement/pause_statement_construct.gd")
 const MoveStatement = preload("res://addons/FracturalVNE/core/story_script/ast_nodes/statements/move_statement/move_statement_construct.gd")
+const SceneStatement = preload("res://addons/FracturalVNE/core/story_script/ast_nodes/statements/scene_statement/scene_statement_construct.gd")
 const ExpressionStatement = preload("res://addons/FracturalVNE/core/story_script/ast_nodes/statements/expression_statement/expression_statement_construct.gd")
 
 var CONSTRUCTS = [
@@ -76,10 +77,12 @@ var CONSTRUCTS = [
 	AnimateStatement.new(),
 	PauseStatement.new(),
 	MoveStatement.new(),
+	SceneStatement.new(),
 	ExpressionStatement.new(),
 ]
 
 var CONSTRUCTS_DICT: Dictionary
+
 
 func _init():
 	var binary_operators = [

@@ -10,6 +10,7 @@ func get_types() -> Array:
 # ----- Typeable ----- #
 
 
+signal transition_started()
 signal transition_finished(skipped)
 
 enum TransitionType {
@@ -106,7 +107,8 @@ func _setup_new_transition(type, transition):
 	transition_holder.add_child(curr_transition)
 	curr_transition.connect("transition_finished", self, "_on_transition_finished")
 	story_director.add_step_action(curr_transition_action)
-	# TODO NOW: Find out why you cannot skip hide transitions.
+	
+	emit_signal("transition_started")
 
 
 func _finish_current_transition():
@@ -124,8 +126,9 @@ func _on_transition_finished(skipped):
 	curr_transition_type = TransitionType.NONE
 	if not skipped and curr_transition_action != null:
 		story_director.remove_step_action(curr_transition_action)
-	curr_transition_action = null
-	curr_transition.queue_free()
-	curr_transition = null
+	if curr_transition != null:
+		curr_transition_action = null
+		curr_transition.queue_free()
+		curr_transition = null
 	
 	emit_signal("transition_finished", skipped)

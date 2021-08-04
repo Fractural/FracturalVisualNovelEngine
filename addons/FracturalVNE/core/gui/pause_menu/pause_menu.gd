@@ -20,7 +20,7 @@ func toggle(enabled):
 	#		From average use this leaks about 0.01 MiB or 10 KB of memory
 	#	EDIT:	Pausing only causes memory increases while pausing is
 	#			enabled. This is not the source of the 0.01 MiB memory leak.	 
-	#get_tree().paused = enabled
+	get_tree().paused = enabled
 
 
 func show_options():

@@ -4,8 +4,11 @@
 [ext_resource path="res://addons/FracturalVNE/core/scene/types/prefab_scene/prefab_scene_controller.gd" type="Script" id=2]
 
 [node name="PrefabScene" instance=ExtResource( 1 )]
+mouse_filter = 2
 script = ExtResource( 2 )
-node_holder_path = NodePath("Holder")
 prefab_holder_path = NodePath("Holder")
+
+[node name="Holder" parent="." index="0"]
+mouse_filter = 2
 
 [editable path="BaseActor"]

@@ -19,7 +19,7 @@ extends "replace_transition.gd"
 
 func get_types() -> Array:
 	var arr = .get_types()
-	arr.append("TwoTextureShaderReplaceTransition")
+	arr.append("AdaptiveTwoTextureShaderReplaceTransition")
 	return arr
 
 # ----- Typeable ----- #
@@ -28,12 +28,15 @@ func get_types() -> Array:
 const SSUtils = FracVNE.StoryScript.Utils
 const FracUtils = FracVNE.Utils
 
-export var transition_texture_holder_path: NodePath
+export var node_2d_transition_texture_holder_path: NodePath
+export var control_transition_texture_holder_path: NodePath
 export var transition_curve: Curve
 
+var transition_texture_holder
 var time: float
 
-onready var transition_texture_holder = get_node(transition_texture_holder_path)
+onready var node_2d_transition_texture_holder = get_node(node_2d_transition_texture_holder_path)
+onready var control_transition_texture_holder = get_node(control_transition_texture_holder_path)
 
 
 func _ready():
@@ -60,6 +63,11 @@ func transition(new_node_: Node, old_node_: Node, duration_: float):
 	new_node.visible = false
 	old_node.visible = false
 	
+	if FracUtils.is_type(new_node_, "Control"):
+		transition_texture_holder = control_transition_texture_holder
+	else:
+		transition_texture_holder = node_2d_transition_texture_holder
+	
 	transition_texture_holder.texture = new_texture
 	transition_texture_holder.material.set_shader_param("old_texture", old_texture)
 	
@@ -77,6 +85,10 @@ func _process(delta):
 
 
 func _on_transition_finished(skipped):
+	# TODO: Refactor out this hack
+	#		We should not be checking if they are null!
+	#		This should never happen!
+	get_parent().get_parent().print_tree_pretty()
 	new_node.visible = true
 	old_node.visible = false
 	._on_transition_finished(skipped)

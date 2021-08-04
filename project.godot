@@ -176,7 +176,7 @@ Port=6010
 [application]
 
 config/name="FracturalVisualNovelEngine"
-run/main_scene="res://addons/FracturalVNE/plugin/standalone_story_editor_init.tscn"
+run/main_scene="res://tests/test.tscn"
 config/icon="res://icon.png"
 
 [display]
