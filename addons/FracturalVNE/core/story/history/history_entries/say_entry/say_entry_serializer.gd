@@ -15,24 +15,20 @@ func serialize(object):
 		"script_path": _script_path(),
 		"text": object.text,
 	}
-	
 	if object.character != null and typeof(object.character) != TYPE_STRING:
 		serialized_object["character_id"] = reference_registry.get_reference_id(object.character)
 	else:
 		serialized_object["character_name"] = object.character
-	
 	return serialized_object
 
 
 func can_deserialize(serialized_object):
-	return serialized_object.script_path == _script_path()
+	return serialized_object["script_path"] == _script_path()
 
 
 func deserialize(serialized_object):
 	var instance = load(_script_path()).new()
-	
 	instance.text = serialized_object["text"]
-	
 	return instance
 
 
@@ -48,4 +44,4 @@ func fetch_dependencies(instance, serialized_object):
 
 
 func _script_path():
-	return "res://addons/FracturalVNE/core/story/history/history_entries/say_entry/say_entry.gd"
+	return get_script().get_path().get_base_dir() + "/say_entry.gd"

@@ -1,9 +1,19 @@
-extends "res://addons/FracturalVNE/core/actor/actor_controller.gd"
+extends "res://addons/FracturalVNE/core/actor/control_actor_controller.gd"
+# -- Abstract Class -- #
 # Base TextPrinter with signals that allow for the implementation of
 # the actual printing functionality. 
 
 
-const BaseActorController = preload("res://addons/FracturalVNE/core/actor/actor_controller.gd")
+# ----- Typeable ----- #
+
+func get_types() -> Array:
+	var arr = .get_types()
+	arr.append("TextPrinterController")
+	return arr
+
+# ----- Typeable ----- #
+
+
 const Character = preload("res://addons/FracturalVNE/core/character/character.gd")
 const PrintTextAction = preload("res://addons/FracturalVNE/core/gui/text_printer/print_text_action.gd")
 

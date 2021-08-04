@@ -1,4 +1,5 @@
 extends "res://addons/FracturalVNE/core/story_script/ast_nodes/expressions/operators/binary_operators/_binary_operator/binary_operator_construct.gd"
+# Parses a MultiplyOperator.
 
 
 const MultiplyOperatorNode = preload("res://addons/FracturalVNE/core/story_script/ast_nodes/expressions/operators/binary_operators/multiply_operator/multiply_operator.gd")

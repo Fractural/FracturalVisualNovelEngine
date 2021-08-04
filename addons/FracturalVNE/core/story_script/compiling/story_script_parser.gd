@@ -9,7 +9,7 @@ const EOF = "EOF"
 
 const NodeConstructConstants = preload("res://addons/FracturalVNE/core/story_script/node_construct_constants.gd")
 const StoryScriptError = preload("res://addons/FracturalVNE/core/story_script/story_script_error.gd")
-const StoryScriptUtils = preload("res://addons/FracturalVNE/core/story_script/story_script_utils.gd")
+const SSUtils = preload("res://addons/FracturalVNE/core/story_script/story_script_utils.gd")
 const TokensReader = preload("res://addons/FracturalVNE/core/story_script/compiling/story_script_tokens_reader.gd")
 
 var reader: TokensReader
@@ -78,7 +78,7 @@ func save_reader_state():
 
 
 func is_success(result):
-	return StoryScriptUtils.is_success(result)
+	return SSUtils.is_success(result)
 
 
 func peek(steps_ahead: int = 1):

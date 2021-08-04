@@ -15,7 +15,7 @@ script = ExtResource( 3 )
 __meta__ = {
 "_edit_use_anchors_": false
 }
-fade_curve = ExtResource( 4 )
+transition_curve = ExtResource( 4 )
 node_holder_path = NodePath("NodeHolder")
 
 [node name="NodeHolder" type="Control" parent="."]

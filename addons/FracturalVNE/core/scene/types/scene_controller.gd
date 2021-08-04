@@ -1,19 +1,25 @@
-extends Node2D
-# Base class for all scene controller
+extends "res://addons/FracturalVNE/core/actor/control_actor_controller.gd"
+# -- Abstract Class -- #
+# Base class for all SceneControllers.
 
 
 # ----- Typeable ----- #
 
-func get_types():
-	return ["BGSceneController"]
+func get_types() -> Array:
+	var arr = .get_types()
+	arr.append("BGSceneController")
+	return arr
 
 # ----- Typeable ----- #
 
+
+const SSUtils = FracVNE.StoryScript.Utils
 
 var scene
 
 
-func init(scene_):
+func init(scene_ = null, story_director_ = null):
+	.init(scene_, story_director_)
 	scene = scene_
 
 

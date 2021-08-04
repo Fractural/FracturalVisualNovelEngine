@@ -11,25 +11,28 @@ func get_types():
 # ----- Typeable ----- #
 
 
-var texture_path
+var texture: Texture
 
 
-func _init(texture_path_ = null):
-	controller_prefab = preload("image_scene.tscn")
-	texture_path = texture_path_
+func _init(texture_ = null):
+	texture = texture_
+
+
+func _get_controller_prefab():
+	return preload("image_scene.tscn")
 
 
 # ----- Serialization ----- #
 
 func serialize():
 	var serialized_object = .serialize()
-	serialized_object["texture_path"] = texture_path
+	serialized_object["texture_path"] = texture.get_path()
 	return serialized_object
 
 
 func deserialize(serialized_object):
 	var instance = .deserialize(serialized_object)
-	instance.texture_path = load(serialized_object["texture_path"])
+	instance.texture = load(serialized_object["texture_path"])
 	return instance
 
 # ----- Serialization ----- #

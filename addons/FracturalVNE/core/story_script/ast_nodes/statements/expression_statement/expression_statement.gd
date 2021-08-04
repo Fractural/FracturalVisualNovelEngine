@@ -1,4 +1,6 @@
 extends "res://addons/FracturalVNE/core/story_script/ast_nodes/statements/statement/statement_node.gd"
+# Evaluates an expression.
+# Function calls are called via this manner.
 
 
 # ----- Typeable ----- #
@@ -23,7 +25,7 @@ func execute():
 	if not is_success(result):
 		throw_error(stack_error(result, 'Expression statement could not evaluate.'))
 		return
-	.execute()
+	_finish_execute()
 
 
 func debug_string(tabs_string: String) -> String:

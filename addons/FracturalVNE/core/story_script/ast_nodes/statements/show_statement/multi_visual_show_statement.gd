@@ -20,8 +20,8 @@ func _init(position_ = null, actor_ = null, modifiers_string_ = null, transition
 	modifiers_string = modifiers_string_
 
 
-func _run_show_transition(actor_transition):
-	var actor_result = evaluate_type("MultiVisual", actor)
+func _run_show_transition(transition_result):
+	var actor_result = SSUtils.evaluate_and_cast(actor, "MultiVisual")
 	if not is_success(actor_result):
 		throw_error(stack_error(actor_result, "Could not evaluate the multi visual for the multi visual show statement."))
 		return
@@ -31,12 +31,19 @@ func _run_show_transition(actor_transition):
 		if not is_success(actor_controller):
 			throw_error(stack_error(actor_controller, "Could not load MultiVisualController."))
 			return
-		var result = actor_controller.set_sprite(modifiers_string, actor_transition)
+		var result = actor_controller.set_sprite_show(modifiers_string, transition_result)
 		if not is_success(result):
 			throw_error(stack_error(result, "Could not set MultiVisual sprite."))
 			return
-	
-	_finish_execute()
+
+
+func _get_transition_result():
+	var transition_result = null
+	if transition != null:
+		transition_result = SSUtils.evaluate_and_cast(transition, "StandardNode2DTransition")
+		if not is_success(transition_result):
+			return stack_error(transition_result, "Could not evaluate transition_result for the show statement.")
+	return transition_result
 
 
 func debug_string(tabs_string: String) -> String:

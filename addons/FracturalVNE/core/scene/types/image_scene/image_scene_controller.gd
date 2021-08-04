@@ -1,4 +1,5 @@
 extends "res://addons/FracturalVNE/core/scene/types/scene_controller.gd"
+# Scene that holds an image.
 
 
 # ----- Typeable ----- #
@@ -11,21 +12,19 @@ func get_types():
 # ----- Typeable ----- #
 
 
-const SSUtils = FracVNE.StoryScript.Utils
+export var texture_rect_path: NodePath
 
-export var sprite_path: NodePath
-
-onready var sprite = get_node(sprite)
+onready var texture_rect = get_node(texture_rect_path)
 
 
-func init(scene_):
-	.init(scene_)
+func init(scene_ = null, story_director_ = null):
+	.init(scene_, story_director_)
 	
 	var texture_result = SSUtils.load(scene.texture_path)
 	if not SSUtils.is_success(texture_result):
 		return texture_result
 	
-	sprite.texture = texture_result
+	texture_rect.texture = texture_result
 
 
 # ----- Serialization ----- #

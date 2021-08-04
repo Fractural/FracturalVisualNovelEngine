@@ -19,7 +19,7 @@ func _init(cached_ = false, textures_directory_ = "").(cached_):
 	textures_directory = textures_directory_
 
 
-func _get_controller_prefab_path():
+func _get_controller_prefab():
 	return preload("multi_visual.tscn")
 
 

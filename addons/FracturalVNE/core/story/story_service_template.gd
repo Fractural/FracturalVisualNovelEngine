@@ -25,6 +25,8 @@ var function_definitions = [
 
 
 # Optional
+# Configures a service for a new AST.
+# (program_node is the root of the AST).
 func configure_service(program_node):
 	pass
 
@@ -33,3 +35,18 @@ func get_service_name():
 	return "DemoService"
 
 # ----- StoryService ----- #
+
+
+# ----- Serialization ----- #
+
+# Optional
+func serialize_state():
+	return {
+		"service_name": get_service_name()
+	}
+
+
+func deserialize_state(serialized_state):
+	pass
+
+# ----- Serialization ----- #

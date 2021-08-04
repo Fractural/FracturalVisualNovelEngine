@@ -1,4 +1,5 @@
 extends "res://addons/FracturalVNE/core/story_script/ast_nodes/node/node_construct.gd"
+# Parses a group of ParenthesizedArguments.
 
 
 const ArgumentNode = preload("res://addons/FracturalVNE/core/story_script/ast_nodes/expressions/expression_components/parenthesized_arguments/argument.gd")

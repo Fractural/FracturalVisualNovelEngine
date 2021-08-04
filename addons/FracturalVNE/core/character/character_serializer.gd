@@ -30,7 +30,6 @@ func deserialize(serialized_object):
 	instance.name = serialized_object["name"]
 	instance.name_color = Color(serialized_object["name_color"])
 	instance.dialogue_color = Color(serialized_object["dialogue_color"])
-	
 	return instance
 
 
@@ -44,4 +43,4 @@ func fetch_dependencies(instance, serialized_object):
 
 
 func _script_path():
-	return "res://addons/FracturalVNE/core/character/character.gd"
+	return get_script().get_path().get_base_dir() + "/character.gd"

@@ -1,11 +1,14 @@
-extends "res://addons/FracturalVNE/core/actor/actor_controller.gd"
+extends "res://addons/FracturalVNE/core/actor/node_2d_actor_controller.gd"
+# -- Abstract Class -- #
 # Base class for all VisualControllers.
 
 
 # ----- Typeable ----- #
 
 func get_types() -> Array:
-	return ["VisualController"]
+	var arr = .get_types()
+	arr.append("VisualController")
+	return arr
 
 # ----- Typeable ----- #
 

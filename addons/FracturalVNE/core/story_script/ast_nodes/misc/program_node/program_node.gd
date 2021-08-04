@@ -11,7 +11,6 @@ extends "res://addons/FracturalVNE/core/story_script/ast_nodes/executable_node/e
 signal throw_error(error)
 
 const ASTNodeIDDistributor = preload("res://addons/FracturalVNE/core/story_script/story_services/ast_node_id_distributor.gd")
-const ExpressionNodeEvaluator = preload("res://addons/FracturalVNE/core/story_script/expression_node_evaluation/expression_node_evaluator.gd")
 
 # TODO: Refactor function_holders into just a Dictionary of functions
 # to improve lookup speeds
@@ -28,8 +27,6 @@ func _init(block_ = null).(StoryScriptPosition.new(0, 0)):
 func _init_post():
 	add_service(ASTNodeIDDistributor.new())
 	start_configure_node()
-	
-	add_service(ExpressionNodeEvaluator.new())
 
 
 func propagate_call(method, arguments = [], parent_first = false):

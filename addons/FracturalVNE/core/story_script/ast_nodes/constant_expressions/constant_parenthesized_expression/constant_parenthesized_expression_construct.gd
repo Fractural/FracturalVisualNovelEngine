@@ -1,4 +1,5 @@
 extends "res://addons/FracturalVNE/core/story_script/ast_nodes/expressions/expression_components/parenthesized_expression/parenthesized_expression_construct.gd"
+# Consturcts a constant parenthesized expression.
 
 
 const ConstantParenthesizedExpression = preload("constant_parenthesized_expression.gd")

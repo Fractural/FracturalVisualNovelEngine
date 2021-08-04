@@ -1,17 +1,20 @@
-[gd_scene load_steps=4 format=2]
+[gd_scene load_steps=6 format=2]
 
-[ext_resource path="res://addons/FracturalVNE/core/actor/transition/sub_transitions/replace_transition/simultaneous_merged_replace_transition.gd" type="Script" id=1]
-[ext_resource path="res://addons/FracturalVNE/default_assets/transitions/cross_fade/show.tscn" type="PackedScene" id=2]
-[ext_resource path="res://addons/FracturalVNE/default_assets/transitions/cross_fade/hide.tscn" type="PackedScene" id=3]
+[ext_resource path="res://addons/FracturalVNE/default_assets/curves/linear.tres" type="Curve" id=2]
+[ext_resource path="res://addons/FracturalVNE/core/standard_node_2d/transition/sub_transitions/replace_transition/two_texture_shader_replace_transition.gd" type="Script" id=3]
+[ext_resource path="res://addons/FracturalVNE/default_assets/transitions/cross_fade/replace_cross_fade.shader" type="Shader" id=4]
+[ext_resource path="res://addons/FracturalVNE/default_assets/transitions/material_configurer.gd" type="Script" id=5]
 
-[node name="Replace" type="Control"]
-script = ExtResource( 1 )
-__meta__ = {
-"_edit_use_anchors_": false
-}
-show_transition_path = NodePath("Show")
-hide_transition_path = NodePath("Hide")
+[sub_resource type="ShaderMaterial" id=1]
+shader = ExtResource( 4 )
+shader_param/progress = 1.0
 
-[node name="Show" parent="." instance=ExtResource( 2 )]
+[node name="Replace" type="Node2D"]
+script = ExtResource( 3 )
+transition_texture_holder_path = NodePath("TransitionTextureHolder")
+transition_curve = ExtResource( 2 )
 
-[node name="Hide" parent="." instance=ExtResource( 3 )]
+[node name="TransitionTextureHolder" type="Sprite" parent="."]
+material = SubResource( 1 )
+script = ExtResource( 5 )
+node_holder_path = NodePath(".")

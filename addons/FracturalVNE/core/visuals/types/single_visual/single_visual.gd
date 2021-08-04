@@ -13,14 +13,14 @@ func get_types() -> Array:
 # ----- Typeable ----- #
 
 
-export var texture_path: String
+export var texture: Texture
 
 
-func _init(cached_ = false, texture_path_ = "").(cached_):
-	texture_path = texture_path_
+func _init(cached_ = false, texture_ = null).(cached_):
+	texture = texture_
 
 
-func _get_controller_prefab_path():
+func _get_controller_prefab():
 	return preload("single_visual.tscn")
 
 
@@ -28,13 +28,13 @@ func _get_controller_prefab_path():
 
 func serialize():
 	var serialized_object = .serialize()
-	serialized_object["texture_path"] = texture_path
+	serialized_object["texture_path"] = texture.get_path()
 	return serialized_object
 
 
 func deserialize(serialized_object):
 	var instance = .deserialize(serialized_object)
-	instance.texture_path = serialized_object["texture_path"]
+	instance.texture = load(serialized_object["texture_path"])
 	return instance
 
 # ----- Serialization ----- #

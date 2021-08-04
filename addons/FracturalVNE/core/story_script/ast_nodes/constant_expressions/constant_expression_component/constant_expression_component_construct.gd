@@ -1,4 +1,5 @@
 extends "res://addons/FracturalVNE/core/story_script/ast_nodes/expressions/expression_components/expression_component/expression_component_construct.gd"
+# Parses a constant expression component
 
 
 func get_parse_types() -> Array:

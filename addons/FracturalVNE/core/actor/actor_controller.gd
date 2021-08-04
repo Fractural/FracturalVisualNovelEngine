@@ -1,11 +1,12 @@
-extends Node
+tool
+extends "res://addons/FracturalVNE/core/standard_node_2d/node_2d_standard_node_2d.gd"
 # Base class for all ActorControllers.
 
 
 # ----- Typeable ----- #
 
 func get_types() -> Array:
-	return ["ActorController"]
+	return ["ActorController", "Serializable"]
 
 # ----- Typeable ----- #
 

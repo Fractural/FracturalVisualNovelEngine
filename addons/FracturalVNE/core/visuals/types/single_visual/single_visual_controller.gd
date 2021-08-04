@@ -5,7 +5,7 @@ extends "res://addons/FracturalVNE/core/visuals/types/visual_controller.gd"
 
 func get_types() -> Array:
 	var arr = .get_types()
-	arr.append("SingleVisual")
+	arr.append("SingleVisualController")
 	return arr
 
 # ----- Typeable ----- #

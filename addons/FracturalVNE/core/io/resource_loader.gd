@@ -19,11 +19,14 @@ func get_service_name():
 # ----- StoryService ----- #
 
 
+const SSUtils = FracVNE.StoryScript.Utils
+
+
 func load(path):
 	# Godot automatically caches resources when loading so memory
 	# use will be efficient.
 	var result = ResourceLoader.load(path)
 	if result == null:
-		return FracVNE.StoryScript.Error.new("Could not load resource at path \"%s\"" % path)
+		return SSUtils.error("Could not load resource at path \"%s\"" % path)
 	else:
 		return result

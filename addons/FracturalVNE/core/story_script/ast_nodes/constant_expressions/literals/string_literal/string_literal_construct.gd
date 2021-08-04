@@ -1,4 +1,5 @@
 extends "res://addons/FracturalVNE/core/story_script/ast_nodes/constant_expressions/literals/literal/literal_construct.gd"
+# Parses a StringLiteral.
 
 
 const StringLiteralNode = preload("string_literal.gd")

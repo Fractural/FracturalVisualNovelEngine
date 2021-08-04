@@ -52,6 +52,9 @@ func screenshot_gameplay():
 	
 	is_taking_screenshot = true
 	
+	# Enable the screenshot viewport
+	screenshot_viewport.render_target_update_mode = Viewport.UPDATE_ALWAYS
+	
 	# Reparent the world as a child of the viewport
 	var world_holder = world.get_parent()
 	world_holder.remove_child(world)
@@ -105,6 +108,9 @@ func screenshot_gameplay():
 	# Move the gui outside of the viewport gui holder to it's original place
 	screenshot_gui_holder.remove_child(story_gui_configurer.story_gui)
 	story_gui_configurer.story_gui_holder.add_child(story_gui_configurer.story_gui)
+	
+	# Disable the screenshot viewport
+	screenshot_viewport.render_target_update_mode = Viewport.UPDATE_DISABLED
 	
 	screenshot = viewport_texture
 	is_taking_screenshot = false

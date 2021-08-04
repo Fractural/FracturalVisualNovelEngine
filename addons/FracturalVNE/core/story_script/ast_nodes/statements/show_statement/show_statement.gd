@@ -1,5 +1,5 @@
 extends "res://addons/FracturalVNE/core/story_script/ast_nodes/statements/statement/statement_node.gd"
-# Shows a actor.
+# Shows an actor.
 
 
 # ----- Typeable ----- #
@@ -22,13 +22,13 @@ func _init(position_ = null, actor_ = null, transition_ = null).(position_):
 
 
 func execute():
-	var transition_instance = _get_transition_instance()
+	var transition_result = _get_transition_result()
 	
-	if not is_success(transition_instance):
-		throw_error(transition_instance)
+	if not is_success(transition_result):
+		throw_error(transition_result)
 		return
 	
-	var result = _run_show_transition(transition_instance)
+	var result = _run_show_transition(transition_result)
 	
 	if not is_success(result):
 		throw_error(result)
@@ -37,28 +37,24 @@ func execute():
 	_finish_execute()
 
 
-func _run_show_transition(transition_instance):
-	var actor_result = evaluate_type("Actor", actor)
+func _run_show_transition(transition_result):
+	var actor_result = SSUtils.evaluate_and_cast(actor, "Actor")
 	if not is_success(actor_result):
 		return stack_error(actor_result, "Could not evaluate the actor for the show statement.")
 	
 	var actor_controller = get_runtime_block().get_service("ActorManager").get_or_load_actor_controller(actor_result)
 	if not is_success(actor_controller):
 		return stack_error(actor_controller, "Could not load the ActorController for the show statement.")
-	actor_controller.actor_transitioner.show(transition_instance)
+	actor_controller.actor_transitioner.show(transition_result)
 
 
-func _get_transition_instance():
-	var transition_instance = null
+func _get_transition_result():
+	var transition_result = null
 	if transition != null:
-		var transition_result = evaluate_type("ActorTransition", transition)
+		transition_result = SSUtils.evaluate_and_cast(transition, "StandardNode2DTransition")
 		if not is_success(transition_result):
 			return stack_error(transition_result, "Could not evaluate transition_result for the show statement.")
-		
-		transition_instance = transition_result.show_transition.instance()
-		if not FracUtils.is_type(transition_instance, "SingleTransition"):
-			return error("Expected valid SingleTransition for the show statement.")
-	return transition_instance
+	return transition_result
 
 
 func debug_string(tabs_string: String) -> String:

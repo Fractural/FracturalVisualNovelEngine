@@ -1,4 +1,5 @@
 extends "res://addons/FracturalVNE/core/story_script/ast_nodes/statements/statement/statement_node.gd"
+# Jumps to a label.
 
 
 # ----- Typeable ----- #
@@ -24,6 +25,10 @@ func execute():
 	if not is_success(result):
 		throw_error(stack_error(result, 'Error jumping to label "%s".' % label_name))
 		return
+	_finish_execute()
+
+
+func _finish_execute():
 	emit_signal("executed")
 
 

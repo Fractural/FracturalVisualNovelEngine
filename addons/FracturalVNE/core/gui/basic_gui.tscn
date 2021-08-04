@@ -5,7 +5,7 @@
 [ext_resource path="res://addons/FracturalVNE/assets/themes/basic_gui_theme.tres" type="Theme" id=3]
 [ext_resource path="res://addons/FracturalVNE/core/gui/pause_menu/basic_pause_menu.tscn" type="PackedScene" id=4]
 [ext_resource path="res://addons/FracturalVNE/core/gui/_misc/basic_stepper.gd" type="Script" id=5]
-[ext_resource path="res://addons/FracturalVNE/core/gui/text_printer/text_printer_controller_init.gd" type="Script" id=6]
+[ext_resource path="res://addons/FracturalVNE/core/gui/text_printer/text_printer_controller_configurer.gd" type="Script" id=6]
 [ext_resource path="res://addons/FracturalVNE/core/utils/dependency_injection/dependency.gd" type="Script" id=7]
 [ext_resource path="res://addons/FracturalVNE/core/gui/text_printer/default_text_printer.tres" type="Resource" id=8]
 [ext_resource path="res://addons/FracturalVNE/core/gui/_misc/gui_bottom_menu.gd" type="Script" id=11]
@@ -89,6 +89,11 @@ text_printer_manager_dep_path = NodePath("../../../Dependencies/TextPrinterManag
 rect_min_size = Vector2( 0, 0 )
 size_flags_horizontal = 3
 size_flags_vertical = 3
+
+[node name="Holder" parent="Panel/VBoxContainer/TextPrinterHolder/BasicTextPrinter" index="0"]
+global_standard_position = Vector2( 0, 360 )
+global_standard_scale = Vector2( 1, 1 )
+global_standard_rotation = 0.0
 
 [node name="HSeparator" parent="Panel/VBoxContainer/TextPrinterHolder/BasicTextPrinter/Holder/Panel/MarginContainer" index="0"]
 margin_bottom = 180.0

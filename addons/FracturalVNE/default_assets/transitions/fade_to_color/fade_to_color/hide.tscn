@@ -16,8 +16,8 @@ __meta__ = {
 "_edit_use_anchors_": false
 }
 transition_type = 1
-fade_curve = ExtResource( 4 )
-node_holder_path = NodePath("../Show/NodeHolder")
+transition_curve = ExtResource( 4 )
+node_holder_path = NodePath("NodeHolder")
 
 [node name="NodeHolder" type="Control" parent="."]
 material = SubResource( 1 )

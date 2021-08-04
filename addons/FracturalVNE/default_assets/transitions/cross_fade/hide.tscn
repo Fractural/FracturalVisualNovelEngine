@@ -9,7 +9,7 @@ __meta__ = {
 "_edit_use_anchors_": false
 }
 transition_type = 1
-fade_curve = ExtResource( 2 )
+transition_curve = ExtResource( 2 )
 node_holder_path = NodePath("NodeHolder")
 
 [node name="NodeHolder" type="Control" parent="."]

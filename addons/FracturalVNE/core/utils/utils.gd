@@ -4,8 +4,9 @@ extends Reference
 
 # A constant that maps the type ID to the string for it's name.
 # we won't need to include TYPE_OBJECT since we will handle it differently.
-const TYPE_STR_MAPPING = {
+const TYPE_TO_STR_MAPPING = {
 	TYPE_NIL: "Null",
+	TYPE_BOOL: "bool",
 	TYPE_INT: "int",
 	TYPE_REAL: "float",
 	TYPE_STRING: "String",
@@ -33,6 +34,36 @@ const TYPE_STR_MAPPING = {
 	TYPE_COLOR_ARRAY: "PoolColorArray",
 }
 
+const STR_TO_TYPE_MAPPING = {
+	"Null": TYPE_NIL,
+	"bool": TYPE_BOOL,
+	"int": TYPE_INT,
+	"float": TYPE_REAL,
+	"String": TYPE_STRING,
+	"Vector2": TYPE_VECTOR2,
+	"Rect2": TYPE_RECT2,
+	"Vector3": TYPE_VECTOR3,
+	"Transform2D": TYPE_TRANSFORM2D,
+	"Plane": TYPE_PLANE,
+	"Quat": TYPE_QUAT,
+	"AABB": TYPE_AABB,
+	"Basis": TYPE_BASIS,
+	"Transform": TYPE_TRANSFORM,
+	"Color": TYPE_COLOR,
+	"NodePath": TYPE_NODE_PATH,
+	"RID": TYPE_RID,
+	"Object": TYPE_OBJECT,
+	"Dictionary": TYPE_DICTIONARY,
+	"Array": TYPE_ARRAY,
+	"PoolByteArray": TYPE_RAW_ARRAY,
+	"PoolIntArray": TYPE_INT_ARRAY,
+	"PoolRealArray": TYPE_REAL_ARRAY,
+	"PoolStringArray": TYPE_STRING_ARRAY,
+	"PoolVector2Array": TYPE_VECTOR2_ARRAY,
+	"PoolVector3Array": TYPE_VECTOR3_ARRAY,
+	"PoolColorArray": TYPE_COLOR_ARRAY,
+}
+
 
 # Gives the type of an object.
 static func get_type_name(object):
@@ -42,41 +73,82 @@ static func get_type_name(object):
 				return object.get_types()[0]
 			return object.get_class()
 		_:
-			return TYPE_STR_MAPPING[typeof(object)]
+			return TYPE_TO_STR_MAPPING[typeof(object)]
 
 
 # Checks if the object is a certain type.
-static func is_type(object, type):
-	if TYPE_STR_MAPPING.has(typeof(object)):
-		return typeof(object) == TYPE_STR_MAPPING[object]
-	elif object is Object:
+static func is_type(object, type: String):
+	if _is_custom_type_builtin(object, type):
+		return true
+	if STR_TO_TYPE_MAPPING.has(type):
+		return typeof(object) == STR_TO_TYPE_MAPPING[type]
+	if object is Object:
+		if ClassDB.is_parent_class(object.get_class(), type):
+			return true
 		if object.has_method("get_types"):
 			return object.get_types().has(type)
-		else:
-			return object.get_class() == type
-	else:
-		assert(false, "Unkown type \"%s\"." % type)
+	return false
+
+
+# Helper method for adding more type classifications
+# to builtin types. (Such as assigning the Literal type
+# to Strings, ints, and floats)
+static func _is_custom_type_builtin(object, type):
+	match type:
+		"Number":
+			return object is int or object is float
+		"Literal":
+			return (object is int or object is float or object is String)
+	return false
 
 
 # Checks if the object can be casted to a certain type.
-static func can_cast(object, type):
+static func can_cast(object, type: String):
 	if is_type(object, type):
 		return true
-	return object is Object and object.has_method("can_cast") and object.can_cast(type)
+	return object is Object and object.has_method("get_cast_types") and object.get_cast_types().has(type)
 
 
 # Attempts to cast an object into specified type.
 # If the object cannot be casted then this returns null.
 static func implicit_cast(object, type):
-	if can_cast(object, type):
+	# If an array is passed, then try to cast the object
+	# into every type in the array
+	if type is Array:
+		for type_string in type:
+			var result = implicit_cast(object, type_string)
+			if result != null:
+				return result
+	
+	var builtin_cast_result = _try_custom_cast_builtin(object, type)
+	if builtin_cast_result != null:
+		return builtin_cast_result
+	if is_type(object, type):
+		return object
+	elif can_cast(object, type):
 		return object.cast(type)
 	return null
 
 
-# Reparents a node to a new_parent.
+# Helper method used by implicit_cast() to cast
+# a builtin type into something. Since we cannot
+# add methods onto builtin types, we instead do
+# the builtin type casting here.
+static func _try_custom_cast_builtin(object, type):
+	# Manual conversion of a builtin:
+	match type:
+		_:
+			pass
+	return null
+
+
+# Reparents a node to a new_parent and returns
+# the original parent..
 static func reparent(node: Node, new_parent: Node):
+	var original = node.get_parent()
 	node.get_parent().remove_child(node)
 	new_parent.add_child(node)
+	return original
 
 
 # Snakecase conversions source:

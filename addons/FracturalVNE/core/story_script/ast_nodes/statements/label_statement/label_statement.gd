@@ -1,4 +1,5 @@
 extends "res://addons/FracturalVNE/core/story_script/ast_nodes/statements/statement/statement_node.gd"
+# Labels a spot that can be later jumped to using a jump statement.
 
 
 # ----- Typeable ----- #
@@ -42,7 +43,7 @@ func execute(arguments = []):
 
 
 func block_executed():
-	.execute()
+	_finish_execute()
 
 
 func runtime_initialize():

@@ -1,6 +1,6 @@
 [gd_resource type="Resource" load_steps=5 format=2]
 
-[ext_resource path="res://addons/FracturalVNE/core/actor/transition/actor_transition.gd" type="Script" id=1]
+[ext_resource path="res://addons/FracturalVNE/core/standard_node_2d/transition/standard_node_2d_transition.gd" type="Script" id=1]
 [ext_resource path="res://addons/FracturalVNE/default_assets/transitions/cross_fade/show.tscn" type="PackedScene" id=2]
 [ext_resource path="res://addons/FracturalVNE/default_assets/transitions/cross_fade/hide.tscn" type="PackedScene" id=3]
 [ext_resource path="res://addons/FracturalVNE/default_assets/transitions/cross_fade/replace.tscn" type="PackedScene" id=4]

@@ -12,21 +12,34 @@ func get_types() -> Array:
 # ----- Typeable ----- #
 
 
-const SceneTransitionAction = preload("res://addons/FracturalVNE/core/scene/scene_transition_action.gd")
-
 var scene
-var animation
+var transition
+var keep_old_scene
 
 
-func _init(position_, scene_, animation_).(position_):
+func _init(position_, scene_, transition_, keep_old_scene_ = null).(position_):
 	scene = scene_
-	animation = animation_
+	transition = transition_
+	keep_old_scene = keep_old_scene_
 
 
 func execute():
-	var scene_result = scene.evaluate()
-	if not is_success(scene_result) or not (scene_result is PackedScene or scene_result is Texture):
-		throw_error(stack_error(scene_result, "Expected a valid PackedScene or Texture for the scene statement."))
+	var scene_result = SSUtils.evaluate_and_cast(scene, "BGScene")
+	if not is_success(scene_result):
+		throw_error(stack_error(scene_result, "Expected a valid BGScene for the scene statement."))
+		return
+	
+	var transition_result = SSUtils.evaluate_and_cast(scene, "StandardNode2DTransition")
+	if not is_success(transition_result):
+		throw_error(stack_error(transition_result, "Expected a valid StandardNode2DTransition for the scene statement."))
+		return
+	
+	var keep_old_scene_result = false
+	if keep_old_scene != null:
+		keep_old_scene_result = SSUtils.evaluate_and_cast(keep_old_scene, "bool")
+	get_runtime_block().get_service("BGSceneManager").show_scene(scene_result, transition_result, keep_old_scene_result)
+	
+	_finish_execute()
 
 
 func debug_string(tabs_string: String) -> String:
@@ -40,10 +53,10 @@ func debug_string(tabs_string: String) -> String:
 	string += "\n" + scene.debug_string(tabs_string + "\t\t")
 	string += "\n" + tabs_string + "\t}"
 	
-	if animation != null:
-		string += "\n" + tabs_string + "\tANIMATION: "
+	if transition != null:
+		string += "\n" + tabs_string + "\tTRANSITION: "
 		string += "\n" + tabs_string + "\t{"
-		string += "\n" + animation.debug_string(tabs_string + "\t\t")
+		string += "\n" + transition.debug_string(tabs_string + "\t\t")
 		string += "\n" + tabs_string + "\t}"
 
 	string += "\n" + tabs_string + "}"
@@ -55,8 +68,8 @@ func propagate_call(method, arguments = [], parent_first = false):
 		.propagate_call(method, arguments, parent_first)
 	
 	scene.propagate_call(method, arguments, parent_first)
-	if animation != null:
-		animation.propagate_call(method, arguments, parent_first)
+	if transition != null:
+		transition.propagate_call(method, arguments, parent_first)
 	
 	if not parent_first:
 		.propagate_call(method, arguments, parent_first)

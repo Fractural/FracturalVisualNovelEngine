@@ -1,6 +1,12 @@
 extends Reference
 # Stores an error that occured in a StoryScript whether during compile time
 # or during execution.
+# 
+# As a rule of thumb, whenever you want to call a function with variables whose
+# type you do not know, please check the types before passing the variables through.
+# 
+# Every function should assume it receieved the correct typed parameters
+# and should not have to implement checks for their parameters.
 
 
 const Position = preload("res://addons/FracturalVNE/core/story_script/story_script_position.gd")

@@ -1,4 +1,5 @@
 extends "res://addons/FracturalVNE/core/story_script/ast_nodes/expressions/expression_components/value_components/value_component/value_component.gd"
+# Calls a function from the runtime_block it's under.
 
 
 # ----- Typeable ----- #

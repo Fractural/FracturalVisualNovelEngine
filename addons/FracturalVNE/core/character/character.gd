@@ -6,20 +6,21 @@ extends Resource
 
 # ----- Typeable ----- #
 
-func can_cast(type: String) -> bool:
-	return type == "Visual"
+func get_cast_types() -> Array:
+	if visual != null:
+		return visual.get_types()
+	return []
 
 
 func cast(type: String):
-	match type:
-		"Visual":
-			return visual
-		_:
-			return null
+	if get_types().has(type):
+		return self
+	if visual.get_types().has(type):
+		return visual
 
 
 func get_types() -> Array:
-	return ["Character"]
+	return ["Character", "Serializable"]
 
 # ----- Typeable ----- #
 
@@ -30,7 +31,7 @@ export var dialogue_color: Color
 export var visual: Resource
 
 
-func _init(name_ = null, name_color_ = null, dialogue_color_ = null, visual_ = null):
+func _init(name_ = "", name_color_ = Color.white, dialogue_color_ = Color.white, visual_ = null):
 	name = name_
 	name_color = name_color_
 	dialogue_color = dialogue_color_

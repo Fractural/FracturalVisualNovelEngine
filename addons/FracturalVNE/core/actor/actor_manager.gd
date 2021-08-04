@@ -1,6 +1,8 @@
 extends Node
 # Creates and keeps track of Actors.
 
+# TODO: Maybe remove asserts?
+
 
 # ----- StoryService ----- #
 
@@ -18,6 +20,7 @@ func get_service_name():
 # ----- StoryService ----- #
 
 
+const FracUtils = FracVNE.Utils
 const SSUtils = FracVNE.StoryScript.Utils
 
 export var reference_registry_path: NodePath
@@ -44,25 +47,30 @@ onready var serialization_manager = get_node(serialization_manager_path)
 
 
 func get_actors_holder(actor_controller):
+	assert(FracUtils.is_type(actor_controller, "ActorController"), 
+		"Expected actor_controller to be an ActorController.")
 	if actor_controller is Control:
 		return control_actors_holder
 	return node_2d_actors_holder
 
 
 func add_actor(actor):
+	assert(FracUtils.is_type(actor, "Actor"), "Expected actor to be an Actor.")
 	actors.append(actor)
 
 
 func remove_actor(actor):
+	assert(FracUtils.is_type(actor, "Actor"), "Expected actor to be an Actor.")
 	actors.erase(actor)
 	actor_controller_lookup.erase(actor)
 
 
+# -- StoryScriptErrorable -- #
 func load_actor_controller(actor, actor_holder = null):
 	var actor_controller = actor.instantiate_controller(story_director)
 
 	if not SSUtils.is_success(actor_controller):
-		return SSUtils.stack_error(actor_controller, "Cannot load the actor controller.")
+		return SSUtils.stack_error(actor_controller, "Could not load the actor controller.")
 
 	actor_controller_lookup[actor] = actor_controller
 	
@@ -75,21 +83,34 @@ func load_actor_controller(actor, actor_holder = null):
 
 
 func remove_actor_controller(actor):
+	assert(FracUtils.is_type(actor, "Actor"), "Expected actor to be an Actor.")
 	actor_controller_lookup[actor].queue_free()
 	actor_controller_lookup.erase(actor)
 
 
+# -- StoryScriptErrorable -- #
 # Returns the actor_controller that belongs to the actor. If there is none
 # then the a new actor_controller will be loaded, assigned to the actor, 
 # and returned.
 func get_or_load_actor_controller(actor):
+	assert(FracUtils.is_type(actor, "Actor"), "Expected actor to be an Actor.")
 	var actor_controller = actor_controller_lookup.get(actor)
 	if actor_controller != null:
 		return actor_controller
 	return load_actor_controller(actor)
 
 
+# Trys to get the actor controller that corresponds with a certain actor.
+# If no such controller can be found, this method returns null.
+func get_actor_controller(actor):
+	assert(FracUtils.is_type(actor, "Actor"), "Expected actor to be an Actor.")
+	return actor_controller_lookup.get(actor)
+
+
+
+# -- StoryScriptErrorable -- #
 func add_new_actor(actor, cached, actor_holder = null):
+	assert(FracUtils.is_type(actor, "Actor"), "Expected actor to be an Actor.")
 	reference_registry.add_reference(actor)
 	add_actor(actor)
 	
@@ -100,6 +121,14 @@ func add_new_actor(actor, cached, actor_holder = null):
 		if not SSUtils.is_success(load_result):
 			return load_result
 
+
+func add_new_actor_with_controller(actor, actor_controller):
+	assert(FracUtils.is_type(actor, "Actor"), "Expected actor to be an Actor.")
+	assert(FracUtils.is_type(actor_controller, "ActorController"), 
+		"Expected actor_controller to be an ActorController.")
+	reference_registry.add_reference(actor)
+	add_actor(actor)
+	actor_controller_lookup[actor] = actor_controller
 
 # ----- Serialization ----- #
 

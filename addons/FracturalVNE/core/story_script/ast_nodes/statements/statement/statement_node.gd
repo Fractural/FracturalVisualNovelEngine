@@ -1,4 +1,7 @@
 extends "res://addons/FracturalVNE/core/story_script/ast_nodes/executable_node/executable_node.gd"
+# -- Abstract Class -- #
+# Base class for all StatementNodes.
+# Statement nodes run one after another inside of Block statements.
 
 
 func get_types() -> Array:

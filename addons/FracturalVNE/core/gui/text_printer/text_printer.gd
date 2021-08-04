@@ -7,7 +7,9 @@ extends "res://addons/FracturalVNE/core/actor/actor.gd"
 # ----- Typeable ----- #
 
 func get_types() -> Array:
-	return ["Visual"]
+	var arr = .get_types()
+	arr.append("TextPrinter")
+	return arr
 
 # ----- Typeable ----- #
 
@@ -23,11 +25,11 @@ export(Array, Resource) var dialogue_custom_char_delays: Array = [] setget set_d
 export var default_name_color: Color = Color.white
 export var default_dialogue_color: Color = Color.white
 
-export var controller_prefab_path: String
+export var controller_prefab: PackedScene
 
 
-func _init(cached_ = false, controller_prefab_path_ = "").(cached_):
-	controller_prefab_path = controller_prefab_path_
+func _init(cached_ = false, controller_prefab_ = null).(cached_):
+	controller_prefab = controller_prefab_
 	
 	# Default values
 	dialogue_custom_char_delays = [
@@ -36,10 +38,6 @@ func _init(cached_ = false, controller_prefab_path_ = "").(cached_):
 	]
 	name_default_char_delay = 0
 	dialogue_default_char_delay = 0.01
-
-
-func _get_controller_prefab_path():
-	return controller_prefab_path
 
 
 func set_name_custom_char_delays(value):
@@ -56,6 +54,10 @@ func set_dialogue_custom_char_delays(value):
 	for i in dialogue_custom_char_delays.size():
 		if not dialogue_custom_char_delays[i]:
 			dialogue_custom_char_delays[i] = FracVNE_CharactersDelay.new()
+
+
+func _get_controller_prefab():
+	return controller_prefab
 
 
 # ----- Serialization ----- #
@@ -75,10 +77,10 @@ func serialize():
 		serialized_dialogue_custom_char_delays.append(char_delay.serialize())
 	serialized_object["dialogue_custom_char_delays"] = serialized_dialogue_custom_char_delays
 	
-	serialized_object["default_name_color"] = default_name_color
-	serialized_object["default_dialogue_color"] = default_dialogue_color
+	serialized_object["default_name_color"] = default_name_color.to_html()
+	serialized_object["default_dialogue_color"] = default_dialogue_color.to_html()
 	
-	serialized_object["controller_prefab_path"] = controller_prefab_path
+	serialized_object["controller_prefab_path"] = controller_prefab.get_path()
 	
 	return serialized_object
 
@@ -98,10 +100,10 @@ func deserialize(serialized_object):
 		dialogue_custom_char_delays.append(SerializationUtils.deserialize(serialized_char_delay))
 	instance.dialogue_custom_char_delays = dialogue_custom_char_delays
 	
-	instance.default_name_color = serialized_object["default_name_color"]
-	instance.default_dialogue_color = serialized_object["default_dialogue_color"]
+	instance.default_name_color = Color(serialized_object["default_name_color"])
+	instance.default_dialogue_color = Color(serialized_object["default_dialogue_color"])
 	
-	instance.controller_prefab_path = serialized_object["controller_prefab_path"]
+	instance.controller_prefab = load(serialized_object["controller_prefab_path"])
 	
 	return instance
 

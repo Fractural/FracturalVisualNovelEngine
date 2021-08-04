@@ -12,8 +12,6 @@ func get_types() -> Array:
 # ----- Typeable ----- #
 
 
-const MoveAction = preload("res://addons/FracturalVNE/core/actor/movement/move_action.gd")
-
 var actor
 var target_position
 var travel_curve
@@ -81,8 +79,10 @@ func execute():
 			if not is_success(actor_controller):
 				throw_error(stack_error(actor_controller, "Could not load actor controller for the move statement."))
 				return
-			actor_controller.actor_mover.move(target_position_result, travel_curve_result, duration_result, MoveAction.new(actor_controller.actor_mover))
-			.execute()
+			# TODO: Add rotation and scaling for move statement.
+			actor_controller.actor_mover.move(target_position_result, null, null, travel_curve_result, duration_result)
+			
+			_finish_execute()
 		else:
 			throw_error(error("Expected an actor for the move statement."))
 			return

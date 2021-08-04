@@ -1,7 +1,11 @@
 extends Reference
+# -- Abstract Class -- #
 # Base class for all nodes. Represents a node on an abstract sytax tree (AST) for a story.
 # The root of this tree executes it's children, which execute their own children, etc. in order
 # to play an entire story.
+
+# TODO: Refactor the get_types() from all nodes to follow
+#		the traditional PascalCase naming style.
 
 
 # ----- Typeable ----- #
@@ -13,7 +17,7 @@ func get_types() -> Array:
 
 const StoryScriptPosition = preload("res://addons/FracturalVNE/core/story_script/story_script_position.gd")
 const StoryScriptError = preload("res://addons/FracturalVNE/core/story_script/story_script_error.gd")
-const StoryScriptUtils = preload("res://addons/FracturalVNE/core/story_script/story_script_utils.gd")
+const SSUtils = preload("res://addons/FracturalVNE/core/story_script/story_script_utils.gd")
 const FracUtils = preload("res://addons/FracturalVNE/core/utils/utils.gd")
 
 var reference_id
@@ -49,10 +53,6 @@ func get_runtime_block():
 		return runtime_block.get_ref()
 
 
-func evaluate_type(type_name, expression_node):
-	get_runtime_block().get_service("ExpressionNodeEvaluator").evaluate(type_name, expression_node)
-
-
 func debug_string(tabs_string: String) -> String:
 	return "N/A"
 
@@ -60,7 +60,7 @@ func debug_string(tabs_string: String) -> String:
 # ----- Error ----- #
 
 func is_success(result):
-	return StoryScriptUtils.is_success(result)
+	return SSUtils.is_success(result)
 
 
 func error(message: String):

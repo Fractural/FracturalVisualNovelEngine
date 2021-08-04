@@ -1,4 +1,5 @@
-extends "res://addons/FracturalVNE/core/scene/types/scene.gd"
+extends "res://addons/FracturalVNE/core/scene/types/scene_controller.gd"
+# Scene that holds a prefab.
 
 
 # ----- Typeable ----- #
@@ -11,11 +12,14 @@ func get_types():
 # ----- Typeable ----- #
 
 
-func init(scene):
-	.init(scene)
-	var prefab_result = SSUtils.load(scene.prefab_path)
-	if not SSUtils.is_success(prefab_result):
-		return prefab_result
+export var prefab_holder_path: NodePath
+
+onready var prefab_holder = get_node(prefab_holder_path)
+
+
+func init(scene_ = null, story_director_ = null):
+	.init(scene_, story_director_)
+	prefab_holder.add_child(scene_.prefab.instance())
 
 
 # ----- Serialization ----- #

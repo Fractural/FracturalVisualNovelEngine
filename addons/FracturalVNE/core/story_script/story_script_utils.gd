@@ -1,6 +1,22 @@
 extends Reference
+# General purpose class for StoryScript related things.
 
+
+const FracUtils = preload("res://addons/FracturalVNE/core/utils/utils.gd")
 const Error = preload("res://addons/FracturalVNE/core/story_script/story_script_error.gd")
+
+
+# Evaluates object to a type. If the object is not
+# the type then it attempts to cast it to the type.
+static func evaluate_and_cast(object, type):
+	var result = object.evaluate()
+	if not is_success(result):
+		return result
+	result = FracUtils.implicit_cast(result, type)
+	if result == null:
+		# Implicit cast failed
+		return error("Cannot cast object \"%s\" to type \"%s\"." % [result, type])
+	return result
 
 
 # Checks if a result is successful (meaning it is not a StoryScript.Error).

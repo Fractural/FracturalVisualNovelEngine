@@ -61,35 +61,24 @@ func init(visual_ = null, story_director_ = null):
 		textures_dict[_get_modifiers_string(texture.get_path().get_basename().get_file())] = texture
 
 
-func set_sprite(modifiers_string, actor_transition: FracVNE_ActorTransition = null):
+func set_sprite_show(modifiers_string, standard_transition: FracVNE_StandardNode2DTransition = null):
 	if textures_dict.has(modifiers_string):
 		old_sprite.texture = sprite.texture
 		sprite.texture = textures_dict[modifiers_string]
 		
 		# ----- Optional Transitioning ----- #
 		
-		if old_sprite.texture == sprite.texture:
-			# No need for a transition since the two textures
-			# are the same
-			return
+		var result
+		if old_sprite.texture != sprite.texture and old_sprite.texture != null:
+			# Perform a replace standard_transition.
+			result = get_actor_transitioner().replace(standard_transition)
+		else:
+			# Default to show transition.
+			result = get_actor_transitioner().show(standard_transition)
+		if not SSUtils.is_success(result):
+			return result
 		
-		if actor_transition != null:
-			# Perform a transition since a actor_transition exists
-			# and the two textures are not the same.
-			if sprite.texture != null:
-				# Perform a replace actor_transition.
-				var replace_transition_instance = actor_transition.replace_transition.instance()
-				if not FracUtils.is_type(replace_transition_instance, "ReplaceTransition"):
-					return SSUtils.error("Expected a ReplaceTransition for showing a new texture on a MultiVisual.")
-				get_actor_transitioner().replace(replace_transition_instance)
-			else:
-				# Perform a show actor_transition.
-				var show_transition_instance = actor_transition.show_transition.instance()
-				if not FracUtils.is_type(show_transition_instance, "SingleTransition"):
-					return SSUtils.error("Expected a SingleTransition for showing a new texture on a MultiVisual.")
-				get_actor_transitioner().show(show_transition_instance)
-			
-			# ----- Optional Transitioning ----- #
+		# ----- Optional Transitioning ----- #
 	else:
 		return SSUtils.error("Could not find the texture with the modifiers \"%s\" for this MultiVisual." % modifiers_string)
 

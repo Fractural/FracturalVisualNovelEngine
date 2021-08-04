@@ -15,9 +15,9 @@ func get_types() -> Array:
 
 const SayEntry = preload("res://addons/FracturalVNE/core/story/history/history_entries/say_entry/say_entry.gd")
 
-var character
-var text
-var printer
+var character 	# Node
+var text 		# String
+var printer 	# Node
 
 
 func _init(position_ = null, character_ = null, text_ = null, printer_ = null).(position_):
@@ -32,17 +32,22 @@ func execute():
 		text_printer_controller = get_runtime_block().get_service("TextPrinterManager").get_default_text_printer_controller()
 	var history_manager = get_runtime_block().get_service("HistoryManager")
 	
+	if text_printer_controller == null:
+		throw_error(error("Printer does not exist for the say statement."))
+		return
+	
 	if character == null:
 		text_printer_controller.narrate(text)
 		history_manager.add_entry(SayEntry.new(null, text))
 	else:
-		var character_result = character.evaluate()
+		var character_result = SSUtils.evaluate_and_cast(character, "Character")
 		if not is_success(character_result):
-			throw_error(character_result)
+			throw_error(stack_error(character_result, "Could not evaluate the character for the say statement."))
 			return
 		text_printer_controller.say(character_result, text)
 		history_manager.add_entry(SayEntry.new(character_result, text))
-	.execute()
+	
+	_finish_execute()
 
 
 func debug_string(tabs_string: String) -> String:

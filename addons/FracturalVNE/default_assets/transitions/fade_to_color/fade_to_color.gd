@@ -1,4 +1,4 @@
-extends "res://addons/FracturalVNE/core/actor/transition/sub_transitions/single_transition/curve_transition.gd"
+extends "res://addons/FracturalVNE/core/standard_node_2d/transition/sub_transitions/single_transition/curve_transition.gd"
 # Fades a node to or out of a color.
 
 

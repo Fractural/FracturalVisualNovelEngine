@@ -20,11 +20,6 @@ _global_script_classes=[ {
 "path": "res://addons/FracturalVNE/core/namespace.gd"
 }, {
 "base": "Resource",
-"class": "FracVNE_ActorTransition",
-"language": "GDScript",
-"path": "res://addons/FracturalVNE/core/actor/transition/actor_transition.gd"
-}, {
-"base": "Resource",
 "class": "FracVNE_BGScene",
 "language": "GDScript",
 "path": "res://addons/FracturalVNE/core/scene/types/scene.gd"
@@ -58,6 +53,11 @@ _global_script_classes=[ {
 "class": "FracVNE_SingleVisual",
 "language": "GDScript",
 "path": "res://addons/FracturalVNE/core/visuals/types/single_visual/single_visual.gd"
+}, {
+"base": "Resource",
+"class": "FracVNE_StandardNode2DTransition",
+"language": "GDScript",
+"path": "res://addons/FracturalVNE/core/standard_node_2d/transition/standard_node_2d_transition.gd"
 }, {
 "base": "Resource",
 "class": "FracVNE_TextPrinter",
@@ -142,7 +142,6 @@ _global_script_classes=[ {
 _global_script_class_icons={
 "Dependency": "res://addons/FracturalVNE/assets/icons/dependency.svg",
 "FracVNE": "",
-"FracVNE_ActorTransition": "res://addons/FracturalVNE/assets/icons/transition.svg",
 "FracVNE_BGScene": "res://addons/FracturalVNE/assets/icons/bg_scene.svg",
 "FracVNE_Character": "res://addons/FracturalVNE/assets/icons/character.svg",
 "FracVNE_CharactersDelay": "res://addons/FracturalVNE/assets/icons/characters_delay.svg",
@@ -150,6 +149,7 @@ _global_script_class_icons={
 "FracVNE_NodeVariable": "res://addons/FracturalVNE/assets/icons/node_variable.svg",
 "FracVNE_PrefabVisual": "",
 "FracVNE_SingleVisual": "",
+"FracVNE_StandardNode2DTransition": "res://addons/FracturalVNE/assets/icons/transition.svg",
 "FracVNE_TextPrinter": "res://addons/FracturalVNE/assets/icons/text_printer.svg",
 "FracVNE_Visual_ABSTRACT": "res://addons/FracturalVNE/assets/icons/visual.svg",
 "PluginAssetsRegistry": "",

@@ -1,4 +1,5 @@
 extends Node
+# Configures a tint material to make it ready for instance use.
 
 
 export var node_holder_path: NodePath
@@ -12,8 +13,3 @@ func _ready():
 	# the shader.
 	node_holder.material = node_holder.material.duplicate(true)
 	node_holder.material.set_shader_param("tint_color", tint_color)
-
-
-# Called every frame. 'delta' is the elapsed time since the previous frame.
-#func _process(delta):
-#	pass

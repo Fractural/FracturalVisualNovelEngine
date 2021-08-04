@@ -1,4 +1,6 @@
 extends "res://addons/FracturalVNE/core/story_script/ast_nodes/expressions/expression/expression_construct.gd"
+# Parses constant expressions (Expressions that are guaranteed to not change,
+# which means excluding variables and function calls)
 
 
 func get_parse_types() -> Array:

@@ -1,4 +1,5 @@
 extends "res://addons/FracturalVNE/core/story_script/ast_nodes/statements/statement/statement_construct.gd"
+# Parses a show statement.
 
 
 const ShowNode = preload("show_statement.gd")

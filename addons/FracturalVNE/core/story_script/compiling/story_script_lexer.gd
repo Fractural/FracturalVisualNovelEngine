@@ -10,7 +10,7 @@ const StoryScriptReader = preload("res://addons/FracturalVNE/core/story_script/c
 const NodeConstructConstants = preload("res://addons/FracturalVNE/core/story_script/node_construct_constants.gd")
 const StoryScriptPosition = preload("res://addons/FracturalVNE/core/story_script/story_script_position.gd")
 const StoryScriptError = preload("res://addons/FracturalVNE/core/story_script/story_script_error.gd")
-const StoryScriptUtils = preload("res://addons/FracturalVNE/core/story_script/story_script_utils.gd")
+const SSUtils = preload("res://addons/FracturalVNE/core/story_script/story_script_utils.gd")
 
 # ----- Definitions ----- #
 
@@ -447,7 +447,7 @@ func add_newline_and_maybe_indent():
 
 
 func is_success(result):
-	return StoryScriptUtils.is_success(result)
+	return SSUtils.is_success(result)
 
 
 func save_reader_state():

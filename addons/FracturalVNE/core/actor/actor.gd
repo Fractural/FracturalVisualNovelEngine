@@ -1,4 +1,5 @@
 extends Resource
+# -- Abstract Class -- #
 # Responsible for holding data about actors and also building them.
 # Base class for all ActorControllers
 
@@ -6,7 +7,7 @@ extends Resource
 # ----- Typeable ----- #
 
 func get_types() -> Array:
-	return ["Actor"]
+	return ["Actor", "Serializable"]
 
 # ----- Typeable ----- #
 
@@ -21,14 +22,14 @@ func _init(cached_ = false):
 
 
 func instantiate_controller(story_director):
-	var instance = _get_controller_prefab_path().instance()
+	var instance = _get_controller_prefab().instance()
 	var init_result = instance.init(self, story_director)
 	if not SSUtils.is_success(init_result):
 		return init_result
 	return instance
 
 
-func _get_controller_prefab_path():
+func _get_controller_prefab():
 	pass
 
 
@@ -43,7 +44,7 @@ func serialize():
 
 func deserialize(serialized_object):
 	var instance = get_script().new()
-	instance.cached = serialized_object
+	instance.cached = serialized_object["cached"]
 	return instance
 
 # ----- Serialization ----- #

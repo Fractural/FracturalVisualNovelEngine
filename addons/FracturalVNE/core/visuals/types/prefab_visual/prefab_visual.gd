@@ -12,14 +12,14 @@ func get_types() -> Array:
 # ----- Typeable ----- #
 
 
-export var prefab_path: String
+export var prefab: PackedScene
 
 
-func _init(cached_ = false, prefab_path_ = "").(cached_):
-	prefab_path = prefab_path_
+func _init(cached_ = false, prefab_ = null).(cached_):
+	prefab = prefab_
 
 
-func _get_controller_prefab_path():
+func _get_controller_prefab():
 	return preload("prefab_visual.tscn")
 
 
@@ -27,13 +27,13 @@ func _get_controller_prefab_path():
 
 func serialize():
 	var serialized_object = .serialize()
-	serialized_object["prefab_path"] = prefab_path
+	serialized_object["prefab_path"] = prefab.get_path()
 	return serialized_object
 
 
 func deserialize(serialized_object):
 	var instance = .deserialize(serialized_object)
-	instance.prefab_path = serialized_object["prefab_path"]
+	instance.prefab = load(serialized_object["prefab_path"])
 	return instance
 
 # ----- Serialization ----- #

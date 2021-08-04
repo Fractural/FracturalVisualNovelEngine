@@ -12,7 +12,7 @@ func get_types() -> Array:
 # ----- Typeable ----- #
 
 
-const ANIMATION_PLAYER_ANIMATION_PREFAB = preload("res://addons/FracturalVNE/core/actor/animation/types/animation_player_animation/animation_player_animation.tscn")
+const ANIMATION_PLAYER_ANIMATION_PREFAB = preload("res://addons/FracturalVNE/core/standard_node_2d/animation/types/animation_player_animation/animation_player_animation.tscn")
 
 var actor
 var animation
@@ -66,7 +66,7 @@ func execute():
 		throw_error(error("Expected an actor for the animate statement."))
 		return
 	
-	.execute()
+	_finish_execute()
 
 
 func debug_string(tabs_string: String) -> String:

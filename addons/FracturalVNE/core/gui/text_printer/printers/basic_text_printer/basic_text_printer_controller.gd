@@ -2,8 +2,6 @@ extends "res://addons/FracturalVNE/core/gui/text_printer/text_printer_controller
 # Basic implementation of a TextPrinterController.
 
 
-const CharactersDelay = preload("res://addons/FracturalVNE/core/gui/text_printer/printers/components/characters_delay.gd")
-const TextPrinterController = preload("res://addons/FracturalVNE/core/gui/text_printer/text_printer_controller.gd")
 const TextReveal = preload("res://addons/FracturalVNE/core/gui/text_printer/printers/components/text_reveal.gd")
 
 export var name_text_reveal_path: NodePath
@@ -15,6 +13,12 @@ onready var name_text_reveal: TextReveal = get_node(name_text_reveal_path)
 onready var dialogue_text_reveal: TextReveal = get_node(dialogue_text_reveal_path)
 
 
+func _ready():
+	# Clear the text fields on startup
+	name_text_reveal.bbcode_text = ""
+	dialogue_text_reveal.bbcode_text = ""
+
+
 func init(text_printer_ = null, story_director_ = null):
 	.init(text_printer_, story_director_)
 	# Keep process off until need to animate text
@@ -22,10 +26,6 @@ func init(text_printer_ = null, story_director_ = null):
 
 	name_text_reveal.init(get_text_printer().name_default_char_delay, get_text_printer().name_custom_char_delays);
 	dialogue_text_reveal.init(get_text_printer().dialogue_default_char_delay, get_text_printer().dialogue_custom_char_delays);
-	
-	# Clear the text fields on startup
-	name_text_reveal.bbcode_text = ""
-	dialogue_text_reveal.bbcode_text = ""
 	
 	name_text_reveal.connect("finished_reveal", self, "_on_finish_text_reveal")
 	dialogue_text_reveal.connect("finished_reveal", self, "_on_finish_text_reveal")

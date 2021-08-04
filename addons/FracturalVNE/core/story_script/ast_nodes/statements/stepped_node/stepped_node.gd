@@ -1,5 +1,6 @@
 extends "res://addons/FracturalVNE/core/story_script/ast_nodes/statements/statement/statement_node.gd"
-# Base class for stepped nodes.
+# -- Abstract Class -- #
+# Base class for SteppedNodes.
 # Stepped nodes are used for nodes that create delays, whether
 # by creating a step, waiting for input to progress, or just waiting
 # a fixed amount of time.
@@ -25,6 +26,10 @@ func _init(position_ = null).(position_):
 
 
 func execute():
+	_finish_execute()
+
+
+func _finish_execute():
 	emit_signal("executed")
 	if not override_step:
 		get_runtime_block().get_service("StoryDirector").start_step(self)

@@ -34,4 +34,5 @@ func create_timer(duration, start_timer = true):
 
 
 func remove_timer(timer):
+	timer.queue_free()
 	timers.erase(timer)

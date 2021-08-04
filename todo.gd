@@ -48,5 +48,6 @@
 #	[ ] Refactor transitions to take in parameters
 #		[ ] Maybe add support for loading animations directly as transitions?
 #			Seems too niche though...
-# 	[ ] Implement multiple printers and saving (Make each printer save it's own dialog and make it optional
-# 		to add such dialog to the dialog history)
+# 	[X] Implement multiple printers and saving (Make each printer saves it's own dialog) 
+#		[ ] Make it optional to add such dialog to the dialog history)
+#	[ ] Some transitions like crossfade will not support prefab transitions by default for performance reason

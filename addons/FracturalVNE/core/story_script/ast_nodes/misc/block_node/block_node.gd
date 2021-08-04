@@ -45,7 +45,7 @@ func execute():
 
 
 func block_completed():
-	.execute()
+	_finish_execute()
 
 
 func get_service(name: String):
@@ -133,15 +133,18 @@ func serialize_node_state(saved_nodes):
 		var value
 		var type
 		
-		if variables[variable_name] is Resource:
+		if FracUtils.is_type(variables[variable_name], "Serializable"):
+			type = "serializable_object"
+			value = reference_registry.get_reference_id(variables[variable_name])
+		elif FracUtils.is_type(variables[variable_name], "Resource"):
 			type = "resource"
 			value = variables[variable_name].get_path()
-		elif variables[variable_name] is Object:
-			type = "object"
-			value = reference_registry.get_reference_id(variables[variable_name])
-		else:
+		elif FracUtils.is_type(variables[variable_name], "Literal"):
 			type = "literal"
 			value = variables[variable_name]
+		else:
+			assert(false, "Cannot serialize variable named \"%s\" with type \"%s\"." 
+			% [variable_name, FracUtils.get_type_name(variables[variable_name])])
 		
 		serialized_variables.append({
 			"variable_name": variable_name,
@@ -161,7 +164,7 @@ func deserialize_node_state(saved_nodes_lookup):
 		match serialized_variable["type"]:
 			"resource":
 				variables[serialized_variable["variable_name"]] = load(serialized_variable["value"])
-			"object":
+			"serializable_object":
 				variables[serialized_variable["variable_name"]] = reference_registry.get_reference(serialized_variable["value"])
 			"literal":
 				variables[serialized_variable["variable_name"]] = serialized_variable["value"]

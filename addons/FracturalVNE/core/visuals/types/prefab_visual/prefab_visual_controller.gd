@@ -5,10 +5,11 @@ extends "res://addons/FracturalVNE/core/visuals/types/visual_controller.gd"
 
 func get_types() -> Array:
 	var arr = .get_types()
-	arr.append("PrefabVisual")
+	arr.append("PrefabVisualController")
 	return arr
 
 # ----- Typeable ----- #
+
 
 const SSUtils = FracVNE.StoryScript.Utils
 
@@ -24,11 +25,7 @@ func init(visual_ = null, story_director_ = null):
 	
 	prefab_holder = get_node(prefab_holder_path)
 	
-	var prefab_result = SSUtils.load(get_visual().prefab_path)
-	if not SSUtils.is_success(prefab_result):
-		return prefab_result
-	
-	prefab_instance = prefab_result.instance()
+	prefab_instance = get_visual().prefab.instance()
 	prefab_holder.add_child(prefab_instance)
 
 

@@ -1,6 +1,7 @@
-[gd_scene load_steps=3 format=2]
+[gd_scene load_steps=4 format=2]
 
 [ext_resource path="res://addons/FracturalVNE/core/visuals/types/base_visual.tscn" type="PackedScene" id=1]
+[ext_resource path="res://addons/FracturalVNE/core/visuals/texture_holders/types/single_texture_holder.gd" type="Script" id=2]
 [ext_resource path="res://addons/FracturalVNE/core/visuals/types/single_visual/single_visual_controller.gd" type="Script" id=3]
 
 [node name="SingleVisual" instance=ExtResource( 1 )]
@@ -8,7 +9,18 @@ use_parent_material = true
 script = ExtResource( 3 )
 sprite_path = NodePath("Holder/Sprite")
 
+[node name="Holder" parent="." index="0"]
+script = ExtResource( 2 )
+standard_scale = Vector2( 0, 0 )
+global_standard_position = Vector2( 0, 0 )
+global_standard_scale = Vector2( 0, 0 )
+global_standard_rotation = 0.0
+textured_node_path = NodePath("Sprite")
+
 [node name="Sprite" type="Sprite" parent="Holder" index="0"]
 use_parent_material = true
+
+[node name="Mover" parent="BaseActor" index="1"]
+standard_node_2d_path = NodePath("../../Holder")
 
 [editable path="BaseActor"]

@@ -1,5 +1,5 @@
 extends "res://addons/FracturalVNE/core/story_script/ast_nodes/statements/stepped_node/stepped_node.gd"
-# TODO: Finish the rest the show statement.
+# Pauses the story for a given amount of seconds.
 
 
 # ----- Typeable ----- #
@@ -18,7 +18,6 @@ var duration
 
 var _curr_pause_timer
 var _curr_pause_action
-var _finished
 
 
 func _init(position_ = null, duration_ = null).(position_):
@@ -26,11 +25,8 @@ func _init(position_ = null, duration_ = null).(position_):
 
 
 func execute():
-	_finished = false
-	
-	var duration_result = duration.evaluate()
-	
-	if not is_success(duration_result) or not (duration_result is float or duration_result is int):
+	var duration_result = SSUtils.evaluate_and_cast(duration, "Number")
+	if not is_success(duration_result):
 		throw_error(stack_error(duration_result, "Expected a valid number for the duration."))
 		return
 	
@@ -54,18 +50,20 @@ func is_auto_step():
 
 
 func _on_pause_finished(skipped):
-	if not _finished:
-		_finished = true
-		
-		get_runtime_block().get_service("TimerRegistry").remove_timer(_curr_pause_timer)
-		
-		get_runtime_block().get_service("StoryDirector").step()
-		# Remove pause_action last to prevent no actions being present (Since no actions
-		# after removal is used by the auto atepper to check if the current step has finished.)
-		# Not sure if this has any side effects.
-		if not skipped:
-			get_runtime_block().get_service("StoryDirector").remove_step_action(_curr_pause_action)
-		emit_signal("executed")
+	get_runtime_block().get_service("TimerRegistry").remove_timer(_curr_pause_timer)
+	
+	get_runtime_block().get_service("StoryDirector").step()
+	# Remove pause_action last to prevent no actions being present (Since no actions
+	# after removal is used by the auto atepper to check if the current step has finished.)
+	# Not sure if this has any side effects.
+	if not skipped:
+		get_runtime_block().get_service("StoryDirector").remove_step_action(_curr_pause_action)
+	
+	_finish_execute()
+
+
+func _finish_execute():
+	emit_signal("executed")
 		
 
 func debug_string(tabs_string: String) -> String:

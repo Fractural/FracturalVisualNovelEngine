@@ -1,4 +1,8 @@
 extends "res://addons/FracturalVNE/core/story_script/ast_nodes/node/node.gd"
+# -- Abstract Class -- #
+# Base class for all ExecutableNodes.
+# Executable nodes can execute something and calls executed 
+# once execution has finished.
 
 
 signal executed()
@@ -19,4 +23,8 @@ func _init(position_ = null).(position_):
 
 
 func execute():
+	_finish_execute()
+
+
+func _finish_execute():
 	emit_signal("executed")
