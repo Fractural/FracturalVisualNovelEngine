@@ -5,7 +5,7 @@ extends MenuButton
 signal menu_item_pressed(meta)
 
 
-func _ready():
+func _ready() -> void:
 	get_popup().connect("id_pressed", self, "_on_popup_id_pressed")
 
 

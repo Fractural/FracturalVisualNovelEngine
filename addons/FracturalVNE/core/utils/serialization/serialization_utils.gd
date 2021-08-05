@@ -28,7 +28,7 @@ static func deserialize_vec2(serialized_vector):
 
 ## ----- Serialization ----- #
 #
-#func serialize():
+#func serialize() -> Dictionary:
 #	return {
 #		"script_path": get_script().get_path(),
 #	}

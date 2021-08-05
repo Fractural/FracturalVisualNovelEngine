@@ -21,7 +21,7 @@ func _to_string():
 
 # ----- Serialization ----- #
 
-func serialize():
+func serialize() -> Dictionary:
 	return {
 		"script_path": get_script().get_path(),
 		"line": line,

@@ -48,7 +48,7 @@ onready var story_runner_dep = get_node(story_runner_dep_path)
 onready var persistent_data_dep = get_node(persistent_data_dep_path)
 
 
-func _ready():
+func _ready() -> void:
 	if FracVNE.Utils.is_in_editor_scene_tab(self):
 		return
 	

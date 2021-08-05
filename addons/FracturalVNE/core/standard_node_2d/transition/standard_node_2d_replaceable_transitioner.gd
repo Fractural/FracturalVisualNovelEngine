@@ -17,13 +17,9 @@ export var old_node_holder_path: NodePath
 onready var old_node_holder = get_node(old_node_holder_path)
 
 
-func _ready():
-	old_node_holder.visible = false
-
-
+# -- StoryScriptErrorable -- #
 func replace(transition = null, duration = 1):
-	_finish_current_transition()
-	
+	_force_clear_current_transition()
 	old_node_holder.visible = true
 	node_holder.visible = true
 	if transition != null:
@@ -37,7 +33,7 @@ func replace(transition = null, duration = 1):
 		_on_transition_finished(false)
 
 
-func _on_transition_finished(skipped):
+func _on_transition_finished(skipped: bool) -> void:
 	if curr_transition_type == TransitionType.REPLACE:
 		old_node_holder.visible = false
 	._on_transition_finished(skipped)

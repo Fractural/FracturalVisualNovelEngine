@@ -14,7 +14,7 @@ onready var story_loader = get_node(story_loader_path)
 onready var story_gui_holder = get_node(story_gui_holder_path)
 
 
-func _ready():
+func _ready() -> void:
 	# Looks for the StoryGUI in it's first child, 
 	# which facilitates quick drag-and-drop implementation of new StoryGUI. 
 	assert(story_gui_holder.get_child_count() == 1 and (story_gui_holder.get_child(0) is StoryGUI), "StoryGUIConfigurer must have a single StoryGUI node as a child.")

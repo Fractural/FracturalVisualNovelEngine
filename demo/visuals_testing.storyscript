@@ -24,21 +24,21 @@ define cross_fade = load("res://addons/FracturalVNE/default_assets/transitions/c
 # ----- Animations ----- #
 define hop = load("res://addons/FracturalVNE/default_assets/animations/hop.tres")
 
-
 # ----- Curves ----- #
 define smooth_step = load("res://addons/FracturalVNE/default_assets/curves/smooth_step.tres")
 
-
 label looped:
-	scene bg_library1 with fade_to_black
+	scene bg_library1 with cross_fade
 	
 	pause 1
 	
 	scene bg_library2 with fade_to_black
 	
-	pause 1 
+	pause 1
 	
-	scene bg_library1 with fade_to_black
+	scene bg_library3 with fade_to_black
+	
+	#scene bg_library3 with cross_fade
 	
 	move godette to Point(-500, 0)
 	move godette2 to Point(-400, 0)

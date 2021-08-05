@@ -50,7 +50,7 @@ func clear_entries():
 # 		reference IDs that must be converted back to the actual object
 #		(such as with the character IDs in SayEntry).
 
-func serialize_state():
+func serialize_state() -> Dictionary:
 	var serialized_history_stack = []
 	for entry in history_stack:
 		serialized_history_stack.append(serialization_manager.serialize(entry))
@@ -61,7 +61,7 @@ func serialize_state():
 	}
 
 
-func deserialize_state(serialized_state):
+func deserialize_state(serialized_state) -> void:
 	clear_entries()
 	for serialized_entry in serialized_state["history_stack"]:
 		var x = serialization_manager.deserialize(serialized_entry)

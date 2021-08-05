@@ -1,0 +1,19 @@
+[gd_scene load_steps=2 format=2]
+
+[ext_resource path="res://addons/FracturalVNE/core/standard_node_2d/standard_node_2d.gd" type="Script" id=1]
+
+[node name="Node" type="Node"]
+
+[node name="StandardNode2DControl" type="Control" parent="."]
+margin_right = 40.0
+margin_bottom = 40.0
+script = ExtResource( 1 )
+__meta__ = {
+"_edit_use_anchors_": false
+}
+standard_scale = null
+global_standard_rotation = null
+
+[node name="StandardNode2DNode2D" type="Node2D" parent="."]
+script = ExtResource( 1 )
+standard_scale = null

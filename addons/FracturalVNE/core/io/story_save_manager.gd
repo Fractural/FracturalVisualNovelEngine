@@ -18,7 +18,7 @@ const SaveState = preload("res://addons/FracturalVNE/core/io/save_state.gd")
 var save_slots = []
 
 
-func _ready():
+func _ready() -> void:
 	preload_save_slots()
 	
 	var dir = Directory.new()

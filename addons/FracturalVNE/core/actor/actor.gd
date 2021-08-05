@@ -30,6 +30,7 @@ func instantiate_controller(story_director):
 	var init_result = instance.init(self, story_director)
 	if not SSUtils.is_success(init_result):
 		return init_result
+	
 	return instance
 
 
@@ -39,7 +40,7 @@ func _get_controller_prefab():
 
 # ----- Serialization ----- #
 
-func serialize():
+func serialize() -> Dictionary:
 	return {
 		"script_path": get_script().get_path(),
 		"cached": cached,

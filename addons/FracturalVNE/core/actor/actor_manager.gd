@@ -55,6 +55,12 @@ func remove_actor(actor):
 	actor_controller_lookup.erase(actor)
 
 
+# ----- TEMP DEBUG ----- #
+
+var counter: int = 0
+
+# ----- TEMP DEBUG ----- #
+
 # -- StoryScriptErrorable -- #
 func load_actor_controller(actor, actor_parent = null):
 	var actor_controller = actor.instantiate_controller(story_director)
@@ -69,11 +75,19 @@ func load_actor_controller(actor, actor_parent = null):
 	else:
 		actors_holder.add_child(actor_controller)
 	
+	# ----- TEMP DEBUG ----- #
+	
+	actor_controller.name += " %s" % str(counter)
+	counter += 1
+	
+	# ----- TEMP DEBUG ----- #
+	
 	return actor_controller
 
 
 func remove_actor_controller(actor):
 	assert(FracUtils.is_type(actor, "Actor"), "Expected actor to be an Actor.")
+	var result = actor_controller_lookup[actor]
 	actor_controller_lookup[actor].queue_free()
 	actor_controller_lookup.erase(actor)
 
@@ -122,7 +136,7 @@ func add_new_actor_with_controller(actor, actor_controller):
 
 # ----- Serialization ----- #
 
-func serialize_state():
+func serialize_state() -> Dictionary:
 	var serialized_actor_controller_lookup = {}
 	for actor in actor_controller_lookup.keys():
 		var actor_id = reference_registry.get_reference_id(actor)
@@ -139,7 +153,7 @@ func serialize_state():
 	}
 
 
-func deserialize_state(serialized_state):
+func deserialize_state(serialized_state) -> void:
 	for actor in actor_controller_lookup.values():
 		actor.queue_free()
 	actor_controller_lookup = {}

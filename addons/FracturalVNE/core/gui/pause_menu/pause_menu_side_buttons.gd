@@ -25,7 +25,7 @@ onready var pause_menu = get_node(pause_menu_path)
 onready var story_gui_dep = get_node(story_gui_dep_path)
 
 
-func _ready():
+func _ready() -> void:
 	history_button.connect("pressed", self, "_on_history_button_pressed")
 	save_button.connect("pressed", self, "_on_save_button_pressed")
 	load_button.connect("pressed", self, "_on_load_button_pressed")

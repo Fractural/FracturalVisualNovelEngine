@@ -13,7 +13,7 @@ onready var error_ui: Control = get_node(error_ui_path)
 onready var error_text: TextEdit = get_node(error_text_path)
 
 
-func _ready():
+func _ready() -> void:
 	error_ui.visible = false
 	quit_button.connect("pressed", self, "_on_quit_button_pressed")
 	story_manager.connect("throw_error", self, "popup_error")

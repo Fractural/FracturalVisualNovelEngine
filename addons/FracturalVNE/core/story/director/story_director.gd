@@ -76,7 +76,7 @@ var queued_overridden_steps: int
 var curr_node_executed: bool = false
 
 
-func _ready():
+func _ready() -> void:
 	_auto_step_timer = Timer.new()
 	add_child(_auto_step_timer)
 	_auto_step_timer.connect("timeout", self, "try_step")

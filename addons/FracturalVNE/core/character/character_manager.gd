@@ -73,7 +73,7 @@ func Character(name_, name_color_, dialogue_color_, visual_):
 # characters will be populated automatically by Character variables when they 
 # are deserialized in a BlockNode.
 
-func serialize_state():
+func serialize_state() -> Dictionary:
 	var character_ids = []
 	for character in characters:
 		character_ids.append(reference_registry.get_reference_id(character))
@@ -84,7 +84,7 @@ func serialize_state():
 	}
 
 
-func deserialize_state(serialized_state):
+func deserialize_state(serialized_state) -> void:
 	characters = []
 	for character_id in serialized_state["character_ids"]:
 		characters.append(reference_registry.get_reference(character_id))

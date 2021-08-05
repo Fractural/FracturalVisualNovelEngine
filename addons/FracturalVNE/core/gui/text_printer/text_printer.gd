@@ -62,7 +62,7 @@ func _get_controller_prefab():
 
 # ----- Serialization ----- #
 
-func serialize():
+func serialize() -> Dictionary:
 	var serialized_object = .serialize()
 	
 	serialized_object["name_default_char_delay"] = name_default_char_delay

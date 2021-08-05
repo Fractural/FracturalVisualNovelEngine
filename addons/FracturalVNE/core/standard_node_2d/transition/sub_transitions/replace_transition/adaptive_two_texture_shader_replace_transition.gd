@@ -39,7 +39,7 @@ onready var node_2d_transition_texture_holder = get_node(node_2d_transition_text
 onready var control_transition_texture_holder = get_node(control_transition_texture_holder_path)
 
 
-func _ready():
+func _ready() -> void:
 	set_process(false)
 
 
@@ -54,41 +54,35 @@ func transition(new_node_: Node, old_node_: Node, duration_: float):
 		new_texture = new_node.get_holder_texture()
 	else:
 		return SSUtils.error("Expected new_node to be a TextureHolder.")
-	
+
 	if FracUtils.is_type(old_node, "TextureHolder"):
 		old_texture = old_node.get_holder_texture()
 	else:
 		return SSUtils.error("Expected old_node to be a TextureHolder.")
-	
+
 	new_node.visible = false
 	old_node.visible = false
-	
+
 	if FracUtils.is_type(new_node_, "Control"):
 		transition_texture_holder = control_transition_texture_holder
 	else:
 		transition_texture_holder = node_2d_transition_texture_holder
-	
+
 	transition_texture_holder.texture = new_texture
 	transition_texture_holder.material.set_shader_param("old_texture", old_texture)
-	
+
 	time = 0
 	set_process(true)
 
 
-func _process(delta):
+func _process(delta) -> void:
 	if time < duration:
 		time += delta
 		transition_texture_holder.material.set_shader_param("progress", transition_curve.interpolate(time / duration))
 	else:
-		set_process(false)
 		_on_transition_finished(false)
 
 
-func _on_transition_finished(skipped):
-	# TODO: Refactor out this hack
-	#		We should not be checking if they are null!
-	#		This should never happen!
-	get_parent().get_parent().print_tree_pretty()
-	new_node.visible = true
-	old_node.visible = false
+func _on_transition_finished(skipped: bool) -> void:
+	set_process(false)
 	._on_transition_finished(skipped)

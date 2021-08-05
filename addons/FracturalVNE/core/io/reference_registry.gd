@@ -38,7 +38,7 @@ func get_reference_id(reference: Object):
 
 # ----- Serialization ----- #
 
-func serialize_state():
+func serialize_state() -> Dictionary:
 	var serialized_references = []
 	for reference in references:
 		serialized_references.append(serialization_manager.serialize(reference))
@@ -49,7 +49,7 @@ func serialize_state():
 	}
 
 
-func deserialize_state(serialized_state):
+func deserialize_state(serialized_state) -> void:
 	references = []
 	
 	var partly_serialized_objects = []

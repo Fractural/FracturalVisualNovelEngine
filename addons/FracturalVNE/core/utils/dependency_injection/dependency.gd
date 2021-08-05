@@ -10,7 +10,7 @@ export var dependency_path: NodePath
 var dependency
 
 
-func _ready():
+func _ready() -> void:
 	if FracVNE.Utils.is_in_editor_scene_tab(self):
 		return
 	

@@ -36,7 +36,7 @@ func _on_sub_transition_finished(skipped):
 		_on_transition_finished(false)
 
 
-func _on_transition_finished(skipped):
+func _on_transition_finished(skipped: bool) -> void:
 	if skipped:
 		hide_transition._on_transition_finished(skipped)
 		show_transition._on_transition_finished(skipped)

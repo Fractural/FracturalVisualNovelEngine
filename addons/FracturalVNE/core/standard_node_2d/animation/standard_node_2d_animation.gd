@@ -20,5 +20,5 @@ func animate(visual_holder_):
 	visual_holder = visual_holder_
 
 
-func _on_animation_finished(skipped):
+func _on_animation_finished(skipped: bool):
 	emit_signal("animation_finished", skipped)

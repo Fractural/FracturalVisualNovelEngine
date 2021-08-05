@@ -14,7 +14,7 @@ export var scene_manager_path: NodePath
 onready var scene_manager = get_node(scene_manager_path)
 
 
-func _ready():
+func _ready() -> void:
 	scene_manager.connect("scene_readied", self, "_on_scene_readied")
 
 func _on_scene_readied(readied_scene):

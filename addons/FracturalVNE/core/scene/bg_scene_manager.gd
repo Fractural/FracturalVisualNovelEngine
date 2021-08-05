@@ -36,6 +36,7 @@ func get_service_name():
 const SSUtils = FracVNE.StoryScript.Utils
 const ImageScene = preload("res://addons/FracturalVNE/core/scene/types/image_scene/image_scene.gd")
 const PrefabScene = preload("res://addons/FracturalVNE/core/scene/types/prefab_scene/prefab_scene.gd")
+const Transitioner = preload("res://addons/FracturalVNE/core/standard_node_2d/transition/standard_node_2d_transitioner.gd")
 
 export var actor_manager_path: NodePath
 export var story_director_path: NodePath
@@ -58,7 +59,7 @@ onready var current_scene_holder = get_node(current_scene_holder_path)
 onready var old_scene_holder = get_node(old_scene_holder_path)
 
 
-func _ready():
+func _ready() -> void:
 	replaceable_transitioner.init(story_director)
 	replaceable_transitioner.connect("transition_finished", self, "_on_transition_finished")
 
@@ -141,64 +142,70 @@ func PrefabScene(prefab_path, cached):
 # ----- StoryScriptFunc ----- #
 
 
-# TODO: Write start trans
-# 		Maybe make a custom screenshot taker that only
-#		gets a texture of the current game scene?
-#		Also hide the UI when transitioning.
-func start_transition(scene, transition):
-	pass
-
-
-func end_transition():
-	pass
-
-
 func show_scene(scene, transition = null, keep_old_scene = false):
 	# Note that there is currently no support for hiding a background.
 	# (You are expected to have a background).
-	_old_scene = current_scene
+	
+	# We cannot change the _old_scene before calling transitioner.replace() 
+	# since the _old_scene may be used during the clean up of an ongoing
+	# transiition (when _on_transition_finished() is called by the transitioner
+	# durign cleanup). Instead we set a temp variable for the 
+	# sake of readable code.
+	var temp_old_scene = current_scene
+	var temp_current_scene = scene
 	_keep_old_scene = keep_old_scene
 	
-	current_scene = scene
-	
-	var current_scene_controller = get_or_load_scene_controller(current_scene)
+	var current_scene_controller = get_or_load_scene_controller(temp_current_scene)
 	var old_scene_controller = null
-	if _old_scene != null:
-		old_scene_controller = get_scene_controller(_old_scene)
+	if temp_old_scene != null:
+		old_scene_controller = get_scene_controller(temp_old_scene)
 	
 	FracVNE.Utils.reparent(current_scene_controller, current_scene_holder)
-	if _old_scene != null:
+	if temp_old_scene != null:
 		FracVNE.Utils.reparent(old_scene_controller, old_scene_holder)
 	
 	if old_scene_controller != null and current_scene_controller != null:
-		return replaceable_transitioner.replace(transition, 1)
+		replaceable_transitioner.node_holder = current_scene_controller.get_node_holder()
+		replaceable_transitioner.old_node_holder = old_scene_controller.get_node_holder()
+		var result = replaceable_transitioner.replace(transition)
+		if not SSUtils.is_success(result):
+			return result
 	elif current_scene_controller != null:
-		return replaceable_transitioner.show(transition)
-
-
-func _on_transition_finished(skipped):
-	if _old_scene != null:
-		if not _keep_old_scene:
-			remove_scene_controller(_old_scene)
-		else:
-			# Reparent the unused scene back to the scenes holder
-			FracVNE.Utils.reparent(get_scene_controller(_old_scene), scenes_holder)
+		replaceable_transitioner.node_holder = current_scene_controller.get_node_holder()
+		var result = replaceable_transitioner.show(transition)
+		if not SSUtils.is_success(result):
+			return result
 	
-	# No need to reparent the current scene since it's already attached
-	# to the current_scene_holder
-	_old_scene = null
+	# Assign the temp variables
+	# back to the original	
+	_old_scene = temp_old_scene
+	current_scene = temp_current_scene
+
+
+func _on_transition_finished(transition_type: int, skipped: bool) -> void:
+	if transition_type == Transitioner.TransitionType.REPLACE:
+		if _old_scene != null:
+			if not _keep_old_scene:
+				remove_scene_controller(_old_scene)
+			else:
+				# Reparent the unused scene back to the scenes holder
+				FracVNE.Utils.reparent(get_scene_controller(_old_scene), scenes_holder)
+		
+		# No need to reparent the current scene since it's already attached
+		# to the current_scene_holder
+		_old_scene = null
 
 
 # ----- Serialization ----- #
 
-func serialize_state():
+func serialize_state() -> Dictionary:
 	return {
 		"service_name": get_service_name(),
 		"current_scene_id": reference_registry.get_reference_id(current_scene),
 	}
 
 
-func deserialize_state(serialized_state):
+func deserialize_state(serialized_state) -> void:
 	if serialized_state["current_scene_id"] > -1:
 		current_scene = reference_registry.get_reference(serialized_state["current_scene_id"])
 

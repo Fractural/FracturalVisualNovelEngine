@@ -80,7 +80,7 @@ func propagate_call(method: String, arguments: Array = [], parent_first: bool = 
 
 # ----- Serialization ----- #
 
-func serialize():
+func serialize() -> Dictionary:
 	var serialized_object = .serialize()
 	if character != null:
 		serialized_object["character"] = character.serialize()

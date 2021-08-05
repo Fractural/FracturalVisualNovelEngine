@@ -25,7 +25,7 @@ var icon_fetch_assigned_button = null
 var set_connection_icon_queue = []
 
 
-func _ready():
+func _ready() -> void:
 	connections_holder = VBoxContainer.new()
 	
 	var spin_label = Label.new()
@@ -61,7 +61,7 @@ func _ready():
 	set_bottom_collapsed(false)
 
 
-func _process(delta):
+func _process(delta) -> void:
 	if set_connection_icon_queue.size() > 0:
 		var set_connection_icon_obj = set_connection_icon_queue.pop_front()
 		set_connection_icon(set_connection_icon_obj.connection, set_connection_icon_obj.index)

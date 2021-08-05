@@ -17,7 +17,7 @@ export var animation_player_path: NodePath
 onready var animation_player: AnimationPlayer = get_node(animation_player_path)
 
 
-func _ready():
+func _ready() -> void:
 	animation_player.connect("animation_finished", self, "_on_animation_player_animation_finished")
 	set_process(false)
 
@@ -29,7 +29,7 @@ func animate(visual_holder_):
 	animation_player.play()
 
 
-func _on_animation_finished(skipped):
+func _on_animation_finished(skipped: bool):
 	if skipped:
 		animation_player.seek(animation_player.current_animation_length, true)
 	

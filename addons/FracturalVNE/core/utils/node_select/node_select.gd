@@ -7,7 +7,7 @@ export var tree_path: NodePath
 onready var tree = get_node(tree_path)
 
 
-func _ready():
+func _ready() -> void:
 	var icon = preload("res://addons/FracturalVNE/assets/icons/add.svg")
 	
 	var root = tree.create_item()
@@ -25,5 +25,5 @@ func _ready():
 
 
 # Called every frame. 'delta' is the elapsed time since the previous frame.
-#func _process(delta):
+#func _process(delta) -> void:
 #	pass

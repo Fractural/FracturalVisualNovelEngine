@@ -26,7 +26,7 @@ func _get_controller_prefab():
 
 # ----- Serialization ----- #
 
-func serialize():
+func serialize() -> Dictionary:
 	var serialized_object = .serialize()
 	serialized_object["texture_path"] = texture.get_path()
 	return serialized_object

@@ -86,7 +86,7 @@ func propagate_call(method, arguments = [], parent_first = false):
 
 # ----- Serialization ----- #
 
-func serialize():
+func serialize() -> Dictionary:
 	var serialized_object = .serialize()
 	serialized_object["scene"] = scene.serialize()
 	if keep_old_scene != null:

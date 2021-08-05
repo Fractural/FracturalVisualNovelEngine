@@ -11,7 +11,7 @@ onready var new_scene_controller: Node = $CanvasLayer/Control/ImageScene2
 onready var cross_fade_transition = preload("res://addons/FracturalVNE/default_assets/transitions/cross_fade/cross_fade.tres")
 
 
-func _ready():
+func _ready() -> void:
 	transitioner.init(self)
 	
 	transitioner.node_holder = new_scene_controller.get_node_holder()

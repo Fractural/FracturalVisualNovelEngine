@@ -122,14 +122,14 @@ func TextPrinter(text_printer_path, cached):
 
 # ----- Serialization ----- #
 
-func serialize_state():
+func serialize_state() -> Dictionary:
 	return {
 		"service_name": get_service_name(),
 		"default_text_printer_id": reference_registry.get_reference_id(get_default_text_printer())
 	} 
 
 
-func deserialize_state(serialized_state):
+func deserialize_state(serialized_state) -> void:
 	if serialized_state["default_text_printer_id"] > -1:
 		# Delete old default printer if it exists.
 		# This is so that the new printer can be loaded in successfully.

@@ -16,7 +16,7 @@ func debug_string(tabs_string: String) -> String:
 
 # ----- Serialization ----- #
 
-func serialize():
+func serialize() -> Dictionary:
 	var serialized_object = .serialize()
 	
 	var serialized_parameters = []

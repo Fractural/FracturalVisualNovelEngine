@@ -47,7 +47,6 @@ __meta__ = {
 textured_node_path = NodePath("TextureRect")
 
 [node name="TextureRect" type="TextureRect" parent="CanvasLayer/Control/ImageScene/Holder"]
-modulate = Color( 0.75, 0.75, 0.75, 1 )
 anchor_right = 1.0
 anchor_bottom = 1.0
 mouse_filter = 2
@@ -96,7 +95,6 @@ __meta__ = {
 textured_node_path = NodePath("TextureRect")
 
 [node name="TextureRect" type="TextureRect" parent="CanvasLayer/Control/ImageScene2/Holder"]
-modulate = Color( 0.75, 0.75, 0.75, 1 )
 anchor_right = 1.0
 anchor_bottom = 1.0
 mouse_filter = 2
@@ -124,7 +122,7 @@ transition_holder_path = NodePath("../..")
 script = ExtResource( 5 )
 node_holder_path = NodePath("../..")
 transition_holder_path = NodePath("../Control")
-old_node_holder_path = NodePath("../Control/ImageScene2")
+old_node_holder_path = NodePath("../Control/ImageScene")
 
 [node name="Node2D" type="Node2D" parent="."]
 

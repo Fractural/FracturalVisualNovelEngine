@@ -54,7 +54,7 @@ func propagate_call(method: String, arguments: Array = [], parent_first: bool = 
 
 # ----- Serialization ----- #
 
-func serialize():
+func serialize() -> Dictionary:
 	var serialized_object = .serialize()
 	serialized_object["variable_name"] = variable_name
 	serialized_object["value_expression"] = value_expression.serialize()

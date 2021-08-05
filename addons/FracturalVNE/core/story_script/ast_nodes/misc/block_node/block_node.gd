@@ -172,7 +172,7 @@ func deserialize_node_state(saved_nodes_lookup):
 				assert(false, "Unrecognized type, \"%s\". Could not deserialize variable." % serialized_variable["type"])
 
 
-func serialize():
+func serialize() -> Dictionary:
 	var serialized_object = .serialize()
 	
 	var serialized_statements = []

@@ -11,7 +11,7 @@ onready var story_director_dep = get_node(story_director_dep_path)
 onready var text_printer_manager_dep = get_node(text_printer_manager_dep_path)
 
 
-func _ready():
+func _ready() -> void:
 	get_child(0).init(text_printer, story_director_dep.dependency)
 	# TODO: Implement support for swapping out the default printer and
 	# 		also serializing the default printer.

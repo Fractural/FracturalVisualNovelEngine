@@ -38,7 +38,8 @@ func _setup_transition(new_node_: Node, old_node_: Node, duration_: float):
 	return true
 
 
-func _on_transition_finished(skipped):
+func _on_transition_finished(skipped: bool) -> void:
 	is_transitioning = false
+	new_node.visible = true
 	old_node.visible = false
 	emit_signal("transition_finished", skipped)

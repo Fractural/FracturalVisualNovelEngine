@@ -20,7 +20,11 @@ func transition(new_node_: Node, old_node_: Node, duration_: float):
 		return
 	
 	hide_transition.connect("transition_finished", self, "_on_hide_transition_finished")
-	show_transition.connect("transition_finished", self, "_on_transition_finished", [false])
+	# If the show transition is finished, then the merged transition is also finished.
+	# If the show transition is not finished (which can never happen in this case since it's
+	# being used inside of a replace transition), then the merged transition is also not finished.
+	# Therefore we do not need to make any custom modifications to the signal connection.
+	show_transition.connect("transition_finished", self, "_on_transition_finished")
 	hide_transition.transition(old_node, duration / 2)
 	
 	_hide_transition_finished = false
@@ -31,11 +35,17 @@ func _on_hide_transition_finished(skipped):
 	_hide_transition_finished = true
 
 
-func _on_transition_finished(skipped):
+func _on_transition_finished(skipped: bool) -> void:
 	if skipped:
 		if not _hide_transition_finished:
 			# If we didn't finish the hide transition then we have to
 			# skip both hide and show transition to reach the end.
+			hide_transition.disconnect("transition_finished", self, "_on_hide_transition_finished")
 			hide_transition._on_transition_finished(skipped)
-		show_transition._on_transition_finished(skipped)
+		else:
+			# If we finished the hide transition and are skipping, then
+			# that means we have not finished the show transition.
+			show_transition.disconnect("transition_finished", self, "_on_transition_finished")
+			show_transition._on_transition_finished(skipped)
+	# TODO NOW: Fix fade_to_black transition stack overflowing.
 	._on_transition_finished(skipped)

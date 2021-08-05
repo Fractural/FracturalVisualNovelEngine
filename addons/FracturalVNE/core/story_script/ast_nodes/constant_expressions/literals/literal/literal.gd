@@ -36,7 +36,7 @@ func get_return_type() -> String:
 
 # ----- Serialization ----- #
 
-func serialize():
+func serialize() -> Dictionary:
 	var serialized_object = .serialize()
 	serialized_object["value"] = value
 	return serialized_object

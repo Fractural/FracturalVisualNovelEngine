@@ -31,7 +31,7 @@ var _curr_time: float
 onready var standard_node_2d = get_node(standard_node_2d_path)
 
 
-func _ready():
+func _ready() -> void:
 	set_process(false)
 
 
@@ -39,7 +39,7 @@ func init(story_director_):
 	story_director = story_director_
 
 
-func _process(delta):
+func _process(delta) -> void:
 	if _curr_time < duration:
 		_curr_time += delta
 		var progress = _curr_time / duration
@@ -51,7 +51,6 @@ func _process(delta):
 			standard_node_2d.standard_scale = starting_position.linear_interpolate(target_scale, travel_curve.interpolate(progress))
 	else:
 		_on_move_finished(false)
-		set_process(false)
 
 
 func move(target_position_, target_scale_, target_rotation_, travel_curve_: Curve = null, duration_: float = 0):

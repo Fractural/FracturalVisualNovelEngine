@@ -1,4 +1,4 @@
-extends "res://addons/FracturalVNE/core/actor/node_2d_actor_controller.gd"
+extends "res://addons/FracturalVNE/core/actor/actor_controller.gd"
 # -- Abstract Class -- #
 # Base class for all VisualControllers.
 

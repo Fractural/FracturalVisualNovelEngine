@@ -79,7 +79,7 @@ func propagate_call(method, arguments = [], parent_first = false):
 
 # ----- Serialization ----- #
 
-func serialize():
+func serialize() -> Dictionary:
 	var serialized_object = .serialize()
 	serialized_object["name"] = name
 	serialized_object["block"] = block.serialize()

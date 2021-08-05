@@ -1,5 +1,4 @@
-tool
-extends "res://addons/FracturalVNE/core/standard_node_2d/node_2d_standard_node_2d.gd"
+extends "res://addons/FracturalVNE/core/standard_node_2d/standard_node_2d.gd"
 # Base class for all ActorControllers.
 # Unused right now because of
 # ControlActorController and Node2DActorController
@@ -20,9 +19,9 @@ export var node_holder_path: NodePath
 
 var actor: Resource
 
-onready var actor_animator = get_node(actor_animator_path)
-onready var actor_mover = get_node(actor_mover_path)
-onready var actor_transitioner = get_node(actor_transitioner_path)
+var actor_animator# = get_node(actor_animator_path)
+var actor_mover #= get_node(actor_mover_path)
+var actor_transitioner #= get_node(actor_transitioner_path)
 onready var node_holder = get_node(node_holder_path)
 
 

@@ -8,7 +8,7 @@ export var services_holder_path: NodePath
 var services: Array
 
 
-func _ready():
+func _ready() -> void:
 	for child in get_node(services_holder_path).get_children():
 		services.append(child)
 

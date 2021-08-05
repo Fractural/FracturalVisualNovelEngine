@@ -5,6 +5,7 @@
 [ext_resource path="res://addons/FracturalVNE/core/visuals/texture_holders/types/single_texture_holder.gd" type="Script" id=3]
 
 [node name="ImageScene" instance=ExtResource( 1 )]
+use_parent_material = true
 anchor_right = 1.0
 anchor_bottom = 1.0
 mouse_filter = 2
@@ -12,6 +13,7 @@ script = ExtResource( 2 )
 texture_rect_path = NodePath("Holder/TextureRect")
 
 [node name="Holder" parent="." index="0"]
+use_parent_material = true
 anchor_right = 1.0
 anchor_bottom = 1.0
 margin_right = 0.0
@@ -21,7 +23,7 @@ script = ExtResource( 3 )
 textured_node_path = NodePath("TextureRect")
 
 [node name="TextureRect" type="TextureRect" parent="Holder" index="0"]
-modulate = Color( 0.75, 0.75, 0.75, 1 )
+use_parent_material = true
 anchor_right = 1.0
 anchor_bottom = 1.0
 mouse_filter = 2

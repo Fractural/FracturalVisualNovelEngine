@@ -1,4 +1,4 @@
-extends "res://addons/FracturalVNE/core/actor/control_actor_controller.gd"
+extends "res://addons/FracturalVNE/core/actor/actor_controller.gd"
 # -- Abstract Class -- #
 # Base TextPrinter with signals that allow for the implementation of
 # the actual printing functionality. 

@@ -19,7 +19,7 @@ func _init(story_file_path_ = null, starting_node_id_ = null, story_tree_state_ 
 
 # ----- Serialization ----- #
 
-func serialize():
+func serialize() -> Dictionary:
 	# ----- Thumbnail Serialization ----- #
 	
 	var thumbnail_image = thumbnail.get_data()

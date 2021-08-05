@@ -91,7 +91,7 @@ func stack_error(error, message = ""):
 
 # ----- Serialization ----- #
 
-func serialize():
+func serialize() -> Dictionary:
 	return {
 		"script_path": get_script().get_path(),
 		"position": position.serialize(),

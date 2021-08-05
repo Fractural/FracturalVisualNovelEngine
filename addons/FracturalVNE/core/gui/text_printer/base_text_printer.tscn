@@ -2,7 +2,7 @@
 
 [ext_resource path="res://addons/FracturalVNE/core/gui/text_printer/text_printer_controller.gd" type="Script" id=1]
 [ext_resource path="res://addons/FracturalVNE/core/actor/base_actor.tscn" type="PackedScene" id=2]
-[ext_resource path="res://addons/FracturalVNE/core/standard_node_2d/control_standard_node_2d.gd" type="Script" id=3]
+[ext_resource path="res://addons/FracturalVNE/core/standard_node_2d/standard_node_2d.gd" type="Script" id=3]
 
 [node name="BaseTextPrinter" type="Control"]
 anchor_right = 1.0

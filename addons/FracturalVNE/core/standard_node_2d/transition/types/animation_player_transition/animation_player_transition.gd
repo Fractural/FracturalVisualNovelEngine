@@ -16,7 +16,7 @@ onready var animation_player: AnimationPlayer = get_node(animation_player_path)
 onready var node_holder = get_node(node_holder_path)
 
 
-func _ready():
+func _ready() -> void:
 	animation_player.connect("animation_finished", self, "_on_animation_finished")
 	animation_player.root_node = node_holder_path
 	animation_player.add_animation("Animation", animation)
@@ -38,14 +38,14 @@ func transition(node_: Node, duration_: float):
 	return true
 
 
-func _on_animation_finished(animation_name):
+func _on_animation_finished(animation_name: String) -> void:
 	# This will not get called if we animation_player.seek() to the end of
 	# the animation so we don't have to worry about possibly double calling 
 	# _on_transition_finished()
 	_on_transition_finished(false)
 
 
-func _on_transition_finished(skipped):
+func _on_transition_finished(skipped: bool) -> void:
 	if skipped:
 		if play_animation_backwards:
 			animation_player.seek(0, true)

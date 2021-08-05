@@ -13,7 +13,7 @@ onready var name_text_reveal: TextReveal = get_node(name_text_reveal_path)
 onready var dialogue_text_reveal: TextReveal = get_node(dialogue_text_reveal_path)
 
 
-func _ready():
+func _ready() -> void:
 	# Clear the text fields on startup
 	name_text_reveal.bbcode_text = ""
 	dialogue_text_reveal.bbcode_text = ""

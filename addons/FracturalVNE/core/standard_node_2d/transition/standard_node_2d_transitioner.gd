@@ -10,8 +10,8 @@ func get_types() -> Array:
 # ----- Typeable ----- #
 
 
-signal transition_started()
-signal transition_finished(skipped)
+signal transition_started(transition_type)
+signal transition_finished(transition_type, skipped)
 
 enum TransitionType {
 	NONE,
@@ -28,7 +28,6 @@ export var node_holder_path: NodePath
 export var transition_holder_path: NodePath
 export(TransitionType) var curr_transition_type: int = TransitionType.NONE
 
-var is_hide_animation: bool = false
 var curr_transition
 var curr_transition_action = null
 var story_director
@@ -42,8 +41,11 @@ func init(story_director_):
 	story_director = story_director_
 
 
+# -- StoryScriptErrorable -- #
 func show(transition = null, duration = 1):
-	_finish_current_transition()
+	_force_clear_current_transition()
+	if curr_transition != null:
+		_on_transition_finished(true)
 	node_holder.visible = true
 	if transition != null:
 		var result = _setup_new_transition(TransitionType.SHOW, transition)
@@ -56,8 +58,9 @@ func show(transition = null, duration = 1):
 		_on_transition_finished(false)
 
 
+# -- StoryScriptErrorable -- #
 func hide(transition = null, duration = 1):
-	_finish_current_transition()
+	_force_clear_current_transition()
 	node_holder.visible = true
 	if transition != null:
 		var result = _setup_new_transition(TransitionType.HIDE, transition)
@@ -70,6 +73,7 @@ func hide(transition = null, duration = 1):
 		_on_transition_finished(false)
 
 
+# -- StoryScriptErrorable -- #
 func _setup_new_transition(type, transition):
 	curr_transition_type = type
 	
@@ -108,27 +112,55 @@ func _setup_new_transition(type, transition):
 	curr_transition.connect("transition_finished", self, "_on_transition_finished")
 	story_director.add_step_action(curr_transition_action)
 	
-	emit_signal("transition_started")
+	emit_signal("transition_started", curr_transition_type)
 
 
-func _finish_current_transition():
+# Called whenever a new transition is played,
+# which should override the current playing transition 
+# if there is any.
+func _force_clear_current_transition():
 	if curr_transition != null:
+		# We have to manually remove the transition action
+		# since calling _on_transition_finished with skipped=true
+		# will assume the action has already been removed by
+		# the StoryDirector during skipping.
 		story_director.remove_step_action(curr_transition_action)
+		
+		# _on_transjtion_finished(skipped=true) is invoked
+		# on the transition by the TransitionAction. But since we
+		# want to emulate a skip, we have to manually
+		# call the transition with skipped=true.
+		#
+		# Note that we do not have to disconnect the self._on_transition_finsihed()
+		# function that's connected to curr_transition._on_transition_finished()
+		# since we also want self._on_transition_finsihed() to run
+		# after the skip. 
+		#
+		# (Basically the regular call order established by
+		# the curr_transition._on_transition_finsihed() is what we want.)
 		curr_transition._on_transition_finished(true)
 
 
-# If we are animating the hiding of a node, we want to only hide the 
-# node once the hiding animation finishes. 
-func _on_transition_finished(skipped):
+func _on_transition_finished(skipped: bool) -> void:
 	# Make visible for replace and show transitions.
 	# Make invisible for hide transitions.
 	node_holder.visible = curr_transition_type != TransitionType.HIDE
+	
+	# Save the transition type for emitting
+	# once _on_transition_finished() is finished.
+	var cache_transition_type = curr_transition_type
+	
 	curr_transition_type = TransitionType.NONE
-	if not skipped and curr_transition_action != null:
-		story_director.remove_step_action(curr_transition_action)
 	if curr_transition != null:
-		curr_transition_action = null
+		# We want to clean up the current transition
+		if not skipped:
+			# We have finished naturally, therefore we have to
+			# manually clean up the step action we added..
+			story_director.remove_step_action(curr_transition_action)
+		
+		# Clean up transiton no matter if the transition
+		# was skipped or if it completed naturally.
 		curr_transition.queue_free()
 		curr_transition = null
 	
-	emit_signal("transition_finished", skipped)
+	emit_signal("transition_finished", cache_transition_type, skipped)

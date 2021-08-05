@@ -7,7 +7,7 @@ export var node_holder_path: NodePath
 onready var node_holder = get_node(node_holder_path)
 
 
-func _ready():
+func _ready() -> void:
 	# duplicate(true) duplicates sub resources as well, which includes
 	# the shader.
 	node_holder.material = node_holder.material.duplicate(true)

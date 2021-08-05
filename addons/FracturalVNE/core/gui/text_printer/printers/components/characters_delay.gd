@@ -15,7 +15,7 @@ func _init(characters_ = "", delay_ = 0):
 
 # ----- Serialization ----- #
 
-func serialize():
+func serialize() -> Dictionary:
 	return {
 		"script_path": get_script().get_path(),
 		"characters": characters,

@@ -1,4 +1,4 @@
-extends "res://addons/FracturalVNE/core/standard_node_2d/node_2d_standard_node_2d.gd"
+extends "res://addons/FracturalVNE/core/standard_node_2d/standard_node_2d.gd"
 # -- Abstract Class -- #
 # Base class for all TextureHolders
 # TextureHolders are node holders for actors which
@@ -8,7 +8,9 @@ extends "res://addons/FracturalVNE/core/standard_node_2d/node_2d_standard_node_2
 # ----- Typeable ----- #
 
 func get_types() -> Array:
-	return ["TextureHolder"]
+	var arr = .get_types()
+	arr.append("TextureHolder")
+	return arr
 
 # ----- Typeable ----- #
 

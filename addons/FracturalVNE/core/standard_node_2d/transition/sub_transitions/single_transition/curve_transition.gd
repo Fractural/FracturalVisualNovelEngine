@@ -11,11 +11,11 @@ var original_node_parent: Node
 onready var node_holder = get_node(node_holder_path)
 
 
-func _ready():
+func _ready() -> void:
 	set_process(false)
 
 
-func _process(delta):
+func _process(delta) -> void:
 	if time < duration:
 		time += delta
 		var progress
@@ -47,7 +47,7 @@ func _final_tick(final_percentage):
 	pass
 
 
-func _on_transition_finished(skipped):
+func _on_transition_finished(skipped: bool) -> void:
 	set_process(false)
 	_final_tick(1 if transition_type == TransitionType.SHOW else 0)
 	

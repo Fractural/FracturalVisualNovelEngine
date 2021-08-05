@@ -40,13 +40,13 @@ func get_service_name():
 # ----- Serialization ----- #
 
 # Optional
-func serialize_state():
+func serialize_state() -> Dictionary:
 	return {
 		"service_name": get_service_name()
 	}
 
 
-func deserialize_state(serialized_state):
+func deserialize_state(serialized_state) -> void:
 	pass
 
 # ----- Serialization ----- #

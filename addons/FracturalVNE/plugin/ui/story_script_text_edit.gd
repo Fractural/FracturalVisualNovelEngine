@@ -27,7 +27,7 @@ onready var error_label: RichTextLabel = get_node(error_label_path)
 onready var caret_position_label: Label = get_node(caret_position_label_path)
 
 
-func _ready():
+func _ready() -> void:
 	connect("cursor_changed", self, "_on_cursor_changed")
 	error_label.connect("meta_clicked", self, "_on_error_label_clicked")
 	clear_error()

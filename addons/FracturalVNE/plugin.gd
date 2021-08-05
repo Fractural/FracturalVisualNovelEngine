@@ -41,7 +41,7 @@ func _enter_tree():
 	_setup_inspector_plugins()
 
 
-func _ready():
+func _ready() -> void:
 	plugin_ui._setup_editor_assets(assets_registry)
 
 

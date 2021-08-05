@@ -152,7 +152,7 @@ func throw_error(error):
 
 # ----- Serialization ----- #
 
-func serialize_state():
+func serialize_state() -> Dictionary:
 	var serialized_node_states = {}
 	propagate_call("serialize_node_state", [serialized_node_states])
 	
@@ -167,14 +167,14 @@ func serialize_state():
 	}
 
 
-func deserialize_state(serialized_state):
+func deserialize_state(serialized_state) -> void:
 	for serialized_service_state in serialized_state["services"]:
 		services[serialized_service_state["service_name"]].deserialize_state(serialized_service_state)
 
 	propagate_call("deserialize_node_state", [serialized_state["nodes"]])
 
 
-func serialize():
+func serialize() -> Dictionary:
 	var serialized_object = .serialize()
 	serialized_object["block"] = block.serialize()
 	return serialized_object

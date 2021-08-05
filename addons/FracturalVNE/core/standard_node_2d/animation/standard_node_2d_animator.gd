@@ -55,7 +55,7 @@ func play_animation(node_animation):
 	curr_node_animation.animate(node_holder)
 
 
-func _on_animation_finished(skipped):
+func _on_animation_finished(skipped: bool):
 	if not skipped and curr_animation_action != null:
 		story_director.remove_step_action(curr_animation_action)
 	curr_animation_action = null
