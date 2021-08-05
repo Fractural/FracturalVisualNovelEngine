@@ -214,7 +214,18 @@ func add_step_action(step_action):
 
 func remove_step_action(step_action):
 	curr_active_step_actions.erase(step_action)
-	if curr_active_step_actions.size() == 0:
+	
+	# If we have two consecutive show statements in the start of a
+	# story, right after the second statement removes the step action
+	# of the first statement, the total step action will be zero for a moment.
+	#
+	# The start of the program is the only case like this that I can 
+	# think of, so I'm adding a check to prevent that.
+	#
+	# Not sure if this is the best way to go about it. (Maybe if more edge
+	# cases like this are found I can then make a better solution). 
+	if (not FracVNE.Utils.is_type(curr_stepped_node, "ProgramNode")
+		and curr_active_step_actions.size() == 0):
 		if curr_stepped_node.is_auto_step():
 			step()
 		else:

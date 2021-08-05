@@ -8,6 +8,16 @@ extends "res://addons/FracturalVNE/core/story_script/ast_nodes/executable_node/e
 # 3. execute()
 
 
+# ----- Typeable ----- #
+
+func get_types() -> Array:
+	var arr = .get_types()
+	arr.append("ProgramNode")
+	return arr
+
+# ----- Typeable ----- #
+
+
 signal throw_error(error)
 
 const ASTNodeIDDistributor = preload("res://addons/FracturalVNE/core/story_script/story_services/ast_node_id_distributor.gd")

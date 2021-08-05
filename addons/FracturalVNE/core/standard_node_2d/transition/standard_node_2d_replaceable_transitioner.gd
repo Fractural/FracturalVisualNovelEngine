@@ -14,11 +14,11 @@ func get_types() -> Array:
 
 export var old_node_holder_path: NodePath
 
-onready var old_node_holder = get_node(old_node_holder_path)
+onready var old_node_holder = get_node_or_null(old_node_holder_path)
 
 
 # -- StoryScriptErrorable -- #
-func replace(transition = null, duration = 1):
+func replace(transition: FracVNE_StandardNode2DTransition = null, duration: float = 1):
 	_force_clear_current_transition()
 	old_node_holder.visible = true
 	node_holder.visible = true
