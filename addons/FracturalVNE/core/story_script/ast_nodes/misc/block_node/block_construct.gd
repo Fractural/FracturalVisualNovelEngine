@@ -33,6 +33,5 @@ func parse(parser):
 			indent.message = "Expected an indent to begin a block."
 			return parser.error(indent, 1/2.0, checkpoint)
 	else:
-		newline.message = "Expected a newline to begin a block."
+		newline.message = "Expected a new line to begin a block."
 		return newline
-# TODO NOW: Port over ast_nodes following the google drawings UML diagram

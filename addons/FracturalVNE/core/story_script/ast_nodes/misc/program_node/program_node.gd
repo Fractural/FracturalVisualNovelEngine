@@ -23,6 +23,7 @@ func _init(block_ = null).(StoryScriptPosition.new(0, 0)):
 	block = block_
 
 
+# Called after initialization
 func _init_post():
 	add_service(ASTNodeIDDistributor.new())
 	start_configure_node()
@@ -47,6 +48,7 @@ func start_runtime_initialize():
 
 
 func execute():
+	get_service("StoryDirector").curr_stepped_node = self
 	block.execute()
 
 
@@ -100,9 +102,6 @@ func add_function_holders(new_function_holders):
 # 	StoryScriptArgument.new(null, value2)
 # 	StoryScriptArgument.new("name2", value3)
 # ]
-# 
-# TODO Check for variable function_definitions in function_holders
-# and use that to assign appropriate arguments
 
 func call_function(name: String, arguments = []):
 	# Only support for native GDScript functions for now
@@ -153,7 +152,7 @@ func throw_error(error):
 
 # ----- Serialization ----- #
 
-func serialize_state():
+func serialize_state() -> Dictionary:
 	var serialized_node_states = {}
 	propagate_call("serialize_node_state", [serialized_node_states])
 	
@@ -168,22 +167,22 @@ func serialize_state():
 	}
 
 
-func deserialize_state(serialized_state):
+func deserialize_state(serialized_state) -> void:
 	for serialized_service_state in serialized_state["services"]:
 		services[serialized_service_state["service_name"]].deserialize_state(serialized_service_state)
 
 	propagate_call("deserialize_node_state", [serialized_state["nodes"]])
 
 
-func serialize():
-	var serialized_obj = .serialize()
-	serialized_obj["block"] = block.serialize()
-	return serialized_obj
+func serialize() -> Dictionary:
+	var serialized_object = .serialize()
+	serialized_object["block"] = block.serialize()
+	return serialized_object
 
 
-func deserialize(serialized_obj):
-	var instance = .deserialize(serialized_obj)
-	instance.block = SerializationUtils.deserialize(serialized_obj["block"])
+func deserialize(serialized_object):
+	var instance = .deserialize(serialized_object)
+	instance.block = SerializationUtils.deserialize(serialized_object["block"])
 	instance._init_post()
 	# No need to assign runtime_block since that is assgined at runtime
 	return instance

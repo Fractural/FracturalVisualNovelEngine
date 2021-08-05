@@ -1,19 +1,133 @@
-[gd_scene load_steps=2 format=2]
+[gd_scene load_steps=8 format=2]
 
 [ext_resource path="res://tests/test.gd" type="Script" id=1]
+[ext_resource path="res://addons/FracturalVNE/default_assets/bg_images/library_3.png" type="Texture" id=2]
+[ext_resource path="res://addons/FracturalVNE/core/visuals/texture_holders/types/single_texture_holder.gd" type="Script" id=3]
+[ext_resource path="res://addons/FracturalVNE/default_assets/bg_images/library_1.png" type="Texture" id=4]
+[ext_resource path="res://addons/FracturalVNE/core/standard_node_2d/transition/standard_node_2d_replaceable_transitioner.gd" type="Script" id=5]
+[ext_resource path="res://addons/FracturalVNE/core/scene/types/image_scene/image_scene_controller.gd" type="Script" id=6]
+[ext_resource path="res://addons/FracturalVNE/core/actor/base_actor.tscn" type="PackedScene" id=7]
 
-[node name="Control" type="Control"]
+[node name="Test" type="Node"]
+script = ExtResource( 1 )
+transitioner_path = NodePath("CanvasLayer/Transiiotner")
+
+[node name="CanvasLayer" type="CanvasLayer" parent="."]
+layer = 10
+
+[node name="Control" type="Control" parent="CanvasLayer"]
+anchor_right = 1.0
+anchor_bottom = 1.0
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="ImageScene" type="Control" parent="CanvasLayer/Control"]
 anchor_right = 1.0
 anchor_bottom = 1.0
 mouse_filter = 2
+script = ExtResource( 6 )
+__meta__ = {
+"_edit_use_anchors_": false
+}
+actor_animator_path = NodePath("BaseActor/Animator")
+actor_mover_path = NodePath("BaseActor/Mover")
+actor_transitioner_path = NodePath("BaseActor/Transitioner")
+node_holder_path = NodePath("Holder")
+texture_rect_path = NodePath("Holder/TextureRect")
+
+[node name="Holder" type="Control" parent="CanvasLayer/Control/ImageScene"]
+anchor_right = 1.0
+anchor_bottom = 1.0
+mouse_filter = 2
+script = ExtResource( 3 )
+__meta__ = {
+"_edit_use_anchors_": false
+}
+textured_node_path = NodePath("TextureRect")
+
+[node name="TextureRect" type="TextureRect" parent="CanvasLayer/Control/ImageScene/Holder"]
+anchor_right = 1.0
+anchor_bottom = 1.0
+mouse_filter = 2
+texture = ExtResource( 4 )
+expand = true
+stretch_mode = 7
 __meta__ = {
 "_edit_use_anchors_": false
 }
 
-[node name="Test" type="Control" parent="."]
-margin_right = 40.0
-margin_bottom = 40.0
-script = ExtResource( 1 )
+[node name="BaseActor" parent="CanvasLayer/Control/ImageScene" instance=ExtResource( 7 )]
+
+[node name="Animator" parent="CanvasLayer/Control/ImageScene/BaseActor" index="0"]
+node_holder_path = NodePath("../../Holder")
+animation_holder_path = NodePath("../..")
+
+[node name="Mover" parent="CanvasLayer/Control/ImageScene/BaseActor" index="1"]
+standard_node_2d_path = NodePath("../..")
+
+[node name="Transitioner" parent="CanvasLayer/Control/ImageScene/BaseActor" index="2"]
+node_holder_path = NodePath("../../Holder")
+transition_holder_path = NodePath("../..")
+
+[node name="ImageScene2" type="Control" parent="CanvasLayer/Control"]
+anchor_right = 1.0
+anchor_bottom = 1.0
+mouse_filter = 2
+script = ExtResource( 6 )
 __meta__ = {
 "_edit_use_anchors_": false
 }
+actor_animator_path = NodePath("BaseActor/Animator")
+actor_mover_path = NodePath("BaseActor/Mover")
+actor_transitioner_path = NodePath("BaseActor/Transitioner")
+node_holder_path = NodePath("Holder")
+texture_rect_path = NodePath("Holder/TextureRect")
+
+[node name="Holder" type="Control" parent="CanvasLayer/Control/ImageScene2"]
+anchor_right = 1.0
+anchor_bottom = 1.0
+mouse_filter = 2
+script = ExtResource( 3 )
+__meta__ = {
+"_edit_use_anchors_": false
+}
+textured_node_path = NodePath("TextureRect")
+
+[node name="TextureRect" type="TextureRect" parent="CanvasLayer/Control/ImageScene2/Holder"]
+anchor_right = 1.0
+anchor_bottom = 1.0
+mouse_filter = 2
+texture = ExtResource( 2 )
+expand = true
+stretch_mode = 7
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="BaseActor" parent="CanvasLayer/Control/ImageScene2" instance=ExtResource( 7 )]
+
+[node name="Animator" parent="CanvasLayer/Control/ImageScene2/BaseActor" index="0"]
+node_holder_path = NodePath("../../Holder")
+animation_holder_path = NodePath("../..")
+
+[node name="Mover" parent="CanvasLayer/Control/ImageScene2/BaseActor" index="1"]
+standard_node_2d_path = NodePath("../..")
+
+[node name="Transitioner" parent="CanvasLayer/Control/ImageScene2/BaseActor" index="2"]
+node_holder_path = NodePath("../../Holder")
+transition_holder_path = NodePath("../..")
+
+[node name="Transiiotner" type="Node" parent="CanvasLayer"]
+script = ExtResource( 5 )
+node_holder_path = NodePath("../..")
+transition_holder_path = NodePath("../Control")
+old_node_holder_path = NodePath("../Control/ImageScene")
+
+[node name="Node2D" type="Node2D" parent="."]
+
+[node name="Camera2D" type="Camera2D" parent="Node2D"]
+current = true
+
+[editable path="CanvasLayer/Control/ImageScene/BaseActor"]
+[editable path="CanvasLayer/Control/ImageScene2/BaseActor"]

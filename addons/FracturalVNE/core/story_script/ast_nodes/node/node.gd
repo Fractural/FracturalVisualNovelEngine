@@ -1,12 +1,24 @@
-extends "res://addons/FracturalVNE/core/utils/typeable.gd"
+extends Reference
+# -- Abstract Class -- #
 # Base class for all nodes. Represents a node on an abstract sytax tree (AST) for a story.
 # The root of this tree executes it's children, which execute their own children, etc. in order
 # to play an entire story.
 
+# TODO: Refactor the get_types() from all nodes to follow
+#		the traditional PascalCase naming style.
 
-static func get_types() -> Array:
+
+# ----- Typeable ----- #
+func get_types() -> Array:
 	return ["node"]
 
+# ----- Typeable ----- #
+
+
+const StoryScriptPosition = preload("res://addons/FracturalVNE/core/story_script/story_script_position.gd")
+const StoryScriptError = preload("res://addons/FracturalVNE/core/story_script/story_script_error.gd")
+const SSUtils = preload("res://addons/FracturalVNE/core/story_script/story_script_utils.gd")
+const FracUtils = preload("res://addons/FracturalVNE/core/utils/utils.gd")
 
 var reference_id
 var runtime_block setget set_runtime_block, get_runtime_block
@@ -37,7 +49,8 @@ func set_runtime_block(new_value):
 
 
 func get_runtime_block():
-	return runtime_block.get_ref()
+	if runtime_block != null:
+		return runtime_block.get_ref()
 
 
 func debug_string(tabs_string: String) -> String:
@@ -47,7 +60,7 @@ func debug_string(tabs_string: String) -> String:
 # ----- Error ----- #
 
 func is_success(result):
-	return not result is StoryScriptError and not result is StoryScriptError.ErrorStack
+	return SSUtils.is_success(result)
 
 
 func error(message: String):
@@ -78,16 +91,16 @@ func stack_error(error, message = ""):
 
 # ----- Serialization ----- #
 
-func serialize():
+func serialize() -> Dictionary:
 	return {
 		"script_path": get_script().get_path(),
 		"position": position.serialize(),
 	}
 
 
-func deserialize(serialized_obj):
+func deserialize(serialized_object):
 	var instance = get_script().new()
-	instance.position = SerializationUtils.deserialize(serialized_obj["position"])
+	instance.position = SerializationUtils.deserialize(serialized_object["position"])
 	# No need to assign runtime_block since that is assgined at runtime
 	return instance
 

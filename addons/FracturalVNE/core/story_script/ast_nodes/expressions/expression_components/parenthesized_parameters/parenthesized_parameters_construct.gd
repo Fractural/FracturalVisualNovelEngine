@@ -1,14 +1,20 @@
 extends "res://addons/FracturalVNE/core/story_script/ast_nodes/node/node_construct.gd"
+# Parses a group of ParenthesizedParameters.
 
+
+const Param = preload("res://addons/FracturalVNE/core/story_script/story_script_parameter.gd")
 const ParameterGroupNode = preload("res://addons/FracturalVNE/core/story_script/ast_nodes/expressions/expression_components/parenthesized_parameters/parameter_group.gd")
+
 
 func get_punctuation():
 	return ["(", ",", ")"]
+
 
 func get_parse_types():
 	var arr = .get_parse_types()
 	arr.append("parenthesized parameters")
 	return arr
+
 
 func parse(parser):
 	var checkpoint = parser.save_reader_state()
@@ -37,13 +43,13 @@ func parse(parser):
 						if parser.is_success(constant_expression):
 							var evaluated_expression = constant_expression.evaluate()
 							if parser.is_success(evaluated_expression):
-								parameters[param_identifier.symbol] = StoryScriptParameter.new(param_identifier.symbol, evaluated_expression)
+								parameters[param_identifier.symbol] = Param.new(param_identifier.symbol, evaluated_expression)
 							else:
 								return parser.error(evaluated_expression, 1, checkpoint)
 						else:
 							return parser.error("Expected an expression that does not contain variables or function calls.", 1, checkpoint)
 					else:
-						parameters[param_identifier.symbol] = StoryScriptParameter.new(param_identifier.symbol)
+						parameters[param_identifier.symbol] = Param.new(param_identifier.symbol)
 				else:
 					return parser.error(param_identifier, 1, checkpoint)
 				

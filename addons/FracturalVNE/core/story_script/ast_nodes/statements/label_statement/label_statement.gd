@@ -1,9 +1,10 @@
 extends "res://addons/FracturalVNE/core/story_script/ast_nodes/statements/statement/statement_node.gd"
+# Labels a spot that can be later jumped to using a jump statement.
 
 
 # ----- Typeable ----- #
 
-static func get_types() -> Array:
+func get_types() -> Array:
 	var arr = .get_types()
 	arr.append("label")
 	return arr
@@ -29,6 +30,8 @@ func _init_post():
 			block.declare_variable(param.name, param.default_value)
 
 
+# TODO: Ensure that execute() runs even when it accepts an arguments variable 
+# 		(Since Godot has not crashed yet, I'm assuming Godot doesn't care.)
 func execute(arguments = []):
 	if parameter_group != null:
 		for arg in arguments:
@@ -40,7 +43,7 @@ func execute(arguments = []):
 
 
 func block_executed():
-	.execute()
+	_finish_execute()
 
 
 func runtime_initialize():
@@ -76,21 +79,21 @@ func propagate_call(method, arguments = [], parent_first = false):
 
 # ----- Serialization ----- #
 
-func serialize():
-	var serialized_obj = .serialize()
-	serialized_obj["name"] = name
-	serialized_obj["block"] = block.serialize()
+func serialize() -> Dictionary:
+	var serialized_object = .serialize()
+	serialized_object["name"] = name
+	serialized_object["block"] = block.serialize()
 	if parameter_group != null:
-		serialized_obj["parameter_group"] = parameter_group.serialize()
-	return serialized_obj
+		serialized_object["parameter_group"] = parameter_group.serialize()
+	return serialized_object
 
 
-func deserialize(serialized_obj):	
-	var instance = .deserialize(serialized_obj)
-	instance.name = serialized_obj["name"]
-	instance.block = SerializationUtils.deserialize(serialized_obj["block"])
-	if serialized_obj.has("parameter_group"):
-		instance.parameter_group = SerializationUtils.deserialize(serialized_obj["parameter_group"])
+func deserialize(serialized_object):	
+	var instance = .deserialize(serialized_object)
+	instance.name = serialized_object["name"]
+	instance.block = SerializationUtils.deserialize(serialized_object["block"])
+	if serialized_object.has("parameter_group"):
+		instance.parameter_group = SerializationUtils.deserialize(serialized_object["parameter_group"])
 	instance._init_post()
 	return instance
 

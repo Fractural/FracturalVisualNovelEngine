@@ -8,7 +8,7 @@ export var menu_title_path: NodePath
 onready var menu_title: Label = get_node(menu_title_path)
 
 
-func _ready():
+func _ready() -> void:
 	goto_menu(get_child(0).name)
 
 

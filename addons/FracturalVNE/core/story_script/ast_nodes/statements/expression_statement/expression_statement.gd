@@ -1,9 +1,11 @@
 extends "res://addons/FracturalVNE/core/story_script/ast_nodes/statements/statement/statement_node.gd"
+# Evaluates an expression.
+# Function calls are called via this manner.
 
 
 # ----- Typeable ----- #
 
-static func get_types() -> Array:
+func get_types() -> Array:
 	var arr = .get_types()
 	arr.append("expression statement")
 	return arr
@@ -23,7 +25,7 @@ func execute():
 	if not is_success(result):
 		throw_error(stack_error(result, 'Expression statement could not evaluate.'))
 		return
-	.execute()
+	_finish_execute()
 
 
 func debug_string(tabs_string: String) -> String:
@@ -47,15 +49,15 @@ func propagate_call(method, arguments = [], parent_first = false):
 
 # ----- Serialization ----- #
 
-func serialize():
-	var serialized_obj = .serialize()
-	serialized_obj["expression"] = expression.serialize()
-	return serialized_obj
+func serialize() -> Dictionary:
+	var serialized_object = .serialize()
+	serialized_object["expression"] = expression.serialize()
+	return serialized_object
 
 
-func deserialize(serialized_obj):	
-	var instance = .deserialize(serialized_obj)
-	instance.expression = SerializationUtils.deserialize(serialized_obj["expression"])
+func deserialize(serialized_object):	
+	var instance = .deserialize(serialized_object)
+	instance.expression = SerializationUtils.deserialize(serialized_object["expression"])
 	return instance
 
 # ----- Serialization ----- #

@@ -13,6 +13,7 @@
 [ext_resource path="res://addons/FracturalVNE/core/utils/dependency_injection/dependency.gd" type="Script" id=11]
 
 [node name="BasicPauseMenu" type="Panel"]
+pause_mode = 2
 anchor_right = 1.0
 anchor_bottom = 1.0
 theme = ExtResource( 7 )
@@ -39,7 +40,7 @@ dependency_name = "StoryStateManager"
 
 [node name="StoryGUIDependency" type="Node" parent="Dependencies"]
 script = ExtResource( 11 )
-dependency_name = "StoryStateManager"
+dependency_name = "StoryGUI"
 
 [node name="VSplitContainer" type="VSplitContainer" parent="."]
 anchor_right = 1.0

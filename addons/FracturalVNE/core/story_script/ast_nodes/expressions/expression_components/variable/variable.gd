@@ -1,6 +1,6 @@
 extends "res://addons/FracturalVNE/core/story_script/ast_nodes/expressions/expression_components/value_components/value_component/value_component.gd"
 
-static func get_types():
+func get_types():
 	var arr = .get_types()
 	arr.append("variable")
 	return arr
@@ -21,14 +21,14 @@ func debug_string(tabs_string: String) -> String:
 
 # ----- Serialization ----- #
 
-func serialize():
-	var serialized_obj = .serialize()
-	serialized_obj["name"] = name
-	return serialized_obj
+func serialize() -> Dictionary:
+	var serialized_object = .serialize()
+	serialized_object["name"] = name
+	return serialized_object
 
-func deserialize(serialized_obj):	
-	var instance = .deserialize(serialized_obj)
-	instance.name = serialized_obj["name"]
+func deserialize(serialized_object):	
+	var instance = .deserialize(serialized_object)
+	instance.name = serialized_object["name"]
 	return instance
 
 # ----- Serialization ----- #

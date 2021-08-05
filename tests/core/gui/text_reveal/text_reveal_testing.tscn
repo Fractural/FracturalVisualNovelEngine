@@ -27,4 +27,3 @@ script = ExtResource( 1 )
 __meta__ = {
 "_edit_use_anchors_": false
 }
-default_char_delay = 0.001

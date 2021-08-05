@@ -15,4 +15,4 @@ func evaluate():
 		return result == 1
 	elif typeof(result) == TYPE_BOOL:
 		return not result
-	return error('Cannot negate type "%s".' % FracturalUtils.get_type_name(result))
+	return error('Cannot negate type "%s".' % FracUtils.get_type_name(result))

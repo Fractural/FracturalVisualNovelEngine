@@ -29,7 +29,7 @@ onready var button: Button = get_node(button_path)
 onready var slot_label: Label = get_node(slot_label_path)
 
 
-func _ready():
+func _ready() -> void:
 	button.connect("pressed", self, "_on_button_pressed")
 
 

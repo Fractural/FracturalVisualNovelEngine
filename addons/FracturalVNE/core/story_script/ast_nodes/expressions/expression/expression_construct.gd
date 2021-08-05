@@ -1,4 +1,5 @@
 extends "res://addons/FracturalVNE/core/story_script/ast_nodes/node/node_construct.gd"
+# Parses an expression.
 
 
 func get_parse_types() -> Array:
@@ -69,7 +70,7 @@ func parse(parser):
 # You can steal a rightmost value if the `checked_precedence` > the rightmost 
 # value's precedence
 func _find_rightmost_stealable_operator(curr_value, checked_precedence: int):
-	if not curr_value.is_type("binary operator"):
+	if not Utils.is_type(curr_value, "binary operator"):
 		return null
 	if curr_value.get_precedence() >= checked_precedence:
 		return null

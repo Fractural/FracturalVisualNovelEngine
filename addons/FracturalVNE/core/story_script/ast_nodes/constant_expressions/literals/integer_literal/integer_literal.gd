@@ -3,7 +3,7 @@ extends "res://addons/FracturalVNE/core/story_script/ast_nodes/constant_expressi
 
 # ----- Typeable ----- #
 
-static func get_types():
+func get_types():
 	var arr = .get_types()
 	arr.append("integer literal")
 	return arr

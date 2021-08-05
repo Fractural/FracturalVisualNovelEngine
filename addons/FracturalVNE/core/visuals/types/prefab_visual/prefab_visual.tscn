@@ -1,0 +1,15 @@
+[gd_scene load_steps=3 format=2]
+
+[ext_resource path="res://addons/FracturalVNE/core/visuals/types/base_visual.tscn" type="PackedScene" id=1]
+[ext_resource path="res://addons/FracturalVNE/core/visuals/types/prefab_visual/prefab_visual_controller.gd" type="Script" id=3]
+
+[node name="PrefabVisual" instance=ExtResource( 1 )]
+script = ExtResource( 3 )
+prefab_holder_path = NodePath("Holder")
+
+[node name="Holder" parent="." index="0"]
+global_standard_position = Vector2( 0, 0 )
+global_standard_scale = Vector2( 1, 1 )
+global_standard_rotation = 0.0
+
+[editable path="BaseActor"]

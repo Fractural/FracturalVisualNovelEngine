@@ -1,3 +1,4 @@
+tool
 extends Node
 # Holds persistent data for the StoryScriptEditor that lasts between the 
 # play scene and the editor scene.
@@ -5,11 +6,7 @@ extends Node
 
 # ----- Typeable ----- #
 
-func is_type(type: String) -> bool:
-	return get_types().has(type)
-
-
-static func get_types() -> Array:
+func get_types() -> Array:
 	return ["StoryScriptPersistentData"]
 
 # ----- Typeable ----- #

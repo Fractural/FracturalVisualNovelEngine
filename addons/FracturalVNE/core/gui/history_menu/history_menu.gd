@@ -9,7 +9,7 @@ onready var entries_holder = get_node(entries_holder_path)
 onready var history_manager_dep = get_node(history_manager_dep_path)
 
 
-func _ready():
+func _ready() -> void:
 	history_manager_dep.dependency.connect("entry_added", self, "_on_entry_added")
 	history_manager_dep.dependency.connect("entry_removed", self, "_on_entry_removed")
 	history_manager_dep.dependency.connect("entries_cleared", self, "_on_entries_cleared")

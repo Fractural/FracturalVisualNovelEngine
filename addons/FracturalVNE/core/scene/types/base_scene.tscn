@@ -1,0 +1,36 @@
+[gd_scene load_steps=3 format=2]
+
+[ext_resource path="res://addons/FracturalVNE/core/scene/types/scene_controller.gd" type="Script" id=1]
+[ext_resource path="res://addons/FracturalVNE/core/actor/base_actor.tscn" type="PackedScene" id=2]
+
+[node name="BaseScene" type="Control"]
+script = ExtResource( 1 )
+__meta__ = {
+"_edit_use_anchors_": false
+}
+actor_animator_path = NodePath("BaseActor/Animator")
+actor_mover_path = NodePath("BaseActor/Mover")
+actor_transitioner_path = NodePath("BaseActor/Transitioner")
+node_holder_path = NodePath("Holder")
+
+[node name="Holder" type="Control" parent="."]
+margin_right = 40.0
+margin_bottom = 40.0
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="BaseActor" parent="." instance=ExtResource( 2 )]
+
+[node name="Animator" parent="BaseActor" index="0"]
+node_holder_path = NodePath("../../Holder")
+animation_holder_path = NodePath("../..")
+
+[node name="Mover" parent="BaseActor" index="1"]
+standard_node_2d_path = NodePath("../..")
+
+[node name="Transitioner" parent="BaseActor" index="2"]
+node_holder_path = NodePath("../../Holder")
+transition_holder_path = NodePath("../..")
+
+[editable path="BaseActor"]

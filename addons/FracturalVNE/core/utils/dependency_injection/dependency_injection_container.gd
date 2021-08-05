@@ -18,7 +18,7 @@ onready var scene_manager = get_node(scene_manager_path)
 onready var services_holder = get_node(services_holder_path)
 
 
-func _ready():
+func _ready() -> void:
 	for injectable_service in services_holder.get_children():
 		services.append(injectable_service)
 	
@@ -66,7 +66,7 @@ func _on_scene_loaded(loaded_scene):
 	for requester in dependency_requesters:
 		# Let each injectable_service try to inject a dependency
 		for injectable_service in services:
-			if injectable_service.is_type(requester.dependency_name):
+			if FracVNE.Utils.is_type(injectable_service, requester.dependency_name):
 				_inject_dependency(requester, injectable_service)
 				break
 

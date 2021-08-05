@@ -48,7 +48,10 @@ onready var story_runner_dep = get_node(story_runner_dep_path)
 onready var persistent_data_dep = get_node(persistent_data_dep_path)
 
 
-func _ready():
+func _ready() -> void:
+	if FracVNE.Utils.is_in_editor_scene_tab(self):
+		return
+	
 	# If this is running standalone, then set up editor assets with a default scale of 1.
 	if not Engine.is_editor_hint():
 		_setup_editor_assets(PluginAssetsRegistry.new())
@@ -74,31 +77,26 @@ func _ready():
 	save_file_dialog.connect("popup_hide", self, "_on_popup_hide")
 	
 	if persistent_data_dep.dependency.current_script_path == "":
-		# TODO: Remove when done testing
-		script_text_edit.text = ""
-	#	for i in 100:
-	#		script_text_edit.text += '"Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum."'
-	#		script_text_edit.text += "\n"
-		script_text_edit.text += 'define b = Character(name="Bob", name_color="#fcba03") \n'
-		script_text_edit.text += 'define j = Character("Joe", "#03a1fc", "#03a1fc") \n'
-		script_text_edit.text += 'b "Hi there, I\'m bob!" \n'
-		script_text_edit.text += 'j "Hi there, I\'m joeeee!" \n'
-		script_text_edit.text += '"Tom" "Hi there, I\'m tom!" \n'
-		script_text_edit.text += 'say(b, "This is from a function!") \n'
-		script_text_edit.text += 'say(j, "This is also from a function!") \n'
-		script_text_edit.text += 'say("lol", "This is also also from a function!") \n'
-		script_text_edit.text += 'label lol: \n'
-		script_text_edit.text += '\tb "I\'m in a label!" \n'
-		script_text_edit.text += '\tj "I\'m also in a label!" \n'
-		script_text_edit.text += '\t"Tom" "I\'m also also in a label!" \n'
-		script_text_edit.text += '\t"Here\'s some narration in the label!" \n'
-		script_text_edit.text += '\t"Tom" "Lets jump recursively back to that label!" \n'
-		script_text_edit.text += '\tjump lol\n'
-		script_text_edit.text += 'label another_one: \n'
-		script_text_edit.text += '\t "You will never reach this label!"\n'
-		
-		persistent_data_dep.dependency.current_script_path = TEMP_SCRIPT_PATH
-		set_current_script_path(persistent_data_dep.dependency.current_script_path)
+		open_file("res://demo/visuals_testing.storyscript")
+
+#		script_text_edit.text = """define b = Character(name="Bob", name_color="#fcba03")
+#define j = Character("Joe", "#03a1fc", "#03a1fc")
+#b "Hi there, I'm Bob!"
+#j "Hi there, I'm Joe!"
+#"Tom" "Hi there, I'm tom!"
+#label start:
+#	b "I'm in a label!"
+#	j "I'm also in a label!"
+#	"Tom" "I'm also in a label!"
+#	"Here's some narration in the label!"
+#	"Tom" "Lets jump recursively back to that label!"
+#	jump start
+#label impossible_to_reach:
+#	"You will never reach this label!"
+#"""
+#
+#		persistent_data_dep.dependency.current_script_path = TEMP_SCRIPT_PATH
+#		set_current_script_path(persistent_data_dep.dependency.current_script_path)
 	else:
 		open_file(persistent_data_dep.dependency.current_script_path)
 	
@@ -134,8 +132,7 @@ func save_current_file():
 
 func compile_script():
 	var ast_tree = compiler.compile(script_text_edit.text)
-	
-	if ast_tree is StoryScriptError:
+	if ast_tree is FracVNE.StoryScript.Error:
 		script_text_edit.display_error(ast_tree)
 		set_compiled(false)
 	else:
@@ -164,10 +161,11 @@ func run_script():
 	
 	save_current_file()
 	
-	# TODO: Add support for playing story from editor
-	# 		PluginUI should implement it's own "StoryRunner" and manually
-	#		inject the dependency into StoryScriptEditor
-	story_runner_dep.dependency.run(persistent_data_dep.dependency.current_saved_story_path, load("res://addons/FracturalVNE/plugin/ui/story_script_editor.tscn"))
+	
+	if not Engine.is_editor_hint():
+		story_runner_dep.dependency.run(persistent_data_dep.dependency.current_saved_story_path, load("res://addons/FracturalVNE/plugin/ui/story_script_editor.tscn"))
+	else:
+		story_runner_dep.dependency.run(persistent_data_dep.dependency.current_saved_story_path)
 
 
 func set_compiled(new_value):
@@ -220,5 +218,11 @@ func _setup_editor_assets(assets_registry):
 	compiled_icon.texture = assets_registry.load_asset("assets/icons/check_box.svg")
 	saved_icon.texture = assets_registry.load_asset("assets/icons/check_box.svg")
 	file_menu.icon = assets_registry.load_asset("assets/icons/load.svg")
+	
+	open_file_dialog.rect_size = open_file_dialog.rect_size * assets_registry.get_editor_scale()
+	save_file_dialog.rect_size = open_file_dialog.rect_size * assets_registry.get_editor_scale()
+	
+	open_file_dialog.set_anchors_and_margins_preset(Control.PRESET_CENTER, Control.PRESET_MODE_KEEP_SIZE)
+	save_file_dialog.set_anchors_and_margins_preset(Control.PRESET_CENTER, Control.PRESET_MODE_KEEP_SIZE)
 	
 	script_text_edit._setup_editor_assets(assets_registry)

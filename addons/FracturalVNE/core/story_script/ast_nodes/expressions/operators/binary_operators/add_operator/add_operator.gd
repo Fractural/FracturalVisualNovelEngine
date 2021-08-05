@@ -1,13 +1,17 @@
 extends "res://addons/FracturalVNE/core/story_script/ast_nodes/expressions/operators/binary_operators/_binary_operator/binary_operator.gd"
 
+
 func _init(position_ = null, left_operand_ = null, right_operand_ = null).(position_, left_operand_, right_operand_):
 	pass
+
 
 func _debug_string_operator_name():
 	return "ADD"
 
+
 func get_precedence() -> int:
 	return 1
+
 
 func evaluate():
 	var left_result = left_operand.evaluate()
@@ -23,4 +27,4 @@ func evaluate():
 	elif typeof(left_result) == TYPE_STRING and typeof(right_result) == TYPE_STRING:
 		# String concatnation
 		return left_result + right_result
-	return error('Cannot add "%s" with "%s".' % [FracturalUtils.get_type_name(left_result), FracturalUtils.get_type_name(right_result)])
+	return error('Cannot add "%s" with "%s".' % [FracUtils.get_type_name(left_result), FracUtils.get_type_name(right_result)])

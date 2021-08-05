@@ -26,7 +26,7 @@ onready var grid_container = get_node(grid_container_path)
 onready var save_manager_dep = get_node(save_manager_dep_path)
 
 
-func _ready():
+func _ready() -> void:
 	for i in range(save_manager_dep.dependency.save_slots.size()):
 		var slot = save_manager_dep.dependency.save_slots[i]
 		ui_save_slots.append(save_slot_prefab.instance())

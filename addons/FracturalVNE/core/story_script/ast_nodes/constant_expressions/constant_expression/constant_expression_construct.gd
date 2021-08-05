@@ -1,9 +1,13 @@
 extends "res://addons/FracturalVNE/core/story_script/ast_nodes/expressions/expression/expression_construct.gd"
+# Parses constant expressions (Expressions that are guaranteed to not change,
+# which means excluding variables and function calls)
+
 
 func get_parse_types() -> Array:
 	var arr = .get_parse_types()
 	arr.append("constant expression")
 	return arr
+
 
 # Overrides expression parsing to only parse constant expressions
 #
@@ -63,13 +67,14 @@ func parse(parser):
 		
 	return lhs
 
+
 # Finds the rightmost stealable operator given a value and a precedence level.
 # `curr_value` can be either a binary operator or just a normal value
 #
 # You can steal a rightmost value if the `checked_precedence` > the rightmost 
 # value's precedence
 func _find_rightmost_stealable_operator(curr_value, checked_precedence: int):
-	if not curr_value.is_type("binary operator"):
+	if not Utils.is_type(curr_value, "binary operator"):
 		return null
 	if curr_value.get_precedence() >= checked_precedence:
 		return null

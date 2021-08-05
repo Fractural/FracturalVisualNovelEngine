@@ -1,7 +1,8 @@
 extends "res://addons/FracturalVNE/core/story_script/ast_nodes/constant_expressions/literals/literal/literal_construct.gd"
+# Parses an IntegerLiteral.
 
 
-const IntegerLiteralNode = preload("res://addons/FracturalVNE/core/story_script/ast_nodes/constant_expressions/literals/integer_literal/integer_literal.gd")
+const IntegerLiteralNode = preload("integer_literal.gd")
 
 
 func get_parse_types():

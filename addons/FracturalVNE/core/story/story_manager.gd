@@ -30,9 +30,6 @@ func load_story(story_file_path_: String):
 	story_file_path = story_file_path_
 	story_tree = story_loader.load_story(story_file_path)
 	story_tree.connect("throw_error", self, "throw_error")
-	
-	print("LOADED TREE:")
-	print(story_tree.debug_string(""))
 
 
 func throw_error(error):
@@ -40,4 +37,7 @@ func throw_error(error):
 
 
 func quit():
-	scene_manager_dep.dependency.transition_to_scene(quit_to_scene)
+	if quit_to_scene != null:
+		scene_manager_dep.dependency.transition_to_scene(quit_to_scene)
+	else:
+		get_tree().quit()

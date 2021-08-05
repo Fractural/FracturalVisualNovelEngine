@@ -1,46 +1,45 @@
-extends Reference
+class_name FracVNE_Character, "res://addons/FracturalVNE/assets/icons/character.svg"
+extends Resource
 # Stores data about a character.
 # Is used by classes such as TextPrinter. 
 
 
 # ----- Typeable ----- #
 
-func is_type(type: String) -> bool:
-	return get_types().has(type)
+func get_cast_types() -> Array:
+	if visual != null:
+		return visual.get_types()
+	return []
 
-static func get_types() -> Array:
-	return ["Character"]
+
+func cast(type: String):
+	if get_types().has(type):
+		return self
+	if visual.get_types().has(type):
+		return visual
+
+
+func get_types() -> Array:
+	return ["Character", "Serializable"]
 
 # ----- Typeable ----- #
 
 
-var name
-var name_color
-var dialogue_color
+export var name: String
+export var name_color: Color
+export var dialogue_color: Color
+export var visual: Resource
 
 
-func _init(name_ = null, name_color_ = null, dialogue_color_ = null):
+func _init(name_ = "", name_color_ = Color.white, dialogue_color_ = Color.white, visual_ = null):
 	name = name_
 	name_color = name_color_
 	dialogue_color = dialogue_color_
+	visual = visual_
 
 
 # ----- Serialization ----- #
 
-func serialize():
-	return {
-		"script_path": get_script().get_path(),
-		"name": name,
-		"name_color": name_color.to_html(),
-		"dialogue_color": dialogue_color.to_html(),
-	}
-
-
-func deserialize(serialized_object):
-	var instance = get_script().new()
-	instance.name = serialized_object["name"]
-	instance.name_color = Color(serialized_object["name_color"])
-	instance.dialogue_color = Color(serialized_object["dialogue_color"])
-	return instance
+# character_serializer.gd
 
 # ----- Serialization ----- #

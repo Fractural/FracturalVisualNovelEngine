@@ -1,21 +1,30 @@
 tool
 class_name StoryScriptCompiler
 extends Node
+# Compiles a string of StoryScript into a .story file.
+
 
 signal throw_error(message, error_position)
+
+const StoryScriptLexer = preload("res://addons/FracturalVNE/core/story_script/compiling/story_script_lexer.gd")
+const StoryScriptParser = preload("res://addons/FracturalVNE/core/story_script/compiling/story_script_parser.gd")
+const StoryScriptError = preload("res://addons/FracturalVNE/core/story_script/story_script_error.gd")
 
 var lexer: StoryScriptLexer
 var parser: StoryScriptParser
 
+
 func _init():
 	lexer = StoryScriptLexer.new()
 	parser = StoryScriptParser.new()
+
 
 func compile(script_text: String):
 	var lexed_tokens = lexer.generate_tokens(StoryScriptReader.new(script_text))	
 	if lexed_tokens is StoryScriptError:
 		return lexed_tokens
 	return parser.generate_abstract_syntax_tree(StoryScriptTokensReader.new(lexed_tokens))
+	
 	
 # Compiles a story script that is given in raw text format
 # If succesful, returns the compiled syntax tree

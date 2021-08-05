@@ -1,6 +1,7 @@
 extends Node
 # Keeps track of a users past interactions in a story.
-# TODO: Make history_manager store only one reference to each charcter.
+# TODO: Maybe rename HistoryManager to StoryHistoryManager for consistency
+# 		(Since other services are called StoryDirector, etc.)
 
 
 # ----- StoryService ----- #
@@ -49,7 +50,7 @@ func clear_entries():
 # 		reference IDs that must be converted back to the actual object
 #		(such as with the character IDs in SayEntry).
 
-func serialize_state():
+func serialize_state() -> Dictionary:
 	var serialized_history_stack = []
 	for entry in history_stack:
 		serialized_history_stack.append(serialization_manager.serialize(entry))
@@ -60,9 +61,10 @@ func serialize_state():
 	}
 
 
-func deserialize_state(serialized_state):
+func deserialize_state(serialized_state) -> void:
 	clear_entries()
 	for serialized_entry in serialized_state["history_stack"]:
-		add_entry(serialization_manager.deserialize(serialized_entry))
+		var x = serialization_manager.deserialize(serialized_entry)
+		add_entry(x)
 
 # ----- Serialization ----- #

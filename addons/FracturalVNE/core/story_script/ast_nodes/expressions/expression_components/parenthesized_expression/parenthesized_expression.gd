@@ -33,15 +33,15 @@ func propagate_call(method, arguments = [], parent_first = false):
 
 # ----- Serialization ----- #
 
-func serialize():
-	var serialized_obj = .serialize()
-	serialized_obj["operand"] = operand.serialize()
-	return serialized_obj
+func serialize() -> Dictionary:
+	var serialized_object = .serialize()
+	serialized_object["operand"] = operand.serialize()
+	return serialized_object
 
 
-func deserialize(serialized_obj):	
-	var instance = .deserialize(serialized_obj)
-	instance.operand = SerializationUtils.deserialize(serialized_obj["operand"])
+func deserialize(serialized_object):	
+	var instance = .deserialize(serialized_object)
+	instance.operand = SerializationUtils.deserialize(serialized_object["operand"])
 	return instance
 
 # ----- Serialization ----- #

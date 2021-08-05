@@ -1,9 +1,10 @@
-[gd_scene load_steps=5 format=2]
+[gd_scene load_steps=6 format=2]
 
 [ext_resource path="res://addons/FracturalVNE/plugin/ui/plugin_ui.gd" type="Script" id=1]
 [ext_resource path="res://addons/FracturalVNE/plugin/ui/story_script_editor.tscn" type="PackedScene" id=2]
 [ext_resource path="res://addons/FracturalVNE/plugin/ui/story_script_persistent_data.gd" type="Script" id=3]
 [ext_resource path="res://addons/FracturalVNE/plugin/ui/editor_story_runner.gd" type="Script" id=4]
+[ext_resource path="res://addons/FracturalVNE/core/utils/dependency_injection/dependency.gd" type="Script" id=5]
 
 [node name="Fractural VNE" type="Control"]
 anchor_right = 1.0
@@ -16,6 +17,12 @@ __meta__ = {
 }
 story_script_editor_path = NodePath("StoryScriptEditor")
 
+[node name="Dependencies" type="Node" parent="."]
+
+[node name="PluginDependency" type="Node" parent="Dependencies"]
+script = ExtResource( 5 )
+dependency_name = "Plugin"
+
 [node name="StoryScriptEditor" parent="." instance=ExtResource( 2 )]
 
 [node name="StoryRunnerDependency" parent="StoryScriptEditor/Dependencies" index="0"]
@@ -24,8 +31,38 @@ dependency_path = NodePath("../../../EditorStoryRunner")
 [node name="StoryScriptPersistentDataDependency" parent="StoryScriptEditor/Dependencies" index="1"]
 dependency_path = NodePath("../../../StoryScriptPersistentData")
 
+[node name="CompiledUI" parent="StoryScriptEditor/VSplitContainer/TopMenu/VBoxContainer/HBoxContainer/States" index="0"]
+modulate = Color( 1, 1, 1, 0.5 )
+
+[node name="SavedUI" parent="StoryScriptEditor/VSplitContainer/TopMenu/VBoxContainer/HBoxContainer/States" index="1"]
+modulate = Color( 1, 1, 1, 0.5 )
+
+[node name="EditingFileText" parent="StoryScriptEditor/VSplitContainer/TopMenu/VBoxContainer" index="1"]
+text = "Editing \"res://temp.storyscript\" "
+
+[node name="ScriptTextEdit" parent="StoryScriptEditor/VSplitContainer" index="1"]
+text = "define b = Character(name=\"Bob\", name_color=\"#fcba03\") 
+define j = Character(\"Joe\", \"#03a1fc\", \"#03a1fc\") 
+b \"Hi there, I'm bob!\" 
+j \"Hi there, I'm joeeee!\" 
+\"Tom\" \"Hi there, I'm tom!\" 
+say(b, \"This is from a function!\") 
+say(j, \"This is also from a function!\") 
+say(\"lol\", \"This is also also from a function!\") 
+label lol: 
+	b \"I'm in a label!\" 
+	j \"I'm also in a label!\" 
+	\"Tom\" \"I'm also also in a label!\" 
+	\"Here's some narration in the label!\" 
+	\"Tom\" \"Lets jump recursively back to that label!\" 
+	jump lol
+label another_one: 
+	 \"You will never reach this label!\"
+"
+
 [node name="EditorStoryRunner" type="Node" parent="."]
 script = ExtResource( 4 )
+plugin_dep_path = NodePath("../Dependencies/PluginDependency")
 
 [node name="StoryScriptPersistentData" type="Node" parent="."]
 script = ExtResource( 3 )

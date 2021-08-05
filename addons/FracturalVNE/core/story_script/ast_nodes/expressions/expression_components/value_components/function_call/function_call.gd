@@ -1,9 +1,10 @@
 extends "res://addons/FracturalVNE/core/story_script/ast_nodes/expressions/expression_components/value_components/value_component/value_component.gd"
+# Calls a function from the runtime_block it's under.
 
 
 # ----- Typeable ----- #
 
-static func get_types() -> Array:
+func get_types() -> Array:
 	var arr = .get_types()
 	arr.append("function call")
 	return arr
@@ -60,17 +61,17 @@ func propagate_call(method: String, arguments: Array = [], parent_first: bool = 
 
 # ----- Serialization ----- #
 
-func serialize():
-	var serialized_obj = .serialize()
-	serialized_obj["name"] = name
-	serialized_obj["argument_group"] = argument_group.serialize()
-	return serialized_obj
+func serialize() -> Dictionary:
+	var serialized_object = .serialize()
+	serialized_object["name"] = name
+	serialized_object["argument_group"] = argument_group.serialize()
+	return serialized_object
 
 
-func deserialize(serialized_obj):	
-	var instance = .deserialize(serialized_obj)
-	instance.name = serialized_obj["name"]
-	instance.argument_group = SerializationUtils.deserialize(serialized_obj["argument_group"])
+func deserialize(serialized_object):	
+	var instance = .deserialize(serialized_object)
+	instance.name = serialized_object["name"]
+	instance.argument_group = SerializationUtils.deserialize(serialized_object["argument_group"])
 	return instance
 
 # ----- Serialization ----- #

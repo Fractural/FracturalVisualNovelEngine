@@ -1,0 +1,34 @@
+[gd_scene load_steps=5 format=2]
+
+[ext_resource path="res://addons/FracturalVNE/core/visuals/types/base_visual.tscn" type="PackedScene" id=1]
+[ext_resource path="res://addons/FracturalVNE/core/standard_node_2d/transition/standard_node_2d_replaceable_transitioner.gd" type="Script" id=2]
+[ext_resource path="res://addons/FracturalVNE/core/visuals/types/multi_visual/multi_visual_controller.gd" type="Script" id=3]
+[ext_resource path="res://addons/FracturalVNE/core/visuals/texture_holders/types/single_texture_holder.gd" type="Script" id=5]
+
+[node name="MultiVisual" instance=ExtResource( 1 )]
+use_parent_material = true
+script = ExtResource( 3 )
+sprite_path = NodePath("Holder/Sprite")
+old_sprite_path = NodePath("OldHolder/OldSprite")
+
+[node name="Holder" parent="." index="0"]
+script = ExtResource( 5 )
+global_standard_position = Vector2( 0, 0 )
+global_standard_scale = Vector2( 1, 1 )
+global_standard_rotation = 0.0
+textured_node_path = NodePath("Sprite")
+
+[node name="Sprite" type="Sprite" parent="Holder" index="0"]
+use_parent_material = true
+
+[node name="OldHolder" type="Node2D" parent="." index="1"]
+script = ExtResource( 5 )
+textured_node_path = NodePath("OldSprite")
+
+[node name="OldSprite" type="Sprite" parent="OldHolder" index="0"]
+
+[node name="Transitioner" parent="BaseActor" index="2"]
+script = ExtResource( 2 )
+old_node_holder_path = NodePath("../../OldHolder")
+
+[editable path="BaseActor"]

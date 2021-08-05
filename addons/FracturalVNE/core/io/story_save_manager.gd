@@ -3,11 +3,7 @@ extends Node
 
 
 # ----- Typeable ----- #
-
-func is_type(type: String) -> bool:
-	return get_types().has(type)
-
-static func get_types() -> Array:
+func get_types() -> Array:
 	return ["StorySaveManager"]
 
 # ----- Typeable ----- #
@@ -22,7 +18,7 @@ const SaveState = preload("res://addons/FracturalVNE/core/io/save_state.gd")
 var save_slots = []
 
 
-func _ready():
+func _ready() -> void:
 	preload_save_slots()
 	
 	var dir = Directory.new()

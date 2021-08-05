@@ -3,7 +3,7 @@ extends "res://addons/FracturalVNE/core/story_script/ast_nodes/statements/statem
 
 # ----- Typeable ----- #
 
-static func get_types() -> Array:
+func get_types() -> Array:
 	var arr = .get_types()
 	arr.append("variable declaration")
 	return arr
@@ -21,7 +21,10 @@ func _init(position_ = null, variable_name_ = null, value_expression_ = null).(p
 
 
 func execute():
-	get_runtime_block().declare_variable(variable_name, value_expression)
+	var result = get_runtime_block().declare_variable(variable_name, value_expression)
+	if not is_success(result):
+		throw_error(result)
+		return
 	.execute()
 
 
@@ -49,17 +52,17 @@ func propagate_call(method: String, arguments: Array = [], parent_first: bool = 
 
 # ----- Serialization ----- #
 
-func serialize():
-	var serialized_obj = .serialize()
-	serialized_obj["variable_name"] = variable_name
-	serialized_obj["value_expression"] = value_expression.serialize()
-	return serialized_obj
+func serialize() -> Dictionary:
+	var serialized_object = .serialize()
+	serialized_object["variable_name"] = variable_name
+	serialized_object["value_expression"] = value_expression.serialize()
+	return serialized_object
 
 
-func deserialize(serialized_obj):	
-	var instance = .deserialize(serialized_obj)
-	instance.variable_name = serialized_obj["variable_name"]
-	instance.value_expression = SerializationUtils.deserialize(serialized_obj["value_expression"])
+func deserialize(serialized_object):	
+	var instance = .deserialize(serialized_object)
+	instance.variable_name = serialized_object["variable_name"]
+	instance.value_expression = SerializationUtils.deserialize(serialized_object["value_expression"])
 	return instance
 
 # ----- Serialization ----- #

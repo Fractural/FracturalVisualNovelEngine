@@ -1,0 +1,16 @@
+[gd_scene load_steps=3 format=2]
+
+[ext_resource path="res://addons/FracturalVNE/core/scene/types/base_scene.tscn" type="PackedScene" id=1]
+[ext_resource path="res://addons/FracturalVNE/core/scene/types/prefab_scene/prefab_scene_controller.gd" type="Script" id=2]
+
+[node name="PrefabScene" instance=ExtResource( 1 )]
+use_parent_material = true
+mouse_filter = 2
+script = ExtResource( 2 )
+prefab_holder_path = NodePath("Holder")
+
+[node name="Holder" parent="." index="0"]
+use_parent_material = true
+mouse_filter = 2
+
+[editable path="BaseActor"]

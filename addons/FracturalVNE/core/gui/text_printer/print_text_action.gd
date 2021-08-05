@@ -2,14 +2,14 @@ extends "res://addons/FracturalVNE/core/story/director/step_action.gd"
 # Action for printing something in the TextPrinter
 
 
-var text_printer
+var text_printer_controller
 
 
 # No implementation for skip for print text action since printed text should 
 # persist until a new piece of text is printer over it.
-func _init(_text_printer, _skippable).(_skippable):
-	text_printer = _text_printer
+func _init(text_printer_controller_, skippable_ = true).(skippable_):
+	text_printer_controller = text_printer_controller_
 
 
 func skip():
-	text_printer.emit_signal("skip")
+	text_printer_controller.skip()

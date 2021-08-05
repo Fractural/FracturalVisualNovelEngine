@@ -1,0 +1,5 @@
+[gd_scene load_steps=2 format=2]
+
+[ext_resource path="res://addons/FracturalVNE/default_assets/transitions/fade_to_color/fade_to_color/hide.tscn" type="PackedScene" id=1]
+
+[node name="Hide" instance=ExtResource( 1 )]

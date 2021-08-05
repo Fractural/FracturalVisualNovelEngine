@@ -1,4 +1,5 @@
 extends "res://addons/FracturalVNE/core/story_script/ast_nodes/node/node_construct.gd"
+# Parses a group of ParenthesizedArguments.
 
 
 const ArgumentNode = preload("res://addons/FracturalVNE/core/story_script/ast_nodes/expressions/expression_components/parenthesized_arguments/argument.gd")
@@ -57,7 +58,7 @@ func parse(parser):
 				elif parser.is_success(parser.expect_token("punctuation", ")")):
 					break
 				else:
-					return parser.error('Expected a "," or a ")" after a argument.', 1, checkpoint)
+					return parser.error('Expected a "," or a ")" after an argument.', 1, checkpoint)
 		return ArgumentGroupNode.new(open_paren.position, arguments)
 	else:
 		return open_paren

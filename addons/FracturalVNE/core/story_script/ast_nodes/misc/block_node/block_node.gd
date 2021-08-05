@@ -2,8 +2,14 @@
 extends "res://addons/FracturalVNE/core/story_script/ast_nodes/executable_node/executable_node.gd"
 
 
-static func get_types() -> Array:
-	return ._get_added_types(["block"])
+# ----- Typeabe ----- #
+
+func get_types() -> Array:
+	var arr = .get_types()
+	arr.append("block")
+	return arr
+
+# ----- Typeabe ----- #
 
 
 var statements: Array
@@ -30,7 +36,7 @@ func _init_post():
 	#
 	# Do not bind if the statement overrides the story flow (such as with
 	# a jump statement).
-	if not statements.back().overrides_story_flow():
+	if not statements.back().overrides_story_flow:
 		statements.back().connect("executed", self, "block_completed")
 
 
@@ -39,7 +45,7 @@ func execute():
 
 
 func block_completed():
-	.execute()
+	_finish_execute()
 
 
 func get_service(name: String):
@@ -74,7 +80,10 @@ func set_variable(name: String, value):
 
 func declare_variable(name: String, value = null):
 	if not variables.has(name):
-		variables[name] = value.evaluate()
+		var result = value.evaluate()
+		if not is_success(result):
+			return result
+		variables[name] = result
 	else:
 		return error('Local variable with name "%s" already exists' % name)
 
@@ -118,21 +127,29 @@ func propagate_call(method: String, arguments: Array = [], parent_first: bool = 
 func serialize_node_state(saved_nodes):
 	var serialized_variables = []
 	
-	var reference_registry = get_runtime_block().get_service("StoryReferenceRegistry")
+	var reference_registry = get_runtime_block().get_service("ReferenceRegistry")
 	
 	for variable_name in variables.keys():
 		var value
-		var is_object:bool = typeof(variables[variable_name]) == TYPE_OBJECT
+		var type
 		
-		if is_object:
+		if FracUtils.is_type(variables[variable_name], "Serializable"):
+			type = "serializable_object"
 			value = reference_registry.get_reference_id(variables[variable_name])
-		else:
+		elif FracUtils.is_type(variables[variable_name], "Resource"):
+			type = "resource"
+			value = variables[variable_name].get_path()
+		elif FracUtils.is_type(variables[variable_name], "Literal"):
+			type = "literal"
 			value = variables[variable_name]
+		else:
+			assert(false, "Cannot serialize variable named \"%s\" with type \"%s\"." 
+			% [variable_name, FracUtils.get_type_name(variables[variable_name])])
 		
 		serialized_variables.append({
 			"variable_name": variable_name,
 			"value": value,
-			"is_object": is_object,
+			"type": type,
 		})
 	
 	saved_nodes[str(reference_id)] = {
@@ -141,32 +158,36 @@ func serialize_node_state(saved_nodes):
 
 
 func deserialize_node_state(saved_nodes_lookup):
-	var reference_registry = get_runtime_block().get_service("StoryReferenceRegistry")
-	
+	var reference_registry = get_runtime_block().get_service("ReferenceRegistry")
 	var serialized_variables = saved_nodes_lookup[str(reference_id)]["variables"]
 	for serialized_variable in serialized_variables:
-		if serialized_variable["is_object"]:
-			variables[serialized_variable["variable_name"]] = reference_registry.get_reference(serialized_variable["value"])
-		else:
-			variables[serialized_variable["variable_name"]] = serialized_variable["value"]
+		match serialized_variable["type"]:
+			"resource":
+				variables[serialized_variable["variable_name"]] = load(serialized_variable["value"])
+			"serializable_object":
+				variables[serialized_variable["variable_name"]] = reference_registry.get_reference(serialized_variable["value"])
+			"literal":
+				variables[serialized_variable["variable_name"]] = serialized_variable["value"]
+			_:
+				assert(false, "Unrecognized type, \"%s\". Could not deserialize variable." % serialized_variable["type"])
 
 
-func serialize():
-	var serialized_obj = .serialize()
+func serialize() -> Dictionary:
+	var serialized_object = .serialize()
 	
 	var serialized_statements = []
 	for statement in statements:
 		serialized_statements.append(statement.serialize())
 	
-	serialized_obj["statements"] = serialized_statements
-	return serialized_obj
+	serialized_object["statements"] = serialized_statements
+	return serialized_object
 
 
-func deserialize(serialized_obj):	
-	var instance = .deserialize(serialized_obj)
+func deserialize(serialized_object):	
+	var instance = .deserialize(serialized_object)
 	
 	var statements = []
-	for serialized_statement in serialized_obj["statements"]:
+	for serialized_statement in serialized_object["statements"]:
 		statements.append(SerializationUtils.deserialize(serialized_statement))
 	
 	# No need to assign runtime_block since that is assgined at runtime

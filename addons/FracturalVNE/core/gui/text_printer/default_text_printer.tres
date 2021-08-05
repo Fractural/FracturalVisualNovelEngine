@@ -1,0 +1,21 @@
+[gd_resource type="Resource" load_steps=5 format=2]
+
+[ext_resource path="res://addons/FracturalVNE/core/gui/text_printer/printers/components/characters_delay.gd" type="Script" id=1]
+[ext_resource path="res://addons/FracturalVNE/core/gui/text_printer/text_printer.gd" type="Script" id=2]
+[ext_resource path="res://addons/FracturalVNE/core/gui/text_printer/printers/basic_text_printer/basic_text_printer.tscn" type="PackedScene" id=3]
+
+[sub_resource type="Resource" id=1]
+script = ExtResource( 1 )
+characters = ",.!?"
+delay = 0.005
+
+[resource]
+script = ExtResource( 2 )
+cached = false
+name_default_char_delay = 0.0
+name_custom_char_delays = [  ]
+dialogue_default_char_delay = 0.01
+dialogue_custom_char_delays = [ SubResource( 1 ) ]
+default_name_color = Color( 1, 1, 1, 1 )
+default_dialogue_color = Color( 1, 1, 1, 1 )
+controller_prefab = ExtResource( 3 )

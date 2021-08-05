@@ -1,4 +1,6 @@
 extends "res://addons/FracturalVNE/core/story_script/ast_nodes/node/node_construct.gd"
+# Parses an expression component, the second smallest piece of
+# an expression (See expression_component.gd).
 
 
 func get_parse_types() -> Array:

@@ -16,21 +16,21 @@ func debug_string(tabs_string: String) -> String:
 
 # ----- Serialization ----- #
 
-func serialize():
-	var serialized_obj = .serialize()
+func serialize() -> Dictionary:
+	var serialized_object = .serialize()
 	
 	var serialized_parameters = []
 	for parameter in parameters:
 		serialized_parameters.append(parameter.serialize())
 	
-	serialized_obj["parameters"] = serialized_parameters
-	return serialized_obj
+	serialized_object["parameters"] = serialized_parameters
+	return serialized_object
 
-func deserialize(serialized_obj):
-	var instance = .deserialize(serialized_obj)
+func deserialize(serialized_object):
+	var instance = .deserialize(serialized_object)
 	
 	var parameters = []
-	for serialized_parameter in serialized_obj["parameters"]:
+	for serialized_parameter in serialized_object["parameters"]:
 		parameters.append(SerializationUtils.deserialize(serialized_parameter))
 	
 	instance.parameters = parameters

@@ -1,15 +1,26 @@
 class_name StoryScriptParser
 extends Reference
+# Parses an array of tokens into an Abstract Syntax Tree.
+
+
+
 
 const EOF = "EOF"
 
-var reader: StoryScriptTokensReader
+const NodeConstructConstants = preload("res://addons/FracturalVNE/core/story_script/node_construct_constants.gd")
+const StoryScriptError = preload("res://addons/FracturalVNE/core/story_script/story_script_error.gd")
+const SSUtils = preload("res://addons/FracturalVNE/core/story_script/story_script_utils.gd")
+const TokensReader = preload("res://addons/FracturalVNE/core/story_script/compiling/story_script_tokens_reader.gd")
 
-var constructs_dict = StoryScriptConstants.new().CONSTRUCTS_DICT
+var reader: TokensReader
 
-func generate_abstract_syntax_tree(reader_: StoryScriptTokensReader):
+var constructs_dict = NodeConstructConstants.new().CONSTRUCTS_DICT
+
+
+func generate_abstract_syntax_tree(reader_: TokensReader):
 	reader = reader_
 	return expect("program")
+
 
 func expect(construct_names):
 	var errors = []
@@ -42,6 +53,7 @@ func expect(construct_names):
 	
 	return closest_error
 
+
 func expect_token(token_type: String, token_symbol = null):
 	if token_type == reader.peek().type:
 		if token_symbol != null:
@@ -56,26 +68,34 @@ func expect_token(token_type: String, token_symbol = null):
 	else:
 		return error("Expected %s token with symbol of %s" % [token_type, str(token_symbol)])
 
+
 func load_reader_state(new_state):
 	reader = new_state
+
 
 func save_reader_state():
 	return reader.clone()
 
+
 func is_success(result):
-	return result != null and not result is StoryScriptError
+	return SSUtils.is_success(result)
+
 
 func peek(steps_ahead: int = 1):
 	return reader.peek(steps_ahead)
 
+
 func is_EOF():
 	return reader.is_EOF()
+
 
 func consume(steps_ahead: int = 1):
 	return reader.consume(steps_ahead)
 
+
 func unconsume(steps_behind: int = 1):
 	return reader.unconsume(steps_behind)
+
 
 func error(error, confidence: float = 0, checkpoint = null):
 	var position = reader.peek().position

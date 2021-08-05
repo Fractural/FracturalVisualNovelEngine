@@ -23,7 +23,7 @@ onready var pause_menu = get_node(pause_menu_path)
 onready var story_director_dep = get_node(story_director_dep_path)
 
 
-func _ready():
+func _ready() -> void:
 	history_button.connect("pressed", self, "_on_history_button_pressed")
 	skip_button.connect("toggled", self, "_on_skip_button_toggled")
 	auto_button.connect("toggled", self, "_on_auto_button_toggled")

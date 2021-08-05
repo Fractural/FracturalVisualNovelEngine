@@ -22,18 +22,18 @@ func init(default_char_delay_: float, custom_char_delays_: Array = []):
 	custom_char_delays = custom_char_delays_
 
 
-func _ready():
+func _ready() -> void:
 	# Keep process off until need to animate text
 	set_process(false)
 
 
 # We are using process to handle animating text every few seconds because as of Godot 3.2, 
 # there is no way to inturrupt coroutines, meaning you cannot use timers to loops things over time
-func _process(delta):
+func _process(delta) -> void:
 	_animate_text_tick(delta)
 
 
-func start_reveal():
+func start_reveal() -> void:
 	if is_revealing:
 		stop_reveal()
 	
@@ -43,14 +43,14 @@ func start_reveal():
 	set_process(true)
 
 
-func stop_reveal():
+func stop_reveal() -> void:
 	self.visible_characters = -1
 	is_revealing = false
 	set_process(false)
 	emit_signal("stopped_reveal")
 
 
-func _animate_text_tick(delta):
+func _animate_text_tick(delta) -> void:
 	_animate_text_timer -= delta
 	if _animate_text_timer <= 0:
 		self.visible_characters += 1

@@ -7,20 +7,23 @@ extends Node
 
 # ----- StoryService Info ----- #
 
+const FuncDef = FracVNE.StoryScript.FuncDef
+const Param = FracVNE.StoryScript.Param
+
 var function_definitions = [
-	StoryScriptFuncDef.new("step"),
-	StoryScriptFuncDef.new("start_step", [
-		"ast_node"
+	FuncDef.new("step"),
+	FuncDef.new("start_step", [
+		Param.new("ast_node"),
 	]),
-	StoryScriptFuncDef.new("call_label", [
-		"label_name",
-		"arguments",
+	FuncDef.new("call_label", [
+		Param.new("label_name"),
+		Param.new("arguments"),
 	]),
-	StoryScriptFuncDef.new("jump_to_label", [
-		"label_name"
+	FuncDef.new("jump_to_label", [
+		Param.new("label_name"),
 	]),
-	StoryScriptFuncDef.new("add_label", [
-		"label_node"
+	FuncDef.new("add_label", [
+		Param.new("label_node"),
 	]),
 ]
 
@@ -52,9 +55,20 @@ export var skip_speed: float = 0.05
 var label_dict: Dictionary
 var curr_stepped_node
 var step_state: int = StepState.MANUAL setget set_step_state
+var curr_active_step_actions: Array
 var _auto_step_timer: Timer
 var _skip_timer: Timer
-var curr_active_step_actions: Array
+
+# If true this will only allow skipping the current active
+# actions while preventing stepping to the next node -- even if
+# the current node is an autostep node.
+#
+# For each step attempted while paused, the queue_steps increases by 1.
+# This feature has so far bene used by the SaveStateManager to enable
+# saving on pause statements.
+var override_step: bool = false
+# Number of steps ran while override_step is true.
+var queued_overridden_steps: int
 
 # curr_node_executed prevents repeated stepping if the program terminates on an executable node that
 # is not steppable. (This means the current step node never reaches another step node to replace
@@ -62,7 +76,7 @@ var curr_active_step_actions: Array
 var curr_node_executed: bool = false
 
 
-func _ready():
+func _ready() -> void:
 	_auto_step_timer = Timer.new()
 	add_child(_auto_step_timer)
 	_auto_step_timer.connect("timeout", self, "try_step")
@@ -121,20 +135,25 @@ func try_step():
 
 
 func step():
+	# If we are saving and we are skipping, we do not want to step, 
+	# even if the statement normally automatically steps (Like with
+	# pause statements, which automatically step after they are finished).
+	# Therefore in those cases we would enabled override_step to allow skipping
+	# but not stepping. 
+	# This allows us to use pause statements as save points since they will
+	# be assigned to curr_stepped_node whenever they are running.
+	if override_step:
+		queued_overridden_steps += 1
+		return
+	
+	if queued_overridden_steps > 0:
+		release_queued_overridden_steps()
+	
 	# TODO: Consider decoupling story director from nodes to follow single responsibility principle.
 	#		That is, a story director should not know about the existance of a node and instead
 	#		would operate using events and callbacks to step.
 	#		Though tbh this is not much of a priority right now since even renpy
 	#		expected you to use it's own programming language.
-	
-	# TODO: Add support for skipping the execution of a current node.
-	#		
-	#		This is useful for play animation nodes, since the animated object must
-	#		snap to it's final position if the animation is skipped.
-	#
-	# 		Maybe create a function that can be called on each node
-	#		that terminates whatever action they are currently doing.
-	#		Something like "terminate_execute" ?
 	if curr_stepped_node.runtime_next_node != null and not curr_node_executed:
 		emit_signal("stepped")
 		
@@ -146,14 +165,47 @@ func step():
 		return
 
 
-func skip():
-	for i in range(curr_active_step_actions.size() - 1, -1, -1):
-		if curr_active_step_actions[i].skippable:
+# Skips all current active step actions. If override_auto_step
+# is true, this also prevents auto stepped nodes from automatically
+# calling the next step, and will queue their steps instead to be
+# released manually by release_queued_overridden_steps.
+func skip(override_auto_step: bool = false):
+	if override_auto_step:
+		override_step = true
+	
+	var active = curr_active_step_actions;
+	
+	var i = 0
+	var curr_active_step_actions_size = curr_active_step_actions.size()
+	while i < curr_active_step_actions.size() and curr_active_step_actions_size > 0:
+		while curr_active_step_actions[i].skippable: 
 			curr_active_step_actions[i].skip()
 			curr_active_step_actions.remove(i)
+			curr_active_step_actions_size -= 1
+			if i >= curr_active_step_actions.size() or curr_active_step_actions_size <= 0:
+				break
+		i += 1
+		curr_active_step_actions_size -= 1
 	
-	if step_state == StepState.AUTO_STEP:
-		_auto_step_timer.start()
+	# When pause is removed it causes 0 statements to be left, which
+	# makes auto step activate. How can we get around this?
+	
+	if override_auto_step:
+		override_step = false
+
+
+# Executes step() for the number times step was queued while override_step
+# was true.
+func release_queued_overridden_steps():
+	# number_of_steps is a temp variable that allows us to set queued_overridden_steps
+	# to 0 while still being able to iterate through the number of queued_overridden_steps.
+	# queued_overridden_steps must be 0 to prevent a recursive call from happening
+	# which is caused by step() calling release_queued_overridden_steps() when
+	# queued_overridden_steps > 0.
+	var number_of_steps = queued_overridden_steps
+	queued_overridden_steps = 0
+	for i in number_of_steps:
+		step()
 
 
 func add_step_action(step_action):
@@ -163,30 +215,35 @@ func add_step_action(step_action):
 func remove_step_action(step_action):
 	curr_active_step_actions.erase(step_action)
 	if curr_active_step_actions.size() == 0:
-		_step_completed()
+		if curr_stepped_node.is_auto_step():
+			step()
+		else:
+			# Completed autostepped steps are not considered
+			# a normal completed step.
+			_normal_step_completed()
 
 
 func call_label(label_name: String, arguments = []):
 	if label_dict.has(label_name):
 		label_dict[label_name].execute(arguments)
 	else:
-		return StoryScriptError.new("Cannot call \"%s\" label since the label could not be found." % [label_name])
+		return FracVNE.StoryScript.Error.new("Cannot call \"%s\" label since the label could not be found." % [label_name])
 
 
 func jump_to_label(label_name: String):
 	if label_dict.has(label_name):
 		label_dict[label_name].execute()
 	else:
-		return StoryScriptError.new("Cannot jump to \"%s\" label since the label could not be found." % [label_name])
+		return FracVNE.StoryScript.Error.new("Cannot jump to \"%s\" label since the label could not be found." % [label_name])
 
 
 func add_label(label_node):
 	if not label_dict.has(label_node.name):
 		label_dict[label_node.name] = label_node
 	else:
-		return StoryScriptError.new("Cannot add \"%s\" label since label named \"%s\" already exists." % [label_node.name, label_node.name])
+		return FracVNE.StoryScript.Error.new("Cannot add \"%s\" label since label named \"%s\" already exists." % [label_node.name, label_node.name])
 
 
-func _step_completed():
+func _normal_step_completed():
 	if step_state == StepState.AUTO_STEP:
 		_auto_step_timer.start()

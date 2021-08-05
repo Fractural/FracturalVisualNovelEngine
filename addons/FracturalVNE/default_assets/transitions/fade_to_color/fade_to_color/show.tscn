@@ -1,0 +1,33 @@
+[gd_scene load_steps=6 format=2]
+
+[ext_resource path="res://addons/FracturalVNE/default_assets/transitions/fade_to_color/tint_color.shader" type="Shader" id=1]
+[ext_resource path="res://addons/FracturalVNE/default_assets/transitions/fade_to_color/tint_material_configurer.gd" type="Script" id=2]
+[ext_resource path="res://addons/FracturalVNE/default_assets/transitions/fade_to_color/fade_to_color.gd" type="Script" id=3]
+[ext_resource path="res://addons/FracturalVNE/default_assets/curves/linear.tres" type="Curve" id=4]
+
+[sub_resource type="ShaderMaterial" id=1]
+shader = ExtResource( 1 )
+shader_param/tint_color = null
+shader_param/tint_amount = null
+
+[node name="Show" type="Control"]
+anchor_right = 1.0
+anchor_bottom = 1.0
+mouse_filter = 2
+script = ExtResource( 3 )
+__meta__ = {
+"_edit_use_anchors_": false
+}
+transition_curve = ExtResource( 4 )
+node_holder_path = NodePath("NodeHolder")
+
+[node name="NodeHolder" type="Control" parent="."]
+material = SubResource( 1 )
+anchor_right = 1.0
+anchor_bottom = 1.0
+mouse_filter = 2
+script = ExtResource( 2 )
+__meta__ = {
+"_edit_use_anchors_": false
+}
+node_holder_path = NodePath(".")
