@@ -1,6 +1,6 @@
 [gd_scene load_steps=4 format=2]
 
-[ext_resource path="res://addons/FracturalVNE/core/standard_node_2d/transition/sub_transitions/replace_transition/continous_merged_replace_transition.gd" type="Script" id=1]
+[ext_resource path="res://addons/FracturalVNE/core/standard_node_2d/transition/sub_transitions/replace_transition/continuous_merged_replace_transition.gd" type="Script" id=1]
 [ext_resource path="res://addons/FracturalVNE/default_assets/transitions/fade_to_color/fade_to_color/hide.tscn" type="PackedScene" id=2]
 [ext_resource path="res://addons/FracturalVNE/default_assets/transitions/fade_to_color/fade_to_color/show.tscn" type="PackedScene" id=3]
 
