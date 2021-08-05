@@ -1,73 +1,129 @@
-# ----- Characters ----- #
-define godette_single_visual = Visual(texture_path="res://addons/FracturalVNE/default_assets/images/godette_body.png")
-define godette = Character(name="Godette", name_color="#468cbf", dialogue_color="#ffffff", visual=DynamicVisual(textures_directory="res://addons/FracturalVNE/default_assets/images/dynamic_godette/"))
+# ----- BGScenes ----- #
+define bg_library1 = Scene(texture_path="res://addons/FracturalVNE/default_assets/bg_images/library_1.png")
+define bg_library2 = Scene("res://addons/FracturalVNE/default_assets/bg_images/library_2.png")
+define bg_library3 = Scene(texture_path="res://addons/FracturalVNE/default_assets/bg_images/library_3.png")
 
+# ----- Characters ----- #
+#define godette_single_visual = Visual(texture_path="res://addons/FracturalVNE/default_assets/visuals/images/godette_body.png")
+define godette = Character("Godette", "#468cbf", "#ffffff", visual=DynamicVisual(textures_directory="res://addons/FracturalVNE/default_assets/images/dynamic_godette/"))
+define godette2 = Character(name="Godette", name_color="#468cbf", dialogue_color="#ffffff", visual=DynamicVisual(textures_directory="res://addons/FracturalVNE/default_assets/images/dynamic_godette/"))
+define godette3 = Character(name="Godette", name_color="#468cbf", dialogue_color="#ffffff", visual=DynamicVisual(textures_directory="res://addons/FracturalVNE/default_assets/images/dynamic_godette/"))
+define godette4 = Character(name="Godette", name_color="#468cbf", dialogue_color="#ffffff", visual=DynamicVisual(textures_directory="res://addons/FracturalVNE/default_assets/images/dynamic_godette/"))
+define godette5 = Character(name="Godette", name_color="#468cbf", dialogue_color="#ffffff", visual=DynamicVisual(textures_directory="res://addons/FracturalVNE/default_assets/images/dynamic_godette/"))
+
+define godette6 = Character(name="Godette", name_color="#468cbf", dialogue_color="#ffffff", visual=DynamicVisual(textures_directory="res://addons/FracturalVNE/default_assets/images/dynamic_godette/"))
+define godette7 = Character(name="Godette", name_color="#468cbf", dialogue_color="#ffffff", visual=DynamicVisual(textures_directory="res://addons/FracturalVNE/default_assets/images/dynamic_godette/"))
+define godette8 = Character(name="Godette", name_color="#468cbf", dialogue_color="#ffffff", visual=DynamicVisual(textures_directory="res://addons/FracturalVNE/default_assets/images/dynamic_godette/"))
+define godette9 = Character(name="Godette", name_color="#468cbf", dialogue_color="#ffffff", visual=DynamicVisual(textures_directory="res://addons/FracturalVNE/default_assets/images/dynamic_godette/"))
+define godette10 = Character(name="Godette", name_color="#468cbf", dialogue_color="#ffffff", visual=DynamicVisual(textures_directory="res://addons/FracturalVNE/default_assets/images/dynamic_godette/"))
 
 # ----- Transitions ----- #
+define fade_to_black = load("res://addons/FracturalVNE/default_assets/transitions/fade_to_color/fade_to_black/fade_to_black.tres")
 define cross_fade = load("res://addons/FracturalVNE/default_assets/transitions/cross_fade/cross_fade.tres")
-
 
 # ----- Animations ----- #
 define hop = load("res://addons/FracturalVNE/default_assets/animations/hop.tres")
 
-
 # ----- Curves ----- #
 define smooth_step = load("res://addons/FracturalVNE/default_assets/curves/smooth_step.tres")
 
-
 label looped:
+	scene bg_library1 with cross_fade
+	
+	pause 1
+	
+	scene bg_library2 with fade_to_black
+	
+	pause 1
+	
+	scene bg_library3 with fade_to_black
+	
+	#scene bg_library3 with cross_fade
+	
 	move godette to Point(-500, 0)
+	move godette2 to Point(-400, 0)
+	move godette3 to Point(-300, 0)
+	move godette4 to Point(-200, 0)
+	move godette5 to Point(-100, 0)
+	move godette10 to Point(500, 0)
+	move godette9 to Point(400, 0)
+	move godette8 to Point(300, 0)
+	move godette7 to Point(200, 0)
+	move godette6 to Point(100, 0)
 	
 	# Last show statement should override the previous ones
 	# if they are stacked together.
-	#show godette happy with cross_fade
-	#show godette sad with cross_fade
-	show godette surprised
+	#show godette happy with fade_to_black
+	#show godette sad with fade_to_black
+	show godette surprised with fade_to_black
 	
-	pause 0.5
+	show godette2 surprised with fade_to_black
+	show godette3 surprised with fade_to_black
+	show godette4 surprised with fade_to_black
+	show godette5 surprised with fade_to_black
 	
-	# Testing movement
-	move godette to Point(500, 0) with smooth_step for 3
-	
-	pause 3
-	
-	animate godette with hop
+	show godette6 surprised with cross_fade
+	show godette7 surprised with cross_fade
+	show godette8 surprised with cross_fade
+	show godette9 surprised with cross_fade
+	show godette10 surprised with cross_fade
 	
 	godette "Hi there!"
 	
-	godette "My name is Godette."
+	scene bg_library2 with fade_to_black
 	
-	show godette surprised
+	#show godette6 happy with cross_fade
+	#show godette7 happy with cross_fade
+	#show godette8 happy with cross_fade
+	#show godette9 happy with cross_fade
+	#show godette10 happy with cross_fade
 	
-	godette "Uh oh, I gotta go!"
+	godette "Lets all hop!"
 	
-	show godette sad
+	animate godette with hop
+	pause 0.1
+	animate godette2 with hop
+	pause 0.1
+	animate godette3 with hop
+	pause 0.1
+	animate godette4 with hop
+	pause 0.1
+	animate godette5 with hop
+	pause 0.1
+	animate godette6 with hop
+	pause 0.1
+	animate godette7 with hop
+	pause 0.1
+	animate godette8 with hop
+	pause 0.1
+	animate godette9 with hop
+	pause 0.1
+	animate godette10 with hop
+	pause 1
 	
-	godette "Byee!"
+	godette "Time for us to leave!"
 	
-	# hide godette with fade_out
+	scene bg_library3 with fade_to_black
+	
 	hide godette with cross_fade
-	
-	"That was quick..."
-	
-	"I wonder where she went..."
-	
-	"*Footsteps in the distance*"
-	
-	show godette surprised with cross_fade
-	
-	godette "Whew I'm back!"
-	
-	show godette happy
-	
-	godette "I had to check on the engine to make sure it's working!"
-	
-	godette "I guess if you've gotten this far then everything must be working..."
-	
-	godette "Time to head back!"
-	
-	hide godette with cross_fade
-	
-	"" # Clears the text
+	pause 0.1
+	hide godette2 with cross_fade
+	pause 0.1
+	hide godette3 with cross_fade
+	pause 0.1
+	hide godette4 with cross_fade
+	pause 0.1
+	hide godette5 with cross_fade
+	pause 0.1	
+	hide godette6 with cross_fade
+	pause 0.1
+	hide godette7 with cross_fade
+	pause 0.1
+	hide godette8 with cross_fade
+	pause 0.1
+	hide godette9 with cross_fade
+	pause 0.1
+	hide godette10 with cross_fade
+	pause 2
 	
 	jump looped

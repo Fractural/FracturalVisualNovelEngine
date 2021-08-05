@@ -32,17 +32,18 @@ var curr_transition
 var curr_transition_action = null
 var story_director
 
-onready var node_holder = get_node(node_holder_path)
+onready var node_holder = get_node_or_null(node_holder_path)
 onready var transition_holder = get_node(transition_holder_path)
+
 
 # Since transitioners composes nodes and cannot exist on its'
 # own, we will make it expect a story_director_ by default.
-func init(story_director_):
+func init(story_director_) -> void:
 	story_director = story_director_
 
 
 # -- StoryScriptErrorable -- #
-func show(transition = null, duration = 1):
+func show(transition: FracVNE_StandardNode2DTransition = null, duration: float = 1):
 	_force_clear_current_transition()
 	if curr_transition != null:
 		_on_transition_finished(true)
@@ -59,7 +60,7 @@ func show(transition = null, duration = 1):
 
 
 # -- StoryScriptErrorable -- #
-func hide(transition = null, duration = 1):
+func hide(transition: FracVNE_StandardNode2DTransition = null, duration: float = 1):
 	_force_clear_current_transition()
 	node_holder.visible = true
 	if transition != null:
@@ -74,7 +75,7 @@ func hide(transition = null, duration = 1):
 
 
 # -- StoryScriptErrorable -- #
-func _setup_new_transition(type, transition):
+func _setup_new_transition(type: int, transition: FracVNE_StandardNode2DTransition):
 	curr_transition_type = type
 	
 	# Assign current transition
@@ -118,7 +119,7 @@ func _setup_new_transition(type, transition):
 # Called whenever a new transition is played,
 # which should override the current playing transition 
 # if there is any.
-func _force_clear_current_transition():
+func _force_clear_current_transition() -> void:
 	if curr_transition != null:
 		# We have to manually remove the transition action
 		# since calling _on_transition_finished with skipped=true

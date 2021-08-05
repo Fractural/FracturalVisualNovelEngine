@@ -28,23 +28,18 @@ define hop = load("res://addons/FracturalVNE/default_assets/animations/hop.tres"
 define smooth_step = load("res://addons/FracturalVNE/default_assets/curves/smooth_step.tres")
 
 label looped:
-	scene bg_library1 with cross_fade
+#	scene bg_library1 with cross_fade
 	
-	pause 1
+#	pause 1
 	
-	scene bg_library2 with fade_to_black
+#	scene bg_library2 with fade_to_black
 	
-	pause 1
+#	pause 1
 	
-	scene bg_library3 with fade_to_black
+#	scene bg_library3 with fade_to_black
 	
 	#scene bg_library3 with cross_fade
 	
-	move godette to Point(-500, 0)
-	move godette2 to Point(-400, 0)
-	move godette3 to Point(-300, 0)
-	move godette4 to Point(-200, 0)
-	move godette5 to Point(-100, 0)
 	move godette10 to Point(500, 0)
 	move godette9 to Point(400, 0)
 	move godette8 to Point(300, 0)
@@ -53,67 +48,22 @@ label looped:
 	
 	# Last show statement should override the previous ones
 	# if they are stacked together.
-	#show godette happy with fade_to_black
-	#show godette sad with fade_to_black
+	show godette surprised
+	show godette surprised
 	show godette surprised with fade_to_black
-	show godette2 surprised with fade_to_black
-	show godette3 surprised with fade_to_black
-	show godette4 surprised with fade_to_black
-	show godette5 surprised with fade_to_black
+	#show godette2 surprised with fade_to_black
+	#show godette3 surprised with fade_to_black
+	#show godette4 surprised with fade_to_black
+	#show godette5 surprised with fade_to_black
 	
-	show godette6 surprised with cross_fade
-	show godette7 surprised with cross_fade
-	show godette8 surprised with cross_fade
-	show godette9 surprised with cross_fade
-	show godette10 surprised with cross_fade
+	#show godette6 surprised with cross_fade
+	#show godette7 surprised with cross_fade
+	#show godette8 surprised with cross_fade
+	#show godette9 surprised with cross_fade
+	#show godette10 surprised with cross_fade
 	
 	godette "Hi there!"
 	
-	scene bg_library2 with fade_to_black
-	
-	show godette6 happy with cross_fade
-	show godette7 happy with cross_fade
-	show godette8 happy with cross_fade
-	show godette9 happy with cross_fade
-	show godette10 happy with cross_fade
-	
-	godette "Lets all hop!"
-	
-	animate godette with hop
-	pause 0.1
-	animate godette2 with hop
-	pause 0.1
-	animate godette3 with hop
-	pause 0.1
-	animate godette4 with hop
-	pause 0.1
-	animate godette5 with hop
-	pause 0.1
-	animate godette6 with hop
-	pause 0.1
-	animate godette7 with hop
-	pause 0.1
-	animate godette8 with hop
-	pause 0.1
-	animate godette9 with hop
-	pause 0.1
-	animate godette10 with hop
-	pause 1
-	
-	godette "Time for us to leave!"
-	
-	scene bg_library3 with fade_to_black
-	
-	hide godette with cross_fade
-	pause 0.1
-	hide godette2 with cross_fade
-	pause 0.1
-	hide godette3 with cross_fade
-	pause 0.1
-	hide godette4 with cross_fade
-	pause 0.1
-	hide godette5 with cross_fade
-	pause 0.1	
 	hide godette6 with cross_fade
 	pause 0.1
 	hide godette7 with cross_fade

@@ -22,6 +22,7 @@ textured_node_path = NodePath("Sprite")
 use_parent_material = true
 
 [node name="OldHolder" type="Node2D" parent="." index="1"]
+visible = false
 script = ExtResource( 5 )
 textured_node_path = NodePath("OldSprite")
 

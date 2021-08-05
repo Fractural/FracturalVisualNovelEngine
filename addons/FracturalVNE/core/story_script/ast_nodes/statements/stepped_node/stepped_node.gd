@@ -5,6 +5,9 @@ extends "res://addons/FracturalVNE/core/story_script/ast_nodes/statements/statem
 # by creating a step, waiting for input to progress, or just waiting
 # a fixed amount of time.
 
+# Stepped nodes are also expected to add a StepAction to the StoryDirector.
+# (Otherwise there is no point in using a stepped node).
+
 
 # ----- Typable ----- #
 
