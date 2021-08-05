@@ -1,6 +1,6 @@
 # FracturalVisualNovelEngine
 
-A flexible text-based visual novel engine for Godot written in GDScript. Partly inspired by (Ren'Py)[https://www.renpy.org/doc/html/]
+A flexible text-based visual novel engine for Godot written in GDScript. Partly inspired by [Ren'Py](https://www.renpy.org/doc/html/).
 
 The goal of this engine is to be an extensible visual novel system capable of integrating itself into any project. With extensibility in mind, many features of the engine can be added onto with ease.
 
