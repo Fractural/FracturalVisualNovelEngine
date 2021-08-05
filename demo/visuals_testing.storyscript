@@ -48,8 +48,8 @@ label looped:
 	
 	# Last show statement should override the previous ones
 	# if they are stacked together.
-	show godette happy
-	show godette sad
+	show godette surprised
+	show godette surprised
 	show godette surprised with fade_to_black
 	#show godette2 surprised with fade_to_black
 	#show godette3 surprised with fade_to_black

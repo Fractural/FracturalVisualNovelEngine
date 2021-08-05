@@ -36,6 +36,7 @@ func _setup_transition(node_: Node, duration_: float):
 	is_transitioning = true
 	
 	node = node_
+	node.visible = true
 	duration = duration_
 	
 	return true

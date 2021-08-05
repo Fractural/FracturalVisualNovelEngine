@@ -19,6 +19,11 @@ func transition(new_node_: Node, old_node_: Node, duration_: float):
 	if not _setup_transition(new_node_, old_node_, duration_):
 		return
 	
+	# Hide new_node_ since old_node is currently transitioning
+	# No need to worry about showing any nodes since SingleTransitions
+	# automatically show the nodes while they are in use.
+	new_node_.visible = false
+	
 	hide_transition.connect("transition_finished", self, "_on_hide_transition_finished")
 	# If the show transition is finished, then the merged transition is also finished.
 	# If the show transition is not finished (which can never happen in this case since it's
