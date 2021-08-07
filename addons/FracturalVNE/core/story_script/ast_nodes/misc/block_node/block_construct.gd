@@ -1,7 +1,7 @@
 extends "res://addons/FracturalVNE/core/story_script/ast_nodes/node/node_construct.gd"
 
 
-const BlockNode = preload("res://addons/FracturalVNE/core/story_script/ast_nodes/misc/block_node/block_node.gd")
+const BlockNode = preload("block_node.gd")
 
 
 func get_parse_types() -> Array:

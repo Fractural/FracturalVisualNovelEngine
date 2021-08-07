@@ -1,4 +1,4 @@
-[gd_scene load_steps=37 format=2]
+[gd_scene load_steps=40 format=2]
 
 [ext_resource path="res://addons/FracturalVNE/core/story/story_manager.gd" type="Script" id=1]
 [ext_resource path="res://addons/FracturalVNE/core/story/director/story_director.gd" type="Script" id=2]
@@ -36,6 +36,9 @@
 [ext_resource path="res://addons/FracturalVNE/core/actor/actor_manager.gd" type="Script" id=34]
 [ext_resource path="res://addons/FracturalVNE/core/standard_node_2d/transition/standard_node_2d_replaceable_transitioner.gd" type="Script" id=35]
 [ext_resource path="res://addons/FracturalVNE/core/standard_node_2d/standard_node_2d.gd" type="Script" id=36]
+[ext_resource path="res://addons/FracturalVNE/core/audio/story_audio_channel_controller_serializer.gd" type="Script" id=37]
+[ext_resource path="res://addons/FracturalVNE/core/audio/audio_manager.gd" type="Script" id=38]
+[ext_resource path="res://addons/FracturalVNE/core/story_script/importing/story_import_manager.gd" type="Script" id=39]
 
 [node name="Story" type="Node"]
 
@@ -109,6 +112,11 @@ script = ExtResource( 33 )
 story_director_path = NodePath("../../StoryLoader/StoryServices/StoryDirector")
 reference_registry_path = NodePath("../../StoryLoader/StoryServices/ReferenceRegistry")
 
+[node name="StoryAudioChannelControllerSerializer" type="Node" parent="SerializationManager"]
+script = ExtResource( 37 )
+story_director_path = NodePath("../../StoryLoader/StoryServices/StoryDirector")
+reference_registry_path = NodePath("../../StoryLoader/StoryServices/ReferenceRegistry")
+
 [node name="StoryLoader" type="Node" parent="."]
 script = ExtResource( 3 )
 services_holder_path = NodePath("StoryServices")
@@ -118,6 +126,11 @@ services_holder_path = NodePath("StoryServices")
 [node name="ReferenceRegistry" type="Node" parent="StoryLoader/StoryServices"]
 script = ExtResource( 17 )
 serialization_manager_path = NodePath("../../../SerializationManager")
+
+[node name="StoryImportManager" type="Node" parent="StoryLoader/StoryServices"]
+script = ExtResource( 39 )
+story_loader_path = NodePath("../..")
+story_manager_path = NodePath("../../../StoryManager")
 
 [node name="StoryDirector" type="Node" parent="StoryLoader/StoryServices"]
 script = ExtResource( 2 )
@@ -178,6 +191,15 @@ script = ExtResource( 35 )
 node_holder_path = NodePath("../../../../WorldHolder/World/BGLayer/BGScenesHolder/CurrentSceneHolder")
 transition_holder_path = NodePath("../../../../WorldHolder/World/BGLayer/BGScenesHolder")
 old_node_holder_path = NodePath("../../../../WorldHolder/World/BGLayer/BGScenesHolder/OldSceneHolder")
+
+[node name="AudioManager" type="Node" parent="StoryLoader/StoryServices"]
+script = ExtResource( 38 )
+channels_holder_path = NodePath("Channels")
+story_director_path = NodePath("../StoryDirector")
+reference_registry_path = NodePath("../ReferenceRegistry")
+serialization_manager_path = NodePath("../../../SerializationManager")
+
+[node name="Channels" type="Node" parent="StoryLoader/StoryServices/AudioManager"]
 
 [node name="ScreenshotManager" type="Node" parent="."]
 script = ExtResource( 16 )

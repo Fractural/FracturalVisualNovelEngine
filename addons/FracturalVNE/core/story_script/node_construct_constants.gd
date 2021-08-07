@@ -31,7 +31,7 @@ const NegateOperator = preload("res://addons/FracturalVNE/core/story_script/ast_
 
 # Misc
 const Block = preload("res://addons/FracturalVNE/core/story_script/ast_nodes/misc/block_node/block_construct.gd")
-const Program = preload("res://addons/FracturalVNE/core/story_script/ast_nodes/misc/program_node/program_construct.gd")
+const ProgramBlock = preload("res://addons/FracturalVNE/core/story_script/ast_nodes/misc/program_node/program_block_construct.gd")
 
 # Statements
 const JumpStatement = preload("res://addons/FracturalVNE/core/story_script/ast_nodes/statements/jump_statement/jump_statement_construct.gd")
@@ -45,6 +45,7 @@ const AnimateStatement = preload("res://addons/FracturalVNE/core/story_script/as
 const PauseStatement = preload("res://addons/FracturalVNE/core/story_script/ast_nodes/statements/pause_statement/pause_statement_construct.gd")
 const MoveStatement = preload("res://addons/FracturalVNE/core/story_script/ast_nodes/statements/move_statement/move_statement_construct.gd")
 const SceneStatement = preload("res://addons/FracturalVNE/core/story_script/ast_nodes/statements/scene_statement/scene_statement_construct.gd")
+const ImportStatement = preload("res://addons/FracturalVNE/core/story_script/ast_nodes/statements/import_statement/import_statement_construct.gd")
 const ExpressionStatement = preload("res://addons/FracturalVNE/core/story_script/ast_nodes/statements/expression_statement/expression_statement_construct.gd")
 
 var CONSTRUCTS = [
@@ -64,7 +65,7 @@ var CONSTRUCTS = [
 	
 	# Blocks
 	Block.new(),
-	Program.new(),
+	ProgramBlock.new(),
 	
 	# Statements
 	JumpStatement.new(),
@@ -78,6 +79,7 @@ var CONSTRUCTS = [
 	PauseStatement.new(),
 	MoveStatement.new(),
 	SceneStatement.new(),
+	ImportStatement.new(),
 	ExpressionStatement.new(),
 ]
 

@@ -15,8 +15,23 @@ func get_types() -> Array:
 var statements: Array
 
 
-# Runtime variables
+# ----- Runtime Variables ----- e
+
 var variables: Dictionary
+# Overrides the scope of the block to
+# use the scope of it's parent block instead.
+var override_scope: bool = false
+
+# TODO: Maybe refactor out override_scope since
+#		it seems like a hacky way to allow
+#		storys to be imported. (Currently
+#		the import statement requires the
+#		story to use the scope of the import
+#		statement in order to give the illusion
+#		if pasting in code at the import
+#		statement's position)
+
+# ----- Runtime Variables ----- e
 
 
 func _init(position_ = null, statements_: Array = []).(position_):
@@ -37,14 +52,14 @@ func _init_post():
 	# Do not bind if the statement overrides the story flow (such as with
 	# a jump statement).
 	if not statements.back().overrides_story_flow:
-		statements.back().connect("executed", self, "block_completed")
+		statements.back().connect("executed", self, "block_executed")
 
 
 func execute():
 	statements.front().execute()
 
 
-func block_completed():
+func block_executed():
 	_finish_execute()
 
 
@@ -66,7 +81,7 @@ func get_variable(name: String):
 	elif get_runtime_block() != null:
 		return get_runtime_block().get_variable(name)
 	else:
-		return StoryScriptError.new('Variable named "%s" could not be found.' % name)
+		return error('Variable named "%s" could not be found.' % name)
 
 
 func set_variable(name: String, value):
@@ -75,10 +90,13 @@ func set_variable(name: String, value):
 	elif get_runtime_block() != null:
 		get_runtime_block().set_variable(name)
 	else:
-		StoryScriptError.new('Variable named "%s" could not be found.' % name)
+		error('Variable named "%s" could not be found.' % name)
 
 
 func declare_variable(name: String, value = null):
+	if override_scope:
+		return get_runtime_block().declare_variable(name, value)
+	
 	if not variables.has(name):
 		var result = value.evaluate()
 		if not is_success(result):
@@ -107,8 +125,11 @@ func debug_string(tabs_string: String) -> String:
 
 
 func propagate_call(method: String, arguments: Array = [], parent_first: bool = false):	
+	var result
 	if parent_first:
-		.propagate_call(method, arguments, parent_first)
+		result = .propagate_call(method, arguments, parent_first)
+		if not SSUtils.is_success(result):
+			return result
 		
 		# Hijack the arguments of a method
 		match method:
@@ -116,10 +137,14 @@ func propagate_call(method: String, arguments: Array = [], parent_first: bool = 
 				arguments = [self]
 	
 	for statement in statements:
-		statement.propagate_call(method, arguments, parent_first)
+		result = statement.propagate_call(method, arguments, parent_first)
+		if not SSUtils.is_success(result):
+			return result
 	
 	if not parent_first:
-		.propagate_call(method, arguments, parent_first)
+		result = .propagate_call(method, arguments, parent_first)
+		if not SSUtils.is_success(result):
+			return result
 
 
 # ----- Serialization ----- #

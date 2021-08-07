@@ -117,17 +117,31 @@ func debug_string(tabs_string: String) -> String:
 	return string
 
 
+# -- StoryScriptErrorable -- #
 func propagate_call(method, arguments = [], parent_first = false):
+	var result
 	if parent_first:
-		.propagate_call(method, arguments, parent_first)
+		result = .propagate_call(method, arguments, parent_first)
+		if not SSUtils.is_success(result):
+			return result
+		
+	result = actor.propagate_call(method, arguments, parent_first)
+	if not SSUtils.is_success(result):
+		return result
 	
-	actor.propagate_call(method, arguments, parent_first)
-	target_position.propagate_call(method, arguments, parent_first)
+	result = target_position.propagate_call(method, arguments, parent_first)
+	if not SSUtils.is_success(result):
+		return result
+	
 	if travel_curve != null:
-		travel_curve.propagate_call(method, arguments, parent_first)
+		result = travel_curve.propagate_call(method, arguments, parent_first)
+		if not SSUtils.is_success(result):
+			return result
 	
 	if not parent_first:
-		.propagate_call(method, arguments, parent_first)
+		result = .propagate_call(method, arguments, parent_first)
+		if not SSUtils.is_success(result):
+			return result
 
 
 # ----- Serialization ----- #

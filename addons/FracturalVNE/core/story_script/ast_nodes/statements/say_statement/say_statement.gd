@@ -68,14 +68,21 @@ func debug_string(tabs_string: String) -> String:
 
 
 func propagate_call(method: String, arguments: Array = [], parent_first: bool = false):	
+	var result
 	if parent_first:
-		.propagate_call(method, arguments, parent_first)
+		result = .propagate_call(method, arguments, parent_first)
+		if not SSUtils.is_success(result):
+			return result
 	
 	if character != null:
-		character.propagate_call(method, arguments, parent_first)
-	
+		result = character.propagate_call(method, arguments, parent_first)
+		if not SSUtils.is_success(result):
+			return result
+		
 	if not parent_first:
-		.propagate_call(method, arguments, parent_first)
+		result = .propagate_call(method, arguments, parent_first)
+		if not SSUtils.is_success(result):
+			return result
 
 
 # ----- Serialization ----- #

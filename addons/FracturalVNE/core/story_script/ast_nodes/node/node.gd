@@ -29,14 +29,17 @@ func _init(position_ = StoryScriptPosition.new()):
 	position = position_
 
 
+# -- StoryScriptErrorable -- #
 func propagate_call(method, arguments = [], parent_first = false):
 	if has_method(method):
 		callv(method, arguments)
 
 
-func find_node_with_id(reference_id_):
-	if reference_id == reference_id_:
-		get_runtime_block().get_service("ASTNodeLocator")._add_result(self)
+# Visitor pattern implementation.
+# Calls vistor.visit() when a visitor is passed in. 
+func accept_visitor(visitor):
+	assert(visitor.has_method("visit"), "Vistors must have a visit() method!")
+	visitor.visit(self)
 
 
 func configure_node(runtime_block_):

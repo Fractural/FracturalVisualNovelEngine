@@ -50,13 +50,20 @@ func debug_string(tabs_strings) -> String:
 
 
 func propagate_call(method: String, arguments: Array = [], parent_first: bool = false):
+	var result
 	if parent_first:
-		.propagate_call(method, arguments, parent_first)
+		result = .propagate_call(method, arguments, parent_first)
+		if not SSUtils.is_success(result):
+			return result
 	
-	argument_group.propagate_call(method, arguments, parent_first)
+	result = argument_group.propagate_call(method, arguments, parent_first)
+	if not SSUtils.is_success(result):
+		return result
 	
 	if not parent_first:
-		.propagate_call(method, arguments, parent_first)
+		result = .propagate_call(method, arguments, parent_first)
+		if not SSUtils.is_success(result):
+			return result
 
 
 # ----- Serialization ----- #

@@ -2,6 +2,14 @@ extends Reference
 # A template file to create new StoryServices off of.
 
 
+# ----- Typeable ----- #
+
+func get_types() -> Array:
+	return ["StoryScriptService", get_service_name(), "ASTVisitor"]
+
+# ----- Typeable ----- #
+
+
 # ----- StoryService ----- #
 
 # Optional

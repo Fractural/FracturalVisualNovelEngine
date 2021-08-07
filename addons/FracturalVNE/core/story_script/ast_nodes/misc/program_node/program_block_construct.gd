@@ -1,17 +1,13 @@
 extends "res://addons/FracturalVNE/core/story_script/ast_nodes/node/node_construct.gd"
+# Parses the entire file as a block for a program.
 
 
 const StoryScriptPosition = preload("res://addons/FracturalVNE/core/story_script/story_script_position.gd")
 const BlockNode = preload("res://addons/FracturalVNE/core/story_script/ast_nodes/misc/block_node/block_node.gd")
-const ProgramNode = preload("res://addons/FracturalVNE/core/story_script/ast_nodes/misc/program_node/program_node.gd")
 
 
 func get_parse_types() -> Array:
-	return ["program"]
-
-
-func get_keywords() -> Array:
-	return ["program"]
+	return ["program block"]
 
 
 func parse(parser):
@@ -22,4 +18,4 @@ func parse(parser):
 		if not parser.is_success(statement):
 			return parser.error(statement, 1, checkpoint)
 		statements.append(statement)
-	return ProgramNode.new(BlockNode.new(StoryScriptPosition.new(0, 0), statements))
+	return BlockNode.new(StoryScriptPosition.new(0, 0), statements)
