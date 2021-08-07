@@ -42,8 +42,10 @@ func execute():
 	else:
 		var character_result = SSUtils.evaluate_and_cast(character, "Character")
 		if not is_success(character_result):
-			throw_error(stack_error(character_result, "Could not evaluate the character for the say statement."))
-			return
+			character_result = SSUtils.evaluate_and_cast(character, "String")
+			if not is_success(character_result):
+				throw_error(stack_error(character_result, "Could not evaluate the character for the say statement."))
+				return
 		text_printer_controller.say(character_result, text)
 		history_manager.add_entry(SayEntry.new(character_result, text))
 	

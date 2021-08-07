@@ -18,6 +18,7 @@ export var compiled_icon_path: NodePath
 export var saved_ui_path: NodePath
 export var saved_icon_path: NodePath
 export var file_menu_path: NodePath
+export var settings_button_path: NodePath
 export var editing_file_label_path: NodePath
 export var open_file_dialog_path: NodePath
 export var save_file_dialog_path: NodePath
@@ -39,6 +40,7 @@ onready var compiled_icon: TextureRect = get_node(compiled_icon_path)
 onready var saved_ui: Control = get_node(saved_ui_path)
 onready var saved_icon: TextureRect = get_node(saved_icon_path)
 onready var file_menu: MenuButton = get_node(file_menu_path)
+onready var settings_button: Button = get_node(settings_button_path)
 onready var editing_file_label: Label = get_node(editing_file_label_path)
 onready var open_file_dialog: FileDialog = get_node(open_file_dialog_path)
 onready var save_file_dialog: FileDialog = get_node(save_file_dialog_path)
@@ -66,6 +68,8 @@ func _ready() -> void:
 	file_menu.connect("menu_item_pressed", self, "_on_file_menu_item_pressed")
 	file_menu.create_shortcut("Open", "open", KEY_O, ["ctrl"])
 	file_menu.create_separator()
+	file_menu.create_shortcut("New", "new", KEY_N, ["ctrl"])
+	file_menu.create_separator()
 	file_menu.create_shortcut("Save", "save", KEY_S, ["ctrl"])
 	file_menu.create_shortcut("Save As", "save as", KEY_S, ["ctrl", "alt"])
 	
@@ -77,26 +81,8 @@ func _ready() -> void:
 	save_file_dialog.connect("popup_hide", self, "_on_popup_hide")
 	
 	if persistent_data_dep.dependency.current_script_path == "":
-		open_file("res://demo/visuals_testing.storyscript")
-
-#		script_text_edit.text = """define b = Character(name="Bob", name_color="#fcba03")
-#define j = Character("Joe", "#03a1fc", "#03a1fc")
-#b "Hi there, I'm Bob!"
-#j "Hi there, I'm Joe!"
-#"Tom" "Hi there, I'm tom!"
-#label start:
-#	b "I'm in a label!"
-#	j "I'm also in a label!"
-#	"Tom" "I'm also in a label!"
-#	"Here's some narration in the label!"
-#	"Tom" "Lets jump recursively back to that label!"
-#	jump start
-#label impossible_to_reach:
-#	"You will never reach this label!"
-#"""
-#
-#		persistent_data_dep.dependency.current_script_path = TEMP_SCRIPT_PATH
-#		set_current_script_path(persistent_data_dep.dependency.current_script_path)
+		#open_file("res://demo/visuals_testing.storyscript")
+		new_file()
 	else:
 		open_file(persistent_data_dep.dependency.current_script_path)
 	
@@ -105,31 +91,70 @@ func _ready() -> void:
 	script_text_edit.clear_undo_history()
 
 
-func open_file(file_path):
-	set_current_script_path(file_path)
+func new_file():
+	set_current_script_path("")
+	script_text_edit.text = """define b = Character(name="Bob", name_color="#fcba03")
+define j = Character("Joe", "#03a1fc", "#03a1fc")
+b "Hi there, I'm Bob!"
+j "Hi there, I'm Joe!"
+"Tom" "Hi there, I'm tom!"
+label start:
+	b "I'm in a label!"
+	j "I'm also in a label!"
+	"Tom" "I'm also in a label!"
+	"Here's some narration in the label!"
+	"Tom" "Lets jump recursively back to that label!"
+	jump start
+label impossible_to_reach:
+	"You will never reach this label!"
+"""
+	set_compiled(false)
+	set_saved(false)
+
+
+# Returns true if successful.
+func open_file(file_path) -> bool:
 	var file = File.new()
-	file.open(file_path, File.READ)
+	var error = file.open(file_path, File.READ)
+	if error != OK:
+		printerr("Cannot open file at \"%s\", got error code \"%s\"." % [file_path, str(error)])
+		return false
+	
+	set_current_script_path(file_path)
 	script_text_edit.text = file.get_as_text()
 	file.close()
 	
 	set_compiled(false)
 	set_saved(true)
+	return true
 
 
-func save_file_to(file_path):
-	set_current_script_path(file_path)
+# Returns true if successful.
+func save_file_to(file_path) -> bool:
 	var file = File.new()
-	file.open(file_path, File.WRITE)
+	var error = file.open(file_path, File.WRITE)
+	if error != OK:
+		printerr("Cannot open file at \"%s\", got error code \"%s\"." % [file_path, str(error)])
+		return false
+	
+	set_current_script_path(file_path)
 	file.store_string(script_text_edit.text)
 	file.close()
 	
 	set_saved(true)
+	return true
 
 
-func save_current_file():
-	save_file_to(current_script_path)
+# Returns true if successful.
+func save_current_file() -> bool:
+	if current_script_path == "":
+		save_file_dialog.popup()
+		return false
+	else:
+		return save_file_to(current_script_path)
 
 
+# Sets compiled to true if successful.
 func compile_script():
 	var ast_tree = compiler.compile(script_text_edit.text)
 	if ast_tree is FracVNE.StoryScript.Error:
@@ -137,19 +162,27 @@ func compile_script():
 		set_compiled(false)
 	else:
 		script_text_edit.clear_error()
-		set_compiled(true)
-		save_ast_to_file(ast_tree, persistent_data_dep.dependency.current_script_path.trim_suffix(".storyscript") + ".story")
+		var successful = save_ast_to_file(ast_tree, persistent_data_dep.dependency.current_script_path.trim_suffix(".storyscript") + ".story")
+		set_compiled(successful)
+		if not successful:
+			printerr("Could not compile due to file saving issues.")
 
 
+# Returns true if successful.
 func save_ast_to_file(ast_tree, file_path):
 	var serialized_ast = JSON.print(ast_tree.serialize())
 	
 	var serialized_file = File.new()
-	serialized_file.open_compressed(file_path, File.WRITE)
-	serialized_file.store_line(serialized_ast)
+	var error = serialized_file.open_compressed(file_path, File.WRITE)
+	if error != OK:
+		printerr("Cannot open file at \"%s\", got error code \"%s\"." % [file_path, str(error)])
+		return false
+	
+	serialized_file.store_string(serialized_ast)
 	serialized_file.close()
 	
 	persistent_data_dep.dependency.current_saved_story_path = file_path
+	return true
 
 
 func run_script():
@@ -159,8 +192,8 @@ func run_script():
 	if not compiled:
 		return
 	
-	save_current_file()
-	
+	if not save_current_file():
+		return
 	
 	if not Engine.is_editor_hint():
 		story_runner_dep.dependency.run(persistent_data_dep.dependency.current_saved_story_path, load("res://addons/FracturalVNE/plugin/ui/story_script_editor.tscn"))
@@ -198,6 +231,8 @@ func _on_file_menu_item_pressed(meta):
 	match meta:
 		"open":
 			open_file_dialog.popup()
+		"new":
+			new_file()
 		"save":
 			save_current_file()
 		"save as":
@@ -218,6 +253,7 @@ func _setup_editor_assets(assets_registry):
 	compiled_icon.texture = assets_registry.load_asset("assets/icons/check_box.svg")
 	saved_icon.texture = assets_registry.load_asset("assets/icons/check_box.svg")
 	file_menu.icon = assets_registry.load_asset("assets/icons/load.svg")
+	settings_button.icon = assets_registry.load_asset("assets/icons/settings.png")
 	
 	open_file_dialog.rect_size = open_file_dialog.rect_size * assets_registry.get_editor_scale()
 	save_file_dialog.rect_size = open_file_dialog.rect_size * assets_registry.get_editor_scale()

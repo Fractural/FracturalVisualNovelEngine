@@ -7,4 +7,4 @@ func animate(visual_holder_):
 
 
 func _on_animation_finished(skipped: bool):
-	._on_animation_finished(skipped: bool)
+	._on_animation_finished(skipped)
