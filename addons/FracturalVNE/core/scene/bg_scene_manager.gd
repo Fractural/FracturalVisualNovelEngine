@@ -2,8 +2,6 @@ extends Node
 # Manages the loading and unloading of scenes, which serve as backdrops
 # for a story.
 
-# TODO: Finish BGSceneManager
-
 
 # ----- StoryService ----- #
 

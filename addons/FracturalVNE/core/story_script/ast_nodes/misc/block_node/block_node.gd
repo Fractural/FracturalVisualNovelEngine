@@ -22,14 +22,14 @@ var variables: Dictionary
 # use the scope of it's parent block instead.
 var override_scope: bool = false
 
-# TODO: Maybe refactor out override_scope since
-#		it seems like a hacky way to allow
-#		storys to be imported. (Currently
-#		the import statement requires the
-#		story to use the scope of the import
-#		statement in order to give the illusion
-#		if pasting in code at the import
-#		statement's position)
+# TODO DISCUSS: Maybe refactor out override_scope since
+#				it seems like a hacky way to allow
+#				storys to be imported. (Currently
+#				the import statement requires the
+#				story to use the scope of the import
+#				statement in order to give the illusion
+#				if pasting in code at the import
+#				statement's position)
 
 # ----- Runtime Variables ----- e
 

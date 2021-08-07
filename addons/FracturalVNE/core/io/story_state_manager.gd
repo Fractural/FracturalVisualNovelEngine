@@ -1,8 +1,6 @@
 extends Node
 # Manages the state of the current story by saving or loading new states.
 
-# TODO: Implement saving and loading for HistoryManager 
-
 
 signal save_state_started(save_state)
 signal state_loaded(save_state, slot_id)

@@ -33,7 +33,7 @@ signal throw_error(error)
 
 const ASTNodeIDDistributor = preload("res://addons/FracturalVNE/core/story_script/story_services/ast_node_id_distributor.gd")
 
-# TODO: Refactor function_holders into just a Dictionary of functions
+# TODO DISCUSS: Maybe refactor function_holders into just a Dictionary of functions
 # to improve lookup speeds
 var function_holders: Array = []
 var services: Dictionary = {}

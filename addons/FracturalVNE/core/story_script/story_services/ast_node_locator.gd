@@ -40,8 +40,8 @@ func get_program_node():
 # Visiting is really inefficient (O(n) complexity) where
 # n is the size of the AST.
 #
-# TODO: Refactor the search to cache the entire AST
-#		in a dictionary and then just perform lookups
+# TODO DISCUSS: Refactor the search to cache the entire AST
+#				in a dictionary and then just perform lookups
 func find_node_with_id(reference_id: int):
 	_results = []
 	_target_reference_id = reference_id

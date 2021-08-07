@@ -1,7 +1,7 @@
 class_name SerializationUtils
 extends Reference
 
-# TODO: Refactor serialization to have error handling.
+# TODO DISCUSS: Refactor serialization to have error handling.
 #
 # There is currently no error handling in serialization.
 # Not sure if it is worth refacatoring all serialization

@@ -115,7 +115,7 @@ static func _add_dir_contents(dir: Directory, files: Array, directories: Array, 
 			if search_sub_directories:
 				_add_dir_contents(subDir, files, directories)
 		else:
-			# TODO: Maybe convert file_extensions to a hashtable if performance is necessary?
+			# TODO DISCUSS: Maybe convert file_extensions to a hashtable if performance is necessary?
 			for file_extension in file_extensions:
 				if not Engine.is_editor_hint():
 					# Only .import files are available in the exported builds,
