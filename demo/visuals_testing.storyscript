@@ -4,7 +4,7 @@ label looped:
 	scene bg_library1 with cross_fade
 	
 	pause 1
-	
+
 	scene bg_library2 with fade_to_black
 	
 	pause 1

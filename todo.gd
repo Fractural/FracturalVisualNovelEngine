@@ -1,6 +1,9 @@
 # TODO NOW: 
 #	[ ] Add "sound" statement that uses AudioManager to play a sound on a channel
 #	[ ] Perform integration testing with "sound" statement.
+#	[ ] Make lexer ignoring blank lines
+#	[X] Make persisten editor data save to a file
+#	[X] Fix propagate_call not returning error.
 
 
 # TODO NEXT:

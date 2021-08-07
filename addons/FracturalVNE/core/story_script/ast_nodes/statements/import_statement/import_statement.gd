@@ -35,11 +35,11 @@ func set_story_block(value):
 func runtime_initialize():
 	var story_file_path_result = SSUtils.evaluate_and_cast(story_file_path, "String")
 	if not SSUtils.is_success(story_file_path_result):
-		return story_file_path_result
+		return stack_error(story_file_path_result, "Expected a string for the story path in an import statement.")
 	
 	var imported_story_block = get_runtime_block().get_service("StoryImportManager").import_story(story_file_path_result, reference_id, position)
 	if not is_success(imported_story_block):
-		return imported_story_block
+		return stack_error(imported_story_block, "Could not load imported story block in import statement.")
 	
 	set_story_block(imported_story_block)
 

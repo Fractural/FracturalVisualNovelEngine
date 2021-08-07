@@ -24,9 +24,10 @@ func _post_ready():
 
 
 func run_story(story_file_path_: String):
-	var result = load_story(story_file_path_)
-	if not SSUtils.is_success(result):
-		throw_error(result)
+	var error = load_story(story_file_path_)
+	if not SSUtils.is_success(error):
+		throw_error(SSUtils.stack_error(error, "Could not run the story."))
+		return
 	story_tree.execute()
 
 

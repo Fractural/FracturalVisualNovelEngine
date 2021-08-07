@@ -32,7 +32,9 @@ func _init(position_ = StoryScriptPosition.new()):
 # -- StoryScriptErrorable -- #
 func propagate_call(method, arguments = [], parent_first = false):
 	if has_method(method):
-		callv(method, arguments)
+		var result = callv(method, arguments)
+		if not SSUtils.is_success(result):
+			return result
 
 
 # Visitor pattern implementation.
