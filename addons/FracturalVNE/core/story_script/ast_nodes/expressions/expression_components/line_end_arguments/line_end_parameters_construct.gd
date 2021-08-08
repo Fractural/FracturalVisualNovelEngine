@@ -12,7 +12,7 @@ func get_punctuation():
 
 func get_parse_types():
 	var arr = .get_parse_types()
-	arr.append("line end arguments")
+	arr.append("LineEndArgumentGroup")
 	return arr
 
 
@@ -44,7 +44,7 @@ func parse(parser):
 					# We only allow named arguments for line end argument groups
 					return parser.error('Expected a "=" after an argument name for line end argument group')
 			
-			var expression = parser.expect("expression")
+			var expression = parser.expect("Expression")
 			if not parser.is_success(expression):
 				return parser.error(expression, 1, checkpoint)
 			

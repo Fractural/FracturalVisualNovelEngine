@@ -1,23 +1,29 @@
 extends "res://addons/FracturalVNE/core/story_script/ast_nodes/expressions/expression_components/value_components/value_component/value_component.gd"
+# Fetches the value of a variable.
+
 
 func get_types():
 	var arr = .get_types()
-	arr.append("variable")
+	arr.append("VariableNode")
 	return arr
 
+
 var name
+
 
 func _init(position_ = null, name_ = null).(position_):
 	name = name_
 
+
 func evaluate():
-	var variable = get_runtime_block().get_variable(name)
-	if is_success(variable):
-		return variable
-	return stack_error(variable)
+	# Return the variable. If it's an error,
+	# it will be also returned as well.
+	return get_runtime_block().get_variable(name)
+
 
 func debug_string(tabs_string: String) -> String:
 	return tabs_string + "VAR: " + name
+
 
 # ----- Serialization ----- #
 

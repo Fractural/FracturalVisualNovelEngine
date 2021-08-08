@@ -6,7 +6,7 @@ const MoveStatement = preload("move_statement.gd")
 
 func get_parse_types():
 	var arr = .get_parse_types()
-	arr.append("move")
+	arr.append("MoveStatement")
 	return arr
 
 
@@ -18,17 +18,17 @@ func parse(parser):
 	var checkpoint = parser.save_reader_state()
 	var move = parser.expect_token("keyword", "move")
 	if parser.is_success(move):
-		var visual = parser.expect("expression")
+		var visual = parser.expect("Expression")
 		if parser.is_success(visual):
 			if parser.is_success(parser.expect_token("keyword", "to")):
-				var target_position = parser.expect("expression")
+				var target_position = parser.expect("Expression")
 				if parser.is_success(target_position):
 					if parser.is_success(parser.expect_token("keyword", "with")):
 						# Use custom travel curve (to add easing, etc).
-						var travel_curve = parser.expect("expression")
+						var travel_curve = parser.expect("Expression")
 						if parser.is_success(travel_curve):
 							if parser.is_success(parser.expect_token("keyword", "for")):
-								var duration = parser.expect("expression")
+								var duration = parser.expect("Expression")
 								if parser.is_success(duration):
 									# Parse with everything (visual, travel curve, duration, etc)
 									if parser.is_success(parser.expect_token("punctuation", "newline")):

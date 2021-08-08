@@ -37,7 +37,7 @@
 [ext_resource path="res://addons/FracturalVNE/core/standard_node_2d/transition/standard_node_2d_replaceable_transitioner.gd" type="Script" id=35]
 [ext_resource path="res://addons/FracturalVNE/core/standard_node_2d/standard_node_2d.gd" type="Script" id=36]
 [ext_resource path="res://addons/FracturalVNE/core/audio/story_audio_channel_controller_serializer.gd" type="Script" id=37]
-[ext_resource path="res://addons/FracturalVNE/core/audio/audio_manager.gd" type="Script" id=38]
+[ext_resource path="res://addons/FracturalVNE/core/audio/story_audio_manager.gd" type="Script" id=38]
 [ext_resource path="res://addons/FracturalVNE/core/story_script/importing/story_import_manager.gd" type="Script" id=39]
 
 [node name="Story" type="Node"]

@@ -27,11 +27,15 @@ func init(story_audio_channel_ = null, story_director_ = null):
 
 
 func play(sound: AudioStream, queue: bool = false):
-	if audio_player.is_playing():
-		if queue:
-			sound_queue.append(sound)
-		else:
-			_play_sound(sound)
+	# By default sounds are not skippable.
+	if audio_player.is_playing() and queue:
+		sound_queue.append(sound)
+	else:
+		_play_sound(sound)
+
+
+func get_current_sound():
+	return audio_player.stream
 
 
 func skip_current_sound():
@@ -49,7 +53,9 @@ func _play_sound(sound: AudioStream):
 		story_director.remove_step_action(curr_play_sound_action)
 	audio_player.stream = sound
 	audio_player.play()
-	story_director.add_step_action(PlaySoundAction.new(self))
+	# We only want to add a step action if the StoryChannel is skippable.
+	if story_audio_channel.is_skippable:
+		story_director.add_step_action(PlaySoundAction.new(self))
 
 
 func _notification(what):

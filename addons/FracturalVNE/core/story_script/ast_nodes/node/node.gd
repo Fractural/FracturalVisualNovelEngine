@@ -10,13 +10,12 @@ extends Reference
 
 # ----- Typeable ----- #
 func get_types() -> Array:
-	return ["node"]
+	return ["Node"]
 
 # ----- Typeable ----- #
 
 
 const StoryScriptPosition = preload("res://addons/FracturalVNE/core/story_script/story_script_position.gd")
-const StoryScriptError = preload("res://addons/FracturalVNE/core/story_script/story_script_error.gd")
 const SSUtils = preload("res://addons/FracturalVNE/core/story_script/story_script_utils.gd")
 const FracUtils = preload("res://addons/FracturalVNE/core/utils/utils.gd")
 
@@ -69,7 +68,7 @@ func is_success(result):
 
 
 func error(message: String):
-	return StoryScriptError.new(message, position)
+	return SSUtils.error(message, position)
 
 
 func throw_error(error):
@@ -80,16 +79,8 @@ func throw_error(error):
 	# assert(false, str(error))
 
 
-func stack_error(error, message = ""):
-	if error is StoryScriptError.ErrorStack:
-		error.add_error(error(message))
-		return error
-	elif error is StoryScriptError:
-		var err_stack = StoryScriptError.ErrorStack.new([error])
-		err_stack.add_error(error(message))
-		return err_stack
-	else:
-		assert(false, "Unknown of stack_error()")
+func stack_error(error, message):
+	return SSUtils.stack_error(error, SSUtils.error(message, position))
 
 # ----- Error ----- #
 

@@ -2,7 +2,7 @@ extends "res://addons/FracturalVNE/core/story_script/ast_nodes/expressions/opera
 # Parses a MultiplyOperator.
 
 
-const MultiplyOperatorNode = preload("res://addons/FracturalVNE/core/story_script/ast_nodes/expressions/operators/binary_operators/multiply_operator/multiply_operator.gd")
+const MultiplicationOperator = preload("multiplication_operator.gd")
 
 
 func get_parse_types() -> Array:
@@ -18,5 +18,5 @@ func get_operators():
 func parse(parser):
 	var operator = parser.expect_token("operator", "*")
 	if parser.is_success(operator):
-		return MultiplyOperatorNode.new(operator.position)
+		return MultiplicationOperator.new(operator.position)
 	return operator

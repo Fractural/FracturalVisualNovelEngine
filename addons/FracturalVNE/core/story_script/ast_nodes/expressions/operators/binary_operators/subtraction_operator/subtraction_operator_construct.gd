@@ -2,7 +2,7 @@ extends "res://addons/FracturalVNE/core/story_script/ast_nodes/expressions/opera
 # Parses a SubtractOperator.
 
 
-const SubtractOperatorNode = preload("res://addons/FracturalVNE/core/story_script/ast_nodes/expressions/operators/binary_operators/subtract_operator/subtract_operator.gd")
+const SubtractionOperator = preload("subtraction_operator.gd")
 
 
 func get_parse_types() -> Array:
@@ -18,5 +18,5 @@ func get_operators():
 func parse(parser):
 	var operator = parser.expect_token("operator", "-")
 	if parser.is_success(operator):
-		return SubtractOperatorNode.new(operator.position)
+		return SubtractionOperator.new(operator.position)
 	return operator

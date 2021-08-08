@@ -12,7 +12,7 @@ func get_punctuation():
 
 func get_parse_types():
 	var arr = .get_parse_types()
-	arr.append("parenthesized arguments")
+	arr.append("ParenthesizedArgumentGroup")
 	return arr
 
 
@@ -43,11 +43,11 @@ func parse(parser):
 						arg_name = arg_identifier.symbol
 					else:
 						# Identifier may be interpreted as a variable, so we have to
-						# revert the parser state back so that expect("expression") 
+						# revert the parser state back so that expect("Expression") 
 						# can pickup the identifier since it could be a variable
 						parser.load_reader_state(checkpoint2)
 				
-				var expression = parser.expect("expression")
+				var expression = parser.expect("Expression")
 				if not parser.is_success(expression):
 					return parser.error(expression, 1, checkpoint)
 				

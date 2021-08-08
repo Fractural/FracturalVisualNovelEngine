@@ -7,7 +7,7 @@ const FloatLiteralNode = preload("float_literal.gd")
 
 func get_parse_types():
 	var arr = .get_parse_types()
-	arr.append("float literal")
+	arr.append("FloatLiteral")
 	return arr
 
 

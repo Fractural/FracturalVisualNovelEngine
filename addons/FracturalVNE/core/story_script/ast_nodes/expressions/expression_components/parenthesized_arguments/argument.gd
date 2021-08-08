@@ -1,4 +1,15 @@
 extends "res://addons/FracturalVNE/core/story_script/ast_nodes/node/node.gd"
+# Holds an argument, which is a name and value pair.
+
+
+# ----- Typeable ----- #
+
+func get_types() -> Array:
+	var arr = .get_types()
+	arr.append("ArgumentNode")
+	return arr
+
+# ----- Typeable ----- #Z
 
 
 var name

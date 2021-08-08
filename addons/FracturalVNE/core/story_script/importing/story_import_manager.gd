@@ -73,7 +73,7 @@ func import_story(story_file_path, import_statement_reference_id, position):
 func serialize_state() -> Dictionary:
 	var serialized_imported_stories = []
 	for imported_story in imported_stories:
-		serialized_imported_stories = imported_story.serialize()
+		serialized_imported_stories.append(imported_story.serialize())
 	return {
 		"service_name": get_service_name(),
 		"imported_stories": serialized_imported_stories,

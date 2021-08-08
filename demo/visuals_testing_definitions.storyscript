@@ -26,3 +26,12 @@ define hop = load("res://addons/FracturalVNE/default_assets/animations/hop.tres"
 
 # ----- Curves ----- #
 define smooth_step = load("res://addons/FracturalVNE/default_assets/curves/smooth_step.tres")
+
+# ----- Channels ----- #
+define sfx = AudioChannel(volume_db = -10)
+define music = AudioChannel(volume_db = -20)
+
+# ----- Sounds ----- #
+define bgm_poppy_shop = load("res://addons/FracturalVNE/default_assets/audio/music/Poppy Shop.ogg")
+define bgm_ambience = load("res://addons/FracturalVNE/default_assets/audio/ambient/Store Ambience 1.wav")
+define sfx_entrance_chime = load("res://addons/FracturalVNE/default_assets/audio/sfx/Entrance Chime.wav")

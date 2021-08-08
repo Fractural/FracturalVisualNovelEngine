@@ -6,7 +6,7 @@ const AnimateStatement = preload("animate_statement.gd")
 
 func get_parse_types():
 	var arr = .get_parse_types()
-	arr.append("animate")
+	arr.append("AnimateStatement")
 	return arr
 
 
@@ -18,7 +18,7 @@ func parse(parser):
 	var checkpoint = parser.save_reader_state()
 	var animate = parser.expect_token("keyword", "animate")
 	if parser.is_success(animate):
-		var visual = parser.expect("expression")
+		var visual = parser.expect("Expression")
 		if parser.is_success(visual):
 			# Parse optional animation.
 			var animation = _parse_animation(parser)
@@ -39,7 +39,7 @@ func _parse_animation(parser):
 	var checkpoint = parser.save_reader_state()
 	var with = parser.expect_token("keyword", "with")
 	if parser.is_success(with):
-		var animation = parser.expect("expression")
+		var animation = parser.expect("Expression")
 		if parser.is_success(animation):
 			return animation
 		else:

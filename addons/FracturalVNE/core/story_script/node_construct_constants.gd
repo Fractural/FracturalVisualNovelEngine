@@ -20,9 +20,9 @@ const ConstantExpression = preload("res://addons/FracturalVNE/core/story_script/
 const ConstantExpressionComponent = preload("res://addons/FracturalVNE/core/story_script/ast_nodes/constant_expressions/constant_expression_component/constant_expression_component_construct.gd")
 
 # Binary Operators
-const AddOperator = preload("res://addons/FracturalVNE/core/story_script/ast_nodes/expressions/operators/binary_operators/add_operator/add_operator_construct.gd")
-const SubtractOperator = preload("res://addons/FracturalVNE/core/story_script/ast_nodes/expressions/operators/binary_operators/subtract_operator/subtract_operator_construct.gd")
-const MultiplyOperator = preload("res://addons/FracturalVNE/core/story_script/ast_nodes/expressions/operators/binary_operators/multiply_operator/multiply_operator_construct.gd")
+const AddOperator = preload("res://addons/FracturalVNE/core/story_script/ast_nodes/expressions/operators/binary_operators/addition_operator/addition_operator_construct.gd")
+const SubtractOperator = preload("res://addons/FracturalVNE/core/story_script/ast_nodes/expressions/operators/binary_operators/subtraction_operator/subtraction_operator_construct.gd")
+const MultiplyOperator = preload("res://addons/FracturalVNE/core/story_script/ast_nodes/expressions/operators/binary_operators/multiplication_operator/multiplication_operator_construct.gd")
 const DivideOperator = preload("res://addons/FracturalVNE/core/story_script/ast_nodes/expressions/operators/binary_operators/division_operator/division_operator_construct.gd")
 
 # Unary Operators
@@ -45,6 +45,7 @@ const AnimateStatement = preload("res://addons/FracturalVNE/core/story_script/as
 const PauseStatement = preload("res://addons/FracturalVNE/core/story_script/ast_nodes/statements/pause_statement/pause_statement_construct.gd")
 const MoveStatement = preload("res://addons/FracturalVNE/core/story_script/ast_nodes/statements/move_statement/move_statement_construct.gd")
 const SceneStatement = preload("res://addons/FracturalVNE/core/story_script/ast_nodes/statements/scene_statement/scene_statement_construct.gd")
+const SoundStatement = preload("res://addons/FracturalVNE/core/story_script/ast_nodes/statements/sound_statement/sound_statement_construct.gd")
 const ImportStatement = preload("res://addons/FracturalVNE/core/story_script/ast_nodes/statements/import_statement/import_statement_construct.gd")
 const ExpressionStatement = preload("res://addons/FracturalVNE/core/story_script/ast_nodes/statements/expression_statement/expression_statement_construct.gd")
 
@@ -79,6 +80,7 @@ var CONSTRUCTS = [
 	PauseStatement.new(),
 	MoveStatement.new(),
 	SceneStatement.new(),
+	SoundStatement.new(),
 	ImportStatement.new(),
 	ExpressionStatement.new(),
 ]

@@ -1,10 +1,14 @@
 extends "res://addons/FracturalVNE/core/story_script/ast_nodes/expressions/operators/operator/operator.gd"
 
 
+# ----- Typeable ----- #
+
 func get_types() -> Array:
 	var arr = .get_types()
-	arr.append("binary operator")
+	arr.append("BinaryOperator")
 	return arr
+
+# ----- Typeable ----- #
 
 
 var left_operand

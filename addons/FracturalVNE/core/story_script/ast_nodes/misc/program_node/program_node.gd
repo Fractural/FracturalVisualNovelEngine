@@ -118,11 +118,11 @@ func has_variable(name: String):
 
 
 func get_variable(name: String):
-	return StoryScriptError.new('Variable named "%s" could not be found.' % name)
+	return SSUtils.error('Variable named "%s" could not be found.' % name)
 
 
 func set_variable(name: String, value):
-	StoryScriptError.new('Variable named "%s" could not be found.' % name)
+	SSUtils.error('Variable named "%s" could not be found.' % name)
 
 
 func add_function_holder(new_function_holder):

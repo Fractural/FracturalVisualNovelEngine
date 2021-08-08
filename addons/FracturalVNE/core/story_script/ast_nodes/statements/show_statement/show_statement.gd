@@ -6,7 +6,7 @@ extends "res://addons/FracturalVNE/core/story_script/ast_nodes/statements/statem
 
 func get_types() -> Array:
 	var arr = .get_types()
-	arr.append("show")
+	arr.append("ShowStatement")
 	return arr
 
 # ----- Typeable ----- #
@@ -59,17 +59,17 @@ func _get_transition_result():
 
 func debug_string(tabs_string: String) -> String:
 	var string = ""
-	string += tabs_string + "SHOW :" 
+	string += tabs_string + "SHOW:" 
 	
 	string += "\n" + tabs_string + "{"
 	
-	string += "\n" + tabs_string + "\tACTOR: "
+	string += "\n" + tabs_string + "\tACTOR:"
 	string += "\n" + tabs_string + "\t{"
 	string += "\n" + actor.debug_string(tabs_string + "\t\t")
 	string += "\n" + tabs_string + "\t}"
 	
 	if transition != null:
-		string += "\n" + tabs_string + "\tTRANSITION: "
+		string += "\n" + tabs_string + "\tTRANSITION:"
 		string += "\n" + tabs_string + "\t{"
 		string += "\n" + transition.debug_string(tabs_string + "\t\t")
 		string += "\n" + tabs_string + "\t}"

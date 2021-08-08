@@ -5,5 +5,5 @@ extends "res://addons/FracturalVNE/core/story_script/ast_nodes/constant_expressi
 
 func get_parse_types():
 	var arr = .get_parse_types()
-	arr.append("literal")
+	arr.append("Literal")
 	return arr

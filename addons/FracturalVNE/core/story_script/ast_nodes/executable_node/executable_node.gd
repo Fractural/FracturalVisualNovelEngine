@@ -12,7 +12,7 @@ signal executed()
 
 func get_types() -> Array:
 	var arr = .get_types()
-	arr.append("executable")
+	arr.append("ExecutableNode")
 	return arr
 
 # ----- Typeable ----- #

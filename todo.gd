@@ -1,7 +1,8 @@
 # TODO NOW: 
-#	[ ] Add "sound" statement that uses AudioManager to play a sound on a channel
+#	[X] Add "sound" statement that uses AudioManager to play a sound on a channel
 #	[ ] Perform integration testing with "sound" statement.
-#	[ ] Make lexer ignoring blank lines
+#		[ ] Fix null reference exception for reparenting (Occurs in curve transition when reloading a save)
+#	[X] Make lexer ignoring blank lines
 #	[X] Make persisten editor data save to a file
 #	[X] Fix propagate_call not returning error.
 

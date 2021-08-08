@@ -6,7 +6,7 @@ const HideNode = preload("hide_statement.gd")
 
 func get_parse_types():
 	var arr = .get_parse_types()
-	arr.append("hide")
+	arr.append("HideStatement")
 	return arr
 
 
@@ -18,7 +18,7 @@ func parse(parser):
 	var checkpoint = parser.save_reader_state()
 	var hide = parser.expect_token("keyword", "hide")
 	if parser.is_success(hide):
-		var visual = parser.expect("expression")
+		var visual = parser.expect("Expression")
 		if parser.is_success(visual):
 			# Parse optional transition.
 			var transition = _parse_transition(parser)
@@ -41,7 +41,7 @@ func _parse_transition(parser):
 	var checkpoint = parser.save_reader_state()
 	var with = parser.expect_token("keyword", "with")
 	if parser.is_success(with):
-		var transition = parser.expect("expression")
+		var transition = parser.expect("Expression")
 		if parser.is_success(transition):
 			return transition
 		else:

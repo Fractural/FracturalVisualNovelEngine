@@ -7,7 +7,7 @@ const IntegerLiteralNode = preload("integer_literal.gd")
 
 func get_parse_types():
 	var arr = .get_parse_types()
-	arr.append("integer literal")
+	arr.append("IntegerLiteral")
 	return arr
 
 

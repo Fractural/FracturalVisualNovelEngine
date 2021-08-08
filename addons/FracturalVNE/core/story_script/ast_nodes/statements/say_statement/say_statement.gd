@@ -7,7 +7,7 @@ extends "res://addons/FracturalVNE/core/story_script/ast_nodes/statements/steppe
 
 func get_types() -> Array:
 	var arr = .get_types()
-	arr.append("say")
+	arr.append("SayStatement")
 	return arr
 
 # ----- Typeable ----- #

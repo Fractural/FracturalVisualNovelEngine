@@ -7,7 +7,7 @@ const ImportStatement = preload("import_statement.gd")
 
 func get_parse_types():
 	var arr = .get_parse_types()
-	arr.append("import")
+	arr.append("ImportStatement")
 	return arr
 
 
@@ -21,7 +21,7 @@ func parse(parser):
 	if not parser.is_success(import_keyword):
 		return parser.error("Expected the import keyword to start an import statement.", 0)
 	
-	var story_file_path = parser.expect("expression")
+	var story_file_path = parser.expect("Expression")
 	if not parser.is_success(story_file_path):
 		return parser.error("Expected an expression to follow the import statement.", 1, checkpoint)
 	

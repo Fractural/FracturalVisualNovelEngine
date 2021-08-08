@@ -12,7 +12,7 @@ func get_punctuation():
 
 func get_parse_types():
 	var arr = .get_parse_types()
-	arr.append("parenthesized parameters")
+	arr.append("ParenthesizedParameterGroup")
 	return arr
 
 
@@ -39,7 +39,7 @@ func parse(parser):
 					if parameters.has(param_identifier.symbol):
 						return parser.error('Parameter with the name "%s" already exists.' % param_identifier.symbol, 1, checkpoint)
 					if parser.is_success(parser.expect_token("punctuation", "=")):
-						var constant_expression = parser.expect("constant expression")
+						var constant_expression = parser.expect("ConstantExpression")
 						if parser.is_success(constant_expression):
 							var evaluated_expression = constant_expression.evaluate()
 							if parser.is_success(evaluated_expression):

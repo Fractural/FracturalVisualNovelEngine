@@ -12,9 +12,10 @@ const Param = FracVNE.StoryScript.Param
 var function_definitions = [
 	FuncDef.new("AudioChannel", [
 		Param.new("audio_bus", "Master"),
-		Param.new("volumb_db", 0),
+		Param.new("volume_db", 0),
 		Param.new("pitch_scale", 1),
 		Param.new("queue_by_default", false),
+		Param.new("is_skippable", false),
 		]),
 ]
 
@@ -27,7 +28,7 @@ func configure_service(program_node):
 
 
 func get_service_name():
-	return "AudioManager"
+	return "StoryAudioManager"
 
 # ----- StoryService ----- #
 
@@ -52,19 +53,22 @@ onready var serialization_manager = get_node(serialization_manager_path)
 # ----- StoryScriptFunc ----- #
 
 # -- StoryScriptErrorable -- #
-func AudioChannel(audio_bus, volume_db, pitch_scale, queue_by_default):
+func AudioChannel(audio_bus, volume_db, pitch_scale, queue_by_default, is_skippable):
 	if not FracUtils.is_type(audio_bus, "String"):
 		return SSUtils.error("Expected audio_bus to be a String.")
-	if not FracUtils.is_type(volume_db, "float"):
-		return SSUtils.error("Expected volume_db to be a float.")
-	if not FracUtils.is_type(pitch_scale, "float"):
-		return SSUtils.error("Expected pitch_scale to be a float.")
+	if not FracUtils.is_type(volume_db, "Number"):
+		return SSUtils.error("Expected volume_db to be a number.")
+	if not FracUtils.is_type(pitch_scale, "Number"):
+		return SSUtils.error("Expected pitch_scale to be a number.")
 	if not FracUtils.is_type(queue_by_default, "bool"):
 		return SSUtils.error("Expected queue_by_default to be a boolean.")
+	if not FracUtils.is_type(is_skippable, "bool"):
+		return SSUtils.error("Expected is_skippable to be a boolean.")
 	
-	var channel = add_new_channel(FracVNE_StoryAudioChannel.new(audio_bus, volume_db, pitch_scale, queue_by_default))
-	if not SSUtils.is_success(channel):
-		return channel
+	var channel = FracVNE_StoryAudioChannel.new(audio_bus, volume_db, pitch_scale, queue_by_default, is_skippable)
+	var channel_instance = add_new_channel(channel)
+	if not SSUtils.is_success(channel_instance):
+		return channel_instance
 	
 	return channel
 
@@ -83,6 +87,8 @@ func add_new_channel(channel: FracVNE_StoryAudioChannel):
 	
 	reference_registry.add_reference(channel)
 	channel_controller_lookup[channel] = instance
+	channels_holder.add_child(instance)
+	
 	return instance
 
 

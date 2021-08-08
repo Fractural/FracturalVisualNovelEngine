@@ -6,7 +6,7 @@ extends "res://addons/FracturalVNE/core/story_script/ast_nodes/statements/statem
 
 func get_types() -> Array:
 	var arr = .get_types()
-	arr.append("import")
+	arr.append("ImportStatement")
 	return arr
 
 # ----- Typeable ----- #
@@ -74,7 +74,7 @@ func propagate_call(method, arguments = [], parent_first = false):
 		result = .propagate_call(method, arguments, parent_first)
 		if not SSUtils.is_success(result):
 			return result
-		
+	
 	result = story_file_path.propagate_call(method, arguments, parent_first)
 	if not SSUtils.is_success(result):
 		return result

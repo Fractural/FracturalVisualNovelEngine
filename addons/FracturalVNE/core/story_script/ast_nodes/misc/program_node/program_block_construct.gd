@@ -14,7 +14,7 @@ func parse(parser):
 	var checkpoint = parser.save_reader_state()
 	var statements = []
 	while not parser.is_EOF():
-		var statement = parser.expect("statement")
+		var statement = parser.expect("Statement")
 		if not parser.is_success(statement):
 			return parser.error(statement, 1, checkpoint)
 		statements.append(statement)

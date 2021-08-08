@@ -6,7 +6,7 @@ extends "res://addons/FracturalVNE/core/story_script/ast_nodes/executable_node/e
 
 func get_types() -> Array:
 	var arr = .get_types()
-	arr.append("block")
+	arr.append("BlockNode")
 	return arr
 
 # ----- Typeabe ----- #

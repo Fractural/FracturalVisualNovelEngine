@@ -26,5 +26,6 @@ func deserialize(serialized_object):
 	var instance = get_script().new()
 	instance.story_file_path = serialized_object["story_file_path"]
 	instance.node_reference_id = serialized_object["node_reference_id"]
+	return instance
 
 # ----- Serialization ----- #

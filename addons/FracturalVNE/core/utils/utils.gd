@@ -83,6 +83,13 @@ static func is_type(object, type: String):
 	if STR_TO_TYPE_MAPPING.has(type):
 		return typeof(object) == STR_TO_TYPE_MAPPING[type]
 	if object is Object:
+		if object == null:
+			# We've already checked for if the type is == null
+			# in the STR_TO_TYPE_MAPPING check. Therefore we 
+			# can guarantee that the type is not null and 
+			# the object is null, which would return false,
+			# since a null object is not an object. 
+			return false
 		if ClassDB.is_parent_class(object.get_class(), type):
 			return true
 		if object.has_method("get_types"):

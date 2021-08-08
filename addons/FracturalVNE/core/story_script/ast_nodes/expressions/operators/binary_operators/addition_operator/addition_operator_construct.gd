@@ -2,12 +2,12 @@ extends "res://addons/FracturalVNE/core/story_script/ast_nodes/expressions/opera
 # Parses an AddOperator.
 
 
-const AddOperatorNode = preload("res://addons/FracturalVNE/core/story_script/ast_nodes/expressions/operators/binary_operators/add_operator/add_operator.gd")
+const AdditionOperator = preload("addition_operator.gd")
 
 
 func get_parse_types() -> Array:
 	var arr = .get_parse_types()
-	arr.append("add operator")
+	arr.append("AdditionOperator")
 	return arr
 
 
@@ -18,5 +18,5 @@ func get_operators():
 func parse(parser):
 	var operator = parser.expect_token("operator", "+")
 	if parser.is_success(operator):
-		return AddOperatorNode.new(operator.position)
+		return AdditionOperator.new(operator.position)
 	return operator

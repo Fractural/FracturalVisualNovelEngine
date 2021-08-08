@@ -6,7 +6,7 @@ extends "res://addons/FracturalVNE/core/story_script/ast_nodes/expressions/expre
 
 func get_types() -> Array:
 	var arr = .get_types()
-	arr.append("function call")
+	arr.append("FunctionCallNode")
 	return arr
 
 # ----- Typeable ----- #
@@ -31,7 +31,7 @@ func evaluate():
 		if is_success(evaluated_value):
 			formatted_arguments.append(StoryScriptArgument.new(argument.name, evaluated_value))
 		else:
-			return stack_error(evaluated_value, 'Error in arguments for function "%s".' % name)
+			return SSUtils.stack_error(evaluated_value, 'Error in arguments for function "%s".' % name)
 	
 	var result = get_runtime_block().call_function(name, formatted_arguments)
 	if is_success(result):

@@ -1,4 +1,16 @@
 extends "res://addons/FracturalVNE/core/story_script/ast_nodes/expressions/expression_components/parenthesized_expression/parenthesized_expression.gd"
+# Parenthesized expression that can only include constants, which means
+# it can be evaluated without outside information at runtime.
+
+
+# ----- Typeable ----- #
+
+func get_types() -> Array:
+	var arr = .get_types()
+	arr.append("ConstantParenthesizedExpression")
+	return arr
+
+# ----- Typeable ----- #
 
 
 func _init(position_ = null, operand_ = null).(position_, operand_):

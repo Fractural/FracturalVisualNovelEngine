@@ -1,4 +1,15 @@
 extends "res://addons/FracturalVNE/core/story_script/ast_nodes/expressions/operators/operator/operator.gd"
+# Treats nodes in parentheses as a single expression.
+
+
+# ----- Typeable ----- #
+
+func get_types() -> Array:
+	var arr = .get_types()
+	arr.append("ParenthesizedExpression")
+	return arr
+
+# ----- Typeable ----- #Z
 
 
 var operand
