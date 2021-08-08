@@ -149,6 +149,24 @@ static func _try_custom_cast_builtin(object, type):
 	return null
 
 
+# Checks if the property (a variable defined in a class) 
+# of an object equals some value. This will use and equals() 
+# function if the object supports equality comparisons.
+static func property_equals(object, property: String, value):
+	var property_value = object.get(property)
+	if property_value != null:
+		if is_type(property_value, "Equatable"):
+			return property_value.equals(value)
+		else:
+			# Use the builtin Godot equality check.
+			# Note that this will use a reference check
+			# by default if the compared values are
+			# both Objects.
+			return property_value == value
+	# The property does not exist
+	return false
+
+
 # Reparents a node to a new_parent and returns
 # the original parent..
 static func reparent(node: Node, new_parent: Node):

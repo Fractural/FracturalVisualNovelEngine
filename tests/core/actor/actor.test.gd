@@ -10,11 +10,6 @@ func title():
 	return "Given a FakeActor to test Actor"
 
 
-# Feature: Serialization
-#	Given an Actor
-#	When Actor.serialize() is called
-#	Then Actor.serialize() returns the persistent data about the Actor
-#		 serialized into a dicitonary. 
 func test_serialization() -> void:
 	describe("When calling serialize() and deserialize()")
 	var actor = Actor.new(true)
@@ -34,7 +29,7 @@ func test_instantiation() -> void:
 	describe("When calling instantiate_controller()")
 	var actor = FakeActor.new(true)
 	var controller = actor.instantiate_controller(MockStoryDirector.new())
-	asserts.is_true(FracVNE.Utils.is_type(controller, "asdfasdfActorController"), "The instantiated controller is an ActorController")
+	asserts.is_true(FracVNE.Utils.is_type(controller, "ActorController"), "The instantiated controller is an ActorController")
 
 
 class MockStoryDirector extends Reference:

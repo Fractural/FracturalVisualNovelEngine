@@ -10,7 +10,7 @@ extends Reference
 
 # ----- Typeable ----- #
 func get_types() -> Array:
-	return ["Node"]
+	return ["Node", "Serializable"]
 
 # ----- Typeable ----- #
 

@@ -7,12 +7,13 @@ extends Resource
 # ----- Typeable ----- #
 
 func get_types() -> Array:
-	return ["StoryAudioChannel", "Serializable"]
+	return ["StoryAudioChannel", "Serializable", "Equatable"]
 
 # ----- Typeable ----- #
 
 
 const SSUtils = FracVNE.StoryScript.Utils
+const FracUtils = FracVNE.Utils
 
 export var audio_bus: String
 export var volume_db: float
@@ -66,3 +67,17 @@ func deserialize(serialized_object):
 	return instance
 
 # ----- Serialization ----- #
+
+
+# ----- Equality ----- #
+
+func equals(object):
+	if not (FracUtils.property_equals(object, "audio_bus", audio_bus) 
+		or FracUtils.property_equals(object, "volume_db", volume_db)
+		or FracUtils.property_equals(object, "pitch_scale", pitch_scale)
+		or FracUtils.property_equals(object, "queue_by_default", queue_by_default)
+		or FracUtils.property_equals(object, "is_skippable", is_skippable)):
+		return false
+	return true
+
+# ----- Equality ----- #
