@@ -34,8 +34,7 @@ func test_instantiation() -> void:
 	describe("When calling instantiate_controller()")
 	var actor = FakeActor.new(true)
 	var controller = actor.instantiate_controller(MockStoryDirector.new())
-	print("Types: " + str(controller.get_types()))
-	asserts.is_true(FracVNE.Utils.is_type(controller, "ActorController"), "The instantiated controller is an ActorController")
+	asserts.is_true(FracVNE.Utils.is_type(controller, "asdfasdfActorController"), "The instantiated controller is an ActorController")
 
 
 class MockStoryDirector extends Reference:
