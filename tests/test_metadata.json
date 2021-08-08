@@ -1,6 +1,6 @@
 {
-	"res://tests/core/story_script/story_script_lexer_tests.gd": {
-		"path": "res://tests/core/story_script/story_script_lexer_tests.gd",
+	"res://tests/core/actor/actor.test.gd": {
+		"path": "res://tests/core/actor/actor.test.gd",
 		"tags": [
 
 		],
