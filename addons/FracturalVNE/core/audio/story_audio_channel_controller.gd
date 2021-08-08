@@ -15,6 +15,10 @@ var curr_play_sound_action
 onready var audio_player: AudioStreamPlayer = get_node(audio_player_path)
 
 
+func _ready():
+	audio_player.connect("finished", self, "_audio_finished") 
+
+
 func init(story_audio_channel_ = null, story_director_ = null):
 	story_audio_channel = story_audio_channel_
 	story_director = story_director_
