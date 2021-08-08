@@ -18,7 +18,7 @@ func get_types() -> Array:
 # Configures a service for a new AST.
 # (program_node is the root of the AST).
 func configure_service(program_node):
-	pass
+	imported_stories = []
 
 
 func get_service_name():
@@ -70,19 +70,27 @@ func import_story(story_file_path, import_statement_reference_id, position):
 
 # ----- Serialization ----- #
 
-func serialize_state() -> Dictionary:
-	var serialized_imported_stories = []
-	for imported_story in imported_stories:
-		serialized_imported_stories.append(imported_story.serialize())
-	return {
-		"service_name": get_service_name(),
-		"imported_stories": serialized_imported_stories,
-	}
+# No need to serialize imported_stories for now since
+# import statements will always be resolved on runtime_initialize, which
+# occurs for EVERY node in the AST.
 
+# We would only have to astart manually serializing if we were to
+# add lazy importing of stories (importing only when the story hits
+# the import statement)
 
-func deserialize_state(serialized_state) -> void:
-	imported_stories = []
-	for serialized_imported_story in serialized_state["imported_stories"]:
-		imported_stories.append(SerializationUtils.deserialize(serialized_imported_story))
+#func serialize_state() -> Dictionary:
+#	var serialized_imported_stories = []
+#	for imported_story in imported_stories:
+#		serialized_imported_stories.append(imported_story.serialize())
+#	return {
+#		"service_name": get_service_name(),
+#		"imported_stories": serialized_imported_stories,
+#	}
+#
+#
+#func deserialize_state(serialized_state) -> void:
+#	imported_stories = []
+#	for serialized_imported_story in serialized_state["imported_stories"]:
+#		imported_stories.append(SerializationUtils.deserialize(serialized_imported_story))
 
 # ----- Serialization ----- #

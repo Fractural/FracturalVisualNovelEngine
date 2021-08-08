@@ -2,6 +2,9 @@ extends Node
 # -- Abstract Class -- #
 # Handles serialization for the StoryAudioChannelController class
 
+# TODO: Add serialization for hte position of the playhead for
+#		the current playing sound.
+
 
 export var story_director_path: NodePath
 export var reference_registry_path: NodePath
