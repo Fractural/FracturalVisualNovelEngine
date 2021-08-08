@@ -45,6 +45,8 @@ export var current_scene_holder_path: NodePath
 export var old_scene_holder_path: NodePath
 
 var current_scene
+var _temp_old_scene
+var _temp_current_scene
 var _old_scene
 var _keep_old_scene: bool
 
@@ -144,22 +146,51 @@ func show_scene(scene, transition = null, keep_old_scene = false):
 	# Note that there is currently no support for hiding a background.
 	# (You are expected to have a background).
 	
+	# If the new scene is identical to the current scene, then don't 
+	# do any transition at all -- No point in showing the scene if it's 
+	# already displayed.
+	if scene == current_scene:
+		return
+	
 	# We cannot change the _old_scene before calling transitioner.replace() 
 	# since the _old_scene may be used during the clean up of an ongoing
 	# transiition (when _on_transition_finished() is called by the transitioner
-	# durign cleanup). Instead we set a temp variable for the 
-	# sake of readable code.
-	var temp_old_scene = current_scene
-	var temp_current_scene = scene
+	# durign cleanup). Instead we set _temp variables, which will then
+	# set themselves to the real scene variables after we start the
+	# new transition.
+	#
+	# "_temp_old_scene" stores the transition of the current interrupting transition
+	# (The one that is about to play and stop any currently playing transitions).
+	# "_temp_old_scene" is necessary to prevent "_on_transition_finished()" from
+	# removing the old_scene_controller that we got in 
+	# "old_scene_controller = get_scene_controller(_temp_old_scene)", since 
+	# we fetch the old_scene_controller before we delete the old transition,
+	# which could also delete the old_scene_controller.
+	#
+	# TODO DISCUSS: Maybe just build a custom transitioner for BGSceneManager? 
+	# It seems like we have to use a lot of hacky strategies, like
+	# storing incoming transition in "_temp_old_scene" in order to avoid
+	# the race condition of fetching controllers for the next transition
+	# before the current transition is finished. 
+	#
+	# The crux of this problem is that our current replaceable_transitioner 
+	# handles interrupting the current transition inside the replace() function. 
+	# We want to inject new controllers into the replaceale transition but that 
+	# requires injecting them before replace(), since replace() would start 
+	# executing the transition. This means the interruption, which runs
+	# in replace(), will occur after we inject the controllers into 
+	# the replaceable_transitioner.
+	_temp_old_scene = current_scene
+	_temp_current_scene = scene
 	_keep_old_scene = keep_old_scene
 	
-	var current_scene_controller = get_or_load_scene_controller(temp_current_scene)
+	var current_scene_controller = get_or_load_scene_controller(_temp_current_scene)
 	var old_scene_controller = null
-	if temp_old_scene != null:
-		old_scene_controller = get_scene_controller(temp_old_scene)
+	if _temp_old_scene != null:
+		old_scene_controller = get_scene_controller(_temp_old_scene)
 	
 	FracVNE.Utils.reparent(current_scene_controller, current_scene_holder)
-	if temp_old_scene != null:
+	if _temp_old_scene != null:
 		FracVNE.Utils.reparent(old_scene_controller, old_scene_holder)
 	
 	if old_scene_controller != null and current_scene_controller != null:
@@ -176,19 +207,43 @@ func show_scene(scene, transition = null, keep_old_scene = false):
 	
 	# Assign the temp variables
 	# back to the original	
-	_old_scene = temp_old_scene
-	current_scene = temp_current_scene
+	_old_scene = _temp_old_scene
+	current_scene = _temp_current_scene
+	
+	# Reset the _temp_scene varaibles
+	_temp_old_scene = null
+	_temp_current_scene = null
 
 
 func _on_transition_finished(transition_type: int, skipped: bool) -> void:
 	if transition_type == Transitioner.TransitionType.REPLACE:
-		if _old_scene != null:
+		if _old_scene != null and _old_scene != _temp_current_scene and _old_scene != _temp_old_scene:
+			# If the interrupting transition uses a scene that happens to be the
+			# exact same as our ongoing transitions's old scene, then we do
+			# not want to remove or hide the old scene at all -- It's 
+			# going to be used immediately by the interrupting transition.
+			#
+			# Example using StoryScript (Excuse the poorly drawn ASCII arrows):
+			#
+			# 												   	.--------- old_scene = A <--------.
+			# 		scene A                                    	|								  |
+			# 	.-> scene B with cross_fade for 1s <-- replaces A wi⮤th B		We cannot delete this old scene A
+			# 	|	pause 0.5s													since the interrupting transition 
+			# 	|	scene A with cross_fade for 1s <-- replaces B with A⮤		also uses it.
+			#	|	 |												   |				   |
+			#  	'---Interrupts previous replace transition.			   '-- new_scene = A⮤ <-'
+			#
 			if not _keep_old_scene:
 				remove_scene_controller(_old_scene)
 			else:
 				# Reparent the unused scene back to the scenes holder
 				FracVNE.Utils.reparent(get_scene_controller(_old_scene), scenes_holder)
-		
+			
+			# Reset temp_old_scene back to null in preparation for another
+			# interrupting transition. If there is no interrupting transition,
+			# then this if block still activates, since _old_scene != _temp_old_scene
+			# , where _temp_old_scene != null.
+			
 		# No need to reparent the current scene since it's already attached
 		# to the current_scene_holder
 		_old_scene = null
