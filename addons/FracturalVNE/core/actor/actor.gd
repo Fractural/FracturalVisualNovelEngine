@@ -7,11 +7,12 @@ extends Resource
 # ----- Typeable ----- #
 
 func get_types() -> Array:
-	return ["Actor", "Serializable"]
+	return ["Actor", "Serializable", "Equatable"]
 
 # ----- Typeable ----- #
 
 
+const FracUtils = FracVNE.Utils
 const SSUtils = FracVNE.StoryScript.Utils
 
 export var cached: bool = false
@@ -53,3 +54,13 @@ func deserialize(serialized_object):
 	return instance
 
 # ----- Serialization ----- #
+
+
+# ----- Equality ----- #
+
+func equals(object):
+	if not FracUtils.is_types(object, get_types()):
+		return false
+	return FracUtils.equals(object.cached, cached)
+
+# ----- Equality ----- #

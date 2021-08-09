@@ -72,12 +72,12 @@ func deserialize(serialized_object):
 # ----- Equality ----- #
 
 func equals(object):
-	if not (FracUtils.property_equals(object, "audio_bus", audio_bus) 
-		or FracUtils.property_equals(object, "volume_db", volume_db)
-		or FracUtils.property_equals(object, "pitch_scale", pitch_scale)
-		or FracUtils.property_equals(object, "queue_by_default", queue_by_default)
-		or FracUtils.property_equals(object, "is_skippable", is_skippable)):
+	if not FracUtils.is_types(object, get_types()):
 		return false
-	return true
+	return (FracUtils.equals(object.audio_bus, audio_bus) 
+		and FracUtils.equals(object.volume_db, volume_db)
+		and FracUtils.equals(object.pitch_scale, pitch_scale)
+		and FracUtils.equals(object.queue_by_default, queue_by_default)
+		and FracUtils.equals(object.is_skippable, is_skippable))
 
 # ----- Equality ----- #

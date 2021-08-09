@@ -5,5 +5,26 @@
 
 		],
 		"passing": false
+	},
+	"res://tests/core/audio/story_audio_channel.test.gd": {
+		"path": "res://tests/core/audio/story_audio_channel.test.gd",
+		"tags": [
+
+		],
+		"passing": false
+	},
+	"res://tests/core/audio/story_audio_channel_controller.test.gd": {
+		"path": "res://tests/core/audio/story_audio_channel_controller.test.gd",
+		"tags": [
+
+		],
+		"passing": false
+	},
+	"res://tests/core/audio/story_audio_channel_controller_serializer.test.gd": {
+		"path": "res://tests/core/audio/story_audio_channel_controller_serializer.test.gd",
+		"tags": [
+
+		],
+		"passing": false
 	}
 }

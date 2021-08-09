@@ -6,11 +6,13 @@ extends Node
 #		the current playing sound.
 
 
+const FracUtils = FracVNE.Utils
+
 export var story_director_path: NodePath
 export var reference_registry_path: NodePath
 
-onready var story_director = get_node(story_director_path)
-onready var reference_registry = get_node(reference_registry_path)
+onready var story_director = FracUtils.get_node_if_var_null(self, story_director_path, story_director)
+onready var reference_registry = FracUtils.get_node_if_var_null(self, reference_registry_path, reference_registry)
 
 
 func can_serialize(object):

@@ -3,16 +3,21 @@ extends WAT.Test
 
 
 const Actor = preload("res://addons/FracturalVNE/core/actor/actor.gd")
-var FakeActor = preload("res://tests/core/actor/fake_actor/fake_actor.gd")
+const FakeActor = preload("res://tests/core/actor/fake_actor/fake_actor.gd")
+
+var actor
 
 
 func title():
-	return "Given a FakeActor to test Actor"
+	return "Actor via FakeActor"
+
+
+func start():
+	actor = FakeActor.new(true)
 
 
 func test_serialization() -> void:
 	describe("When calling serialize() and deserialize()")
-	var actor = Actor.new(true)
 	var serialized_actor = actor.serialize()
 	
 	asserts.is_true(FracVNE.Utils.is_type(serialized_actor, "Dictionary"), "Then the serialized actor is a Dictionary.")
@@ -27,11 +32,10 @@ func test_serialization() -> void:
 
 func test_instantiation() -> void:
 	describe("When calling instantiate_controller()")
-	var actor = FakeActor.new(true)
-	var controller = actor.instantiate_controller(MockStoryDirector.new())
+	var controller = actor.instantiate_controller(DummyStoryDirector.new())
 	asserts.is_true(FracVNE.Utils.is_type(controller, "ActorController"), "The instantiated controller is an ActorController")
 
 
-class MockStoryDirector extends Reference:
+class DummyStoryDirector extends Reference:
 	func _init():
 		pass
