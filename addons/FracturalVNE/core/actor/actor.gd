@@ -36,7 +36,7 @@ func instantiate_controller(story_director):
 
 
 func _get_controller_prefab():
-	pass
+	"lolxd"
 
 
 # ----- Serialization ----- #

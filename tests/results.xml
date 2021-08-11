@@ -1,5 +1,5 @@
 <?xml version="1.0" ?>
-<testsuites failures="0" name="TestXML" tests="4" time="0">
+<testsuites failures="0" name="TestXML" tests="3" time="0">
 	<testsuite name="Actor via FakeActor" failures="0"  tests="2" time="0">
 		<testcase name="When calling serialize() and deserialize()" time="0"></testcase>
 		<testcase name="When calling instantiate_controller()" time="0"></testcase>
@@ -10,15 +10,8 @@
 		<testcase name="When calling instantiate_controller()" time="0"></testcase>
 	</testsuite>
 
-	<testsuite name="StoryAudioChannelController" failures="0"  tests="4" time="0">
-		<testcase name="When not skippable and called play()" time="0"></testcase>
-		<testcase name="When skippable, called play(), and skipped playing" time="0"></testcase>
-		<testcase name="When skippable and called play()" time="0"></testcase>
-		<testcase name="When skippable and the controller is deleted while playing." time="0"></testcase>
-	</testsuite>
-
-	<testsuite name="StoryAudioChannelControllerSerializer" failures="0"  tests="1" time="0">
-		<testcase name="When serializing a controller" time="0"></testcase>
+	<testsuite name="StoryAudioManager" failures="0"  tests="1" time="0">
+		<testcase name=" pass" time="0"></testcase>
 	</testsuite>
 
 </testsuites>

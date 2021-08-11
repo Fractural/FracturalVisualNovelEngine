@@ -4,6 +4,8 @@ extends WAT.Test
 
 const FracUtils = FracVNE.Utils
 const ChannelControllerBuilder = preload("res://tests/core/audio/story_audio_channel_controller.builder.gd")
+const ChannelController = preload("res://addons/FracturalVNE/core/audio/story_audio_channel_controller.gd")
+const StoryDirector = preload("res://addons/FracturalVNE/core/story/director/story_director.gd")
 
 const BUILT_CONTROLLER: int = 0
 const BUILT_CHANNEL: int = 1
@@ -22,13 +24,15 @@ func title():
 func test_not_skippable_play():
 	describe("When not skippable and called play()")
 	
+	var mock_story_director = direct.script(StoryDirector)
+	mock_story_director.method("add_step_action").spy()
+	mock_story_director.method("remove_step_action").spy()
+	
 	var builder = ChannelControllerBuilder.new() \
 		.unskippable_channel() \
-		.spy_story_director() \
+		.inject_story_director(mock_story_director.double()) \
 		.build()
-	
 	var controller = builder.controller
-	var spy_story_director = builder.story_director
 	
 	add_child(controller)
 	controller.play(SOUND_SAMPLE)
@@ -51,8 +55,8 @@ func test_not_skippable_play():
 	asserts.is_false(controller.audio_player.is_playing(), "Then, @time > sample's length, the audio player stops playing.")
 	asserts.is_null(controller.audio_player.stream, "Then, @time > sample's length, the audio player's stream is null.")
 	
-	asserts.is_equal(spy_story_director.add_step_action_call_count, 0, "Then no step actions were added.")
-	asserts.is_equal(spy_story_director.remove_step_action_call_count, 0, "Then no step actions were removed.")
+	asserts.is_equal(mock_story_director.call_count("add_step_action"), 0, "Then no step actions were added.")
+	asserts.is_equal(mock_story_director.call_count("remove_step_action"), 0, "Then no step actions were removed.")
 	
 	controller.free()
 
@@ -66,16 +70,16 @@ func test_skippable_play():
 		.build()
 	
 	var controller = builder.controller
-	var spy_story_director = builder.story_director
+	var mock_story_director = builder.story_director
 	
 	add_child(controller)
 	controller.play(SOUND_SAMPLE)
 	
-	asserts.is_equal(spy_story_director.add_step_action_call_count, 1, "Then a step action is added at the start.")
+	asserts.is_equal(mock_story_director.add_step_action_call_count, 1, "Then a step action is added at the start.")
 	
 	yield(until_signal(controller, "finished_playing", SOUND_SAMPLE.get_length() + 10), YIELD)
 	
-	asserts.is_equal(spy_story_director.remove_step_action_call_count, 1, "Then the step action is removed once at the end.")
+	asserts.is_equal(mock_story_director.remove_step_action_call_count, 1, "Then the step action is removed once at the end.")
 	
 	controller.free()
 
@@ -89,13 +93,13 @@ func test_skippable_destructor():
 		.build()
 	
 	var controller = builder.controller
-	var spy_story_director = builder.story_director
+	var mock_story_director = builder.story_director
 	
 	add_child(controller)
 	controller.play(SOUND_SAMPLE)
 	controller.free()
 	
-	asserts.is_equal(spy_story_director.remove_step_action_call_count, 1, "Then the step action is removed.")
+	asserts.is_equal(mock_story_director.remove_step_action_call_count, 1, "Then the step action is removed.")
 
 
 func test_skippable_play_then_skip():

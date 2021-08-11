@@ -4,6 +4,7 @@ extends WAT.Test
 
 const FracUtils = FracVNE.Utils
 const Channel = FracVNE_StoryAudioChannel
+const StoryDirector = preload("res://addons/FracturalVNE/core/story/director/story_director.gd")
 
 var channel: Channel
 
@@ -29,7 +30,10 @@ func test_serialization():
 
 func test_instantiation() -> void:
 	describe("When calling instantiate_controller()")
-	var controller = channel.instantiate_controller(DummyStoryDirector.new())
+	
+	var mock_story_director = direct.script(StoryDirector)
+	
+	var controller = channel.instantiate_controller(mock_story_director.double())
 	
 	asserts.is_true(FracVNE.Utils.is_type(controller, "StoryAudioChannelController"), "The instantiated controller is an StoryAudioChannelController")
 
