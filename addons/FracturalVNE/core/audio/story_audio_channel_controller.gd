@@ -46,7 +46,7 @@ func init(story_audio_channel_ = null, story_director_ = null):
 	audio_player.bus = story_audio_channel.audio_bus
 
 
-func play(sound: AudioStream, queue: bool = false):
+func play(sound: AudioStream, queue: bool = story_audio_channel.queue_by_default):
 	# By default sounds are not skippable.
 	if audio_player.is_playing() and queue:
 		sound_queue.append(sound)
