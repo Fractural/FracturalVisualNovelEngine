@@ -1,4 +1,4 @@
-[gd_scene load_steps=15 format=2]
+[gd_scene load_steps=16 format=2]
 
 [ext_resource path="res://addons/FracturalVNE/plugin/ui/monokai.tres" type="Resource" id=1]
 [ext_resource path="res://addons/FracturalVNE/assets/fonts/Hack/Hack-Regular.tres" type="DynamicFont" id=2]
@@ -10,6 +10,7 @@
 [ext_resource path="res://addons/FracturalVNE/core/utils/dependency_injection/dependency.gd" type="Script" id=8]
 [ext_resource path="res://addons/FracturalVNE/assets/icons/load.svg" type="Texture" id=9]
 [ext_resource path="res://addons/FracturalVNE/plugin/ui/shortcuts_menu_button.gd" type="Script" id=10]
+[ext_resource path="res://addons/FracturalVNE/assets/icons/settings.png" type="Texture" id=11]
 
 [sub_resource type="InputEventKey" id=1]
 shift = true
@@ -49,6 +50,7 @@ compiled_icon_path = NodePath("VSplitContainer/TopMenu/VBoxContainer/HBoxContain
 saved_ui_path = NodePath("VSplitContainer/TopMenu/VBoxContainer/HBoxContainer/States/SavedUI")
 saved_icon_path = NodePath("VSplitContainer/TopMenu/VBoxContainer/HBoxContainer/States/SavedUI/SavedUIContainer/SavedIcon")
 file_menu_path = NodePath("VSplitContainer/TopMenu/VBoxContainer/HBoxContainer/Buttons/FileMenuButton")
+settings_button_path = NodePath("VSplitContainer/TopMenu/VBoxContainer/HBoxContainer/Buttons/SettingsButton")
 editing_file_label_path = NodePath("VSplitContainer/TopMenu/VBoxContainer/EditingFileText")
 open_file_dialog_path = NodePath("Control/PopupHolder/OpenFileDialog")
 save_file_dialog_path = NodePath("Control/PopupHolder/SaveFileDialog")
@@ -87,7 +89,7 @@ margin_bottom = 24.0
 custom_constants/separation = 20
 
 [node name="Buttons" type="HBoxContainer" parent="VSplitContainer/TopMenu/VBoxContainer/HBoxContainer"]
-margin_right = 195.0
+margin_right = 279.0
 margin_bottom = 24.0
 custom_constants/separation = 0
 
@@ -118,9 +120,18 @@ text = "File"
 icon = ExtResource( 9 )
 script = ExtResource( 10 )
 
+[node name="SettingsButton" type="ToolButton" parent="VSplitContainer/TopMenu/VBoxContainer/HBoxContainer/Buttons"]
+margin_left = 195.0
+margin_right = 279.0
+margin_bottom = 24.0
+size_flags_vertical = 5
+custom_constants/hseparation = 5
+text = "Settings"
+icon = ExtResource( 11 )
+
 [node name="States" type="HBoxContainer" parent="VSplitContainer/TopMenu/VBoxContainer/HBoxContainer"]
-margin_left = 215.0
-margin_right = 373.0
+margin_left = 299.0
+margin_right = 457.0
 margin_bottom = 24.0
 custom_constants/separation = 0
 
@@ -302,6 +313,9 @@ __meta__ = {
 anchor_right = 1.0
 anchor_bottom = 1.0
 mouse_filter = 2
+__meta__ = {
+"_edit_use_anchors_": false
+}
 
 [node name="OpenFileDialog" type="FileDialog" parent="Control/PopupHolder"]
 anchor_left = 0.5

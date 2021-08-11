@@ -7,7 +7,7 @@ const StringLiteralNode = preload("string_literal.gd")
 
 func get_parse_types():
 	var arr = .get_parse_types()
-	arr.append("string literal")
+	arr.append("StringLiteral")
 	return arr
 
 

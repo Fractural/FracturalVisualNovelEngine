@@ -1,13 +1,12 @@
 extends Node
 # Manages the state of the current story by saving or loading new states.
 
-# TODO: Implement saving and loading for HistoryManager 
-
 
 signal save_state_started(save_state)
 signal state_loaded(save_state, slot_id)
 signal state_saved(save_state, slot_id)
 
+const SSUtils = FracVNE.StoryScript.Utils
 const SaveState = preload("res://addons/FracturalVNE/core/io/save_state.gd")
 
 export var screenshot_manager_path: NodePath
@@ -46,9 +45,12 @@ func save_current_state(save_slot_id: int):
 	emit_signal("state_saved", state, save_slot_id)
 
 
+# -- StoryScriptErrorable -- #
 func load_save_slot(save_slot_id: int):	
 	var state = story_save_manager_dep.dependency.get_save_slot(save_slot_id)
-	story_manager.load_story(state.story_file_path)
+	var result = story_manager.load_story(state.story_file_path)
+	if not SSUtils.is_success(result):
+		return result
 	story_manager.story_tree.deserialize_state(state.story_tree_state)
 	story_director.start_step(ast_node_locator.find_node_with_id(state.starting_node_id))
 	if story_director.curr_stepped_node.is_auto_step() == true:
@@ -57,10 +59,15 @@ func load_save_slot(save_slot_id: int):
 
 
 # Returns true if save slot was successfully loaded.
+# If a StoryScriptError occurs, it will be thrown to 
+# StoryManager and the function will return false.
 func try_load_save_slot(save_slot_id: int):
 	if not story_save_manager_dep.dependency.has_save_slot(save_slot_id):
 		return false
-	load_save_slot(save_slot_id)
+	var result = load_save_slot(save_slot_id)
+	if not SSUtils.is_success(result):
+		story_manager.throw_error(result)
+		return false
 	return true
 
 

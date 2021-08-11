@@ -76,6 +76,15 @@ static func get_type_name(object):
 			return TYPE_TO_STR_MAPPING[typeof(object)]
 
 
+# Checks if the object matches all the types
+# specified in the types String array.
+static func is_types(object, types: Array):
+	for type in types:
+		if not is_type(object, type):
+			return false
+	return true
+
+
 # Checks if the object is a certain type.
 static func is_type(object, type: String):
 	if _is_custom_type_builtin(object, type):
@@ -83,6 +92,13 @@ static func is_type(object, type: String):
 	if STR_TO_TYPE_MAPPING.has(type):
 		return typeof(object) == STR_TO_TYPE_MAPPING[type]
 	if object is Object:
+		if object == null:
+			# We've already checked for if the type is == null
+			# in the STR_TO_TYPE_MAPPING check. Therefore we 
+			# can guarantee that the type is not null and 
+			# the object is null, which would return false,
+			# since a null object is not an object. 
+			return false
 		if ClassDB.is_parent_class(object.get_class(), type):
 			return true
 		if object.has_method("get_types"):
@@ -142,6 +158,29 @@ static func _try_custom_cast_builtin(object, type):
 	return null
 
 
+# Checks if two values are the same 
+static func equals(value, other_value) -> bool:
+	if is_type(value, "Equatable"):
+		return value.equals(other_value)
+	else:
+		# Use the builtin Godot equality check.
+		# Note that this will use a reference check
+		# by default if the compared values are
+		# both Objects.
+		return value == other_value
+
+
+# Checks if the property (a variable defined in a class) 
+# of an object equals some value. This will use and equals() 
+# function if the object supports equality comparisons.
+static func property_equals(object, property: String, value) -> bool:
+	var property_value = object.get(property)
+	if property_value != null:
+		return equals(property_value, value)
+	# The property does not exist
+	return false
+
+
 # Reparents a node to a new_parent and returns
 # the original parent..
 static func reparent(node: Node, new_parent: Node):
@@ -151,7 +190,20 @@ static func reparent(node: Node, new_parent: Node):
 	return original
 
 
-# Snakecase conversions source:
+# Gets a node if the orignal_variable is null. 
+# If an onready node variable was assigned a node reference 
+# before its onready was called, this mehtod would keep
+# this reference that it was assigned instead of
+# attempting to fetch a new one using node_path.
+static func get_node_if_var_null(base_node, node_path, original_variable):
+	if original_variable != null:
+		return original_variable
+	if node_path.is_empty():
+		return null
+	return base_node.get_node(node_path)
+
+
+# Snakecase conversions sou/rce:
 # https://gist.github.com/me2beats/443b40ba79d5b589a96a16c565952419
 
 # Converts a string from snake-case to camel-case.

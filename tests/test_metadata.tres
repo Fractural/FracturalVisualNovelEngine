@@ -1,0 +1,28 @@
+[gd_resource type="Resource" load_steps=2 format=2]
+
+[ext_resource path="res://addons/WAT/metadata.gd" type="Script" id=1]
+
+[resource]
+script = ExtResource( 1 )
+scripts = {
+"res://tests/core/actor/actor.test.gd": {
+"failed": true,
+"tags": [  ]
+},
+"res://tests/core/audio/story_audio_channel.test.gd": {
+"failed": true,
+"tags": [  ]
+},
+"res://tests/core/audio/story_audio_channel_controller.test.gd": {
+"failed": true,
+"tags": [  ]
+},
+"res://tests/core/audio/story_audio_channel_controller_serializer.test.gd": {
+"failed": true,
+"tags": [  ]
+},
+"res://tests/core/audio/story_audio_manager.test.gd": {
+"failed": true,
+"tags": [  ]
+}
+}

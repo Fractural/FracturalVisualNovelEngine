@@ -15,6 +15,15 @@ func clone():
 	return get_script().new(line, column)
 
 
+# StoryScriptPositions are stored with zero-indexing.
+# This means line 0 is the first line and
+# column 0 is the first column.
+# Normal text editors use one-indexing, therefore
+# this method is used for any one-indexing printing.
+func to_one_indexed_string():
+	return "(Line:%s, Col: %s)" % [line + 1, column + 1]
+
+
 func _to_string():
 	return "(Line:%s, Col:%s)" % [line, column]
 

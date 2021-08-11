@@ -6,7 +6,7 @@ const VariableAssignmentNode = preload("res://addons/FracturalVNE/core/story_scr
 
 func get_parse_types():
 	var arr = .get_parse_types()
-	arr.append("variable assignment")
+	arr.append("VariableAssignmentStatement")
 	return arr
 
 
@@ -20,7 +20,7 @@ func parse(parser):
 	if parser.is_success(identifier):
 		var assignment_punc = parser.expect_token("punctuation", "=")
 		if parser.is_success(assignment_punc):
-			var expression = parser.expect("expression")
+			var expression = parser.expect("Expression")
 			if parser.is_success(expression):
 				if parser.is_success(parser.expect_token("punctuation", "newline")):
 					return VariableAssignmentNode.new(identifier.position, identifier.symbol, expression)

@@ -4,4 +4,4 @@ extends "res://addons/FracturalVNE/core/story_script/ast_nodes/node/node_constru
 
 
 func get_parse_types() -> Array:
-	return ["value component"]
+	return ["ValueComponent"]

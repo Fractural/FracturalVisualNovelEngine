@@ -5,7 +5,7 @@ extends "res://addons/FracturalVNE/core/story_script/ast_nodes/statements/statem
 
 func get_types() -> Array:
 	var arr = .get_types()
-	arr.append("variable declaration")
+	arr.append("VariableDeclarationStatement")
 	return arr
 
 # ----- Typeable ----- #
@@ -41,13 +41,20 @@ func debug_string(tabs_string: String) -> String:
 
 
 func propagate_call(method: String, arguments: Array = [], parent_first: bool = false):	
+	var result
 	if parent_first:
-		.propagate_call(method, arguments, parent_first)
+		result = .propagate_call(method, arguments, parent_first)
+		if not SSUtils.is_success(result):
+			return result
 	
-	value_expression.propagate_call(method, arguments, parent_first)
+	result = value_expression.propagate_call(method, arguments, parent_first)
+	if not SSUtils.is_success(result):
+		return result
 	
 	if not parent_first:
-		.propagate_call(method, arguments, parent_first)
+		result = .propagate_call(method, arguments, parent_first)
+		if not SSUtils.is_success(result):
+			return result
 
 
 # ----- Serialization ----- #

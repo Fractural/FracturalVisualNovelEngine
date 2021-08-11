@@ -3,7 +3,7 @@ extends "res://addons/FracturalVNE/core/story_script/ast_nodes/node/node_constru
 
 
 func get_parse_types() -> Array:
-	return ["expression"]
+	return ["Expression"]
 
 
 # Expression Parsing Classes:
@@ -18,12 +18,12 @@ func parse(parser):
 	var checkpoint = parser.save_reader_state()
 	
 	# Is the next token a value?
-	var lhs = parser.expect("expression component")
+	var lhs = parser.expect("ExpressionComponent")
 	if not parser.is_success(lhs):
 		return lhs
 	
 	while true:
-		var curr_operator = parser.expect("binary operator")
+		var curr_operator = parser.expect("BinaryOperator")
 		if not parser.is_success(curr_operator):
 			# Expression only contains one value so just return that one value.
 			break;
@@ -32,7 +32,7 @@ func parse(parser):
 		# always have a precedence
 		var curr_operator_precedence: int = curr_operator.get_precedence()
 		
-		var rhs = parser.expect("expression component")
+		var rhs = parser.expect("ExpressionComponent")
 		if not parser.is_success(rhs):
 			parser.load_reader_state(checkpoint)
 			return parser.error("Expected an expression on the right side of the binary operator.")
@@ -70,7 +70,7 @@ func parse(parser):
 # You can steal a rightmost value if the `checked_precedence` > the rightmost 
 # value's precedence
 func _find_rightmost_stealable_operator(curr_value, checked_precedence: int):
-	if not Utils.is_type(curr_value, "binary operator"):
+	if not Utils.is_type(curr_value, "BinaryOperator"):
 		return null
 	if curr_value.get_precedence() >= checked_precedence:
 		return null

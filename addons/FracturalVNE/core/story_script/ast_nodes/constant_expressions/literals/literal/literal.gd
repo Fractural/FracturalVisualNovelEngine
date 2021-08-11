@@ -5,7 +5,7 @@ extends "res://addons/FracturalVNE/core/story_script/ast_nodes/constant_expressi
 
 func get_types():
 	var arr = .get_types()
-	arr.append("literal")
+	arr.append("Literal")
 	return arr
 
 # ----- Typeable ----- #
@@ -28,10 +28,6 @@ func _debug_string_literal_name():
 
 func debug_string(tabs_string: String) -> String:
 	return tabs_string + _debug_string_literal_name() + ": " + str(value)
-
-
-func get_return_type() -> String:
-	return "float"
 
 
 # ----- Serialization ----- #

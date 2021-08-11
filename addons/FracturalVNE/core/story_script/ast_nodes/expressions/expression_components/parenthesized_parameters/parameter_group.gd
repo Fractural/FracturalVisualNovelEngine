@@ -1,9 +1,23 @@
 extends "res://addons/FracturalVNE/core/story_script/ast_nodes/node/node.gd"
+# Holds a group of parameters.
+
+
+# ----- Typeable ----- #
+
+func get_types() -> Array:
+	var arr = .get_types()
+	arr.append("ParameterGroupNode")
+	return arr
+
+# ----- Typeable ----- #
+
 
 var parameters
 
+
 func _init(position_ = null, parameters_ = null).(position_):
 	parameters = parameters_
+
 
 func debug_string(tabs_string: String) -> String:
 	var string = ""
@@ -13,6 +27,7 @@ func debug_string(tabs_string: String) -> String:
 		string += "\n" + tabs_string + "\t" + str(param) + ","
 	string += "\n" + tabs_string + "}"
 	return string
+
 
 # ----- Serialization ----- #
 

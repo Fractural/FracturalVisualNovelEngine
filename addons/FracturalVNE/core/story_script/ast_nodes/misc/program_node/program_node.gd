@@ -2,10 +2,21 @@ extends "res://addons/FracturalVNE/core/story_script/ast_nodes/executable_node/e
 # The root node of a story tree. Responsible for starting the program
 # and propagating calls to all the nodes.
 
-# Story Tree Execution Order:
-# 1. configure_service()
-# 2. runtime_initialize() 
-# 3. execute()
+# Story Abstract Syntax Tree Call Order:
+# 1. 	program_node	configure_service()
+# 2. 	program_node	configure_node() for main nodes
+# 3. 	program_node	runtime_initialize() 
+# 4.		import_node		configure_node()
+# 5.		import_node		runtime_initialize()
+# 6.			imported_import_node	configure_node()
+# 7.			imported_import_node	runtime_initialize() 
+# 8.				...
+# 9.				...
+# 10.	program_node	execute()
+
+# Note that all stored references to statements/things within an AST
+# should be WeakRefs. This is to allow the StoryManager to free the AST tree
+# when it is no longer needed.
 
 
 # ----- Typeable ----- #
@@ -22,7 +33,7 @@ signal throw_error(error)
 
 const ASTNodeIDDistributor = preload("res://addons/FracturalVNE/core/story_script/story_services/ast_node_id_distributor.gd")
 
-# TODO: Refactor function_holders into just a Dictionary of functions
+# TODO DISCUSS: Maybe refactor function_holders into just a Dictionary of functions
 # to improve lookup speeds
 var function_holders: Array = []
 var services: Dictionary = {}
@@ -33,28 +44,42 @@ func _init(block_ = null).(StoryScriptPosition.new(0, 0)):
 	block = block_
 
 
+# -- StoryScriptErrorable -- #
 # Called after initialization
 func _init_post():
+	block.set_runtime_block(self)
 	add_service(ASTNodeIDDistributor.new())
-	start_configure_node()
+	var result = start_configure_node()
+	if not SSUtils.is_success(result):
+		return result
 
 
+# -- StoryScriptErrorable -- #
 func propagate_call(method, arguments = [], parent_first = false):
+	var result
 	if parent_first:
-		.propagate_call(method, arguments, parent_first)
+		result = .propagate_call(method, arguments, parent_first)
+		if not SSUtils.is_success(result):
+			return result
 	
-	block.propagate_call(method, arguments, parent_first)
+	result = block.propagate_call(method, arguments, parent_first)
+	if not SSUtils.is_success(result):
+		return result
 	
 	if not parent_first:
-		.propagate_call(method, arguments, parent_first)
+		result = .propagate_call(method, arguments, parent_first)
+		if not SSUtils.is_success(result):
+			return result
 
 
+# -- StoryScriptErorrable -- #
 func start_configure_node():
-	block.propagate_call("configure_node", [self], true)
+	return block.propagate_call("configure_node", [self], true)
 
 
+# -- StoryScriptErrorable -- #
 func start_runtime_initialize():
-	block.propagate_call("runtime_initialize")
+	return block.propagate_call("runtime_initialize")
 
 
 func execute():
@@ -62,6 +87,7 @@ func execute():
 	block.execute()
 
 
+# -- StoryScriptErrorable -- #
 func add_service(service, name = null):
 	if name == null:
 		name = service.get_service_name()
@@ -74,7 +100,9 @@ func add_service(service, name = null):
 		add_function_holder(service)
 	
 	if service.has_method("configure_service"):
-		service.configure_service(self)
+		var result = service.configure_service(self)
+		if not SSUtils.is_success(result):
+			return result
 
 
 func get_service(name: String):
@@ -90,11 +118,11 @@ func has_variable(name: String):
 
 
 func get_variable(name: String):
-	return StoryScriptError.new('Variable named "%s" could not be found.' % name)
+	return SSUtils.error('Variable named "%s" could not be found.' % name)
 
 
 func set_variable(name: String, value):
-	StoryScriptError.new('Variable named "%s" could not be found.' % name)
+	SSUtils.error('Variable named "%s" could not be found.' % name)
 
 
 func add_function_holder(new_function_holder):
@@ -184,17 +212,17 @@ func deserialize_state(serialized_state) -> void:
 	propagate_call("deserialize_node_state", [serialized_state["nodes"]])
 
 
-func serialize() -> Dictionary:
-	var serialized_object = .serialize()
-	serialized_object["block"] = block.serialize()
-	return serialized_object
-
-
-func deserialize(serialized_object):
-	var instance = .deserialize(serialized_object)
-	instance.block = SerializationUtils.deserialize(serialized_object["block"])
-	instance._init_post()
-	# No need to assign runtime_block since that is assgined at runtime
-	return instance
+#func serialize() -> Dictionary:
+#	var serialized_object = .serialize()
+#	serialized_object["block"] = block.serialize()
+#	return serialized_object
+#
+#
+#func deserialize(serialized_object):
+#	var instance = .deserialize(serialized_object)
+#	instance.block = SerializationUtils.deserialize(serialized_object["block"])
+#	instance._init_post()
+#	# No need to assign runtime_block since that is assgined at runtime
+#	return instance
 
 # ----- Serialization ----- #

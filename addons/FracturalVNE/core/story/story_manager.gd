@@ -5,6 +5,8 @@ extends Node
 
 signal throw_error(error)
 
+const SSUtils = FracVNE.StoryScript.Utils
+
 export var story_loader_path: NodePath
 export var story_gui_configurer_path: NodePath
 export var scene_manager_dep_path: NodePath
@@ -22,13 +24,20 @@ func _post_ready():
 
 
 func run_story(story_file_path_: String):
-	load_story(story_file_path_)
+	var error = load_story(story_file_path_)
+	if not SSUtils.is_success(error):
+		throw_error(SSUtils.stack_error(error, "Could not run the story."))
+		return
 	story_tree.execute()
 
 
+# -- StoryScriptErrorable -- #
 func load_story(story_file_path_: String):
 	story_file_path = story_file_path_
-	story_tree = story_loader.load_story(story_file_path)
+	var story_tree_result = story_loader.load_story(story_file_path)
+	if not SSUtils.is_success(story_tree_result):
+		return story_tree_result
+	story_tree = story_tree_result
 	story_tree.connect("throw_error", self, "throw_error")
 
 

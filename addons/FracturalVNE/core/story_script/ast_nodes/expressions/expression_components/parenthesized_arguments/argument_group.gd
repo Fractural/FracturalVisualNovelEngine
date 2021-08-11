@@ -1,4 +1,15 @@
 extends "res://addons/FracturalVNE/core/story_script/ast_nodes/node/node.gd"
+# Holds a group of arguments.
+
+
+# ----- Typeable ----- #
+
+func get_types() -> Array:
+	var arr = .get_types()
+	arr.append("ArgumentGroupNode")
+	return arr
+
+# ----- Typeable ----- #Z
 
 
 var arguments

@@ -1,6 +1,5 @@
 extends Node
 # Controls the movement of a StandardNode2D.
-# TODO: Implement rotation and scaling
 
 
 # ----- Typeable ----- #

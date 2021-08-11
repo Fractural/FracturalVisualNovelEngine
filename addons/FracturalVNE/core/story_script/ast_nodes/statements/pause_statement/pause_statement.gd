@@ -6,7 +6,7 @@ extends "res://addons/FracturalVNE/core/story_script/ast_nodes/statements/steppe
 
 func get_types() -> Array:
 	var arr = .get_types()
-	arr.append("pause")
+	arr.append("PauseStatement")
 	return arr
 
 # ----- Typeable ----- #
@@ -72,14 +72,22 @@ func debug_string(tabs_string: String) -> String:
 	return string
 
 
+# -- StoryScriptErrorable -- #
 func propagate_call(method, arguments = [], parent_first = false):
+	var result
 	if parent_first:
-		.propagate_call(method, arguments, parent_first)
+		result = .propagate_call(method, arguments, parent_first)
+		if not SSUtils.is_success(result):
+			return result
 	
-	duration.propagate_call(method, arguments, parent_first)
-	
+	result = duration.propagate_call(method, arguments, parent_first)
+	if not SSUtils.is_success(result):
+		return result
+		
 	if not parent_first:
-		.propagate_call(method, arguments, parent_first)
+		result = .propagate_call(method, arguments, parent_first)
+		if not SSUtils.is_success(result):
+			return result
 
 
 # ----- Serialization ----- #

@@ -7,7 +7,7 @@ const VariableNode = preload("res://addons/FracturalVNE/core/story_script/ast_no
 
 func get_parse_types():
 	var arr = .get_parse_types()
-	arr.append("variable")
+	arr.append("VariableNode")
 	return arr
 
 

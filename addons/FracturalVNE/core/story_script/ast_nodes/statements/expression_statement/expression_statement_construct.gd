@@ -6,14 +6,14 @@ const ExpressionStatementNode = preload("res://addons/FracturalVNE/core/story_sc
 
 func get_parse_types() -> Array:
 	var arr = .get_parse_types()
-	arr.append("expression statement")
+	arr.append("ExpressionStatement")
 	return arr
 
 
 func parse(parser):
 	var checkpoint = parser.save_reader_state()
 	var ahead = str(parser.peek()) + str(parser.peek(2)) + str(parser.peek(3))
-	var expression = parser.expect("expression")
+	var expression = parser.expect("Expression")
 	if parser.is_success(expression):
 		var newline = parser.expect_token("punctuation", "newline")
 		if parser.is_success(newline):

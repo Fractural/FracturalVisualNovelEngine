@@ -3,8 +3,6 @@ extends Reference
 # Parses an array of tokens into an Abstract Syntax Tree.
 
 
-
-
 const EOF = "EOF"
 
 const NodeConstructConstants = preload("res://addons/FracturalVNE/core/story_script/node_construct_constants.gd")
@@ -19,7 +17,7 @@ var constructs_dict = NodeConstructConstants.new().CONSTRUCTS_DICT
 
 func generate_abstract_syntax_tree(reader_: TokensReader):
 	reader = reader_
-	return expect("program")
+	return expect("program block")
 
 
 func expect(construct_names):

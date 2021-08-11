@@ -91,7 +91,7 @@ func test_compile(script_text: String):
 	
 	var serialized_file = File.new()
 	serialized_file.open_compressed("res://test.story", File.WRITE)
-	serialized_file.store_line(serialized_ast)
+	serialized_file.store_string(serialized_ast)
 	serialized_file.close()
 	
 	time_end = OS.get_ticks_msec()

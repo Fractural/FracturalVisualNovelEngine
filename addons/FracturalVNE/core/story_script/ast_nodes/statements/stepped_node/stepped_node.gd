@@ -13,7 +13,7 @@ extends "res://addons/FracturalVNE/core/story_script/ast_nodes/statements/statem
 
 func get_types() -> Array:
 	var arr = .get_types()
-	arr.append("stepped")
+	arr.append("SteppedNode")
 	return arr
 
 # ----- Typable ----- #

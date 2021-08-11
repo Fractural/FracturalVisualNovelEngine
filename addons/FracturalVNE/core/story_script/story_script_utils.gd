@@ -113,19 +113,22 @@ static func _add_dir_contents(dir: Directory, files: Array, directories: Array, 
 			directories.append(path)
 			
 			if search_sub_directories:
-				_add_dir_contents(subDir, files, directories)
+				_add_dir_contents(subDir, files, directories, search_sub_directories, file_extensions)
 		else:
-			# TODO: Maybe convert file_extensions to a hashtable if performance is necessary?
-			for file_extension in file_extensions:
-				if not Engine.is_editor_hint():
-					# Only .import files are available in the exported builds,
-					# therefore we have to look for those instead.
-					path = path.trim_suffix(".import")
-				if file_extension == path.get_extension():
-					# print("Found file: %s" % path)
-					if not files.has(path):
-						files.append(path)
-					break
+			if file_extensions == null:
+				return files.append(path)
+			else:
+				# TODO DISCUSS: Maybe convert file_extensions to a hashtable if performance is necessary?
+				for file_extension in file_extensions:
+					if not Engine.is_editor_hint():
+						# Only .import files are available in the exported builds,
+						# therefore we have to look for those instead.
+						path = path.trim_suffix(".import")
+					if file_extension == path.get_extension():
+						# print("Found file: %s" % path)
+						if not files.has(path):
+							files.append(path)
+						break
 
 		file_name = dir.get_next()
 

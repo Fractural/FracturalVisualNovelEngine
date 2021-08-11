@@ -33,7 +33,7 @@ func runtime_error_string():
 		# FracVNE.StoryScript.Position uses 0-based numbering so to make it more readable, it will
 		# be displayed as 1-based numbering (Since the script editor's line and columns 
 		# are numbers starting from 1)
-		position_text = "@%-20s" % ["(Line:%s, Col:%s)" % [position.line + 1, position.column + 1]]
+		position_text = "@%-20s" % position.to_one_indexed_string()
 	else:
 		position_text = " %-20s" % ""
 	return "Error: " + position_text + "%-10s" % ["conf: " + str(confidence)] + message

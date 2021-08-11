@@ -8,7 +8,7 @@ const MultiVisualShowNode = preload("multi_visual_show_statement.gd")
 
 func get_parse_types():
 	var arr = .get_parse_types()
-	arr.append("show")
+	arr.append("ShowStatement")
 	return arr
 
 
@@ -20,7 +20,7 @@ func parse(parser):
 	var checkpoint = parser.save_reader_state()
 	var show = parser.expect_token("keyword", "show")
 	if parser.is_success(show):
-		var visual = parser.expect("expression")
+		var visual = parser.expect("Expression")
 		if parser.is_success(visual):
 			var modifier_identifier = parser.expect_token("identifier")
 			if parser.is_success(modifier_identifier):
@@ -66,7 +66,7 @@ func _parse_transition(parser):
 	var checkpoint = parser.save_reader_state()
 	var with = parser.expect_token("keyword", "with")
 	if parser.is_success(with):
-		var transition = parser.expect("expression")
+		var transition = parser.expect("Expression")
 		if parser.is_success(transition):
 			return transition
 		else:

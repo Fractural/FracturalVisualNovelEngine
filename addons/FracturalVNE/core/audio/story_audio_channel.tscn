@@ -1,0 +1,9 @@
+[gd_scene load_steps=2 format=2]
+
+[ext_resource path="res://addons/FracturalVNE/core/audio/story_audio_channel_controller.gd" type="Script" id=1]
+
+[node name="StoryAudioChannel" type="Node"]
+script = ExtResource( 1 )
+audio_player_path = NodePath("AudioStreamPlayer")
+
+[node name="AudioStreamPlayer" type="AudioStreamPlayer" parent="."]

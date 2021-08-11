@@ -5,7 +5,7 @@ const LabelNode = preload("res://addons/FracturalVNE/core/story_script/ast_nodes
 
 func get_parse_types():
 	var arr = .get_parse_types()
-	arr.append("label")
+	arr.append("LabelStatement")
 	return arr
 
 
@@ -25,17 +25,17 @@ func parse(parser):
 		if parser.is_success(identifier):
 			var colon = parser.expect_token("punctuation", ":")
 			if parser.is_success(colon):
-				var block = parser.expect("block")
+				var block = parser.expect("BlockNode")
 				if parser.is_success(block):
 					return LabelNode.new(label.position, identifier.symbol, block)
 				else:
 					return parser.error(block, 4/5.0, checkpoint)
 			else:
-				var params = parser.expect("parenthesized parameters")
+				var params = parser.expect("ParenthesizedParameterGroup")
 				if parser.is_success(params):
 					colon = parser.expect_token("punctuation", ":")
 					if parser.is_success(colon):
-						var block = parser.expect("block")
+						var block = parser.expect("BlockNode")
 						if parser.is_success(block):
 							return LabelNode.new(label.position, identifier.symbol, block, params)
 						else:

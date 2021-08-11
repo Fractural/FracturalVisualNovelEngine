@@ -7,7 +7,7 @@ extends "res://addons/FracturalVNE/core/story_script/ast_nodes/statements/steppe
 
 func get_types() -> Array:
 	var arr = .get_types()
-	arr.append("say")
+	arr.append("SayStatement")
 	return arr
 
 # ----- Typeable ----- #
@@ -42,8 +42,10 @@ func execute():
 	else:
 		var character_result = SSUtils.evaluate_and_cast(character, "Character")
 		if not is_success(character_result):
-			throw_error(stack_error(character_result, "Could not evaluate the character for the say statement."))
-			return
+			character_result = SSUtils.evaluate_and_cast(character, "String")
+			if not is_success(character_result):
+				throw_error(stack_error(character_result, "Could not evaluate the character for the say statement."))
+				return
 		text_printer_controller.say(character_result, text)
 		history_manager.add_entry(SayEntry.new(character_result, text))
 	
@@ -68,14 +70,21 @@ func debug_string(tabs_string: String) -> String:
 
 
 func propagate_call(method: String, arguments: Array = [], parent_first: bool = false):	
+	var result
 	if parent_first:
-		.propagate_call(method, arguments, parent_first)
+		result = .propagate_call(method, arguments, parent_first)
+		if not SSUtils.is_success(result):
+			return result
 	
 	if character != null:
-		character.propagate_call(method, arguments, parent_first)
-	
+		result = character.propagate_call(method, arguments, parent_first)
+		if not SSUtils.is_success(result):
+			return result
+		
 	if not parent_first:
-		.propagate_call(method, arguments, parent_first)
+		result = .propagate_call(method, arguments, parent_first)
+		if not SSUtils.is_success(result):
+			return result
 
 
 # ----- Serialization ----- #

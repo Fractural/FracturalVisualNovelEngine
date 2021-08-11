@@ -1,11 +1,11 @@
 extends "res://addons/FracturalVNE/core/story_script/ast_nodes/node/node_construct.gd"
 
 
-const BlockNode = preload("res://addons/FracturalVNE/core/story_script/ast_nodes/misc/block_node/block_node.gd")
+const BlockNode = preload("block_node.gd")
 
 
 func get_parse_types() -> Array:
-	return ["block"]
+	return ["BlockNode"]
 
 
 func get_keywords() -> Array:
@@ -22,7 +22,7 @@ func parse(parser):
 			while not parser.is_success(parser.expect_token("punctuation", "dedent")):
 				if parser.is_EOF():
 					return parser.error("Expected dedent to close block but reached end of the file instead.", 1, checkpoint)
-				var statement = parser.expect("statement")
+				var statement = parser.expect("Statement")
 				if not parser.is_success(statement):
 					if statements.size() == 0:
 						statement.message += " Expected at least one statement in a block."

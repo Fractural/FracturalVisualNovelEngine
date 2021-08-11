@@ -7,7 +7,7 @@ extends "show_statement.gd"
 
 func get_types() -> Array:
 	var arr = .get_types()
-	arr.append("multivisual show")
+	arr.append("MultiVisualShowStatement")
 	return arr
 
 # ----- Typeable ----- #
@@ -48,11 +48,11 @@ func _get_transition_result():
 
 func debug_string(tabs_string: String) -> String:
 	var string = ""
-	string += tabs_string + "MULTI VISUALS SHOW :" 
+	string += tabs_string + "MULTI VISUALS SHOW:" 
 	
 	string += "\n" + tabs_string + "{"
 	
-	string += "\n" + tabs_string + "\tVISUAL: "
+	string += "\n" + tabs_string + "\tVISUAL:"
 	string += "\n" + tabs_string + "\t{"
 	string += "\n" + actor.debug_string(tabs_string + "\t\t")
 	string += "\n" + tabs_string + "\t}"
@@ -61,7 +61,7 @@ func debug_string(tabs_string: String) -> String:
 		string += "\n" + tabs_string + "\tMODIFIERS: " + modifiers_string
 	
 	if transition != null:
-		string += "\n" + tabs_string + "\tTRANSITION: "
+		string += "\n" + tabs_string + "\tTRANSITION:"
 		string += "\n" + tabs_string + "\t{"
 		string += "\n" + transition.debug_string(tabs_string + "\t\t")
 		string += "\n" + tabs_string + "\t}"
@@ -71,14 +71,21 @@ func debug_string(tabs_string: String) -> String:
 
 
 func propagate_call(method: String, arguments: Array = [], parent_first: bool = false):	
+	var result
 	if parent_first:
-		.propagate_call(method, arguments, parent_first)
+		result = .propagate_call(method, arguments, parent_first)
+		if not SSUtils.is_success(result):
+			return result
 	
 	if actor != null:
-		actor.propagate_call(method, arguments, parent_first)
+		result = actor.propagate_call(method, arguments, parent_first)
+		if not SSUtils.is_success(result):
+			return result
 	
 	if not parent_first:
-		.propagate_call(method, arguments, parent_first)
+		result = .propagate_call(method, arguments, parent_first)
+		if not SSUtils.is_success(result):
+			return result
 
 
 # ----- Serialization ----- #

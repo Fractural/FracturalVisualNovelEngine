@@ -1,4 +1,15 @@
 extends "res://addons/FracturalVNE/core/story_script/ast_nodes/expressions/operators/operator/operator.gd"
+# Treats nodes in parentheses as a single expression.
+
+
+# ----- Typeable ----- #
+
+func get_types() -> Array:
+	var arr = .get_types()
+	arr.append("ParenthesizedExpression")
+	return arr
+
+# ----- Typeable ----- #Z
 
 
 var operand
@@ -21,14 +32,22 @@ func debug_string(tabs_string: String) -> String:
 	return string
 
 
+# -- StoryScriptErrorable -- #
 func propagate_call(method, arguments = [], parent_first = false):
+	var result
 	if parent_first:
-		.propagate_call(method, arguments, parent_first)
+		result = .propagate_call(method, arguments, parent_first)
+		if not SSUtils.is_success(result):
+			return result
 	
-	operand.propagate_call(method, arguments, parent_first)
+	result = operand.propagate_call(method, arguments, parent_first)
+	if not SSUtils.is_success(result):
+		return result
 	
 	if not parent_first:
-		.propagate_call(method, arguments, parent_first)
+		result = .propagate_call(method, arguments, parent_first)
+		if not SSUtils.is_success(result):
+			return result
 
 
 # ----- Serialization ----- #

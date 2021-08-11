@@ -11,7 +11,7 @@ func get_punctuation():
 
 func get_parse_types():
 	var arr = .get_parse_types()
-	arr.append("parenthesized expression")
+	arr.append("ParenthesizedExpression")
 	return arr
 
 
@@ -19,7 +19,7 @@ func parse(parser):
 	var checkpoint = parser.save_reader_state()
 	var open_paren = parser.expect_token("punctuation", "(")
 	if parser.is_success(open_paren):
-		var expression = parser.expect("expression")
+		var expression = parser.expect("Expression")
 		if not parser.is_success(expression):
 			return parser.error(expression, 1, checkpoint)
 		

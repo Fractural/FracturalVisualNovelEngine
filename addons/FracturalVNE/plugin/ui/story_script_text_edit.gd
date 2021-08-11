@@ -4,12 +4,18 @@ extends TextEdit
 # A special TextEdit for editing StoryScript files in.
 
 
+# TODO: Allow each construct to specify the color it wants
+#		for it's keywords. This would make it easier to
+#		add keywords to the text edit instead of having
+#		to edit this script everytime a new keyword is used
+#		in a construct.
+
 const ACCENT_1_KEYWORDS = [ 
 	"if", "elif", "else", "pass", "call"
 	]
 const ACCENT_2_KEYWORDS = [ 
 	"label", "jump", "with", "show", "hide", "remove", "animate",
-	"pause", "for", "move", "to", "scene", 
+	"pause", "for", "move", "to", "scene", "import", "sound",
 	"==", ">", "<", ">=", "<=" 
 	]
 const ACCENT_3_KEYWORDS = [

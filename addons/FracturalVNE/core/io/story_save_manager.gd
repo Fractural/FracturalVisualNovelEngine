@@ -38,7 +38,7 @@ func save_state(save_state, save_slot_id: int):
 	
 	assert(err == OK, "Error occured while opening file: " + str(err))
 	
-	save_file.store_line(JSON.print(save_state.serialize()))
+	save_file.store_string(JSON.print(save_state.serialize()))
 	save_file.close()
 	emit_signal("state_saved", save_state)
 

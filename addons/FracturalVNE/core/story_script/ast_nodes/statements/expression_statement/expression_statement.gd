@@ -7,7 +7,7 @@ extends "res://addons/FracturalVNE/core/story_script/ast_nodes/statements/statem
 
 func get_types() -> Array:
 	var arr = .get_types()
-	arr.append("expression statement")
+	arr.append("ExpressionStatement")
 	return arr
 
 # ----- Typeable ----- #
@@ -37,27 +37,35 @@ func debug_string(tabs_string: String) -> String:
 	return string
 
 
+# -- StoryScriptErrorable -- #
 func propagate_call(method, arguments = [], parent_first = false):
+	var result
 	if parent_first:
-		.propagate_call(method, arguments, parent_first)
+		result = .propagate_call(method, arguments, parent_first)
+		if not SSUtils.is_success(result):
+			return result
 	
-	expression.propagate_call(method, arguments)
-	
+	result = expression.propagate_call(method, arguments, parent_first)
+	if not SSUtils.is_success(result):
+		return result
+		
 	if not parent_first:
-		.propagate_call(method, arguments, parent_first)
+		result = .propagate_call(method, arguments, parent_first)
+		if not SSUtils.is_success(result):
+			return result
 
 
 # ----- Serialization ----- #
 
 func serialize() -> Dictionary:
 	var serialized_object = .serialize()
-	serialized_object["expression"] = expression.serialize()
+	serialized_object["Expression"] = expression.serialize()
 	return serialized_object
 
 
 func deserialize(serialized_object):	
 	var instance = .deserialize(serialized_object)
-	instance.expression = SerializationUtils.deserialize(serialized_object["expression"])
+	instance.expression = SerializationUtils.deserialize(serialized_object["Expression"])
 	return instance
 
 # ----- Serialization ----- #

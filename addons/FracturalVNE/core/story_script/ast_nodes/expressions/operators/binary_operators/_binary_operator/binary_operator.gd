@@ -1,10 +1,14 @@
 extends "res://addons/FracturalVNE/core/story_script/ast_nodes/expressions/operators/operator/operator.gd"
 
 
+# ----- Typeable ----- #
+
 func get_types() -> Array:
 	var arr = .get_types()
-	arr.append("binary operator")
+	arr.append("BinaryOperator")
 	return arr
+
+# ----- Typeable ----- #
 
 
 var left_operand
@@ -41,14 +45,24 @@ func debug_string(tabs_string: String) -> String:
 
 
 func propagate_call(method: String, arguments: Array = [], parent_first: bool = false):
+	var result
 	if parent_first:
-		.propagate_call(method, arguments, parent_first)
+		result = .propagate_call(method, arguments, parent_first)
+		if not SSUtils.is_success(result):
+			return result
 	
-	left_operand.propagate_call(method, arguments)
-	right_operand.propagate_call(method, arguments)
+	result = left_operand.propagate_call(method, arguments, parent_first)
+	if not SSUtils.is_success(result):
+		return result
+			
+	result = right_operand.propagate_call(method, arguments, parent_first)
+	if not SSUtils.is_success(result):
+		return result
 	
 	if not parent_first:
-		.propagate_call(method, arguments, parent_first)
+		result = .propagate_call(method, arguments, parent_first)
+		if not SSUtils.is_success(result):
+			return result
 
 
 # ----- Serialization ----- #

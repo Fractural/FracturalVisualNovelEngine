@@ -52,5 +52,4 @@ func _on_transition_finished(skipped: bool) -> void:
 			# that means we have not finished the show transition.
 			show_transition.disconnect("transition_finished", self, "_on_transition_finished")
 			show_transition._on_transition_finished(skipped)
-	# TODO NOW: Fix fade_to_black transition stack overflowing.
 	._on_transition_finished(skipped)

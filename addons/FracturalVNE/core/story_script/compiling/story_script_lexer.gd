@@ -388,24 +388,30 @@ func add_newline_and_maybe_indent():
 	# Consume new line
 	consume()
 	
-	# If the previous line was not a newline or an indent/dedent, 
+	# REFACTOR COMMENT: I have no idea what a "trailing indent" means :(
+	#
+	# If the previous token was not a newline or an indent/dedent, 
 	# then add a newline token. This removes blank lines from the tokens list 
 	# and the indent/dedent check prevents a newline from trailing after a dedent
 	# (Newlines trailing after indents/dedents are bad since newlines are supposed 
 	# to be markers for the end of a statement and indents/dedents aren't statements).
-	if tokens.size() > 0 and not (tokens.back().type == "punctuation" and (tokens.back().symbol == "newline" or tokens.back().symbol == "dedent" or tokens.back().symbol == "indent")):
+	if (tokens.size() > 0 
+		and not (tokens.back().type == "punctuation" 
+		and (tokens.back().symbol == "newline" 
+			or tokens.back().symbol == "dedent" 
+			or tokens.back().symbol == "indent")
+			)
+		):
 		add_token("punctuation", "newline")
 	
-	# Check if the newline is just a comment line. If so, then do not parse
-	# any indentation. This removes comment only lines from the tokens list.
+	# Check if the newline is just a comment/blank line by peeking as far as 
+	# popssible until the next line starts. If the line contains only white 
+	# space and/or a comment, then do not parse any indentation. This removes 
+	# comment/blank lines from the tokens list.
 	var j = 1
-	if USE_TABS_INDENT:
-		while reader.peek(j) == TAB:
-			j += 1
-	else:
-		while reader.peek(j) == SPACE:
-			j += 1
-	if reader.peek(j) == HASHTAG:
+	while reader.peek(j) == TAB or reader.peek(j) == SPACE:
+		j += 1
+	if reader.peek(j) == HASHTAG or reader.peek(j) == NEWLINE:
 		return
 	
 	var indent_count: int

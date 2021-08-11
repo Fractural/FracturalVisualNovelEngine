@@ -4,27 +4,27 @@ extends "res://addons/FracturalVNE/core/story_script/ast_nodes/node/node_constru
 
 
 func get_parse_types() -> Array:
-	return ["expression component"]
+	return ["ExpressionComponent"]
 
 
 # Parses unary operators
 func parse(parser):
 	var checkpoint = parser.save_reader_state()
-	var pre_unary = parser.expect("pre unary operator")
+	var pre_unary = parser.expect("PreUnaryOperator")
 	if parser.is_success(pre_unary):
-		var expression = parser.expect("expression component")
+		var expression = parser.expect("ExpressionComponent")
 		if parser.is_success(expression):
 			pre_unary.operand = expression
 			return pre_unary
 		else:
 			return parser.error(expression, 0, checkpoint)
 	else:
-		var value = parser.expect("value component")
+		var value = parser.expect("ValueComponent")
 		if parser.is_success(value):
 			var previous_unary = null
 			# Chaining together post unary operators
 			while true:
-				var post_unary = parser.expect("post unary operator")
+				var post_unary = parser.expect("PostUnaryOperator")
 				if not parser.is_success(post_unary):
 					break
 				if previous_unary == null:

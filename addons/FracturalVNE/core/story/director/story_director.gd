@@ -84,11 +84,11 @@ func _ready() -> void:
 	_auto_step_timer.one_shot = true
 	
 	# Skipping seems to just be the fastest version of auto stepping according to renpy.
-	# TODO: Maybe try to skip each frame?
+	# TODO DISCUSS: Maybe try to skip each frame?
 	
-	# TODO: Refactor out skipping to a custom timer inside process()
-	#		I'm pretty sure a regular timer node cannot fire multiple times 
-	#		in one frame, therefore when the timer overshoots, some time is lost.
+	# TODO DISCUSS: Refactor out skipping to a custom timer inside process()
+	#				I'm pretty sure a regular timer node cannot fire multiple times 
+	#				in one frame, therefore when the timer overshoots, some time is lost.
 	_skip_timer = Timer.new()
 	add_child(_skip_timer)
 	_skip_timer.connect("timeout", self, "try_step")
@@ -149,7 +149,7 @@ func step():
 	if queued_overridden_steps > 0:
 		release_queued_overridden_steps()
 	
-	# TODO: Consider decoupling story director from nodes to follow single responsibility principle.
+	# TODO DISCUSS: Consider decoupling story director from nodes to follow single responsibility principle.
 	#		That is, a story director should not know about the existance of a node and instead
 	#		would operate using events and callbacks to step.
 	#		Though tbh this is not much of a priority right now since even renpy
