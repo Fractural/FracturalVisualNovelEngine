@@ -1,5 +1,5 @@
 extends WAT.Test
-# Tests the behaviour of a StoryAudioChannelSerializer.
+# Tests a StoryAudioChannelSerializer.
 
 
 const FracUtils = FracVNE.Utils

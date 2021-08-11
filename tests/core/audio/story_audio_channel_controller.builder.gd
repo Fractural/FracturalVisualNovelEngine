@@ -1,4 +1,5 @@
 extends Reference
+# Builds a StoryAudioChannelController for testing.
 
 
 const CONTROLLER_PREFAB = preload("res://addons/FracturalVNE/core/audio/story_audio_channel.tscn")

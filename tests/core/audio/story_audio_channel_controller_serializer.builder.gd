@@ -1,5 +1,6 @@
 extends Reference
-	
+# Builds a StoryAudioChannelController for testing.
+
 
 const FracUtils = FracVNE.Utils
 const Serializer = preload("res://addons/FracturalVNE/core/audio/story_audio_channel_controller_serializer.gd")

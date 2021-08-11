@@ -1,5 +1,5 @@
 extends WAT.Test
-# Tests the behaviour of StoryAudioChannel.
+# Tests StoryAudioChannel.
 
 
 const FracUtils = FracVNE.Utils
