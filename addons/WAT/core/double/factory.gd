@@ -4,9 +4,18 @@ const ScriptDirector = preload("script_director.gd")
 const SceneDirector = preload("scene_director.gd")
 var registry
 
-func script(path, inner: String = "", deps: Array = []) -> ScriptDirector:
+func script_blank(path, blank_impl_type: String, blank_impl_type_for_inner: String = ""):
+	# If blank_impl_type_for_inner is used, then
+	# we treat the second argument as the inner class name.
+	# This a hacky way to get method overloading to work.
+	if blank_impl_type_for_inner != "":
+		return script(path, blank_impl_type, [], blank_impl_type_for_inner)
+	else:
+		return script(path, "", [], blank_impl_type)
+
+func script(path, inner: String = "", deps: Array = [], blank_impl_type = "") -> ScriptDirector:
 	if path is GDScript: path = path.resource_path
-	return ScriptDirector.new(registry, path, inner, deps)
+	return ScriptDirector.new(registry, path, inner, deps, blank_impl_type)
 
 func scene(tscn) -> SceneDirector:
 	# Must be String.tscn or PackedScene

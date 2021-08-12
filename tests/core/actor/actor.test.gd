@@ -27,7 +27,6 @@ func test_serialization() -> void:
 	var deserialized_actor = SerializationUtils.deserialize(serialized_actor)
 	
 	asserts.is_true(FracVNE.Utils.is_type(deserialized_actor, "Actor"), "Then the deserialized actor is an Actor.")
-	asserts.is_true(FracVNE.Utils.is_type(deserialized_actor, "Actor"), "Then the deserialized actor is an Actor.")
 	asserts.is_true(deserialized_actor.cached == true, "Then the deserialized actor's has the correct \"cached\" property.")
 
 

@@ -3,9 +3,12 @@ extends Reference
 
 func write(double) -> String:
 	var source: String = ""
-	source += _extension_to_string(double)
+	if double.is_blank_impl():
+		source += 'extends %s' % double.blank_impl_type
+	else:
+		source += _extension_to_string(double)
 	source += "\nconst WATRegistry = []\n"
-	if double.base_methods.has("_init"):
+	if not double.is_blank_impl() and double.base_methods.has("_init"):
 		source += _constructor_to_string(double.base_methods["_init"].arguments)
 
 	for name in double.methods:

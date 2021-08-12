@@ -4,8 +4,10 @@ extends WAT.Test
 
 const FracUtils = FracVNE.Utils
 const Serializer = preload("res://addons/FracturalVNE/core/audio/story_audio_channel_controller_serializer.gd")
+const ChannelBuilder = preload("res://tests/core/audio/story_audio_channel.builder.gd")
 const ChannelControllerBuilder = preload("res://tests/core/audio/story_audio_channel_controller.builder.gd")
 const SerializerBuilder = preload("res://tests/core/audio/story_audio_channel_controller_serializer.builder.gd")
+const ReferenceRegistryFakes = preload("res://tests/core/io/reference_registry.fakes.gd")
 
 
 func title():
@@ -13,30 +15,23 @@ func title():
 
 
 func test_serialization():
-	describe("When serializing a controller")
+	describe("When calling serialize() and deserialize()")
 	
 	# ----- Test Setup ----- #
 	
-	var serializer_results = SerializerBuilder.new() \
-		.dummy_story_director() \
-		.fake_reference_registry() \
-		.build() \
-	
-	var serializer = serializer_results.serializer
-	var fake_reference_registry = serializer_results.reference_registry
-	var dummy_story_director = serializer_results.story_director
+	var fake_reference_registry = ReferenceRegistryFakes.TestGetAddReference.new(direct)
+	var serializer = SerializerBuilder.new().default(direct) \
+		.inject_reference_registry(fake_reference_registry.double()) \
+		.build()
 	add_child(serializer)
 	
-	var controller_results = ChannelControllerBuilder.new() \
-		.dummy_story_director() \
-		.default_channel() \
+	var channel = ChannelBuilder.new().default(direct).build()
+	var controller = ChannelControllerBuilder.new().default(direct) \
+		.inject_channel(channel) \
 		.build()
-	
-	var controller = controller_results.controller
-	var channel = controller_results.channel
 	add_child(controller)
 	
-	fake_reference_registry.add_reference(channel)
+	fake_reference_registry.double().add_reference(channel)
 	
 	# ----- Test Setup ----- #
 	

@@ -44,6 +44,10 @@ func _get_controller_prefab():
 	return preload("story_audio_channel.tscn")
 
 
+func _to_string():
+	return "Channel:[audio_bus: %s, volume_db: %s, pitch_scale: %s, queue_by_default: %s, is_skippable: %s]" % [audio_bus, volume_db, pitch_scale, queue_by_default, is_skippable]
+
+
 # ----- Serialization ----- #
 
 func serialize() -> Dictionary:

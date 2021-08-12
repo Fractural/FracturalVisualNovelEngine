@@ -16,6 +16,7 @@ var klasses: Array = []
 var base_methods: Dictionary = {}
 var dependecies: Array = []
 var is_built_in: bool = false
+var blank_impl_type: String = ""
 var object
 var registry
 
@@ -23,18 +24,24 @@ var registry
 # <var name> <var value>
 var nodepaths: Dictionary = {}
 
-func _init(_registry, _klass: String, _inner_klass: String, deps: Array = []) -> void:
+func _init(_registry, _klass: String, _inner_klass: String, deps: Array = [], _blank_impl_type: String = "") -> void:
 	klass = _klass
 	inner_klass = _inner_klass
 	dependecies = deps
 	is_built_in = ClassDB.class_exists(_klass)
 	registry = _registry
 	registry.register(self)
+	blank_impl_type = _blank_impl_type
 	set_methods()
 	
 func method(name: String, keyword: String = "") -> Method:
 	if not methods.has(name):
-		methods[name] = Method.new(name, keyword, base_methods[name].arguments, base_methods[name].default_arguments)
+		methods[name] = Method.new(
+			name,
+			keyword, 
+			base_methods[name].arguments, 
+			base_methods[name].default_arguments, 
+			is_blank_impl())
 	return methods[name]
 
 func clear():
@@ -125,7 +132,7 @@ func script():
 	script.reload() # Necessary to load source code into memory
 	return script
 
-func double(deps: Array = [], show_error = true) -> Object:
+func double(deps: Array = [], show_error = false) -> Object:
 	if _created:
 		# Can only create unique instances
 		if show_error:
@@ -141,6 +148,9 @@ func double(deps: Array = [], show_error = true) -> Object:
 	for prop_name in nodepaths:
 		object.set(prop_name, nodepaths[prop_name])
 	return object
+
+func is_blank_impl():
+	return blank_impl_type != ""
 	
 
 

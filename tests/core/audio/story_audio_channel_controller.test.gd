@@ -4,8 +4,10 @@ extends WAT.Test
 
 const FracUtils = FracVNE.Utils
 const ChannelControllerBuilder = preload("res://tests/core/audio/story_audio_channel_controller.builder.gd")
+const ChannelBuilder = preload("res://tests/core/audio/story_audio_channel.builder.gd")
 const ChannelController = preload("res://addons/FracturalVNE/core/audio/story_audio_channel_controller.gd")
 const StoryDirector = preload("res://addons/FracturalVNE/core/story/director/story_director.gd")
+const StoryDirectorFakes = preload("res://tests/core/story/director/story_director.fakes.gd")
 
 const BUILT_CONTROLLER: int = 0
 const BUILT_CHANNEL: int = 1
@@ -21,18 +23,19 @@ func title():
 
 # ----- Tests ----- #
 
-func test_not_skippable_play():
+func test_when_not_skippable_and_called_play():
 	describe("When not skippable and called play()")
 	
 	var mock_story_director = direct.script(StoryDirector)
-	mock_story_director.method("add_step_action").spy()
-	mock_story_director.method("remove_step_action").spy()
+	mock_story_director.method("add_step_action")
+	mock_story_director.method("remove_step_action")
 	
-	var builder = ChannelControllerBuilder.new() \
-		.unskippable_channel() \
+	var controller = ChannelControllerBuilder.new().default(direct) \
+		.inject_channel(ChannelBuilder.new().default(direct) \
+			.inject_is_skippable(false) \
+			.build()) \
 		.inject_story_director(mock_story_director.double()) \
 		.build()
-	var controller = builder.controller
 	
 	add_child(controller)
 	controller.play(SOUND_SAMPLE)
@@ -61,64 +64,68 @@ func test_not_skippable_play():
 	controller.free()
 
 
-func test_skippable_play():
+func test_when_skippable_and_called_play():
 	describe("When skippable and called play()")
 	
-	var builder = ChannelControllerBuilder.new() \
-		.skippable_channel() \
-		.spy_story_director() \
-		.build()
+	var mock_story_director = direct.script(StoryDirector)
+	mock_story_director.method("add_step_action")
+	mock_story_director.method("remove_step_action")
 	
-	var controller = builder.controller
-	var mock_story_director = builder.story_director
+	var controller = ChannelControllerBuilder.new().default(direct) \
+		.inject_channel(ChannelBuilder.new().default(direct) \
+			.inject_is_skippable(true) \
+			.build()) \
+		.inject_story_director(mock_story_director.double()) \
+		.build()
 	
 	add_child(controller)
 	controller.play(SOUND_SAMPLE)
 	
-	asserts.is_equal(mock_story_director.add_step_action_call_count, 1, "Then a step action is added at the start.")
-	
+	asserts.is_equal(mock_story_director.call_count("add_step_action"), 1, "Then a step action is added at the start.")
 	yield(until_signal(controller, "finished_playing", SOUND_SAMPLE.get_length() + 10), YIELD)
-	
-	asserts.is_equal(mock_story_director.remove_step_action_call_count, 1, "Then the step action is removed once at the end.")
+	asserts.is_equal(mock_story_director.call_count("remove_step_action"), 1, "Then the step action is removed once at the end.")
 	
 	controller.free()
 
 
-func test_skippable_destructor():
+func test_when_skippable_and_the_controller_is_deleted_while_playing():
 	describe("When skippable and the controller is deleted while playing.")
 	
-	var builder = ChannelControllerBuilder.new() \
-		.skippable_channel() \
-		.spy_story_director() \
+	var mock_story_director = direct.script(StoryDirector)
+	mock_story_director.method("add_step_action")
+	mock_story_director.method("remove_step_action")
+
+	var controller = ChannelControllerBuilder.new().default(direct) \
+		.inject_channel(ChannelBuilder.new().default(direct) \
+			.inject_is_skippable(true) \
+			.build()) \
+		.inject_story_director(mock_story_director.double()) \
 		.build()
-	
-	var controller = builder.controller
-	var mock_story_director = builder.story_director
 	
 	add_child(controller)
 	controller.play(SOUND_SAMPLE)
 	controller.free()
 	
-	asserts.is_equal(mock_story_director.remove_step_action_call_count, 1, "Then the step action is removed.")
+	asserts.is_equal(mock_story_director.call_count("remove_step_action"), 1, "Then the step action is removed.")
 
 
-func test_skippable_play_then_skip():
+func test_when_skippable_called_play_and_skipped_playing():
 	describe("When skippable, called play(), and skipped playing")
 	
-	var builder = ChannelControllerBuilder.new() \
-		.skippable_channel() \
-		.fake_story_director() \
+	var fake_story_director = StoryDirectorFakes.TestSkip.new(direct)
+	var controller = ChannelControllerBuilder.new() \
+		.inject_channel(ChannelBuilder.new().default(direct) \
+			.inject_is_skippable(true) \
+			.build()) \
+		.inject_story_director(fake_story_director.double()) \
 		.build()
-	
-	var controller = builder.controller
-	var fake_story_director = builder.story_director
 	
 	watch(controller, "finished_playing")
 	
 	add_child(controller)
 	controller.play(SOUND_SAMPLE)
 	
-	fake_story_director._t__skip_all_step_actions()
+	fake_story_director.skip_all_step_actions()
 	
 	asserts.signal_was_emitted_x_times(controller, "finished_playing", 1, "Then the controller finished early.")
 
