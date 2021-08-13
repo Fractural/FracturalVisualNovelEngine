@@ -9,6 +9,14 @@ extends Reference
 # and should not have to implement checks for their parameters.
 
 
+# ----- Typeable ----- #
+
+func get_types() -> Array:
+	return ["StoryScriptError"]
+
+# ----- Typeable ----- #
+
+
 const Position = preload("res://addons/FracturalVNE/core/story_script/story_script_position.gd")
 
 
@@ -42,6 +50,14 @@ func runtime_error_string():
 class ErrorStack extends Reference:
 	# Stores a stack of FracVNE.StoryScript.Errors and is used to generate stack traces
 	# to debug a StoryScript.
+	
+	
+	# ----- Typeable ----- #
+	
+	func get_types() -> Array:
+		return ["StoryScriptError"]
+	
+	# ----- Typeable ----- #
 	
 	
 	var errors = []

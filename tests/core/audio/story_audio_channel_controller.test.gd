@@ -23,8 +23,10 @@ func title():
 
 # ----- Tests ----- #
 
-func test_when_not_skippable_and_called_play():
+func test_playing_audio_for_unskippable_controller():
 	describe("When not skippable and called play()")
+	
+	# ----- Setup ----- #
 	
 	var mock_story_director = direct.script(StoryDirector)
 	mock_story_director.method("add_step_action")
@@ -38,10 +40,14 @@ func test_when_not_skippable_and_called_play():
 		.build()
 	
 	add_child(controller)
+	
+	# ----- Setup ----- #
+	
+	
 	controller.play(SOUND_SAMPLE)
 	
-	asserts.is_true(controller.audio_player.is_playing(), "Then, @time = 0, the audio player is playing.")
-	asserts.is_equal(controller.audio_player.stream, SOUND_SAMPLE, "Then, @time = 0, the audio player is playing the correct sample.")
+	asserts.is_true(_is_audio_playing(), "Then, @time = 0, the audio player is playing.")
+	asserts.is_equal(controller.get_current_sound(), SOUND_SAMPLE, "Then, @time = 0, the audio player is playing the correct sample.")
 	
 	# We cannot wait for 1/2 sound_sample length or greater since it seems like
 	# you may sometimes hit a race condition where the audio player finishes early before the 
@@ -50,22 +56,29 @@ func test_when_not_skippable_and_called_play():
 	var halfway_delay: float = SOUND_SAMPLE.get_length() / 3.0
 	yield(until_timeout(halfway_delay), YIELD)
 
-	asserts.is_true(controller.audio_player.is_playing(), "Then, @time = 1/3 sample's length, the audio player is playing.")
-	asserts.is_equal(controller.audio_player.stream, SOUND_SAMPLE, "Then, @time = 1/3 of sample's legnth, the audio player is playing the correct sample.")
+	asserts.is_true(_is_audio_playing(), "Then, @time = 1/3 sample's length, the audio player is playing.")
+	asserts.is_equal(controller.get_current_sound(), SOUND_SAMPLE, "Then, @time = 1/3 of sample's legnth, the audio player is playing the correct sample.")
 
 	yield(until_signal(controller, "finished_playing", SOUND_SAMPLE.get_length() + 10), YIELD)
 	
-	asserts.is_false(controller.audio_player.is_playing(), "Then, @time > sample's length, the audio player stops playing.")
-	asserts.is_null(controller.audio_player.stream, "Then, @time > sample's length, the audio player's stream is null.")
+	asserts.is_false(_is_audio_playing(), "Then, @time > sample's length, the audio player stops playing.")
+	asserts.is_null(controller.get_current_sound(), "Then, @time > sample's length, the audio player's stream is null.")
 	
 	asserts.is_equal(mock_story_director.call_count("add_step_action"), 0, "Then no step actions were added.")
 	asserts.is_equal(mock_story_director.call_count("remove_step_action"), 0, "Then no step actions were removed.")
 	
-	controller.free()
+	
+	# ----- Cleanup ----- #
+	
+	FracUtils.try_free(controller)
+	
+	# ----- Cleanup ----- #
 
 
-func test_when_skippable_and_called_play():
+func test_playing_audio_for_skippable_controller():
 	describe("When skippable and called play()")
+	
+	# ----- Setup ----- #
 	
 	var mock_story_director = direct.script(StoryDirector)
 	mock_story_director.method("add_step_action")
@@ -79,17 +92,28 @@ func test_when_skippable_and_called_play():
 		.build()
 	
 	add_child(controller)
+	
+	# ----- Setup ----- #
+	
+	
 	controller.play(SOUND_SAMPLE)
 	
 	asserts.is_equal(mock_story_director.call_count("add_step_action"), 1, "Then a step action is added at the start.")
 	yield(until_signal(controller, "finished_playing", SOUND_SAMPLE.get_length() + 10), YIELD)
 	asserts.is_equal(mock_story_director.call_count("remove_step_action"), 1, "Then the step action is removed once at the end.")
 	
-	controller.free()
+	
+	# ----- Cleanup ----- #
+	
+	FracUtils.try_free(controller)
+	
+	# ----- Cleanup ----- #
 
 
-func test_when_skippable_and_the_controller_is_deleted_while_playing():
+func test_destructor_cleanup_for_skippable_controller():
 	describe("When skippable and the controller is deleted while playing.")
+	
+	# ----- Setup ----- #
 	
 	var mock_story_director = direct.script(StoryDirector)
 	mock_story_director.method("add_step_action")
@@ -103,14 +127,27 @@ func test_when_skippable_and_the_controller_is_deleted_while_playing():
 		.build()
 	
 	add_child(controller)
+	
+	# ----- Setup ----- #
+	
+	
 	controller.play(SOUND_SAMPLE)
 	controller.free()
 	
 	asserts.is_equal(mock_story_director.call_count("remove_step_action"), 1, "Then the step action is removed.")
+	
+	
+	# ----- Cleanup ----- #
+	
+	FracUtils.try_free(controller)
+	
+	# ----- Cleanup ----- #
 
 
-func test_when_skippable_called_play_and_skipped_playing():
+func test_skipping_audio_for_skippable_controller():
 	describe("When skippable, called play(), and skipped playing")
+	
+	# ----- Setup ----- #
 	
 	var fake_story_director = StoryDirectorFakes.TestSkip.new(direct)
 	var controller = ChannelControllerBuilder.new() \
@@ -121,12 +158,27 @@ func test_when_skippable_called_play_and_skipped_playing():
 		.build()
 	
 	watch(controller, "finished_playing")
-	
 	add_child(controller)
+	
+	# ----- Setup ----- #
+	
+	
 	controller.play(SOUND_SAMPLE)
 	
 	fake_story_director.skip_all_step_actions()
 	
 	asserts.signal_was_emitted_x_times(controller, "finished_playing", 1, "Then the controller finished early.")
+	
+	
+	# ----- Cleanup ----- #
+	
+	FracUtils.try_free(controller)
+	
+	# ----- Cleanup ----- #
 
 # ----- Tests ----- #
+
+
+func _is_audio_playing():
+	# FUTURE REFACTOR: The db for silence is -INF in Godot 4.0 instead of -200.
+	return AudioServer.get_bus_peak_volume_left_db(AudioServer.get_bus_index("Master"), 0) > -200

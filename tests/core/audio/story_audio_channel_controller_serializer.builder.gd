@@ -22,22 +22,19 @@ func build():
 	return serializer
 
 
-func inject_serializer(serializer_):
-	serializer = serializer_
-	return self
-
-
 func inject_story_director(story_director_):
+	FracUtils.try_free(story_director)
 	story_director = story_director_
 	return self
 
 
 func inject_reference_registry(reference_registry_):
+	FracUtils.try_free(reference_registry)
 	reference_registry = reference_registry_
 	return self
 
 
 func default(direct):
-	story_director = direct.script_blank(StoryDirector, "Reference").double()
-	reference_registry = direct.script_blank(ReferenceRegistry, "Reference").double()
+	inject_story_director(direct.script_blank(StoryDirector, "Reference").double())
+	inject_reference_registry(direct.script_blank(ReferenceRegistry, "Reference").double())
 	return self

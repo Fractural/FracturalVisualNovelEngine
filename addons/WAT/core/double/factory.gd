@@ -14,7 +14,8 @@ func script_blank(path, blank_impl_type: String, blank_impl_type_for_inner: Stri
 		return script(path, "", [], blank_impl_type)
 
 func script(path, inner: String = "", deps: Array = [], blank_impl_type = "") -> ScriptDirector:
-	if path is GDScript: path = path.resource_path
+	if path is GDScript: 
+		path = path.resource_path
 	return ScriptDirector.new(registry, path, inner, deps, blank_impl_type)
 
 func scene(tscn) -> SceneDirector:

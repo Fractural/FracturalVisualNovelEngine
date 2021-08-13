@@ -14,7 +14,11 @@ func title():
 
 
 func start():
+	# ----- Setup ----- #
+	
 	channel = Channel.new("Master", 2, 2, true, true)
+	
+	# ----- Setup ----- #
 
 
 func test_serialization():
@@ -25,7 +29,7 @@ func test_serialization():
 	asserts.is_true(FracUtils.equals(channel, deserialized_channel), "Then deserialized channel == original channel.")
 
 
-func test_instantiation() -> void:
+func test_controller_instantiation() -> void:
 	describe("When calling instantiate_controller()")
 	var mock_story_director = direct.script(StoryDirector)
 	var controller = channel.instantiate_controller(mock_story_director.double())

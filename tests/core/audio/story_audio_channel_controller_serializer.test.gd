@@ -17,7 +17,7 @@ func title():
 func test_serialization():
 	describe("When calling serialize() and deserialize()")
 	
-	# ----- Test Setup ----- #
+	# ----- Setup ----- #
 	
 	var fake_reference_registry = ReferenceRegistryFakes.TestGetAddReference.new(direct)
 	var serializer = SerializerBuilder.new().default(direct) \
@@ -33,7 +33,8 @@ func test_serialization():
 	
 	fake_reference_registry.double().add_reference(channel)
 	
-	# ----- Test Setup ----- #
+	# ----- Setup ----- #
+	
 	
 	asserts.is_true(serializer.can_serialize(controller), "Then can serialize the controller.")
 	var serialized_controller = serializer.serialize(controller)
@@ -46,4 +47,11 @@ func test_serialization():
 	serializer.fetch_dependencies(deserialized_controller, serialized_controller)
 	
 	asserts.is_true(FracUtils.equals(controller, deserialized_controller), "Then deserialized controller == original controller.")
-	serializer.free()
+	
+	
+	# ----- Cleanup ----- #
+	
+	FracUtils.try_free(serializer)
+	FracUtils.try_free(controller)
+	
+	# ----- Cleanup ----- #

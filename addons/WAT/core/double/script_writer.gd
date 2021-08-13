@@ -10,10 +10,10 @@ func write(double) -> String:
 	source += "\nconst WATRegistry = []\n"
 	if not double.is_blank_impl() and double.base_methods.has("_init"):
 		source += _constructor_to_string(double.base_methods["_init"].arguments)
-
+	
 	for name in double.methods:
 		var m = double.methods[name]
-		source += _method_to_string(double.get_instance_id(), m)
+		source += _method_to_string(double.get_instance_id(), m, double.is_blank_impl())
 	for klass in double.klasses:
 		source += _inner_class(klass)
 	source = source.replace(",)", ")")
@@ -32,14 +32,15 @@ func _constructor_to_string(parameters: String) -> String:
 	constructor += "\n\tpass\n"
 	return constructor
 
-func _method_to_string(id: int, method: Object) -> String:
+func _method_to_string(id: int, method: Object, is_blank_impl: bool) -> String:
 	var text: String
 	text += "{keyword}func {name}({args_with_defaults}):"
 	text += "\n\tvar args = [{args}]"
 	text += "\n\tvar method = WATRegistry[0].method({id}, '{name}')"
 	text += "\n\tmethod.add_call(args)"
-	text += "\n\tif method.executes(args):"
-	text += "\n\t\treturn .{name}({args})"  # We may want to add a retval check here
+	if not is_blank_impl:
+		text += "\n\tif method.executes(args):"
+		text += "\n\t\treturn .{name}({args})"  # We may want to add a retval check here
 	text += "\n\treturn method.primary(args)\n\n"
 	text = text.format({"id": id, "keyword": method.keyword, 
 						"name": method.name, "args_with_defaults": method.args_with_defaults, 

@@ -2,6 +2,7 @@ extends Node
 # Builds a StoryAudioManager for testing.
 
 
+const FracUtils = FracVNE.Utils
 const StoryAudioManager = preload("res://addons/FracturalVNE/core/audio/story_audio_manager.gd")
 const StoryDirector = preload("res://addons/FracturalVNE/core/story/director/story_director.gd")
 const ReferenceRegistry = preload("res://addons/FracturalVNE/core/io/reference_registry.gd")
@@ -30,28 +31,32 @@ func build():
 
 
 func inject_channels_holder(channels_holder_):
+	FracUtils.try_free(channels_holder)
 	channels_holder = channels_holder_
 	return self
 
 
 func inject_reference_registry(reference_registry_):
+	FracUtils.try_free(reference_registry)
 	reference_registry = reference_registry_
 	return self
 
 
 func inject_serialization_manager(serialization_manager_):
+	FracUtils.try_free(serialization_manager)
 	serialization_manager = serialization_manager_
 	return self
 
 
-func inject_story_audio_manager(story_audio_manager_):
-	story_audio_manager = story_audio_manager_
+func inject_story_director(story_director_):
+	FracUtils.try_free(story_director)
+	story_director = story_director_
 	return self
 
 
 func default(direct):
-	channels_holder = Node.new()
-	story_director = direct.script_blank(StoryDirector, "Reference").double()
-	reference_registry = direct.script_blank(ReferenceRegistry, "Reference").double()
-	serialization_manager = direct.script_blank(SerializationManager, "Reference").double()
+	inject_channels_holder(Node.new())
+	inject_story_director(direct.script_blank(StoryDirector, "Reference").double())
+	inject_reference_registry(direct.script_blank(ReferenceRegistry, "Reference").double())
+	inject_serialization_manager(direct.script_blank(SerializationManager, "Reference").double())
 	return self

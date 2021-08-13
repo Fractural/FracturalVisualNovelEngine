@@ -2,6 +2,7 @@ extends Reference
 # Builds a StoryAudioChannelController for testing.
 
 
+const FracUtils = FracVNE.Utils
 const CONTROLLER_PREFAB = preload("res://addons/FracturalVNE/core/audio/story_audio_channel.tscn")
 const StoryDirector = preload("res://addons/FracturalVNE/core/story/director/story_director.gd")
 const AudioChannel = preload("res://addons/FracturalVNE/core/audio/story_audio_channel.gd")
@@ -21,16 +22,18 @@ func build():
 
 
 func inject_story_director(story_director_):
+	FracUtils.try_free(story_director)
 	story_director = story_director_
 	return self
 
 
 func inject_channel(channel_):
+	FracUtils.try_free(channel)
 	channel = channel_
 	return self
 
 
 func default(direct):
-	channel = direct.script_blank(AudioChannel, "Reference").double()
-	story_director = direct.script_blank(StoryDirector, "Reference").double()
+	inject_story_director(direct.script_blank(StoryDirector, "Reference").double())
+	inject_channel(direct.script_blank(AudioChannel, "Reference").double())
 	return self

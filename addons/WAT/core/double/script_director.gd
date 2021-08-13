@@ -33,6 +33,10 @@ func _init(_registry, _klass: String, _inner_klass: String, deps: Array = [], _b
 	registry.register(self)
 	blank_impl_type = _blank_impl_type
 	set_methods()
+	if is_blank_impl():
+		for m in script_method_list():
+			method(m.name)
+			print(str(m.name))
 	
 func method(name: String, keyword: String = "") -> Method:
 	if not methods.has(name):
@@ -84,7 +88,7 @@ func set_methods() -> void:
 		if def_idx > 0:
 			default_args = get_args_with_default(sanitized, m.default_args)
 		base_methods[m.name] = {"arguments": arguments, "default_arguments": default_args}
-		
+
 func get_args_with_default(args: String, base_default_args: Array) -> String:
 	var retval_args: String
 	var substr_start = args.length() - base_default_args.size()
@@ -103,6 +107,18 @@ func get_args_with_default(args: String, base_default_args: Array) -> String:
 		arg_index += 1
 	retval_args = retval_args.rstrip(", ")
 	return retval_args
+
+# This excludes _init methods
+func script_method_list() -> Array:
+	var list: Array = []
+	var script = load(klass) if inner_klass == "" else _load_nested_class()
+	list += script.get_script_method_list()
+	var filtered = {}
+	for m in list:
+		if m.name in filtered or m.name == "_init":
+			continue
+		filtered[m.name] = m
+	return filtered.values()	
 
 func method_list() -> Array:
 	var list: Array = []
@@ -149,7 +165,7 @@ func double(deps: Array = [], show_error = false) -> Object:
 		object.set(prop_name, nodepaths[prop_name])
 	return object
 
-func is_blank_impl():
+func is_blank_impl() -> bool:
 	return blank_impl_type != ""
 	
 
