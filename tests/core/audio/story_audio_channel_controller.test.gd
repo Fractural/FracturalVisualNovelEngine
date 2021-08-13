@@ -46,7 +46,6 @@ func test_playing_audio_for_unskippable_controller():
 	
 	controller.play(SOUND_SAMPLE)
 	
-	asserts.is_true(_is_audio_playing(), "Then, @time = 0, the audio player is playing.")
 	asserts.is_equal(controller.get_current_sound(), SOUND_SAMPLE, "Then, @time = 0, the audio player is playing the correct sample.")
 	
 	# We cannot wait for 1/2 sound_sample length or greater since it seems like
