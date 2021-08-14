@@ -37,13 +37,15 @@ func transition(node_: Node, duration_: float, does_cleanup_: bool = true):
 	time = 0
 	
 	set_process(true)
+	
+	# Manually invoke a process call to
+	# get the transition started immediately.
+	_process(0)
 
 
 func cleanup():
-	.cleanup()
-	_final_tick(1 if transition_type == TransitionType.SHOW else 0)
-	
 	FracVNE.Utils.reparent(node, original_node_parent)
+	.cleanup()
 
 
 func _tick(percentage):
@@ -56,4 +58,5 @@ func _final_tick(final_percentage):
 
 func _on_transition_finished(skipped: bool) -> void:
 	set_process(false)
+	_final_tick(1 if transition_type == TransitionType.SHOW else 0)
 	._on_transition_finished(skipped)

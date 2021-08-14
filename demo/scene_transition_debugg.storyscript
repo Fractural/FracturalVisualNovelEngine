@@ -1,0 +1,11 @@
+import "res://demo/visuals_testing_definitions.story"
+
+label looped: 
+	scene bg_library2
+	
+	"Is the bug fixed yet?"
+	
+	scene bg_library3 with fade_to_black
+	
+	"Hopefully?"
+	jump looped

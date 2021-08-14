@@ -1,15 +1,9 @@
 import "res://demo/visuals_testing_definitions.story"
 
-label looped:
-	sound music bgm_poppy_shop
-	
-	scene bg_library1
-	
-	pause 0.5
-		  
+label looped: 
 	scene bg_library2 with fade_to_black
 	
-	pause 0.5
+	pause 3
 	
 	scene bg_library3 with fade_to_black
 	
@@ -105,4 +99,7 @@ label looped:
 	hide godette10 with cross_fade
 	pause 2
 	
+	transition fade_to_black:
+		sound music bgm_poppy_shop
+		scene bg_library1
 	jump looped
