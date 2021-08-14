@@ -5,7 +5,7 @@ extends Node
 # the text at their own pace.
 
 
-# ----- StoryService Info ----- #
+# ----- StoryService ----- #
 
 const FuncDef = FracVNE.StoryScript.FuncDef
 const Param = FracVNE.StoryScript.Param
@@ -37,7 +37,7 @@ func configure_service(program_node):
 	label_dict = {}
 	curr_active_step_actions = []
 
-# --- StoryService Info End --- #
+# ----- StoryService ----- #
 
 
 enum StepState {
