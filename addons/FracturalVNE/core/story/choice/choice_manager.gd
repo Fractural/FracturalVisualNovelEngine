@@ -5,7 +5,7 @@ extends Node
 # ----- Typeable ----- #
 
 func get_types() -> Array:
-	return ["StoryScriptService", get_service_name(), "ASTVisitor"]
+	return ["StoryScriptService", get_service_name()]
 
 # ----- Typeable ----- #
 

@@ -23,7 +23,8 @@ func _init(position_ = null, option_nodes_ = null).(position_):
 	option_nodes = option_nodes_
 
 
-func _post_init():
+func configure_node(runtime_block_):
+	.configure_node(runtime_block_)
 	for option_node in option_nodes:
 		option_node.connect("executed", self, "_finish_execute")
 
@@ -101,12 +102,6 @@ func serialize() -> Dictionary:
 
 
 func deserialize(serialized_object):
-	var instance = _pre_init_deserialize(serialized_object)
-	instance._post_init()
-	return instance
-
-
-func _pre_init_deserialize(serialized_object):
 	var instance = .deserialize(serialized_object)
 	var option_nodes = []
 	for serialized_option_node in serialized_object["option_nodes"]:

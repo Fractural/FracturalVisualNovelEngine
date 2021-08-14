@@ -15,10 +15,10 @@ onready var show_transition = get_node(show_transition_path)
 onready var hide_transition = get_node(hide_transition_path)
 
 
-func transition(new_node_: Node, old_node_: Node, duration_: float):
-	if not _setup_transition(new_node_, old_node_, duration_):
+func transition(new_node_: Node, old_node_: Node, duration_: float, is_skipping_loading_: bool = false):
+	if not _setup_transition(new_node_, old_node_, duration_, is_skipping_loading_):
 		return
-	
+
 	# Hide new_node_ since old_node is currently transitioning
 	# No need to worry about showing any nodes since SingleTransitions
 	# automatically show the nodes while they are in use.
@@ -35,9 +35,13 @@ func transition(new_node_: Node, old_node_: Node, duration_: float):
 	_hide_transition_finished = false
 
 
-func _on_hide_transition_finished(skipped):
+func finished_loading():
 	show_transition.transition(new_node, duration / 2)
+
+
+func _on_hide_transition_finished(skipped):
 	_hide_transition_finished = true
+	_start_loading()
 
 
 func _on_transition_finished(skipped: bool) -> void:

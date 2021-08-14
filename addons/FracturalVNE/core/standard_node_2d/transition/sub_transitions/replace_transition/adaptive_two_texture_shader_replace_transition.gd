@@ -43,10 +43,13 @@ func _ready() -> void:
 	set_process(false)
 
 
-func transition(new_node_: Node, old_node_: Node, duration_: float):
-	if not _setup_transition(new_node_, old_node_, duration_):
+func transition(new_node_: Node, old_node_: Node, duration_: float, is_skipping_loading_: bool = false):
+	if not _setup_transition(new_node_, old_node_, duration_, is_skipping_loading_):
 		return
-	
+	_start_loading()
+
+
+func finished_loading():
 	var new_texture: Texture
 	var old_texture: Texture
 	
@@ -63,7 +66,7 @@ func transition(new_node_: Node, old_node_: Node, duration_: float):
 	new_node.visible = false
 	old_node.visible = false
 
-	if FracUtils.is_type(new_node_, "Control"):
+	if FracUtils.is_type(new_node, "Control"):
 		transition_texture_holder = control_transition_texture_holder
 	else:
 		transition_texture_holder = node_2d_transition_texture_holder

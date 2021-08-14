@@ -1,11 +1,24 @@
-# TODO NOW: 
-#	[X] Add "sound" statement that uses AudioManager to play a sound on a channel
-#	[ ] Perform integration testing with "sound" statement.
-#		[ ] Fix null reference exception for reparenting (Occurs in curve transition when reloading a save)
-#	[X] Make lexer ignoring blank lines
-#	[X] Make persisten editor data save to a file
-#	[X] Fix propagate_call not returning error.
+# Immediate TODO:
+#	[X] full_transition_action.gd
+#	[ ] full_transition_manager.gd
+#	[X] full_transitioon_statement.gd
+#	[ ] full_transition_statement_construct.gd
 
+# TODO NOW: 
+#	[ ] Make a full scene transition. Using screen shot manager, take a screenshot
+#		of the entire screen and then use it as a texture to transition into#
+#		something else. Make sure split full screen transitions into
+#		a start and end phase (therefore using two different statements) 
+#		to allow for loading in between transitioning
+#		in and out.
+#	
+#		Concept:
+#
+#		full transition cross_fade:
+#			# Do setup here
+#			remove Bob
+#			show Joe
+#	
 
 # TODO NEXT:
 #	[ ] Write a remove statement that can remove Visuals
@@ -25,16 +38,12 @@
 #		[ ] Maybe add support for loading animations directly as transitions?
 #			Seems too niche though...
 #	[ ] Make it optional to add dialog from a printer to the dialog history)
-# 	[ ] Add a loading functionality that loads an entire story script into the current story script.
-#		This should happen on init time, and will likely require a reparenting AST nodes since
-#		by default all StoryScripts are serialized with a ProgramNode.
 #		[ ] Add lazy loading that only loads the entire story when the game reaches the load statement.
 #			Maybe we would have to keep track of the lazy loads in an array in the serialized state and then
 #			loaded the current loaded lazy loads whenever the state is deserialized. This array will basically
 #			keep track of all loaded storyscripts and also the order they loaded in.
-#		[ ]	Use this to add global constants by adding "define" statements in a "default_constants.storyscript"
-#			and then loading "default_constants.storyscript". This lets users decide if they want to load in
-#			things or not.
+#		[ ]	Create and compile a default .story file that users can then
+#			load in for useful global variables.
 #			[ ]	PosLeft and PosRight to represent Vector2 on right and left side of
 #				the screen. These constants could then be used in move statements.
 #	[ ] Refactor all services to have a get_types() method.

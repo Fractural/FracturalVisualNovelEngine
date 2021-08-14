@@ -241,6 +241,8 @@ func _on_file_menu_item_pressed(meta):
 
 func _on_popup_about_to_show():
 	popup_dim.visible = true
+	open_file_dialog.invalidate()
+	save_file_dialog.invalidate()
 
 
 func _on_popup_hide():

@@ -1,0 +1,13 @@
+import "res://demo/visuals_testing_definitions.story"
+
+label start:
+	move godette to Point(0, 0)
+	show godette happy with cross_fade
+	
+	godette "Hi there!"
+	
+	transition fade_to_black:
+		move godette to Point(500, 0)
+		show godette surprised
+	
+	godette "I'm on your right now!"

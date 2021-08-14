@@ -16,7 +16,7 @@ const ACCENT_1_KEYWORDS = [
 const ACCENT_2_KEYWORDS = [ 
 	"label", "jump", "with", "show", "hide", "remove", "animate",
 	"pause", "for", "move", "to", "scene", "import", "sound",
-	"choice"
+	"choice", "transition",
 	]
 const ACCENT_3_KEYWORDS = [
 	

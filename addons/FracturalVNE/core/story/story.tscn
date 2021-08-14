@@ -1,4 +1,4 @@
-[gd_scene load_steps=41 format=2]
+[gd_scene load_steps=43 format=2]
 
 [ext_resource path="res://addons/FracturalVNE/core/story/story_manager.gd" type="Script" id=1]
 [ext_resource path="res://addons/FracturalVNE/core/story/director/story_director.gd" type="Script" id=2]
@@ -40,6 +40,8 @@
 [ext_resource path="res://addons/FracturalVNE/core/audio/story_audio_manager.gd" type="Script" id=38]
 [ext_resource path="res://addons/FracturalVNE/core/story_script/importing/story_import_manager.gd" type="Script" id=39]
 [ext_resource path="res://addons/FracturalVNE/core/story/choice/choice_manager.gd" type="Script" id=40]
+[ext_resource path="res://addons/FracturalVNE/core/full_transition/full_transition_manager.gd" type="Script" id=41]
+[ext_resource path="res://addons/FracturalVNE/core/visuals/texture_holders/types/single_texture_holder.gd" type="Script" id=42]
 
 [node name="Story" type="Node"]
 
@@ -205,6 +207,20 @@ serialization_manager_path = NodePath("../../../SerializationManager")
 [node name="ChoiceManager" type="Node" parent="StoryLoader/StoryServices"]
 script = ExtResource( 40 )
 
+[node name="FullTransitionManager" type="Node" parent="StoryLoader/StoryServices"]
+script = ExtResource( 41 )
+new_texture_rect_path = NodePath("../../../FullTransition/FullTransitionHolder/NewTextureRect")
+old_texture_rect_path = NodePath("../../../FullTransition/FullTransitionHolder/OldTextureRect")
+replace_transitioner_path = NodePath("ReplaceableTransitioner")
+screenshot_manager_path = NodePath("../../../ScreenshotManager")
+story_director_path = NodePath("../StoryDirector")
+
+[node name="ReplaceableTransitioner" type="Node" parent="StoryLoader/StoryServices/FullTransitionManager"]
+script = ExtResource( 35 )
+node_holder_path = NodePath("../../../../FullTransition/FullTransitionHolder/NewTextureRect")
+transition_holder_path = NodePath("../../../../FullTransition/FullTransitionHolder")
+old_node_holder_path = NodePath("../../../../FullTransition/FullTransitionHolder/OldTextureRect")
+
 [node name="ScreenshotManager" type="Node" parent="."]
 script = ExtResource( 16 )
 facade_viewport_texture_rect_path = NodePath("FacadeViewportTextureRect")
@@ -216,6 +232,7 @@ screenshot_gui_holder_path = NodePath("ScreenshotViewport/ScreenshotGUIHolder")
 [node name="ScreenshotViewport" type="Viewport" parent="ScreenshotManager"]
 size = Vector2( 1024, 600 )
 handle_input_locally = false
+usage = 0
 render_target_update_mode = 0
 physics_object_picking = true
 gui_disable_input = true
@@ -329,6 +346,45 @@ margin_right = 824.0
 [node name="DialogueTextReveal" parent="StoryGUIConfigurer/BasicGUI/Panel/VBoxContainer/TextPrinterHolder/BasicTextPrinter/Holder/Panel/MarginContainer/HSeparator" index="1"]
 margin_right = 824.0
 
+[node name="FullTransition" type="CanvasLayer" parent="."]
+layer = 40
+
+[node name="FullTransitionHolder" type="Control" parent="FullTransition"]
+anchor_right = 1.0
+anchor_bottom = 1.0
+mouse_filter = 2
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="NewTextureRect" type="TextureRect" parent="FullTransition/FullTransitionHolder"]
+visible = false
+use_parent_material = true
+anchor_right = 1.0
+anchor_bottom = 1.0
+mouse_filter = 0
+expand = true
+stretch_mode = 7
+script = ExtResource( 42 )
+__meta__ = {
+"_edit_use_anchors_": false
+}
+textured_node_path = NodePath(".")
+
+[node name="OldTextureRect" type="TextureRect" parent="FullTransition/FullTransitionHolder"]
+visible = false
+use_parent_material = true
+anchor_right = 1.0
+anchor_bottom = 1.0
+mouse_filter = 0
+expand = true
+stretch_mode = 7
+script = ExtResource( 42 )
+__meta__ = {
+"_edit_use_anchors_": false
+}
+textured_node_path = NodePath(".")
+
 [node name="StoryRuntimeDebugger" type="CanvasLayer" parent="."]
 layer = 100
 script = ExtResource( 11 )
@@ -435,7 +491,7 @@ story_manager_path = NodePath("../StoryManager")
 story_runner_dep_path = NodePath("../Dependencies/StoryRunnerDependency")
 
 [editable path="StoryGUIConfigurer/BasicGUI"]
-[editable path="StoryGUIConfigurer/BasicGUI/BasicChoiceHandler"]
 [editable path="StoryGUIConfigurer/BasicGUI/Panel/VBoxContainer/TextPrinterHolder/BasicTextPrinter"]
 [editable path="StoryGUIConfigurer/BasicGUI/Panel/VBoxContainer/TextPrinterHolder/BasicTextPrinter/BaseActor"]
+[editable path="StoryGUIConfigurer/BasicGUI/BasicChoiceHandler"]
 [editable path="StoryGUIConfigurer/BasicGUI/BasicPauseMenu"]

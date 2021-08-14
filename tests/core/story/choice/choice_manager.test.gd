@@ -9,7 +9,7 @@ const ChoiceOptionBuilder = preload("res://tests/core/story_script/ast_nodes/sta
 const ProgramNodeBuilder = preload("res://tests/core/story_script/ast_nodes/misc/program_node/program_node.builder.gd")
 
 
-# TODO NOW: Finish tests for choice statement following TDD.
+# TODO: Finish tests for choice statement following TDD.
 func title():
 	return "ChoiceManager"
 

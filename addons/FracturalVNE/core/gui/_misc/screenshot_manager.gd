@@ -25,7 +25,7 @@ onready var screenshot_gui_holder = get_node(screenshot_gui_holder_path)
 
 
 # Screenshots the entire screen
-func screenshot():
+func screenshot(callback = null):
 	if is_taking_screenshot:
 		return
 	
@@ -39,14 +39,15 @@ func screenshot():
 	
 	screenshot = texture
 	is_taking_screenshot = false
-	emit_signal("finished_screenshot", texture)
+	_finished_screenshot(screenshot, callback)
+
 
 # Screenshots all gameplay related nodes (excludes pause menu).
 
 # HACK: Entire screenshot method is a disgusting mess of reparenting due to Godot's
 # 		terrible support for viewports. (ie. viewports not receiving unhandled_input, 
 #		etc)
-func screenshot_gameplay():
+func screenshot_gameplay(callback = null):
 	if is_taking_screenshot:
 		return
 	
@@ -114,4 +115,10 @@ func screenshot_gameplay():
 	
 	screenshot = viewport_texture
 	is_taking_screenshot = false
+	_finished_screenshot(screenshot, callback)
+
+
+func _finished_screenshot(screenshot, callback):
 	emit_signal("finished_screenshot", screenshot)
+	if callback != null:
+		callback.call_func(screenshot)

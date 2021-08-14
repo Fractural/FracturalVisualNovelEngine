@@ -43,13 +43,13 @@ func init(story_director_) -> void:
 
 
 # -- StoryScriptErrorable -- #
-func show(transition: FracVNE_StandardNode2DTransition = null, duration: float = 1):
+func show(transition: FracVNE_StandardNode2DTransition = null, duration: float = 1, is_skippable: bool = true):
 	_force_clear_current_transition()
 	if curr_transition != null:
 		_on_transition_finished(true)
 	node_holder.visible = true
 	if transition != null:
-		var result = _setup_new_transition(TransitionType.SHOW, transition)
+		var result = _setup_new_transition(TransitionType.SHOW, transition, is_skippable)
 		if not SSUtils.is_success(result):
 			return result
 		result = curr_transition.transition(node_holder, duration)
@@ -60,11 +60,11 @@ func show(transition: FracVNE_StandardNode2DTransition = null, duration: float =
 
 
 # -- StoryScriptErrorable -- #
-func hide(transition: FracVNE_StandardNode2DTransition = null, duration: float = 1):
+func hide(transition: FracVNE_StandardNode2DTransition = null, duration: float = 1, is_skippable: bool = true):
 	_force_clear_current_transition()
 	node_holder.visible = true
 	if transition != null:
-		var result = _setup_new_transition(TransitionType.HIDE, transition)
+		var result = _setup_new_transition(TransitionType.HIDE, transition, is_skippable)
 		if not SSUtils.is_success(result):
 			return result
 		result = curr_transition.transition(node_holder, duration)
@@ -75,7 +75,7 @@ func hide(transition: FracVNE_StandardNode2DTransition = null, duration: float =
 
 
 # -- StoryScriptErrorable -- #
-func _setup_new_transition(type: int, transition: FracVNE_StandardNode2DTransition):
+func _setup_new_transition(type: int, transition: FracVNE_StandardNode2DTransition, is_skippable: bool):
 	curr_transition_type = type
 	
 	# Assign current transition
@@ -108,7 +108,7 @@ func _setup_new_transition(type: int, transition: FracVNE_StandardNode2DTransiti
 			if not FracUtils.is_type(curr_transition, "ReplaceTransition"):
 				return SSUtils.error("Expected a ReplaceTransition for a show transition.")
 	
-	curr_transition_action = TransitionAction.new(curr_transition)
+	curr_transition_action = TransitionAction.new(curr_transition, is_skippable)
 	transition_holder.add_child(curr_transition)
 	curr_transition.connect("transition_finished", self, "_on_transition_finished")
 	story_director.add_step_action(curr_transition_action)
