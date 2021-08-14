@@ -44,8 +44,8 @@ func test_start_choice():
 	
 	choice_manager.select_choice(choice_options[0])
 	
-	asserts.signal_was_emitted_with_arguments(choice_manager, "choice_selected", [choice_options[0]], "Then the correct choice was chosen.")
-	asserts.is_true(choice_manager.has_ongoing_choice(), "Then there is no longer an ongoing choice selection.")
+	asserts.signal_was_emitted_with_arguments(choice_manager, "choice_selected", [0], "Then the correct choice was chosen.")
+	asserts.is_false(choice_manager.has_ongoing_choice(), "Then there is no longer an ongoing choice selection.")
 	
 	
 	# ----- Cleanup ----- #

@@ -3,24 +3,23 @@ extends Node
 
 
 const FracUtils = FracVNE.Utils
-const ChoiceOption = preload("res://addons/FracturalVNE/core/story_script/ast_nodes/statements/choice_statement/choice_option.gd")
+const ChoiceOption = preload("res://addons/FracturalVNE/core/story/choice/choice_option.gd")
 const BlockNode = preload("res://addons/FracturalVNE/core/story_script/ast_nodes/misc/block_node/block_node.gd")
 
-var position = null
 var choice_text: String
-var block
+var is_valid: bool
 
 var choice_option
 
 
 func build():
-	choice_option = ChoiceOption.new(position, choice_text, block)
+	choice_option = ChoiceOption.new(choice_text, is_valid)
 	return choice_option
 
 
-func inject_position(position_):
-	FracUtils.try_free(position)
-	position = position_
+func inject_is_valid(is_valid_):
+	FracUtils.try_free(is_valid)
+	is_valid = is_valid_
 	return
 
 
@@ -29,14 +28,7 @@ func inject_choice_text(choice_text_: String):
 	return self
 
 
-func inject_block(block_):
-	FracUtils.try_free(block)
-	block = block_
-	return self
-
-
 func default(direct):
-	inject_position(FracVNE.StoryScript.Position.new())
-	inject_block(direct.script_blank(BlockNode).double())
+	inject_is_valid(true)
 	inject_choice_text("Default choice.")
 	return self

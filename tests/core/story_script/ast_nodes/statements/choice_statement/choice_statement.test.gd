@@ -17,7 +17,7 @@ func title():
 
 func test_execute():
 	describe("When calling execute() on ChoiceStatement")
-	asserts.is_true(true, "TODO: Finish tests for choice.")	
+	asserts.is_true(true, "TEMP TODO: Finish tests for choice.")	
 #	# ----- Setup ----- #
 #
 #	var mock_story_director = direct.script_blank(StoryDirector)

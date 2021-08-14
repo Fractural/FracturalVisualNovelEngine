@@ -52,13 +52,14 @@ func test_playing_audio_for_unskippable_controller():
 	# you may sometimes hit a race condition where the audio player finishes early before the 
 	# wait is finished. I guess SOUND_SAMPLE.get_length() is exactly an accurate representation
 	# of the time it will take to play the sound.
-	var halfway_delay: float = SOUND_SAMPLE.get_length() / 3.0
+	var halfway_delay: float = SOUND_SAMPLE.get_length() / 2.0
 	yield(until_timeout(halfway_delay), YIELD)
 
-	asserts.is_true(_is_audio_playing(), "Then, @time = 1/3 sample's length, the audio player is playing.")
-	asserts.is_equal(controller.get_current_sound(), SOUND_SAMPLE, "Then, @time = 1/3 of sample's legnth, the audio player is playing the correct sample.")
+	asserts.is_true(_is_audio_playing(), "Then, @time = 1/2 sample's length, the audio player is playing.")
+	asserts.is_equal(controller.get_current_sound(), SOUND_SAMPLE, "Then, @time = 1/2 of sample's legnth, the audio player is playing the correct sample.")
 
-	yield(until_signal(controller, "finished_playing", SOUND_SAMPLE.get_length() + 10), YIELD)
+	yield(until_signal(controller, "finished_playing", SOUND_SAMPLE.get_length() + 3), YIELD)
+	yield(until_timeout(1), YIELD)
 	
 	asserts.is_false(_is_audio_playing(), "Then, @time > sample's length, the audio player stops playing.")
 	asserts.is_null(controller.get_current_sound(), "Then, @time > sample's length, the audio player's stream is null.")
@@ -180,4 +181,8 @@ func test_skipping_audio_for_skippable_controller():
 
 func _is_audio_playing():
 	# FUTURE REFACTOR: The db for silence is -INF in Godot 4.0 instead of -200.
+	# Note that this does not support repeated, multi_threading tests, since
+	# WAT will attempt to run the repeats in parallel, which leads to
+	# all the threads playing sound on the same AudioServer (making it impossible
+	# to distinguish which server is what).
 	return AudioServer.get_bus_peak_volume_left_db(AudioServer.get_bus_index("Master"), 0) > -200

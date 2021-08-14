@@ -36,7 +36,6 @@ func _init(_registry, _klass: String, _inner_klass: String, deps: Array = [], _b
 	if is_blank_impl():
 		for m in script_method_list():
 			method(m.name)
-			print(str(m.name))
 	
 func method(name: String, keyword: String = "") -> Method:
 	if not methods.has(name):
