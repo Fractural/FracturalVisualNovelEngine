@@ -28,15 +28,6 @@ define hop = load("res://addons/FracturalVNE/default_assets/animations/hop.tres"
 define smooth_step = load("res://addons/FracturalVNE/default_assets/curves/smooth_step.tres")
 
 label looped:
-	scene bg_library1 with cross_fade
-	
-	pause 1
-	
-	scene bg_library2 with fade_to_black
-	
-	pause 1
-	
-	scene bg_library3 with fade_to_black
 	
 	#scene bg_library3 with cross_fade
 	
@@ -55,22 +46,35 @@ label looped:
 	# if they are stacked together.
 	#show godette happy with fade_to_black
 	#show godette sad with fade_to_black
-	show godette surprised with fade_to_black
+	show godette surprised
 	
-	show godette2 surprised with fade_to_black
-	show godette3 surprised with fade_to_black
-	show godette4 surprised with fade_to_black
-	show godette5 surprised with fade_to_black
+	show godette2 surprised
+	show godette3 surprised
+	show godette4 surprised
+	show godette5 surprised
 	
-	show godette6 surprised with cross_fade
-	show godette7 surprised with cross_fade
-	show godette8 surprised with cross_fade
-	show godette9 surprised with cross_fade
-	show godette10 surprised with cross_fade
+	show godette6 surprised
+	show godette7 surprised
+	show godette8 surprised
+	show godette9 surprised
+	show godette10 surprised
 	
 	godette "Hi there!"
 	
-	scene bg_library2 with fade_to_black
+	show godette happy with fade_to_black
+	
+	show godette2 happy with fade_to_black
+	show godette3 happy with fade_to_black
+	show godette4 happy with fade_to_black
+	show godette5 happy with fade_to_black
+
+	show godette6 happy with cross_fade
+	show godette7 happy with cross_fade
+	show godette8 happy with cross_fade
+	show godette9 happy with cross_fade
+	show godette10 happy with cross_fade
+	
+	#scene bg_library2 with fade_to_black
 	
 	#show godette6 happy with cross_fade
 	#show godette7 happy with cross_fade

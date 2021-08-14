@@ -3,7 +3,7 @@ import "res://demo/visuals_testing_definitions.story"
 label looped:
 	sound music bgm_poppy_shop
 	
-	scene bg_library1 with cross_fade
+	scene bg_library1
 	
 	pause 0.5
 		  

@@ -72,7 +72,9 @@ func start_transition(transition, is_skippable_: bool, duration_: int = 1):
 
 func _on_finished_screenshot_for_start_transition(screenshot):
 	old_texture_rect.texture = screenshot
-	replace_transitioner.replace(curr_transition, duration, is_skippable)
+	# "false" forces the transition to stop for loading instead
+	# of immediately transitioning out after transitioning in.
+	replace_transitioner.replace(curr_transition, duration, is_skippable, false)
 
 
 func resume_transition():

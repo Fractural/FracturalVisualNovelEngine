@@ -28,8 +28,8 @@ func _process(delta) -> void:
 		_on_transition_finished(false)
 
 
-func transition(node_: Node, duration_: float):
-	if not _setup_transition(node_, duration_):
+func transition(node_: Node, duration_: float, does_cleanup_: bool = true):
+	if not _setup_transition(node_, duration_, does_cleanup_):
 		return
 	
 	original_node_parent = FracVNE.Utils.reparent(node, node_holder)
@@ -37,6 +37,13 @@ func transition(node_: Node, duration_: float):
 	time = 0
 	
 	set_process(true)
+
+
+func cleanup():
+	.cleanup()
+	_final_tick(1 if transition_type == TransitionType.SHOW else 0)
+	
+	FracVNE.Utils.reparent(node, original_node_parent)
 
 
 func _tick(percentage):
@@ -49,8 +56,4 @@ func _final_tick(final_percentage):
 
 func _on_transition_finished(skipped: bool) -> void:
 	set_process(false)
-	_final_tick(1 if transition_type == TransitionType.SHOW else 0)
-	
-	FracVNE.Utils.reparent(node, original_node_parent)
-	
 	._on_transition_finished(skipped)

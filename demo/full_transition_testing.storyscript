@@ -4,9 +4,15 @@ label start:
 	move godette to Point(0, 0)
 	show godette happy with cross_fade
 	
+	pause 2
+	
+	show godette surprised with cross_fade
+	
+	pause 1
+	
 	godette "Hi there!"
 	
-	transition fade_to_black:
+	transition cross_fade:
 		move godette to Point(500, 0)
 		show godette surprised
 	

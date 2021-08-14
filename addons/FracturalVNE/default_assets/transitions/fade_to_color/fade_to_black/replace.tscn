@@ -18,4 +18,3 @@ hide_transition_path = NodePath("Hide")
 [node name="Show" parent="." instance=ExtResource( 2 )]
 
 [node name="Hide" parent="." instance=ExtResource( 3 )]
-node_holder_path = NodePath("../Show/NodeHolder")

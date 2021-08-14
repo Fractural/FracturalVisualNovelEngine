@@ -15,7 +15,7 @@ onready var show_transition = get_node(show_transition_path)
 onready var hide_transition = get_node(hide_transition_path)
 
 
-func transition(new_node_: Node, old_node_: Node, duration_: float, is_skipping_loading_: bool = false):
+func transition(new_node_: Node, old_node_: Node, duration_: float, is_skipping_loading_: bool = true):
 	if not _setup_transition(new_node_, old_node_, duration_, is_skipping_loading_):
 		return
 
@@ -30,12 +30,21 @@ func transition(new_node_: Node, old_node_: Node, duration_: float, is_skipping_
 	# being used inside of a replace transition), then the merged transition is also not finished.
 	# Therefore we do not need to make any custom modifications to the signal connection.
 	show_transition.connect("transition_finished", self, "_on_transition_finished")
-	hide_transition.transition(old_node, duration / 2)
+	
+	# false overrides the cleanup done by hide automatically
+	# after a transition is done. This lets the final part of the hide
+	# transition remain on screen while we are loading.
+	# 
+	# ie. in a fade to black transition, we want to leave the
+	# black screen, created by the hide transition, on during
+	# the loading
+	hide_transition.transition(old_node, duration / 2, false)
 	
 	_hide_transition_finished = false
 
 
 func finished_loading():
+	hide_transition.cleanup()
 	show_transition.transition(new_node, duration / 2)
 
 
