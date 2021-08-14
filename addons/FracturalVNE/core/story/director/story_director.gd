@@ -27,8 +27,10 @@ var function_definitions = [
 	]),
 ]
 
+
 func get_service_name():
 	return "StoryDirector"
+
 
 func configure_service(program_node):
 	# Reset the story director when a new story tree is loaded
