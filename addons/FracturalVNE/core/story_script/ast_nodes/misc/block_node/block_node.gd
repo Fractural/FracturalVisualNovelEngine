@@ -38,12 +38,12 @@ func _init(position_ = null, statements_: Array = []).(position_):
 	statements = statements_
 
 
-func _init_post():
+func configure_node(runtime_block_):
+	.configure_node(runtime_block_)
+	
 	variables = {}
 	if statements.size() > 0:
-		statements.front().set_runtime_block(self)
 		for i in range(1, statements.size()):
-			statements[i].set_runtime_block(self)
 			statements[i - 1].runtime_next_node = statements[i]
 	
 	# Bind the last statement's executed signal to listen for when the block 
@@ -52,8 +52,14 @@ func _init_post():
 	# Do not bind if the statement overrides the story flow (such as with
 	# a jump statement).
 	if not statements.back().overrides_story_flow:
-		statements.back().connect("executed", self, "block_executed")
-
+		if FracUtils.is_type(statements.back(), "SteppedNode"):
+			# Step nodes must wait for the user to step them in order
+			# to consider them as finished. This ensures when a stepped
+			# node is the last statement, it will only finish the block
+			# when the user has stepped it.
+			statements.back().connect("stepped", self, "block_executed")
+		else:
+			statements.back().connect("executed", self, "block_executed")
 
 func execute():
 	statements.front().execute()
@@ -99,7 +105,7 @@ func declare_variable(name: String, value = null):
 	
 	if not variables.has(name):
 		var result = value.evaluate()
-		if not is_success(result):
+		if not SSUtils.is_success(result):
 			return result
 		variables[name] = result
 	else:
@@ -217,7 +223,6 @@ func deserialize(serialized_object):
 	
 	# No need to assign runtime_block since that is assgined at runtime
 	instance.statements = statements
-	instance._init_post()
 	return instance
 
 # ----- Serialization ----- #

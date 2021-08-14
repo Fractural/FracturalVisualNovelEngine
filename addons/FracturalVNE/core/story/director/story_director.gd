@@ -154,12 +154,10 @@ func step():
 	#		would operate using events and callbacks to step.
 	#		Though tbh this is not much of a priority right now since even renpy
 	#		expected you to use it's own programming language.
-	if curr_stepped_node.runtime_next_node != null and not curr_node_executed:
-		emit_signal("stepped")
-		
+	if not curr_node_executed:
 		curr_node_executed = true
-		
-		curr_stepped_node.runtime_next_node.execute()
+		curr_stepped_node.step()
+		emit_signal("stepped")
 	else:
 		# TODO: Exit the story when the last node is reached
 		return
