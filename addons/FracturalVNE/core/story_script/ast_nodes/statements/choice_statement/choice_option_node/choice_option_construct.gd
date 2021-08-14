@@ -7,7 +7,7 @@ const ChoiceOptionNode = preload("choice_option_node.gd")
 
 func get_parse_types():
 	var arr = .get_parse_types()
-	arr.append("ChoiceOption")
+	arr.append("ChoiceOptionNode")
 	return arr
 
 

@@ -31,6 +31,6 @@ func parse(parser):
 		return parser.error("Expected a second expression after the first expression in sound statement.", 1, checkpoint)
 	
 	if not parser.is_success(parser.expect_token("punctuation", "newline")):
-		return parser.error("Expected a new line to conclude a sound statement.")
+		return parser.error("Expected a new line to conclude a statement.")
 	
 	return SoundStatement.new(sound_keyword.position, channel, sound)

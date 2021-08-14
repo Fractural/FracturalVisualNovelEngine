@@ -28,7 +28,7 @@ func parse(parser):
 			if parser.is_success(parser.expect_token("punctuation", "newline")):
 				return AnimateStatement.new(animate.position, visual, animation)
 			else:
-				return parser.error("Expected a new line to conclude a statement.", 1, checkpoint)
+				return parser.error("Expected a new line to conclude an animate statement.", 1, checkpoint)
 		else:
 			return parser.error("Expected an expression for the visual after \"animate\".", 1, checkpoint)
 	else:

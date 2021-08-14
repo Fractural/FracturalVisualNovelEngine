@@ -8,9 +8,9 @@ extends Reference
 
 
 var text: String
-var is_valid_result: bool
+var is_valid: bool
 
 
-func _init(text_: String, is_valid_result_: bool):
+func _init(text_: String, is_valid_: bool):
 	text = text_
-	is_valid_result = is_valid_result_
+	is_valid = is_valid_

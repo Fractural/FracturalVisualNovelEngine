@@ -95,7 +95,7 @@ func serialize() -> Dictionary:
 	var serialized_object = .serialize()
 	var serialized_option_nodes: Array = []
 	for option_node in option_nodes:
-		serialized_option_nodes.append(option_node.serialized())
+		serialized_option_nodes.append(option_node.serialize())
 	serialized_object["option_nodes"] = serialized_option_nodes
 	return serialized_object
 

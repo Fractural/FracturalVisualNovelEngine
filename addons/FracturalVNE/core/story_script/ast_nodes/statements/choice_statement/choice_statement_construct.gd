@@ -26,7 +26,10 @@ func parse(parser):
 		return parser.error("Expected a \":\" to follow the \"choice\" in a choice statement.", 1, checkpoint)
 	
 	if not parser.is_success(parser.expect_token("punctuation", "newline")):
-		return parser.error("Expected a new line after \":\" in a choice statement.", 1, checkpoint)
+		return parser.error("Expected a new line to conclude a statement.", 1, checkpoint)
+	
+	if not parser.is_success(parser.expect_token("punctuation", "indent")):
+		return parser.error("Expected an indent to start the choice block")
 	
 	var choice_option_nodes: Array = []
 	var choice_option_node = parser.expect("ChoiceOptionNode")
@@ -37,5 +40,9 @@ func parse(parser):
 	
 	if choice_option_nodes.size() == 0:
 		return parser.error("Expected at least one choice option in a choice statement.", 1, checkpoint)
+	
+	if not parser.is_success(parser.expect_token("punctuation", "dedent")):
+		return parser.error("Expected a dedent to close the choice block.")
+	
 	
 	return ChoiceStatement.new(choice_keyword.position, choice_option_nodes)

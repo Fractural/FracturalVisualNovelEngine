@@ -16,14 +16,14 @@ func _init(position = null, choice_text_ = null, block_ = null).(position):
 
 func configure_node(runtime_block_):
 	.configure_node(runtime_block_)
-	block.connect("finished", self, "_on_block_finished")
+	block.connect("executed", self, "_on_block_executed")
 
 
 func execute():
 	block.execute()
 
 
-func _on_block_finished():
+func _on_block_executed():
 	_finish_execute()
 
 # -- StoryScriptErrorable -- #
@@ -101,7 +101,8 @@ func serialize() -> Dictionary:
 	var serialized_object = .serialize()
 	serialized_object["block"] = block.serialize()
 	serialized_object["choice_text"] = choice_text.serialize()
-	serialized_object["condition"] = condition.serialize()
+	if condition != null:
+		serialized_object["condition"] = condition.serialize()
 	return serialized_object
 
 
@@ -109,7 +110,8 @@ func deserialize(serialized_object):
 	var instance = .deserialize(serialized_object)
 	instance.block = SerializationUtils.deserialize(serialized_object["block"])
 	instance.choice_text = SerializationUtils.deserialize(serialized_object["choice_text"])
-	instance.condition = SerializationUtils.deserialize(serialized_object["condition"])
+	if serialized_object.has("condition"):
+		instance.condition = SerializationUtils.deserialize(serialized_object["condition"])
 	return instance
 
 # ----- Serialization ----- #

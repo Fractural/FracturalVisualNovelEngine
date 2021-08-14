@@ -25,7 +25,7 @@ func _init(position_ = null, name_ = null, block_ = null, parameter_group_ = nul
 
 func configure_node(runtime_block_):
 	.configure_node(runtime_block_)
-	block.connect("executed", self, "block_executed")
+	block.connect("executed", self, "_on_block_executed")
 	if parameter_group != null:
 		for param in parameter_group.parameters:
 			block.declare_variable(param.name, param.default_value)
@@ -43,7 +43,7 @@ func execute(arguments = []):
 	block.execute()
 
 
-func block_executed():
+func _on_block_executed():
 	_finish_execute()
 
 

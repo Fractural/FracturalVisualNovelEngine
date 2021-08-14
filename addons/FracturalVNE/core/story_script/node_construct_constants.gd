@@ -56,6 +56,9 @@ const SceneStatement = preload("res://addons/FracturalVNE/core/story_script/ast_
 const SoundStatement = preload("res://addons/FracturalVNE/core/story_script/ast_nodes/statements/sound_statement/sound_statement_construct.gd")
 const ImportStatement = preload("res://addons/FracturalVNE/core/story_script/ast_nodes/statements/import_statement/import_statement_construct.gd")
 const IfStatement = preload("res://addons/FracturalVNE/core/story_script/ast_nodes/statements/if_statement/if_statement_construct.gd")
+const ChoiceStatement = preload("res://addons/FracturalVNE/core/story_script/ast_nodes/statements/choice_statement/choice_statement_construct.gd")
+const ChoiceOptionNode = preload("res://addons/FracturalVNE/core/story_script/ast_nodes/statements/choice_statement/choice_option_node/choice_option_construct.gd")
+const PassStatement = preload("res://addons/FracturalVNE/core/story_script/ast_nodes/statements/pass_statement/pass_statement_construct.gd")
 const ExpressionStatement = preload("res://addons/FracturalVNE/core/story_script/ast_nodes/statements/expression_statement/expression_statement_construct.gd")
 
 var CONSTRUCTS = [
@@ -93,6 +96,9 @@ var CONSTRUCTS = [
 	SoundStatement.new(),
 	ImportStatement.new(),
 	IfStatement.new(),
+	ChoiceStatement.new(),
+	ChoiceOptionNode.new(),
+	PassStatement.new(),
 	ExpressionStatement.new(),
 ]
 
