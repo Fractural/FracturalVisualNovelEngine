@@ -22,7 +22,7 @@ func _init(position_ = null, variable_name_ = null, value_expression_ = null).(p
 
 func execute():
 	var result = value_expression.evaluate()
-	if not is_success(result):
+	if not SSUtils.is_success(result):
 		throw_error(result)
 		return
 	

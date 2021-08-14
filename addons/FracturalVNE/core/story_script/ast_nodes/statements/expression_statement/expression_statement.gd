@@ -22,7 +22,7 @@ func _init(position_ = null, expression_ = null).(position_):
 
 func execute():
 	var result = expression.evaluate()
-	if not is_success(result):
+	if not SSUtils.is_success(result):
 		throw_error(stack_error(result, 'Expression statement could not evaluate.'))
 		return
 	_finish_execute()

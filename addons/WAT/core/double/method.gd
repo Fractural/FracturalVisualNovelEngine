@@ -4,6 +4,7 @@ var name: String = ""
 var spying: bool = false
 var stubbed: bool = false
 var calls_super: bool = false
+var is_blank_impl: bool = false
 var args: String = ""
 var args_with_defaults: String = ""
 var keyword: String = ""
@@ -14,11 +15,12 @@ var callables: Array = []
 var default
 var double
 
-func _init(name: String, keyword: String, args: String, defaults: String) -> void:
+func _init(name: String, keyword: String, args: String, defaults: String, is_blank_impl: bool) -> void:
 	self.name = name
 	self.keyword = keyword
 	self.args = args
 	self.args_with_defaults = defaults
+	self.is_blank_impl = is_blank_impl
 
 func dummy() -> Reference:
 	stubbed = true
@@ -37,7 +39,7 @@ func stub(return_value, arguments: Array = []):
 	else:
 		stubs.append({args = arguments, "return_value": return_value})
 	return self
-	
+
 func primary(args: Array):
 	if stubbed:
 		return get_stub(args)
@@ -73,6 +75,10 @@ func executes(args: Array) -> bool:
 	return false
 
 func call_super(args: Array = []) -> void:
+	if is_blank_impl:
+		# Avoid calling super methods if this is a blank implementation
+		push_warning("Methods on blank doubles cannot call super methods.")
+		return
 	supers.append(args)
 	calls_super = true
 

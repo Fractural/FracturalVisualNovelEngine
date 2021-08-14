@@ -28,7 +28,7 @@ func parse(parser):
 		var first_arg: bool = true
 		while true:
 			if parser.is_EOF():
-				return parser.error('Expected a newline to close a line end argument group but reached the end of the file.', 1, checkpoint)
+				return parser.error('Expected a new line to close a line end argument group but reached the end of the file.', 1, checkpoint)
 			
 			var checkpoint2 = parser.save_reader_state()
 			var arg_name = null

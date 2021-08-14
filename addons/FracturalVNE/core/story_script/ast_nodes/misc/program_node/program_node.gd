@@ -211,18 +211,4 @@ func deserialize_state(serialized_state) -> void:
 
 	propagate_call("deserialize_node_state", [serialized_state["nodes"]])
 
-
-#func serialize() -> Dictionary:
-#	var serialized_object = .serialize()
-#	serialized_object["block"] = block.serialize()
-#	return serialized_object
-#
-#
-#func deserialize(serialized_object):
-#	var instance = .deserialize(serialized_object)
-#	instance.block = SerializationUtils.deserialize(serialized_object["block"])
-#	instance._init_post()
-#	# No need to assign runtime_block since that is assgined at runtime
-#	return instance
-
 # ----- Serialization ----- #

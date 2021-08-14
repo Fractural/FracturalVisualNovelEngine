@@ -4,10 +4,13 @@ extends Reference
 
 const FracUtils = FracVNE.Utils
 const Serializer = preload("res://addons/FracturalVNE/core/audio/story_audio_channel_controller_serializer.gd")
+const ReferenceRegistry = preload("res://addons/FracturalVNE/core/io/reference_registry.gd")
+const StoryDirector = preload("res://addons/FracturalVNE/core/story/director/story_director.gd")
 
-var serializer
 var story_director
 var reference_registry
+
+var serializer
 
 
 func build():
@@ -16,51 +19,22 @@ func build():
 	serializer = Serializer.new()
 	serializer.story_director = story_director
 	serializer.reference_registry = reference_registry
+	return serializer
+
+
+func inject_story_director(story_director_):
+	FracUtils.try_free(story_director)
+	story_director = story_director_
 	return self
 
 
-func dummy_story_director():
-	story_director = DummyStoryDirector.new()
+func inject_reference_registry(reference_registry_):
+	FracUtils.try_free(reference_registry)
+	reference_registry = reference_registry_
 	return self
 
 
-func dummy_reference_registry():
-	reference_registry = DummyReferenceRegistry.new()
+func default(direct):
+	inject_story_director(direct.script_blank(StoryDirector, "Reference").double())
+	inject_reference_registry(direct.script_blank(ReferenceRegistry, "Reference").double())
 	return self
-
-
-func fake_reference_registry():
-	reference_registry = FakeReferenceRegistry.new()
-	return self
-
-
-class DummyStoryDirector extends Reference:
-	pass
-
-
-class FakeReferenceRegistry extends Reference:
-	var references = []
-	
-	
-	func add_reference(reference):
-		if not references.has(reference):
-			references.append(reference)
-	
-	
-	func get_reference(id):
-		return references[id]
-	
-	
-	func get_reference_id(reference):
-		return references.find(reference)
-
-
-class DummyReferenceRegistry extends Reference:
-	
-	
-	func get_reference(id):
-		pass
-	
-	
-	func get_reference_id(reference):
-		pass

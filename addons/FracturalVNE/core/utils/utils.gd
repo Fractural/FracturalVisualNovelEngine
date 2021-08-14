@@ -162,6 +162,15 @@ static func _try_custom_cast_builtin(object, type):
 static func equals(value, other_value) -> bool:
 	if is_type(value, "Equatable"):
 		return value.equals(other_value)
+	elif value is Array and other_value is Array:
+		# Array element equality
+		if value.size() == other_value.size():
+			for i in value.size():
+				if not equals(value[i], other_value[i]):
+					return false
+			return true
+		else:
+			return false
 	else:
 		# Use the builtin Godot equality check.
 		# Note that this will use a reference check
@@ -189,6 +198,35 @@ static func reparent(node: Node, new_parent: Node):
 	new_parent.add_child(node)
 	return original
 
+
+# Attempts to free an object.
+# Returns true if the object is sucessfully freed.
+static func try_free(object):
+	if object != null and is_instance_valid(object):
+		if object is Array:
+			# If object is an array then we will try to 
+			# free all elements in an array
+			# 
+			# Arrays themselves are automatically freed
+			# therefore we do not need to free "object".
+			# 
+			# Note that this implementation supports
+			# freeing nested arrays aswell
+			for elem in object:
+				try_free(elem)
+			return true
+		elif object is Dictionary:
+			# Support for freeing all elements in
+			# a dictionary (both keys and values).
+			for value in object.values():
+				try_free(value)
+			for key in object.keys():
+				try_free(key)
+			return true
+		elif not object is Reference:
+			object.free()
+			return true
+	return false
 
 # Gets a node if the orignal_variable is null. 
 # If an onready node variable was assigned a node reference 

@@ -22,7 +22,7 @@ func _debug_string_operator_name():
 
 func evaluate():
 	var result = operand.evaluate()
-	if not is_success(result):
+	if not SSUtils.is_success(result):
 		return result
 	
 	if typeof(result) == TYPE_INT:

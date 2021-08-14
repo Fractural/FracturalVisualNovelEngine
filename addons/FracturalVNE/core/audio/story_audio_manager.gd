@@ -96,6 +96,13 @@ func get_channel_controller(channel: FracVNE_StoryAudioChannel):
 	return channel_controller_lookup.get(channel)
 
 
+func get_channels():
+	return channels
+
+
+func get_channel_controllers():
+	return channel_controller_lookup.values()
+
 # TODO: Implement support for services to add defaults
 #		Maybe even put this stuff in a dedicated defaults .tres
 #		That can then be loaded by the player if they would like
@@ -122,8 +129,8 @@ func serialize_state() -> Dictionary:
 
 
 func deserialize_state(serialized_state) -> void:
-	for channel in channels:
-		channel.queue_free()
+	for controller in channel_controller_lookup.values():
+		controller.queue_free()
 	channel_controller_lookup = {}
 	channels = []
 	

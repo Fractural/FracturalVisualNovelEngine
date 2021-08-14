@@ -23,13 +23,13 @@ func _init(position_ = null, channel_ = null, sound_ = null).(position_):
 
 func execute():
 	var channel_result = SSUtils.evaluate_and_cast(channel, "StoryAudioChannel")
-	if not is_success(channel_result):
+	if not SSUtils.is_success(channel_result):
 		throw_error(stack_error(channel_result, 
 			"Could not evaluate the channel for the sound statement."))
 		return
 	
 	var sound_result = SSUtils.evaluate_and_cast(sound, "AudioStream")
-	if not is_success(sound_result):
+	if not SSUtils.is_success(sound_result):
 		throw_error(stack_error(sound_result,
 			"Could not evaluate the sound for the sound statement."))
 		return

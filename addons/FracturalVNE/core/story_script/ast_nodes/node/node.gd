@@ -63,10 +63,7 @@ func debug_string(tabs_string: String) -> String:
 
 # ----- Error ----- #
 
-func is_success(result):
-	return SSUtils.is_success(result)
-
-
+# Creates an error using the node's position.
 func error(message: String):
 	return SSUtils.error(message, position)
 
@@ -76,9 +73,10 @@ func throw_error(error):
 	# where the error occurred.
 	if get_runtime_block() != null:
 		get_runtime_block().throw_error(error)
-	# assert(false, str(error))
 
 
+# Stacks an error, using a message and the node's position, 
+# onto an existing error.
 func stack_error(error, message):
 	return SSUtils.stack_error(error, SSUtils.error(message, position))
 

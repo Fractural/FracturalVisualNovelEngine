@@ -25,19 +25,15 @@ func _init(position_ = null, name_ = null, argument_group_ = null).(position_):
 func evaluate():
 	# Formatted arguments is in the form of:
 	# [StoryScriptArgument1, StoryScriptArgument2]
-	var formatted_arguments = []
-	for argument in argument_group.arguments:
-		var evaluated_value = argument.value.evaluate()
-		if is_success(evaluated_value):
-			formatted_arguments.append(StoryScriptArgument.new(argument.name, evaluated_value))
-		else:
-			return SSUtils.stack_error(evaluated_value, 'Error in arguments for function "%s".' % name)
+	var formatted_arguments = argument_group.evaluate_arguments_as_array()
+	if not SSUtils.is_success(formatted_arguments):
+		return stack_error(formatted_arguments, "Error in arguments for function \"%s\"." % name)
 	
 	var result = get_runtime_block().call_function(name, formatted_arguments)
-	if is_success(result):
-		return result
-	else:
-		return stack_error(result, 'Error calling function "%s".' % name)
+	if not SSUtils.is_success(result):
+		return stack_error(result, "Error calling function \"%s\"." % name)
+	
+	return result
 
 
 func debug_string(tabs_strings) -> String:

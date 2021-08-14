@@ -22,7 +22,7 @@ func _init(position_ = null, label_name_ = null).(position_):
 
 func execute():
 	var result = get_runtime_block().get_service("StoryDirector").jump_to_label(label_name)
-	if not is_success(result):
+	if not SSUtils.is_success(result):
 		throw_error(stack_error(result, 'Error jumping to label "%s".' % label_name))
 		return
 	_finish_execute()

@@ -1,6 +1,11 @@
 extends Reference
 # Stores the position for something in a StoryScript using the line and column it appears in.
 
+# TODO: Add support for attaching a file_path to a posiition.
+#		This allows for more detailed stack traces, which are
+#		espcially important when using import statements to
+#		import in external StoryScripts.
+
 
 var line: int
 var column: int

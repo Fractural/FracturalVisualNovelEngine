@@ -19,6 +19,8 @@ func get_types() -> Array:
 # ----- Typable ----- #
 
 
+signal stepped()
+
 # Overriding step allows things like  "together blocks" to 
 # run groups of statements on the same step together
 var override_step: bool = false
@@ -36,6 +38,12 @@ func _finish_execute():
 	emit_signal("executed")
 	if not override_step:
 		get_runtime_block().get_service("StoryDirector").start_step(self)
+
+
+func step():
+	emit_signal("stepped")
+	if runtime_next_node != null:
+		runtime_next_node.execute()
 
 
 func is_auto_step():

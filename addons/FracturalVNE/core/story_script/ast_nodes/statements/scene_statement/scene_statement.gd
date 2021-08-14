@@ -25,26 +25,26 @@ func _init(position_ = null, scene_ = null, transition_ = null, keep_old_scene_ 
 
 func execute():
 	var scene_result = SSUtils.evaluate_and_cast(scene, "BGScene")
-	if not is_success(scene_result):
+	if not SSUtils.is_success(scene_result):
 		throw_error(stack_error(scene_result, "Expected a valid BGScene for the scene statement."))
 		return
 	
 	var transition_result = null
 	if transition != null:
 		transition_result = SSUtils.evaluate_and_cast(transition, "StandardNode2DTransition")
-		if not is_success(transition_result):
+		if not SSUtils.is_success(transition_result):
 			throw_error(stack_error(transition_result, "Expected a valid StandardNode2DTransition for the scene statement."))
 			return
 	
 	var keep_old_scene_result = false
 	if keep_old_scene != null:
 		keep_old_scene_result = SSUtils.evaluate_and_cast(keep_old_scene, "bool")
-		if not is_success(keep_old_scene_result):
+		if not SSUtils.is_success(keep_old_scene_result):
 			throw_error(stack_error(keep_old_scene_result, "Expected a bool for the scene statement."))
 			return
 	
 	var result = get_runtime_block().get_service("BGSceneManager").show_scene(scene_result, transition_result, keep_old_scene_result)
-	if not is_success(result):
+	if not SSUtils.is_success(result):
 		throw_error(stack_error(result, "Could not show scene."))
 		return
 	

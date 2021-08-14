@@ -4,6 +4,7 @@ extends Reference
 const FloatLiteral = preload("res://addons/FracturalVNE/core/story_script/ast_nodes/constant_expressions/literals/float_literal/float_literal_construct.gd")
 const IntegerLiteral = preload("res://addons/FracturalVNE/core/story_script/ast_nodes/constant_expressions/literals/integer_literal/integer_literal_construct.gd")
 const StringLiteral = preload("res://addons/FracturalVNE/core/story_script/ast_nodes/constant_expressions/literals/string_literal/string_literal_construct.gd")
+const BoolLiteral = preload("res://addons/FracturalVNE/core/story_script/ast_nodes/constant_expressions/literals/bool_literal/bool_literal_construct.gd")
 const FunctionCall = preload("res://addons/FracturalVNE/core/story_script/ast_nodes/expressions/expression_components/value_components/function_call/function_call_construct.gd")
 const ParenthesizedArguments = preload("res://addons/FracturalVNE/core/story_script/ast_nodes/expressions/expression_components/parenthesized_arguments/parenthesized_arguments_construct.gd")
 const ParenthesizedParameters = preload("res://addons/FracturalVNE/core/story_script/ast_nodes/expressions/expression_components/parenthesized_parameters/parenthesized_parameters_construct.gd")
@@ -24,6 +25,13 @@ const AddOperator = preload("res://addons/FracturalVNE/core/story_script/ast_nod
 const SubtractOperator = preload("res://addons/FracturalVNE/core/story_script/ast_nodes/expressions/operators/binary_operators/subtraction_operator/subtraction_operator_construct.gd")
 const MultiplyOperator = preload("res://addons/FracturalVNE/core/story_script/ast_nodes/expressions/operators/binary_operators/multiplication_operator/multiplication_operator_construct.gd")
 const DivideOperator = preload("res://addons/FracturalVNE/core/story_script/ast_nodes/expressions/operators/binary_operators/division_operator/division_operator_construct.gd")
+
+const EqualityOperator = preload("res://addons/FracturalVNE/core/story_script/ast_nodes/expressions/operators/binary_operators/equality_operator/equality_operator_construct.gd")
+const InequalityOperator = preload("res://addons/FracturalVNE/core/story_script/ast_nodes/expressions/operators/binary_operators/inequality_operator/inequality_operator_construct.gd")
+const GreaterThanOperator = preload("res://addons/FracturalVNE/core/story_script/ast_nodes/expressions/operators/binary_operators/greater_than_operator/greater_than_operator_construct.gd")
+const GreaterThanOrEqualOperator = preload("res://addons/FracturalVNE/core/story_script/ast_nodes/expressions/operators/binary_operators/greater_than_or_equal_operator/greater_than_or_equal_operator_construct.gd")
+const LessThanOperator = preload("res://addons/FracturalVNE/core/story_script/ast_nodes/expressions/operators/binary_operators/less_than_operator/less_than_operator_construct.gd")
+const LessThanOrEqualOperator = preload("res://addons/FracturalVNE/core/story_script/ast_nodes/expressions/operators/binary_operators/less_than_or_equal_operator/less_than_or_equal_operator_construct.gd")
 
 # Unary Operators
 const FlipSignOperator = preload("res://addons/FracturalVNE/core/story_script/ast_nodes/expressions/operators/unary_operators/pre_unary_operators/flip_sign_operator/flip_sign_operator_construct.gd")
@@ -47,6 +55,10 @@ const MoveStatement = preload("res://addons/FracturalVNE/core/story_script/ast_n
 const SceneStatement = preload("res://addons/FracturalVNE/core/story_script/ast_nodes/statements/scene_statement/scene_statement_construct.gd")
 const SoundStatement = preload("res://addons/FracturalVNE/core/story_script/ast_nodes/statements/sound_statement/sound_statement_construct.gd")
 const ImportStatement = preload("res://addons/FracturalVNE/core/story_script/ast_nodes/statements/import_statement/import_statement_construct.gd")
+const IfStatement = preload("res://addons/FracturalVNE/core/story_script/ast_nodes/statements/if_statement/if_statement_construct.gd")
+const ChoiceStatement = preload("res://addons/FracturalVNE/core/story_script/ast_nodes/statements/choice_statement/choice_statement_construct.gd")
+const ChoiceOptionNode = preload("res://addons/FracturalVNE/core/story_script/ast_nodes/statements/choice_statement/choice_option_node/choice_option_construct.gd")
+const PassStatement = preload("res://addons/FracturalVNE/core/story_script/ast_nodes/statements/pass_statement/pass_statement_construct.gd")
 const ExpressionStatement = preload("res://addons/FracturalVNE/core/story_script/ast_nodes/statements/expression_statement/expression_statement_construct.gd")
 
 var CONSTRUCTS = [
@@ -54,6 +66,7 @@ var CONSTRUCTS = [
 	FloatLiteral.new(),
 	IntegerLiteral.new(),
 	StringLiteral.new(),
+	BoolLiteral.new(),
 	FunctionCall.new(),
 	
 	# Parenthesized
@@ -82,6 +95,10 @@ var CONSTRUCTS = [
 	SceneStatement.new(),
 	SoundStatement.new(),
 	ImportStatement.new(),
+	IfStatement.new(),
+	ChoiceStatement.new(),
+	ChoiceOptionNode.new(),
+	PassStatement.new(),
 	ExpressionStatement.new(),
 ]
 
@@ -94,6 +111,13 @@ func _init():
 			SubtractOperator.new(),
 			MultiplyOperator.new(),
 			DivideOperator.new(),
+			
+			EqualityOperator.new(),
+			InequalityOperator.new(),
+			GreaterThanOperator.new(),
+			GreaterThanOrEqualOperator.new(),
+			LessThanOperator.new(),
+			LessThanOrEqualOperator.new(),
 		]
 	
 	var unary_operators = [

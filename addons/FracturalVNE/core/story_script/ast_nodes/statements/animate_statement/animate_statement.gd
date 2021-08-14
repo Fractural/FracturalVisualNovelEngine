@@ -28,7 +28,7 @@ func execute():
 	if animation != null:
 		var animation_result = animation.evaluate()
 		
-		if not is_success(animation_result) or not (animation_result is Animation or animation_result is PackedScene):
+		if not SSUtils.is_success(animation_result) or not (animation_result is Animation or animation_result is PackedScene):
 			throw_error(stack_error(animation_result, "Expected valid Animation or ActorAnimation for the animate statement."))
 			return
 		
@@ -45,7 +45,7 @@ func execute():
 				return
 	
 	var actor_result = actor.evaluate()
-	if not is_success(actor_result):
+	if not SSUtils.is_success(actor_result):
 		throw_error(stack_error(actor_result, "Could not evaluate the actor."))
 		return
 	
@@ -55,7 +55,7 @@ func execute():
 		
 		if FracUtils.is_type(actor_result, "Actor"):
 			var actor_controller = get_runtime_block().get_service("ActorManager").get_or_load_actor_controller(actor_result)
-			if not is_success(actor_controller):
+			if not SSUtils.is_success(actor_controller):
 				throw_error(stack_error(actor_controller, "Could not load actor controller for the animate statement."))
 				return
 			actor_controller.actor_animator.play_animation(actor_animation_result)
