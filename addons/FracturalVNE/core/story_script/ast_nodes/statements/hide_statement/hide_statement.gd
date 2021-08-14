@@ -24,13 +24,13 @@ func _init(position_ = null, actor_ = null, transition_ = null).(position_):
 func execute():
 	var transition_result = _get_transition_result()
 	
-	if not is_success(transition_result):
+	if not SSUtils.is_success(transition_result):
 		throw_error(transition_result)
 		return
 	
 	var result = _run_hide_transition(transition_result)
 	
-	if not is_success(result):
+	if not SSUtils.is_success(result):
 		throw_error(result)
 		return
 	
@@ -39,11 +39,11 @@ func execute():
 
 func _run_hide_transition(transition_result):
 	var actor_result = SSUtils.evaluate_and_cast(actor, "Actor")
-	if not is_success(actor_result):
+	if not SSUtils.is_success(actor_result):
 		return stack_error(actor_result, "Could not evaluate the actor for the hide statement.")
 	
 	var actor_controller = get_runtime_block().get_service("ActorManager").get_or_load_actor_controller(actor_result)
-	if not is_success(actor_controller):
+	if not SSUtils.is_success(actor_controller):
 		return stack_error(actor_controller, "Could not load the ActorController for the hide statement.")
 	actor_controller.actor_transitioner.hide(transition_result)
 
@@ -52,7 +52,7 @@ func _get_transition_result():
 	var transition_result = null
 	if transition != null:
 		transition_result = SSUtils.evaluate_and_cast(transition, "StandardNode2DTransition")
-		if not is_success(transition_result):
+		if not SSUtils.is_success(transition_result):
 			return stack_error(transition_result, "Could not evaluate transition_result for the show statement.")
 	return transition_result
 

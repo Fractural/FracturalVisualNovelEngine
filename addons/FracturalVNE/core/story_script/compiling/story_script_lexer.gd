@@ -86,25 +86,33 @@ func generate_tokens(reader_: StoryScriptReader):
 			continue
 
 		errors.append(add_string_literal())
-		if is_success(errors.back()):
+		if SSUtils.is_success(errors.back()):
 			continue
 		elif errors.back().confidence == 1:
 			return errors.back()
 
-		errors.append(add_number())
-		if is_success(errors.back()):
+		errors.append(add_number_literal())
+		if SSUtils.is_success(errors.back()):
 			continue
 		elif errors.back().confidence == 1:
 			return errors.back()
-
-		errors.append(add_punctuation())
-		if is_success(errors.back()):
-			continue
-		elif errors.back().confidence == 1:
-			return errors.back()
-
+		
+		# Attempt to add operators first
+		# since operators can be more than
+		# one line, therefore being more
+		# specific than punctuation.
 		errors.append(add_operator())
-		if is_success(errors.back()):
+		if SSUtils.is_success(errors.back()):
+			continue
+		elif errors.back().confidence == 1:
+			return errors.back()
+		
+		# Punctuations are expected to be
+		# only single characters, therefore
+		# they are less specific than
+		# operators.
+		errors.append(add_punctuation())
+		if SSUtils.is_success(errors.back()):
 			continue
 		elif errors.back().confidence == 1:
 			return errors.back()
@@ -112,15 +120,15 @@ func generate_tokens(reader_: StoryScriptReader):
 		# We check identifiers and keywords together, since they share the
 		# same rules (Since keywords are special identifiers determined
 		# by the language)
-		errors.append(add_identifier_or_keyword())
-		if is_success(errors.back()):
+		errors.append(add_keyword_or_identifier_or_bool())
+		if SSUtils.is_success(errors.back()):
 			continue
 		elif errors.back().confidence == 1:
 			return errors.back()
 
 		if reader.peek() == NEWLINE:
 			var error = add_newline_and_maybe_indent()
-			if is_success(error):
+			if SSUtils.is_success(error):
 				continue
 			return error
 
@@ -164,49 +172,60 @@ func add_keyword_token(identifier):
 # ----- Keywords ----- #
 
 
-# ----- Punctuation ----- #
+# ----- Operators & Punctuation ----- #
 
 func add_punctuation():
-	var matches = punctuation.duplicate()
-	var curr_peek_index = 1
-	var confidence = 0
-	while true:
-		for i in range(matches.size() - 1, -1, -1):
-#			var ahead = reader.peek(curr_peek_index) + reader.peek(curr_peek_index + 1) + reader.peek(curr_peek_index + 2) + reader.peek(curr_peek_index + 3)
-			if matches[i][curr_peek_index - 1] != reader.peek(curr_peek_index):
-				matches.remove(i)
-		if matches.size() == 0:
-			return error(null, confidence)
-		if matches.size() == 1:
-			break
-		confidence = curr_peek_index / float(matches.size())
-		curr_peek_index += 1
-	consume(matches[0].length())
-	add_token("punctuation", matches[0])
+	var result = _match_text(punctuation.duplicate(), "Could not parse punctuation.")
+	if not SSUtils.is_success(result):
+		return result
+	consume(result.length())
+	add_token("punctuation", result)
 
-# ----- Punctuation ----- #
-
-
-# ----- Operators ----- #
 
 func add_operator():
-	var matches = operators.duplicate()
+	var result = _match_text(operators.duplicate(), "Could not parse operator.")
+	if not SSUtils.is_success(result):
+		return result
+	consume(result.length())
+	add_token("operator", result)
+
+
+func _match_text(matches, error_message):
+	# curr_peek_index is also the 
+	# length of the peeked string. 
+	var init_matches = matches.duplicate()
 	var curr_peek_index = 1
 	var confidence = 0
+	# Stores a previous match. This 
+	# allows us to attempt a more complex match
+	# even though we've already gotten 
+	# a simpler match. (ie. we matched with
+	# '>' but we want to try to match with '>=')
+	var previous_match = null
+	var peek_str = ""
 	while true:
+		peek_str += reader.peek(curr_peek_index)
+		var max_match_length = matches[0].length()
 		for i in range(matches.size() - 1, -1, -1):
-			if matches[i][curr_peek_index - 1] != reader.peek(curr_peek_index):
+			if matches[i].length() < curr_peek_index or matches[i][curr_peek_index - 1] != reader.peek(curr_peek_index):
 				matches.remove(i)
+			else:
+				if matches[i].length() == curr_peek_index:
+					previous_match = matches[i]
+				if matches[i].length() > max_match_length:
+					max_match_length = matches[i].length()
 		if matches.size() == 0:
-			return error(null, confidence)
-		if matches.size() == 1:
-			break
-		confidence = curr_peek_index / float(matches.size())
+			# If we've matched before with something,
+			# then use that 'something' instead of erroring.
+			if previous_match != null:
+				return previous_match
+			return error(error_message, confidence)
+		if matches.size() == 1 and matches[0].length() == curr_peek_index:
+			return matches[0]
+		confidence = curr_peek_index / float(max_match_length)
 		curr_peek_index += 1
-	consume(matches[0].length())
-	add_token("operator", matches[0])
 
-# ----- Operators ----- #
+# ----- Operators & Punctuation ----- #
 
 
 # ----- Comments ----- #
@@ -227,14 +246,24 @@ func add_comment():
 # ----- Identifier ----- #
 
 func is_identifier_first_char(character):
-	return character == "_" or (ord("a") <= ord(character) and ord(character) <= ord("z")) or (ord("A") <= ord(character) and ord(character) <= ord("Z"))
+	return (character == "_" 
+		or (ord("a") <= ord(character) and ord(character) <= ord("z"))
+		or (ord("A") <= ord(character) and ord(character) <= ord("Z")))
 
 
 func is_identifier_nonfirst_char(character):
 	return is_identifier_first_char(character) or (ord("0") <= ord(character) and ord(character) <= ord("9"))
 
 
-func add_identifier_or_keyword():
+func add_identifier_token(identifier):
+	add_token("identifier", identifier)
+
+# ----- Identifier ----- #
+
+
+# ----- Misc ----- #
+
+func add_keyword_or_identifier_or_bool():
 	# Apparently Regex causes memory leaks.
 	# Regex was very performance intensive anyways so I've switched to
 	# using good old boolean statements.
@@ -248,21 +277,19 @@ func add_identifier_or_keyword():
 		if reader.is_EOF():
 			break
 	
-	if is_keyword(possible_identifier):
+	if is_bool_literal(possible_identifier):
+		add_bool_literal_token(possible_identifier)
+	elif is_keyword(possible_identifier):
 		add_keyword_token(possible_identifier)
 	else:
 		add_identifier_token(possible_identifier)
 
-
-func add_identifier_token(identifier):
-	add_token("identifier", identifier)
-
-# ----- Identifier ----- #
+# ----- Misc ----- #
 
 
 # ----- Number ----- #
 
-func add_number():
+func add_number_literal():
 	if not reader.peek() in "0123456789.":
 		return error()
 	
@@ -349,6 +376,17 @@ func add_string_literal():
 	add_token("string", string_literal)
 
 # ----- String ----- #
+
+
+# ----- Boolean ----- #
+
+func is_bool_literal(keyword):
+	return keyword == "true" or keyword == "false"
+
+func add_bool_literal_token(keyword):
+	add_token("bool", keyword == "true")
+
+# ----- Boolean ----- #
 
 
 # ----- Core cont. ----- #

@@ -26,7 +26,7 @@ func _init(position_ = null, duration_ = null).(position_):
 
 func execute():
 	var duration_result = SSUtils.evaluate_and_cast(duration, "Number")
-	if not is_success(duration_result):
+	if not SSUtils.is_success(duration_result):
 		throw_error(stack_error(duration_result, "Expected a valid number for the duration."))
 		return
 	

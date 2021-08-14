@@ -1,4 +1,3 @@
-class_name StoryScriptArgument
 extends Reference
 
 var name

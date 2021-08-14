@@ -11,12 +11,12 @@ extends TextEdit
 #		in a construct.
 
 const ACCENT_1_KEYWORDS = [ 
-	"if", "elif", "else", "pass", "call"
+	"if", "elif", "else", "pass", "call", "true", "false", "not"
 	]
 const ACCENT_2_KEYWORDS = [ 
 	"label", "jump", "with", "show", "hide", "remove", "animate",
 	"pause", "for", "move", "to", "scene", "import", "sound",
-	"==", ">", "<", ">=", "<=" 
+	"choice"
 	]
 const ACCENT_3_KEYWORDS = [
 	
@@ -75,7 +75,7 @@ func load_text_edit_theme(new_theme: Resource = text_edit_theme):
 
 	for keyword in ACCENT_2_KEYWORDS:
 		add_keyword_color(keyword, text_edit_theme.accent_2_color)
-
+	
 	for keyword in ACCENT_3_KEYWORDS:
 		add_keyword_color(keyword, text_edit_theme.accent_3_color)
 

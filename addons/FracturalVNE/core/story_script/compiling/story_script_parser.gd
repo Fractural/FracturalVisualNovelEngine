@@ -28,7 +28,7 @@ func expect(construct_names):
 		if constructs_dict.has(name):
 			for construct in constructs_dict[name]:
 				errors.append(construct.parse(self))
-				if is_success(errors.back()):
+				if SSUtils.is_success(errors.back()):
 					return errors.back()
 				elif errors.back().confidence == 1:
 					# Bail statement for when you are absolutely sure this 
@@ -53,6 +53,7 @@ func expect(construct_names):
 
 
 func expect_token(token_type: String, token_symbol = null):
+	var peeked = reader.peek()
 	if token_type == reader.peek().type:
 		if token_symbol != null:
 			if token_symbol == reader.peek().symbol:
@@ -75,6 +76,8 @@ func save_reader_state():
 	return reader.clone()
 
 
+# TODO: Delete this method and replace all uses
+# 		with SSUtils.is_success().
 func is_success(result):
 	return SSUtils.is_success(result)
 

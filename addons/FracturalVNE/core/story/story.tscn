@@ -1,4 +1,4 @@
-[gd_scene load_steps=40 format=2]
+[gd_scene load_steps=41 format=2]
 
 [ext_resource path="res://addons/FracturalVNE/core/story/story_manager.gd" type="Script" id=1]
 [ext_resource path="res://addons/FracturalVNE/core/story/director/story_director.gd" type="Script" id=2]
@@ -39,6 +39,7 @@
 [ext_resource path="res://addons/FracturalVNE/core/audio/story_audio_channel_controller_serializer.gd" type="Script" id=37]
 [ext_resource path="res://addons/FracturalVNE/core/audio/story_audio_manager.gd" type="Script" id=38]
 [ext_resource path="res://addons/FracturalVNE/core/story_script/importing/story_import_manager.gd" type="Script" id=39]
+[ext_resource path="res://addons/FracturalVNE/core/story/choice/choice_manager.gd" type="Script" id=40]
 
 [node name="Story" type="Node"]
 
@@ -201,6 +202,9 @@ serialization_manager_path = NodePath("../../../SerializationManager")
 
 [node name="Channels" type="Node" parent="StoryLoader/StoryServices/AudioManager"]
 
+[node name="ChoiceManager" type="Node" parent="StoryLoader/StoryServices"]
+script = ExtResource( 40 )
+
 [node name="ScreenshotManager" type="Node" parent="."]
 script = ExtResource( 16 )
 facade_viewport_texture_rect_path = NodePath("FacadeViewportTextureRect")
@@ -308,6 +312,9 @@ dependency_path = NodePath("../../../../StoryStateManager")
 
 [node name="TextPrinterManagerDependency" parent="StoryGUIConfigurer/BasicGUI/Dependencies" index="4"]
 dependency_path = NodePath("../../../../StoryLoader/StoryServices/TextPrinterManager")
+
+[node name="ChoiceManagerDependency" parent="StoryGUIConfigurer/BasicGUI/Dependencies" index="5"]
+dependency_path = NodePath("../../../../StoryLoader/StoryServices/ChoiceManager")
 
 [node name="Holder" parent="StoryGUIConfigurer/BasicGUI/Panel/VBoxContainer/TextPrinterHolder/BasicTextPrinter" index="0"]
 margin_right = 0.0
@@ -428,6 +435,7 @@ story_manager_path = NodePath("../StoryManager")
 story_runner_dep_path = NodePath("../Dependencies/StoryRunnerDependency")
 
 [editable path="StoryGUIConfigurer/BasicGUI"]
+[editable path="StoryGUIConfigurer/BasicGUI/BasicChoiceHandler"]
 [editable path="StoryGUIConfigurer/BasicGUI/Panel/VBoxContainer/TextPrinterHolder/BasicTextPrinter"]
 [editable path="StoryGUIConfigurer/BasicGUI/Panel/VBoxContainer/TextPrinterHolder/BasicTextPrinter/BaseActor"]
 [editable path="StoryGUIConfigurer/BasicGUI/BasicPauseMenu"]

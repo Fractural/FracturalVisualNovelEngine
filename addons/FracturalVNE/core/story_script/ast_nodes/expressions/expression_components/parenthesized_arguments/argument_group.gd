@@ -19,6 +19,31 @@ func _init(position_ = null, arguments_ = null).(position_):
 	arguments = arguments_
 
 
+# -- StoryScriptErrorable -- #
+# Returns a dictionary wheere
+# Keys: Argument name
+# Values: Evaluated result of the corresponding argument
+func evaluate_arguments_as_dict():
+	var dict: Dictionary = {}
+	for argument in arguments:
+		var argument_result = argument.evaluate_argument()
+		if not SSUtils.is_success(argument_result):
+			return stack_error(argument_result, "Could not evaluate an argument in the argument group.")
+		dict[argument_result.name] = argument_result.value
+	return dict
+
+
+# -- StoryScriptErrorable -- #
+func evaluate_arguments_as_array():
+	var arr: Array = []
+	for argument in arguments:
+		var argument_result = argument.evaluate_argument()
+		if not SSUtils.is_success(argument_result):
+			return stack_error(argument_result, "Could not evaluate an argument in the argument group.")
+		arr.append(argument_result)
+	return arr
+
+
 func debug_string(tabs_string: String) -> String:
 	var string = ""
 	string += tabs_string + "ARG GROUP:" 

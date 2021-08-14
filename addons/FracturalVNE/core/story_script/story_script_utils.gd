@@ -12,11 +12,11 @@ static func evaluate_and_cast(object, type):
 	var result = object.evaluate()
 	if not is_success(result):
 		return result
-	result = FracUtils.implicit_cast(result, type)
-	if result == null:
+	var cast_result = FracUtils.implicit_cast(result, type)
+	if cast_result == null:
 		# Implicit cast failed
-		return error("Cannot cast object \"%s\" to type \"%s\"." % [result, type])
-	return result
+		return error("Cannot cast object \"%s\" (type \"%s\") to type \"%s\"." % [result, FracUtils.get_type_name(result), type])
+	return cast_result
 
 
 # Checks if a result is successful (meaning it is not a StoryScript.Error).

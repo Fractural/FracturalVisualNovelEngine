@@ -20,6 +20,7 @@ func _init():
 
 
 func compile(script_text: String):
+	return test_compile(script_text)
 	var lexed_tokens = lexer.generate_tokens(StoryScriptReader.new(script_text))	
 	if lexed_tokens is StoryScriptError:
 		return lexed_tokens

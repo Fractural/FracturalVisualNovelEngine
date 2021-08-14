@@ -28,12 +28,12 @@ func _init(position_ = null, actor_ = null, target_position_ = null, travel_curv
 func execute():
 	var actor_result = actor.evaluate()
 	
-	if not is_success(actor_result):
+	if not SSUtils.is_success(actor_result):
 		throw_error(stack_error(actor_result, "Could not evaluate the actor."))
 		return
 	
 	var target_position_result = target_position.evaluate()
-	if not is_success(target_position_result):
+	if not SSUtils.is_success(target_position_result):
 		throw_error(stack_error(target_position_result, "Could not evaluate the target position."))
 		return
 	if not target_position_result is Vector2:
@@ -43,7 +43,7 @@ func execute():
 	var travel_curve_result = null
 	if travel_curve != null:
 		travel_curve_result = travel_curve.evaluate()
-		if not is_success(travel_curve_result):
+		if not SSUtils.is_success(travel_curve_result):
 			throw_error(stack_error(travel_curve_result, "Could not evaluate the travel curve."))
 			return
 		if not travel_curve_result is Curve:
@@ -53,7 +53,7 @@ func execute():
 	var duration_result = null
 	if duration != null:
 		duration_result = duration.evaluate()
-		if not is_success(duration_result):
+		if not SSUtils.is_success(duration_result):
 			throw_error(stack_error(duration_result, "Could not evaluate the duration."))
 			return
 		if not (duration_result is float or duration_result is int):
@@ -76,7 +76,7 @@ func execute():
 		
 		if FracUtils.is_type(actor_result, "Actor"):
 			var actor_controller = get_runtime_block().get_service("ActorManager").get_or_load_actor_controller(actor_result)
-			if not is_success(actor_controller):
+			if not SSUtils.is_success(actor_controller):
 				throw_error(stack_error(actor_controller, "Could not load actor controller for the move statement."))
 				return
 			# TODO: Add rotation and scaling for move statement.

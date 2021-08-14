@@ -11,14 +11,26 @@ func get_types() -> Array:
 
 # ----- Typeable ----- #Z
 
+const Argument = preload("res://addons/FracturalVNE/core/story_script/story_script_argument.gd")
 
-var name
-var value
+var name	# String
+var value	# ExpressionNode
 
 
 func _init(position_ = null, name_ = null, value_ = null).(position_):
 	name = name_
 	value = value_
+
+
+# -- StoryScriptErrorable -- #
+func evaluate_argument():
+	var value_result = value.evaluate()
+	if not SSUtils.is_success(value_result):
+		if name != null:
+			return stack_error(value_result, "Could not evaluate value of argument named: \"%s\"." % name)
+		else:
+			return stack_error(value_result, "Could not evaluate unnamed argument.")
+	return Argument.new(name, value_result)
 
 
 func debug_string(tabs_string: String) -> String:

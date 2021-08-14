@@ -22,7 +22,7 @@ func _init(position_ = null, variable_name_ = null, value_expression_ = null).(p
 
 func execute():
 	var result = get_runtime_block().declare_variable(variable_name, value_expression)
-	if not is_success(result):
+	if not SSUtils.is_success(result):
 		throw_error(result)
 		return
 	.execute()

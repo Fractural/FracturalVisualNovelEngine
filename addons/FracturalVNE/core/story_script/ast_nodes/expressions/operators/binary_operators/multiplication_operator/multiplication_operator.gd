@@ -26,10 +26,10 @@ func get_precedence() -> int:
 
 func evaluate():
 	var left_result = left_operand.evaluate()
-	if not is_success(left_result):
+	if not SSUtils.is_success(left_result):
 		return left_result
 	var right_result = right_operand.evaluate()
-	if not is_success(right_result):
+	if not SSUtils.is_success(right_result):
 		return right_result
 	
 	if (typeof(left_result) == TYPE_INT or typeof(left_result) == TYPE_REAL) and (typeof(right_result) == TYPE_INT or typeof(right_result) == TYPE_REAL):

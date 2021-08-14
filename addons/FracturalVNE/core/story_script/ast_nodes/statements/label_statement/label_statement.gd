@@ -23,7 +23,8 @@ func _init(position_ = null, name_ = null, block_ = null, parameter_group_ = nul
 	parameter_group = parameter_group_
 
 
-func _init_post():
+func configure_node(runtime_block_):
+	.configure_node(runtime_block_)
 	block.connect("executed", self, "block_executed")
 	if parameter_group != null:
 		for param in parameter_group.parameters:
@@ -36,7 +37,7 @@ func execute(arguments = []):
 	if parameter_group != null:
 		for arg in arguments:
 			var result = block.set_variable(arg.name, arg.value)
-			if not is_success(result):
+			if not SSUtils.is_success(result):
 				return stack_error(result, "Could not assign argument with name %s." % [arg.name])
 	
 	block.execute()
@@ -48,7 +49,7 @@ func block_executed():
 
 func runtime_initialize():
 	var result = get_runtime_block().get_service("StoryDirector").add_label(self)
-	if not is_success(result):
+	if not SSUtils.is_success(result):
 		throw_error(result)
 		return
 
@@ -102,7 +103,6 @@ func deserialize(serialized_object):
 	instance.block = SerializationUtils.deserialize(serialized_object["block"])
 	if serialized_object.has("parameter_group"):
 		instance.parameter_group = SerializationUtils.deserialize(serialized_object["parameter_group"])
-	instance._init_post()
 	return instance
 
 # ----- Serialization ----- #
