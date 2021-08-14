@@ -156,8 +156,15 @@ func step():
 	#		expected you to use it's own programming language.
 	if not curr_node_executed:
 		curr_node_executed = true
-		curr_stepped_node.step()
-		emit_signal("stepped")
+		# This SteppedNode type check is to
+		# prevent crashes when there are no stepped nodes,
+		# which places the program node as a stepped node.
+		#
+		# TODO DISCUSS: Maybe just make the program node a stepped node
+		#				insttead of doing this check?
+		if FracVNE.Utils.is_type(curr_stepped_node, "SteppedNode"): 
+			curr_stepped_node.step()
+			emit_signal("stepped")
 	else:
 		# TODO: Exit the story when the last node is reached
 		return

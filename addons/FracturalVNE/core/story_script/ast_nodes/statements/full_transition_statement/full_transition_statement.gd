@@ -61,6 +61,11 @@ func _on_setup_block_executed():
 
 
 func _on_transition_out_finished():
+	# Cleanup the signals
+	var full_transition_manager = get_runtime_block().get_service("FullTransitionManager")
+	full_transition_manager.disconnect("transition_in_finished", self, "_on_transition_in_finished")
+	full_transition_manager.disconnect("transition_out_finished", self, "_on_transition_out_finished")
+	
 	_finish_execute()
 
 

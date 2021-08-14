@@ -1,20 +1,40 @@
 import "res://demo/visuals_testing_definitions.story"
 
-scene bg_library2 with fade_to_black
-
-pause 3
-
-scene bg_library3 with fade_to_black
-scene bg_library3 with cross_fade
-
 label looped:
+	"Testing scene show..."
+	scene bg_library2 with fade_to_black
+	"Tested scene show"
+	
+	"Testing scene replace show..."
+	scene bg_library3 with fade_to_black
+	"Tested scene replace show"
+	
+	"Testing full transition (with bgm and scene)..."
 	transition fade_to_black:
 		sound music bgm_poppy_shop
 		scene bg_library1
+	"Tested full transition"
 	
+	"Testing sound..."
 	sound sfx sfx_entrance_chime
+	"Tested sound"
 	
-	move godette to Point(-500, 0)
+	"Testing sound interrupting..."
+	sound sfx sfx_entrance_chime
+	pause 0.1
+	sound sfx sfx_entrance_chime
+	pause 0.1
+	sound sfx sfx_entrance_chime
+	"Tested sound interrupting"
+
+	"Testing sound queueing..."
+	sound queued_channel sfx_entrance_chime
+	pause 0.1
+	sound queued_channel sfx_entrance_chime
+	pause 0.1
+	sound queued_channel sfx_entrance_chime
+	"Tested sound queueing"
+
 	move godette2 to Point(-400, 0)
 	move godette3 to Point(-300, 0)
 	move godette4 to Point(-200, 0)
@@ -25,12 +45,17 @@ label looped:
 	move godette7 to Point(200, 0)
 	move godette6 to Point(100, 0)
 	
-	# Last show statement should override the previous ones
-	# if they are stacked together.
-	#show godette happy with fade_to_black
-	#show godette sad with fade_to_black
+	"Testing stacked show..."
+	show godette happy with fade_to_black
+	show godette sad with fade_to_black
 	show godette surprised with fade_to_black
+	"Tested stacked show"
 	
+	"Testing move..."
+	move godette to Point(-500, 0) with ease_in
+	"Tested move"
+	
+	"Testing show..."
 	show godette2 surprised with fade_to_black
 	show godette3 surprised with fade_to_black
 	show godette4 surprised with fade_to_black
@@ -41,20 +66,22 @@ label looped:
 	show godette8 surprised with cross_fade
 	show godette9 surprised with cross_fade
 	show godette10 surprised with cross_fade
+	"Tested show"
 	
+	"Testing character dialogue..."
 	godette "Hi there!"
+	"Tested character dialogue"
 	
-	scene bg_library2 with fade_to_black
+	"Testing narration..."
+	"This is some narration"
+	"Tested narration"
 	
-	#show godette6 happy with cross_fade
-	#show godette7 happy with cross_fade
-	#show godette8 happy with cross_fade
-	#show godette9 happy with cross_fade
-	#show godette10 happy with cross_fade
+	"Testing string character dialogue..."
+	"Bob" "I'm dialogue using a string for the character name!"
+	"Tested string character dialogue"
 	
-	godette "Lets all hop!"
-	
-	animate godette with hop
+	"Testing animation"
+	animate godette with hop	
 	pause 0.1
 	animate godette2 with hop
 	pause 0.1
@@ -74,13 +101,9 @@ label looped:
 	pause 0.1
 	animate godette10 with hop
 	pause 1
+	"Tested animation"
 	
-	godette "Time for us to leave!"
-	
-	sound music bgm_ambience
-	
-	scene bg_library3 with fade_to_black
-	
+	"Test hiding..."
 	hide godette with cross_fade
 	pause 0.1
 	hide godette2 with cross_fade
@@ -101,4 +124,7 @@ label looped:
 	pause 0.1
 	hide godette10 with cross_fade
 	pause 2
+	"Tested hiding"
+	
+	"Test jumping (looping back)..."
 	jump looped

@@ -59,10 +59,11 @@ func _on_transition_finished(skipped: bool) -> void:
 			# If we didn't finish the hide transition then we have to
 			# skip both hide and show transition to reach the end.
 			hide_transition.disconnect("transition_finished", self, "_on_hide_transition_finished")
-			hide_transition._on_transition_finished(skipped)
+			hide_transition._on_transition_finished(true)
+			hide_transition.cleanup()
 		else:
 			# If we finished the hide transition and are skipping, then
 			# that means we have not finished the show transition.
 			show_transition.disconnect("transition_finished", self, "_on_transition_finished")
-			show_transition._on_transition_finished(skipped)
+			show_transition._on_transition_finished(true)
 	._on_transition_finished(skipped)
