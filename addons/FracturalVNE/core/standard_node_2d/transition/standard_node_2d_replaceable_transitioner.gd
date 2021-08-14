@@ -19,6 +19,14 @@ export var old_node_holder_path: NodePath
 onready var old_node_holder = get_node_or_null(old_node_holder_path)
 
 
+# TODO DISCUSS: There are too many arguments in replace.
+#				We should create a dedicated transtioner
+#				for the full screen transitions instead of 
+#				stuffing all the loading features into 
+#				replaceable transitioner (Which is also used
+#				by multi visuals, who will never need a loading
+#				hack).
+
 # -- StoryScriptErrorable -- #
 func replace(transition: FracVNE_StandardNode2DTransition = null, duration: float = 1, is_skippable: bool = true, is_skipping_loading: bool = true):
 	_force_clear_current_transition()
