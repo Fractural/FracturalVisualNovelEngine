@@ -35,4 +35,4 @@ func parse(parser):
 	if not parser.is_success(block):
 		return parser.error(block, 1, checkpoint)
 	
-	return ChoiceOptionNode.new(string_literal.position, string_literal, block)
+	return ChoiceOptionNode.new(string_literal.position, string_literal, block, condition)

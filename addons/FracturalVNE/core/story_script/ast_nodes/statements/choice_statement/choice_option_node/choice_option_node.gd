@@ -9,9 +9,10 @@ var choice_text
 var condition
 
 
-func _init(position = null, choice_text_ = null, block_ = null).(position):
+func _init(position = null, choice_text_ = null, block_ = null, condition_ = null).(position):
 	block = block_
 	choice_text = choice_text_
+	condition = condition_
 
 
 func configure_node(runtime_block_):
@@ -43,7 +44,7 @@ func get_choice_option():
 func is_valid():
 	if condition == null:
 		return true
-	return SSUtils.evaluate_and_cast(condition.evaluate(), "bool")
+	return SSUtils.evaluate_and_cast(condition, "bool")
 
 
 func debug_string(tabs_string: String) -> String:
