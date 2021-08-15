@@ -131,7 +131,7 @@ icon = ExtResource( 11 )
 
 [node name="States" type="HBoxContainer" parent="VSplitContainer/TopMenu/VBoxContainer/HBoxContainer"]
 margin_left = 299.0
-margin_right = 457.0
+margin_right = 529.0
 margin_bottom = 24.0
 custom_constants/separation = 0
 
@@ -200,6 +200,32 @@ margin_bottom = 19.0
 size_flags_horizontal = 4
 custom_colors/font_color = Color( 0.647059, 0.937255, 0.67451, 1 )
 text = "Saved"
+valign = 1
+
+[node name="SavedUIContainer2" type="HBoxContainer" parent="VSplitContainer/TopMenu/VBoxContainer/HBoxContainer/States"]
+margin_left = 158.0
+margin_right = 230.0
+margin_bottom = 24.0
+
+[node name="SavedIcon" type="TextureRect" parent="VSplitContainer/TopMenu/VBoxContainer/HBoxContainer/States/SavedUIContainer2"]
+margin_top = 4.0
+margin_right = 16.0
+margin_bottom = 20.0
+size_flags_horizontal = 4
+size_flags_vertical = 4
+texture = ExtResource( 7 )
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="SavedText" type="Label" parent="VSplitContainer/TopMenu/VBoxContainer/HBoxContainer/States/SavedUIContainer2"]
+margin_left = 20.0
+margin_top = 5.0
+margin_right = 72.0
+margin_bottom = 19.0
+size_flags_horizontal = 4
+custom_colors/font_color = Color( 0.647059, 0.937255, 0.67451, 1 )
+text = "asdfasdf"
 valign = 1
 
 [node name="EditingFileText" type="Label" parent="VSplitContainer/TopMenu/VBoxContainer"]
