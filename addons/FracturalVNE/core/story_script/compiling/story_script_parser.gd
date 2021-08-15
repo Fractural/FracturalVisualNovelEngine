@@ -38,7 +38,7 @@ func expect(construct_names):
 			return error('Unknown construct of type: "%s"' % [name], 1)
 	
 	if errors.size() == 0:
-		return error("Unknown token.")
+		return error("Unexpected token: \"%s\"" % reader.peek().symbol)
 	
 	var closest_error = errors.front()
 	for error in errors:
@@ -46,8 +46,7 @@ func expect(construct_names):
 			closest_error = error
 	
 	if closest_error.confidence == 0:
-		closest_error.message = "Unknown token."
-		return closest_error
+		return error("Unexpected token: \"%s\"" % reader.peek().symbol)
 	
 	return closest_error
 

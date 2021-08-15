@@ -59,6 +59,7 @@ const IfStatement = preload("res://addons/FracturalVNE/core/story_script/ast_nod
 const ChoiceStatement = preload("res://addons/FracturalVNE/core/story_script/ast_nodes/statements/choice_statement/choice_statement_construct.gd")
 const ChoiceOptionNode = preload("res://addons/FracturalVNE/core/story_script/ast_nodes/statements/choice_statement/choice_option_node/choice_option_construct.gd")
 const PassStatement = preload("res://addons/FracturalVNE/core/story_script/ast_nodes/statements/pass_statement/pass_statement_construct.gd")
+const FullTransitionStatement = preload("res://addons/FracturalVNE/core/story_script/ast_nodes/statements/full_transition_statement/full_transition_statement_construct.gd")
 const ExpressionStatement = preload("res://addons/FracturalVNE/core/story_script/ast_nodes/statements/expression_statement/expression_statement_construct.gd")
 
 var CONSTRUCTS = [
@@ -99,6 +100,7 @@ var CONSTRUCTS = [
 	ChoiceStatement.new(),
 	ChoiceOptionNode.new(),
 	PassStatement.new(),
+	FullTransitionStatement.new(),
 	ExpressionStatement.new(),
 ]
 

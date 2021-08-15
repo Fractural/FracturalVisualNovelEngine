@@ -5,7 +5,7 @@ extends Node
 # the text at their own pace.
 
 
-# ----- StoryService Info ----- #
+# ----- StoryService ----- #
 
 const FuncDef = FracVNE.StoryScript.FuncDef
 const Param = FracVNE.StoryScript.Param
@@ -27,15 +27,17 @@ var function_definitions = [
 	]),
 ]
 
+
 func get_service_name():
 	return "StoryDirector"
+
 
 func configure_service(program_node):
 	# Reset the story director when a new story tree is loaded
 	label_dict = {}
 	curr_active_step_actions = []
 
-# --- StoryService Info End --- #
+# ----- StoryService ----- #
 
 
 enum StepState {
@@ -156,8 +158,15 @@ func step():
 	#		expected you to use it's own programming language.
 	if not curr_node_executed:
 		curr_node_executed = true
-		curr_stepped_node.step()
-		emit_signal("stepped")
+		# This SteppedNode type check is to
+		# prevent crashes when there are no stepped nodes,
+		# which places the program node as a stepped node.
+		#
+		# TODO DISCUSS: Maybe just make the program node a stepped node
+		#				insttead of doing this check?
+		if FracVNE.Utils.is_type(curr_stepped_node, "SteppedNode"): 
+			curr_stepped_node.step()
+			emit_signal("stepped")
 	else:
 		# TODO: Exit the story when the last node is reached
 		return

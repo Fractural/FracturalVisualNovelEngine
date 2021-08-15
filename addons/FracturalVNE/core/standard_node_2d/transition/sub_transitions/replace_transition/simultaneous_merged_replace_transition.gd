@@ -15,10 +15,13 @@ onready var show_transition = get_node(show_transition_path)
 onready var hide_transition = get_node(hide_transition_path)
 
 
-func transition(new_node_: Node, old_node_: Node, duration_: float):
-	if not _setup_transition(new_node_, old_node_, duration_):
+func transition(new_node_: Node, old_node_: Node, duration_: float, is_skipping_loading_: bool = true):
+	if not _setup_transition(new_node_, old_node_, duration_, is_skipping_loading_):
 		return 
-	
+	_start_loading()
+
+
+func finished_loading():
 	hide_transition.connect("transition_finished", self, "_on_sub_transition_finished")
 	show_transition.connect("transition_finished", self, "_on_sub_transition_finished")
 	

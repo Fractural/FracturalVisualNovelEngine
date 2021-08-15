@@ -85,15 +85,12 @@ func _ready() -> void:
 		new_file()
 	else:
 		open_file(persistent_data_dep.dependency.current_script_path)
-	
-	# Clear the undo history after switching to a new script -- we don't want users to undo
-	# back to the original script after they loaded a new one.
-	script_text_edit.clear_undo_history()
 
 
 func new_file():
 	set_current_script_path("")
-	script_text_edit.text = """define b = Character(name="Bob", name_color="#fcba03")
+	script_text_edit.text = """# This is a comment!
+define b = Character(name="Bob", name_color="#fcba03")
 define j = Character("Joe", "#03a1fc", "#03a1fc")
 b "Hi there, I'm Bob!"
 j "Hi there, I'm Joe!"
@@ -108,9 +105,13 @@ label start:
 label impossible_to_reach:
 	"You will never reach this label!"
 """
+	
+	# Clear the undo history after switching to a new script -- we don't want users to undo
+	# back to the original script after they loaded a new one.
+	script_text_edit.clear_undo_history()
+
 	set_compiled(false)
 	set_saved(false)
-
 
 # Returns true if successful.
 func open_file(file_path) -> bool:
@@ -123,6 +124,8 @@ func open_file(file_path) -> bool:
 	set_current_script_path(file_path)
 	script_text_edit.text = file.get_as_text()
 	file.close()
+	
+	script_text_edit.clear_undo_history()
 	
 	set_compiled(false)
 	set_saved(true)
@@ -156,6 +159,10 @@ func save_current_file() -> bool:
 
 # Sets compiled to true if successful.
 func compile_script():
+	if persistent_data_dep.dependency.current_script_path == "":
+		save_file_dialog.popup()
+		return
+	
 	var ast_tree = compiler.compile(script_text_edit.text)
 	if ast_tree is FracVNE.StoryScript.Error:
 		script_text_edit.display_error(ast_tree)
@@ -241,6 +248,8 @@ func _on_file_menu_item_pressed(meta):
 
 func _on_popup_about_to_show():
 	popup_dim.visible = true
+	open_file_dialog.invalidate()
+	save_file_dialog.invalidate()
 
 
 func _on_popup_hide():

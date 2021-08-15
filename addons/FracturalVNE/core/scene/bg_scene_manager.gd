@@ -152,6 +152,9 @@ func show_scene(scene, transition = null, keep_old_scene = false):
 	if scene == current_scene:
 		return
 	
+	# TODO DISCUSS: Maybe refactor out this disgustingly complex
+	#				race condition mess below?
+	
 	# We cannot change the _old_scene before calling transitioner.replace() 
 	# since the _old_scene may be used during the clean up of an ongoing
 	# transiition (when _on_transition_finished() is called by the transitioner
