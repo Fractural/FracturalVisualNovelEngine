@@ -13,7 +13,6 @@ func get_types() -> Array:
 const FracUtils = FracVNE.Utils
 const PersistentData: Script = preload("plugin/ui/persistent_data/persistent_data.gd")
 const EditorPersistentDataDefualtsLoader = preload("plugin/ui/persistent_data/editor_persistent_data_defaults_loader.gd")
-const Settings: Script = preload("plugin/settings.gd")
 const Docker: Script = preload("plugin/ui/docker.gd")
 const PluginUI: Script = preload("plugin/ui/plugin_ui.gd")
 const AssetsRegistry: Script = preload("plugin/plugin_assets_registry.gd")
@@ -23,7 +22,6 @@ var inspector_plugins = []
 
 var plugin_ui: PluginUI
 var docker: Docker
-var settings: Settings
 
 # plugin.gd gets it's own AssetsRegistry
 # this is needed for get_plugin_icon() to work.
@@ -48,27 +46,18 @@ func _init():
 	#
 	# We force a ready in order to let the data load
 	persistent_data._ready()
-	
-	settings = Settings.new("Fractural Visual Novel Engine", "Fractural_VNE")
 
 
 func _enter_tree():
 	add_child(assets_registry)
 	add_child(persistent_data)
-	print("Persistent data: " + str(persistent_data))
-	print("Persistent data path: " + str(persistent_data.get_path()))
 	
 	plugin_ui = PluginUIScene.instance()
-	print("plugin_ui node: " + str(plugin_ui))
-	print("plugin_ui persist data dep node: " + str(plugin_ui.get_node("Dependencies/PersistentDataDependency")))
 	plugin_ui.get_node("Dependencies/PluginDependency").dependency_path = get_path()
 	plugin_ui.get_node("Dependencies/AssetsRegistryDependency").dependency_path = assets_registry.get_path()
 	plugin_ui.get_node("Dependencies/PersistentDataDependency").dependency_path = persistent_data.get_path()
 	
-	print("plugin_ui persiste data dep path after inject: " + str(plugin_ui.get_node("Dependencies/PersistentDataDependency").dependency_path))
-	plugin_ui._settings = settings
-	
-	docker = Docker.new(self, settings, plugin_ui)
+	docker = Docker.new(self, persistent_data, plugin_ui)
 	add_child(docker)
 	
 	inspector_plugins = []
@@ -103,7 +92,7 @@ func add_custom_inspector_plugin(instance: EditorInspectorPlugin):
 func has_main_screen():
 	if docker != null:
 		return docker._main_panel_constructed
-	return settings.get_setting("Display") == Docker.DockType.MAIN_PANEL
+	return persistent_data.display_mode == Docker.DockType.MAIN_PANEL
 
 
 func make_visible(visible):

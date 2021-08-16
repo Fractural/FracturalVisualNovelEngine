@@ -15,7 +15,7 @@ script = ExtResource( 1 )
 __meta__ = {
 "_edit_use_anchors_": false
 }
-choice_manager_dep_path = NodePath("Dependencies/ChoiceManagerDependency")
+dep__choice_manager_path = NodePath("Dependencies/ChoiceManagerDependency")
 option_controller_prefab = ExtResource( 2 )
 option_controllers_holder_path = NodePath("OptionsHolder")
 

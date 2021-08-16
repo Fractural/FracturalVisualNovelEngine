@@ -34,8 +34,8 @@ dependency_name = "PersistentData"
 
 [node name="EditorStoryRunner" type="Node" parent="."]
 script = ExtResource( 4 )
-persistent_data_path = NodePath("../Dependencies/PersistentDataDependency")
-plugin_path = NodePath("../Dependencies/PluginDependency")
+dep__persistent_data_path = NodePath("../Dependencies/PersistentDataDependency")
+dep__plugin_path = NodePath("../Dependencies/PluginDependency")
 
 [node name="StoryScriptEditor" parent="." instance=ExtResource( 2 )]
 

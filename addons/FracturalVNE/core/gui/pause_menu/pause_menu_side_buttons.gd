@@ -2,6 +2,8 @@ extends Node
 # Wires up the side buttons in the pause menu to the appropriate actions.
 
 
+const FracUtils = FracVNE.Utils
+
 export var history_button_path: NodePath
 export var save_button_path: NodePath
 export var load_button_path: NodePath
@@ -11,7 +13,8 @@ export var return_button_path: NodePath
 export var menu_manager_path: NodePath
 export var save_slots_menu_path: NodePath
 export var pause_menu_path: NodePath
-export var story_gui_dep_path: NodePath
+
+export var dep__story_gui_path: NodePath
 
 onready var history_button: Button = get_node(history_button_path)
 onready var save_button: Button = get_node(save_button_path)
@@ -22,7 +25,8 @@ onready var return_button: Button = get_node(return_button_path)
 onready var menu_manager = get_node(menu_manager_path)
 onready var save_slots_menu = get_node(save_slots_menu_path)
 onready var pause_menu = get_node(pause_menu_path)
-onready var story_gui_dep = get_node(story_gui_dep_path)
+
+onready var story_gui = FracUtils.get_valid_node_or_dep(self, dep__story_gui_path, story_gui)
 
 
 func _ready() -> void:
@@ -52,7 +56,7 @@ func _on_options_button_pressed():
 
 func _on_quit_button_pressed():
 	get_tree().paused = false
-	story_gui_dep.dependency.quit()
+	story_gui.quit()
 
 
 func _on_return_button_pressed():

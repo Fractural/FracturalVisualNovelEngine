@@ -5,12 +5,12 @@ const FracUtils = FracVNE.Utils
 const IPAddress: String = "127.0.0.1"
 
 export var story_runner_path: NodePath
-export var persistent_data_path: NodePath
+export var dep__persistent_data_path: NodePath
 
 var _client: NetworkedMultiplayerENet
 
 onready var story_runner 	= FracUtils.get_valid_node_or_dep(self, story_runner_path, 	story_runner)
-onready var persistent_data = FracUtils.get_valid_node_or_dep(self, persistent_data_path, persistent_data)
+onready var persistent_data = FracUtils.get_valid_node_or_dep(self, dep__persistent_data_path, persistent_data)
 
 
 func _ready() -> void:

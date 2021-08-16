@@ -5,11 +5,12 @@ extends Node
 
 signal throw_error(error)
 
+const FracUtils = FracVNE.Utils
 const SSUtils = FracVNE.StoryScript.Utils
 
 export var story_loader_path: NodePath
 export var story_gui_configurer_path: NodePath
-export var scene_manager_dep_path: NodePath
+export var dep__scene_manager_path: NodePath
 
 var story_tree
 var story_file_path: String
@@ -17,7 +18,7 @@ var quit_to_scene: PackedScene
 
 onready var story_loader = get_node(story_loader_path)
 onready var story_gui_configurer = get_node(story_gui_configurer_path)
-onready var scene_manager_dep = get_node(scene_manager_dep_path)
+onready var scene_manager = FracUtils.get_valid_node_or_dep(self, dep__scene_manager_path, scene_manager)
 
 func _post_ready():
 	story_gui_configurer.story_gui.connect("quit", self, "quit")
@@ -47,6 +48,6 @@ func throw_error(error):
 
 func quit():
 	if quit_to_scene != null:
-		scene_manager_dep.dependency.transition_to_scene(quit_to_scene)
+		scene_manager.transition_to_scene(quit_to_scene)
 	else:
 		get_tree().quit()

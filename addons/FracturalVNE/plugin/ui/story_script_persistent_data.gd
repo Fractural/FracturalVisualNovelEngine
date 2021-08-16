@@ -12,7 +12,14 @@ func get_types() -> Array:
 # ----- Typeable ----- #
 
 
+signal on_property_changed(variable, new_value)
 signal get_defaults(persistent_data)
+
+enum Mode {
+	READ,
+	WRITE,
+	READ_AND_WRITE,
+}
 
 enum PersistentDataPath {
 	EDITOR,
@@ -24,33 +31,39 @@ const FracUtils = FracVNE.Utils
 const EDITOR_PERSISTENT_DATA_FILE_PATH: String = "res://addons/FracturalVNE/editor_persistent_data.json"
 const STANDALONE_PERSISTENT_DATA_FILE_PATH: String = "res://addons/FracturalVNE/standalone_persistent_data.json"
 
-export(PersistentDataPath) var dep__persistent_data_path: int = PersistentDataPath.AUTO
+export(PersistentDataPath) var persistent_data_path_type: int = PersistentDataPath.AUTO
 
-# Data:									# Defaults:
-var current_script_path: String			= ""
-var current_saved_story_path: String	= ""
-var current_directory_path: String		= ""
-var current_file_display_type: int		= 0
-var compiled: bool						= false
-var saved: bool							= false
-var main_hsplit_offset: int				= 100
-var port: int							= 6010
-var display_mode: int					= 0
+var current_script_path: String 		setget _invalidate_set
+var current_saved_story_path: String 	setget _invalidate_set
+var current_directory_path: String 		setget _invalidate_set
+var current_file_display_type: int 		setget _invalidate_set
+var compiled: bool 						setget _invalidate_set
+var saved: bool 						setget _invalidate_set
+var main_hsplit_offset: int 			setget _invalidate_set
 
 var _is_real_persistent_data: bool = false
-var _called_ready: bool = false
 
 
-func _ready() -> void:
-	if FracUtils.is_in_editor_scene_tab(self) or _called_ready:
+func _ready() -> void:	
+	if FracUtils.is_in_editor_scene_tab(self):
 		return
-	_called_ready = true
 	_is_real_persistent_data = true
-	print("Persistent data readying")
 	
 	# We want to save before ready is called
 	# on other nodes.
 	load_data_from_file()
+
+
+func _set_defaults():
+	current_script_path = ""
+	current_saved_story_path = ""
+	current_directory_path = ""
+	current_file_display_type = 0
+	compiled = false
+	saved = false
+	main_hsplit_offset = 100
+
+	emit_signal("get_defaults", self)
 
 
 func _notification(what) -> void:
@@ -58,8 +71,15 @@ func _notification(what) -> void:
 		save_data_to_file()
 
 
+func set_property(prop_name: String, value):
+	assert(prop_name in self, "Property \"%s\" does not exist in StoryScriptPersistentData." % prop_name)
+	if get(prop_name) != value:
+		set(prop_name, value)
+		emit_signal("on_property_changed", value)
+
+
 func get_persistent_data_file_path() -> String:
-	match dep__persistent_data_path:
+	match persistent_data_path_type:
 		PersistentDataPath.AUTO:
 			if Engine.is_editor_hint():
 				return EDITOR_PERSISTENT_DATA_FILE_PATH
@@ -93,7 +113,7 @@ func load_data_from_file():
 		file.close()
 		deserialize_state(json_result.result)
 	else:
-		emit_signal("get_defaults", self)
+		_set_defaults()
 		save_data_to_file()
 
 
@@ -108,21 +128,21 @@ func serialize_state():
 		"compiled": compiled,
 		"saved": saved,
 		"main_hsplit_offset": main_hsplit_offset,
-		"port": port,
-		"display_mode": display_mode,
 	}
 
 
 func deserialize_state(serialized_state):
-	current_script_path			= _try_get_or_default(serialized_state, "current_story_script_path", 	current_script_path)
-	current_saved_story_path	= _try_get_or_default(serialized_state, "current_saved_story_path",		current_saved_story_path)
-	current_directory_path		= _try_get_or_default(serialized_state, "current_directory_path",		current_directory_path)
-	current_file_display_type	= _try_get_or_default(serialized_state, "current_file_display_type",	current_file_display_type)
-	compiled					= _try_get_or_default(serialized_state, "compiled",						compiled)
-	saved						= _try_get_or_default(serialized_state, "saved",						saved)
-	main_hsplit_offset			= _try_get_or_default(serialized_state, "main_hsplit_offset",			main_hsplit_offset)
-	port						= _try_get_or_default(serialized_state, "port", 						port)
-	display_mode				= _try_get_or_default(serialized_state, "display_mode",					display_mode)
+	current_script_path = 		_try_get_or_default(serialized_state, "current_story_script_path", 	current_script_path)
+	current_saved_story_path = 	_try_get_or_default(serialized_state, "current_saved_story_path",	current_saved_story_path)
+	current_directory_path = 	_try_get_or_default(serialized_state, "current_directory_path",		current_directory_path)
+	current_file_display_type = _try_get_or_default(serialized_state, "current_file_display_type",	current_file_display_type)
+	compiled = 					_try_get_or_default(serialized_state, "compiled",					compiled)
+	saved = 					_try_get_or_default(serialized_state, "saved",						saved)
+	main_hsplit_offset =		_try_get_or_default(serialized_state, "main_hsplit_offset",			main_hsplit_offset)
+
+
+func _invalidate_set(value):
+	assert(false, "Cannot directly set PersistentData properties. Use the PersistentData.set_property() method instead.")
 
 
 # Allows for changing of what's serialized

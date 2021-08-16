@@ -10,11 +10,11 @@
 
 [node name="EditorStoryScriptPersistentData" type="Node" parent="ServiceDIContainer"]
 script = ExtResource( 3 )
-persistent_data_path = 0
+persistent_data_path_type = 0
 
 [node name="EditorClient" type="Node" parent="ServiceDIContainer"]
 script = ExtResource( 1 )
 story_runner_path = NodePath("../StoryRunner")
-persistent_data_path = NodePath("../EditorStoryScriptPersistentData")
+dep__persistent_data_path = NodePath("../EditorStoryScriptPersistentData")
 
 [editable path="ServiceDIContainer"]

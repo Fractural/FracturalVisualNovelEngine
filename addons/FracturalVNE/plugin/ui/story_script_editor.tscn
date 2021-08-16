@@ -65,8 +65,8 @@ save_file_dialog_path = NodePath("Control/PopupHolder/SaveFileDialog")
 popup_dim_path = NodePath("Control/PopupDim")
 script_browser_path = NodePath("MainHSplitContainer/ScriptBrowser")
 main_hsplit_container_path = NodePath("MainHSplitContainer")
-story_runner_dep_path = NodePath("Dependencies/StoryRunnerDependency")
-persistent_data_dep_path = NodePath("Dependencies/PersistentDataDependency")
+dep__story_runner_path = NodePath("Dependencies/StoryRunnerDependency")
+dep__persistent_data_path = NodePath("Dependencies/PersistentDataDependency")
 
 [node name="Dependencies" type="Node" parent="."]
 
@@ -101,7 +101,7 @@ open_directory_dialog_path = NodePath("../../Control/PopupHolder/OpenDirectoryDi
 popup_dim_path = NodePath("../../Control/PopupDim")
 refresh_button_path = NodePath("VBoxContainer/RefreshButton")
 current_directory_label_path = NodePath("VBoxContainer/CurrentDirectoryLabel")
-persistent_data_dep_path = NodePath("../../Dependencies/PersistentDataDependency")
+dep__persistent_data_path = NodePath("../../Dependencies/PersistentDataDependency")
 
 [node name="VBoxContainer" type="VBoxContainer" parent="MainHSplitContainer/ScriptBrowser"]
 margin_right = 200.0

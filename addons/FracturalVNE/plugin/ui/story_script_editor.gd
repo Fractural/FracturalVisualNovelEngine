@@ -25,12 +25,12 @@ export var popup_dim_path: NodePath
 export var script_browser_path: NodePath
 export var main_hsplit_container_path: NodePath
 
-export var story_runner_dep_path: NodePath
-export var persistent_data_dep_path: NodePath
+export var dep__story_runner_path: NodePath
+export var dep__persistent_data_path: NodePath
 
-var compiled: bool = false setget set_compiled
-var saved: bool = false setget set_saved
-var current_script_path: String = ""
+var compiled: bool = false setget set_compiled, get_compiled
+var saved: bool = false setget set_saved, get_saved
+var current_script_path: String = "" setget set_current_script_path, get_current_script_path 
 
 onready var compile_button: Button = get_node(compile_button_path)
 onready var run_button: Button = get_node(run_button_path)
@@ -49,8 +49,8 @@ onready var popup_dim: ColorRect = get_node(popup_dim_path)
 onready var script_browser = get_node(script_browser_path)
 onready var main_hsplit_container: HSplitContainer = get_node(main_hsplit_container_path)
 
-onready var story_runner_dep = get_node(story_runner_dep_path)
-onready var persistent_data_dep = get_node(persistent_data_dep_path)
+onready var story_runner = FracUtils.get_valid_node_or_dep(self, dep__story_runner_path, story_runner)
+onready var persistent_data = FracUtils.get_valid_node_or_dep(self, dep__persistent_data_path, persistent_data)
 
 
 func _ready() -> void:
@@ -61,8 +61,8 @@ func _ready() -> void:
 	if not Engine.is_editor_hint():
 		_setup_editor_assets(FracUtils.get_singleton_from_tree(get_tree(), "AssetsRegistry"))
 	
-	set_compiled(persistent_data_dep.dependency.compiled)
-	set_saved(persistent_data_dep.dependency.saved)
+	set_compiled(persistent_data.compiled)
+	set_saved(persistent_data.saved)
 	compile_button.connect("pressed", self, "compile_script")
 	run_button.connect("pressed", self, "run_script")
 	compiler.connect("throw_error", script_text_edit, "display_error")
@@ -83,15 +83,15 @@ func _ready() -> void:
 	open_file_dialog.connect("popup_hide", self, "_on_popup_hide")
 	save_file_dialog.connect("popup_hide", self, "_on_popup_hide")
 	
-	main_hsplit_container.split_offset = persistent_data_dep.dependency.main_hsplit_offset
+	main_hsplit_container.split_offset = persistent_data.main_hsplit_offset
 	main_hsplit_container.connect("dragged", self, "_on_main_hsplit_dragged")
 	
 	script_browser.connect("valid_script_selected", self, "_on_valid_script_selected")
 	
-	if persistent_data_dep.dependency.current_script_path == "":
+	if persistent_data.current_script_path == "":
 		new_file()
 	else:
-		open_file(persistent_data_dep.dependency.current_script_path)
+		open_file(persistent_data.current_script_path)
 
 
 func new_file() -> void:
@@ -167,7 +167,7 @@ func save_current_file() -> bool:
 
 # Sets compiled to true if successful.
 func compile_script() -> void:
-	if persistent_data_dep.dependency.current_script_path == "":
+	if persistent_data.current_script_path == "":
 		save_file_dialog.popup()
 		return
 	
@@ -177,7 +177,7 @@ func compile_script() -> void:
 		set_compiled(false)
 	else:
 		script_text_edit.clear_error()
-		var successful = save_ast_to_file(ast_tree, persistent_data_dep.dependency.current_script_path.trim_suffix(".storyscript") + ".story")
+		var successful = save_ast_to_file(ast_tree, persistent_data.current_script_path.trim_suffix(".storyscript") + ".story")
 		set_compiled(successful)
 		if not successful:
 			printerr("Could not compile due to file saving issues.")
@@ -196,7 +196,7 @@ func save_ast_to_file(ast_tree, file_path) -> bool:
 	serialized_file.store_string(serialized_ast)
 	serialized_file.close()
 	
-	persistent_data_dep.dependency.current_saved_story_path = file_path
+	persistent_data.current_saved_story_path = file_path
 	return true
 
 
@@ -211,30 +211,39 @@ func run_script() -> void:
 		return
 	
 	if not Engine.is_editor_hint():
-		story_runner_dep.dependency.run(persistent_data_dep.dependency.current_saved_story_path, load("res://addons/FracturalVNE/plugin/ui/story_script_editor.tscn"))
+		story_runner.run(persistent_data.current_saved_story_path, load("res://addons/FracturalVNE/plugin/ui/story_script_editor.tscn"))
 	else:
-		story_runner_dep.dependency.run(persistent_data_dep.dependency.current_saved_story_path)
+		story_runner.run(persistent_data.current_saved_story_path)
 
 
 func set_compiled(new_value: bool) -> void:
-	compiled = new_value
-	persistent_data_dep.dependency.compiled = new_value
+	persistent_data.compiled = new_value
 	if compiled_ui != null:
 		compiled_ui.modulate.a = 1 if new_value else 0.5
 
 
+func get_compiled() -> bool:
+	return persistent_data.compiled
+
+
 func set_saved(new_value: bool) -> void:
-	saved = new_value
-	persistent_data_dep.dependency.saved = new_value
+	persistent_data.saved = new_value
 	if saved_ui != null:
 		saved_ui.modulate.a = 1 if new_value else 0.5
 
 
+func get_saved() -> bool:
+	return persistent_data.asved
+
+
 func set_current_script_path(new_value: String) -> void:
-	current_script_path = new_value
-	persistent_data_dep.dependency.current_script_path = new_value
+	persistent_data.current_script_path = new_value
 	if editing_file_label != null:
 		editing_file_label.text = "Editing \"%s\" " % current_script_path
+
+
+func get_current_script_path() -> String:
+	return persistent_data.current_script_path
 
 
 func _on_script_text_changed() -> void:
@@ -269,7 +278,7 @@ func _on_valid_script_selected(file_path: String) -> void:
 
 
 func _on_main_hsplit_dragged(offset: int) -> void:
-	persistent_data_dep.dependency.main_hsplit_offset = offset
+	persistent_data.main_hsplit_offset = offset
 
 
 func _setup_editor_assets(assets_registry) -> void:

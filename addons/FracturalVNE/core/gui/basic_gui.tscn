@@ -57,7 +57,7 @@ script = ExtResource( 5 )
 __meta__ = {
 "_edit_use_anchors_": false
 }
-story_director_dep_path = NodePath("../Dependencies/StoryDirectorDependency")
+dep__story_director_path = NodePath("../Dependencies/StoryDirectorDependency")
 
 [node name="Panel" type="MarginContainer" parent="."]
 anchor_top = 1.0
@@ -87,8 +87,8 @@ mouse_filter = 2
 size_flags_vertical = 3
 script = ExtResource( 6 )
 text_printer = ExtResource( 8 )
-story_director_dep_path = NodePath("../../../Dependencies/StoryDirectorDependency")
-text_printer_manager_dep_path = NodePath("../../../Dependencies/TextPrinterManagerDependency")
+dep__story_director_path = NodePath("../../../Dependencies/StoryDirectorDependency")
+dep__text_printer_manager_path = NodePath("../../../Dependencies/TextPrinterManagerDependency")
 
 [node name="BasicTextPrinter" parent="Panel/VBoxContainer/TextPrinterHolder" instance=ExtResource( 1 )]
 rect_min_size = Vector2( 0, 0 )
@@ -135,7 +135,7 @@ save_button_path = NodePath("Save")
 load_button_path = NodePath("Load")
 options_button_path = NodePath("Options")
 pause_menu_path = NodePath("../../../../BasicPauseMenu")
-story_director_dep_path = NodePath("../../../../Dependencies/StoryDirectorDependency")
+dep__story_director_path = NodePath("../../../../Dependencies/StoryDirectorDependency")
 
 [node name="History" type="Button" parent="Panel/VBoxContainer/Panel/BottomMenu"]
 margin_left = 112.0

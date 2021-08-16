@@ -29,7 +29,7 @@ export var popup_dim_path: NodePath
 export var refresh_button_path: NodePath
 export var current_directory_label_path: NodePath
 
-export var persistent_data_dep_path: NodePath
+export var dep__persistent_data_path: NodePath
 
 onready var search_line_edit: LineEdit = get_node(search_line_edit_path)
 onready var scripts_item_list: FilesItemList = get_node(scripts_item_list_path)
@@ -42,7 +42,7 @@ onready var refresh_button: Button = get_node(refresh_button_path)
 onready var popup_dim: Node = get_node(popup_dim_path)
 onready var current_directory_label: Label = get_node(current_directory_label_path)
 
-onready var persistent_data_dep = get_node(persistent_data_dep_path)
+onready var persistent_data_dep = get_node(dep__persistent_data_path)
 
 
 func _ready():

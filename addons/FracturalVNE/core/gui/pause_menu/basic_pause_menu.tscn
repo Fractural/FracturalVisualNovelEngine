@@ -98,7 +98,7 @@ return_button_path = NodePath("../Return")
 menu_manager_path = NodePath("../../Menus")
 save_slots_menu_path = NodePath("../../Menus/SaveSlots")
 pause_menu_path = NodePath("../../../..")
-story_gui_dep_path = NodePath("../../../../Dependencies/StoryGUIDependency")
+dep__story_gui_path = NodePath("../../../../Dependencies/StoryGUIDependency")
 
 [node name="History" type="Button" parent="VSplitContainer/HSplitContainer/VSplitContainer/SideButtons"]
 margin_right = 250.0
@@ -158,7 +158,7 @@ __meta__ = {
 }
 entries_holder_path = NodePath("ScrollContainer/EntriesHolder")
 entry_prefabs = [ ExtResource( 10 ) ]
-history_manager_dep_path = NodePath("../../../../Dependencies/HistoryManagerDependency")
+dep__history_manager_path = NodePath("../../../../Dependencies/HistoryManagerDependency")
 
 [node name="ScrollContainer" type="ScrollContainer" parent="VSplitContainer/HSplitContainer/Menus/History"]
 anchor_right = 1.0
@@ -182,7 +182,7 @@ menu_manager_path = NodePath("..")
 settings_path = NodePath("../../../..")
 save_slot_prefab = ExtResource( 1 )
 grid_container_path = NodePath("GridContainer")
-save_manager_dep_path = NodePath("../../../../Dependencies/StorySaveManagerDependency")
+dep__save_manager_path = NodePath("../../../../Dependencies/StorySaveManagerDependency")
 
 [node name="GridContainer" type="GridContainer" parent="VSplitContainer/HSplitContainer/Menus/SaveSlots"]
 anchor_right = 1.0
@@ -206,6 +206,6 @@ __meta__ = {
 script = ExtResource( 8 )
 save_slots_menu_path = NodePath("../VSplitContainer/HSplitContainer/Menus/SaveSlots")
 pause_menu_path = NodePath("..")
-story_state_manager_dep_path = NodePath("../Dependencies/StoryStateManagerDependency")
+dep__story_state_manager_path = NodePath("../Dependencies/StoryStateManagerDependency")
 
 [connection signal="pressed" from="VSplitContainer/HSplitContainer/VSplitContainer/Return" to="." method="toggle" binds= [ false ]]

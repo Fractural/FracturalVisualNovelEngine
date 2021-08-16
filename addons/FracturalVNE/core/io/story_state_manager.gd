@@ -6,6 +6,7 @@ signal save_state_started(save_state)
 signal state_loaded(save_state, slot_id)
 signal state_saved(save_state, slot_id)
 
+const FracUtils = FracVNE.Utils
 const SSUtils = FracVNE.StoryScript.Utils
 const SaveState = preload("res://addons/FracturalVNE/core/io/save_state.gd")
 
@@ -13,13 +14,13 @@ export var screenshot_manager_path: NodePath
 export var story_manager_path: NodePath
 export var story_director_path: NodePath
 export var ast_node_locator_path: NodePath
-export var story_save_manager_dep_path: NodePath
+export var dep__save_manager_path: NodePath
 
 onready var screenshot_manager = get_node(screenshot_manager_path)
 onready var story_manager = get_node(story_manager_path)
 onready var story_director = get_node(story_director_path)
 onready var ast_node_locator = get_node(ast_node_locator_path)
-onready var story_save_manager_dep = get_node(story_save_manager_dep_path)
+onready var save_manager = FracUtils.get_valid_node_or_dep(self, dep__save_manager_path, save_manager)
 
 
 func save_current_state(save_slot_id: int):
@@ -38,7 +39,7 @@ func save_current_state(save_slot_id: int):
 
 	var state = SaveState.new(story_manager.story_file_path, story_director.curr_stepped_node.reference_id, serialized_state, thumbnail)
 	
-	story_save_manager_dep.dependency.save_state(state, save_slot_id)
+	save_manager.save_state(state, save_slot_id)
 	
 	story_director.release_queued_overridden_steps()
 	
@@ -47,7 +48,7 @@ func save_current_state(save_slot_id: int):
 
 # -- StoryScriptErrorable -- #
 func load_save_slot(save_slot_id: int):	
-	var state = story_save_manager_dep.dependency.get_save_slot(save_slot_id)
+	var state = save_manager.get_save_slot(save_slot_id)
 	var result = story_manager.load_story(state.story_file_path)
 	if not SSUtils.is_success(result):
 		return result
@@ -62,7 +63,7 @@ func load_save_slot(save_slot_id: int):
 # If a StoryScriptError occurs, it will be thrown to 
 # StoryManager and the function will return false.
 func try_load_save_slot(save_slot_id: int):
-	if not story_save_manager_dep.dependency.has_save_slot(save_slot_id):
+	if not save_manager.has_save_slot(save_slot_id):
 		return false
 	var result = load_save_slot(save_slot_id)
 	if not SSUtils.is_success(result):

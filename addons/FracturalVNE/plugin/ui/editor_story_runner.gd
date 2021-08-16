@@ -14,13 +14,13 @@ func get_types() -> Array:
 const FracUtils = FracVNE.Utils
 const Server = preload("res://addons/FracturalVNE/plugin/network/server.gd")
 
-export var persistent_data_path: NodePath
-export var plugin_path: NodePath
+export var dep__persistent_data_path: NodePath
+export var dep__plugin_path: NodePath
 
 var server
 
-onready var plugin 			= FracUtils.get_valid_node_or_dep(self, plugin_path, plugin)
-onready var persistent_data = FracUtils.get_valid_node_or_dep(self, persistent_data_path, persistent_data)
+onready var plugin 			= FracUtils.get_valid_node_or_dep(self, dep__plugin_path, plugin)
+onready var persistent_data = FracUtils.get_valid_node_or_dep(self, dep__persistent_data_path, persistent_data)
 
 
 func run(story_file_path: String, quit_to_scene: PackedScene = null):

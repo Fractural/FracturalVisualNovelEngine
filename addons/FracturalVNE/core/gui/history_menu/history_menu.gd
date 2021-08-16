@@ -1,18 +1,22 @@
 extends Node
 
 
+const FracUtils = FracVNE.Utils
+
 export var entries_holder_path: NodePath
 export(Array, PackedScene) var entry_prefabs: Array = []
-export var history_manager_dep_path: NodePath
+
+export var dep__history_manager_path: NodePath
 
 onready var entries_holder = get_node(entries_holder_path)
-onready var history_manager_dep = get_node(history_manager_dep_path)
+
+onready var history_manager = FracUtils.get_valid_node_or_dep(self, dep__history_manager_path, history_manager)
 
 
 func _ready() -> void:
-	history_manager_dep.dependency.connect("entry_added", self, "_on_entry_added")
-	history_manager_dep.dependency.connect("entry_removed", self, "_on_entry_removed")
-	history_manager_dep.dependency.connect("entries_cleared", self, "_on_entries_cleared")
+	history_manager.connect("entry_added", self, "_on_entry_added")
+	history_manager.connect("entry_removed", self, "_on_entry_removed")
+	history_manager.connect("entries_cleared", self, "_on_entries_cleared")
 
 
 func _get_entry_prefab(history_entry):
