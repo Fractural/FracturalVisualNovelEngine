@@ -33,7 +33,7 @@ func clear():
 
 func select_file(selected_file_path):
 	for tree_item in tree_items:
-		if tree_item.get_metadata(0) == selected_file_path:
+		if tree_item.get_metadata(0).path == selected_file_path:
 			tree_item.select(0)
 			break
 		tree_item.deselect(0)
@@ -68,7 +68,7 @@ func refresh(selected_file_path: String = ""):
 
 func _on_cell_selected():
 	if get_selected().get_metadata(0).type == "file":
-		emit_signal("file_selected", get_selected().get_metadata(0))
+		emit_signal("file_selected", get_selected().get_metadata(0).path)
 
 
 func _get_file_icon(path: String):
