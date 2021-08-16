@@ -1,4 +1,4 @@
-[gd_scene load_steps=20 format=2]
+[gd_scene load_steps=24 format=2]
 
 [ext_resource path="res://addons/FracturalVNE/plugin/ui/monokai.tres" type="Resource" id=1]
 [ext_resource path="res://addons/FracturalVNE/assets/fonts/Hack/Hack-Regular.tres" type="DynamicFont" id=2]
@@ -13,26 +13,31 @@
 [ext_resource path="res://addons/FracturalVNE/assets/icons/settings.png" type="Texture" id=11]
 [ext_resource path="res://addons/FracturalVNE/plugin/ui/script_browser.gd" type="Script" id=12]
 [ext_resource path="res://addons/FracturalVNE/assets/icons/search.svg" type="Texture" id=13]
-[ext_resource path="res://addons/FracturalVNE/plugin/ui/file_system_tree.gd" type="Script" id=14]
+[ext_resource path="res://addons/FracturalVNE/plugin/ui/files_tree.gd" type="Script" id=14]
 [ext_resource path="res://addons/FracturalVNE/assets/icons/reload.svg" type="Texture" id=15]
+[ext_resource path="res://addons/FracturalVNE/plugin/ui/files_item_list.gd" type="Script" id=16]
+[ext_resource path="res://addons/FracturalVNE/assets/icons/filesystem.svg" type="Texture" id=17]
+[ext_resource path="res://addons/FracturalVNE/assets/icons/file_list.svg" type="Texture" id=18]
 
-[sub_resource type="InputEventKey" id=1]
+[sub_resource type="ButtonGroup" id=1]
+
+[sub_resource type="InputEventKey" id=2]
 shift = true
 control = true
 command = true
 scancode = 67
 
-[sub_resource type="ShortCut" id=2]
-shortcut = SubResource( 1 )
+[sub_resource type="ShortCut" id=3]
+shortcut = SubResource( 2 )
 
-[sub_resource type="InputEventKey" id=3]
+[sub_resource type="InputEventKey" id=4]
 shift = true
 control = true
 command = true
 scancode = 82
 
-[sub_resource type="ShortCut" id=4]
-shortcut = SubResource( 3 )
+[sub_resource type="ShortCut" id=5]
+shortcut = SubResource( 4 )
 
 [node name="StoryScriptEditor" type="PanelContainer"]
 anchor_right = 1.0
@@ -74,27 +79,29 @@ margin_left = 7.0
 margin_top = 7.0
 margin_right = 1017.0
 margin_bottom = 593.0
+split_offset = 50
 
 [node name="ScriptBrowser" type="VSplitContainer" parent="HSplitContainer"]
 margin_right = 200.0
 margin_bottom = 586.0
-rect_min_size = Vector2( 200, 0 )
-split_offset = 10
+rect_min_size = Vector2( 150, 0 )
 dragger_visibility = 2
 script = ExtResource( 12 )
 search_line_edit_path = NodePath("VBoxContainer/SearchLineEdit")
-scripts_item_list_path = NodePath("Control/ScriptsItemList")
+scripts_item_list_path = NodePath("VBoxContainer2/Control/ScriptsItemList")
+scripts_tree_path = NodePath("VBoxContainer2/Control/ScriptsTree")
+scripts_tree_toggle_path = NodePath("VBoxContainer2/HBoxContainer/TreeToggle")
+scripts_item_list_toggle_path = NodePath("VBoxContainer2/HBoxContainer/ListToggle")
 open_directory_button_path = NodePath("VBoxContainer/OpenDirectoryButton")
 open_directory_dialog_path = NodePath("../../Control/PopupHolder/OpenDirectoryDialog")
 popup_dim_path = NodePath("../../Control/PopupDim")
 refresh_button_path = NodePath("VBoxContainer/RefreshButton")
 current_directory_label_path = NodePath("VBoxContainer/CurrentDirectoryLabel")
-tree_path = NodePath("Control/ScriptsTree")
 persistent_data_dep_path = NodePath("../../Dependencies/StoryScriptPersistentDataDependency")
 
 [node name="VBoxContainer" type="VBoxContainer" parent="HSplitContainer/ScriptBrowser"]
 margin_right = 200.0
-margin_bottom = 142.0
+margin_bottom = 106.0
 size_flags_horizontal = 3
 
 [node name="SearchLineEdit" type="LineEdit" parent="HSplitContainer/ScriptBrowser/VBoxContainer"]
@@ -112,53 +119,74 @@ size_flags_horizontal = 3
 text = "Refresh"
 icon = ExtResource( 15 )
 
-[node name="ToggleTreeView" type="Button" parent="HSplitContainer/ScriptBrowser/VBoxContainer"]
+[node name="OpenDirectoryButton" type="Button" parent="HSplitContainer/ScriptBrowser/VBoxContainer"]
 margin_top = 56.0
 margin_right = 200.0
 margin_bottom = 78.0
-size_flags_horizontal = 3
-text = "Toggle Tree"
-icon = ExtResource( 15 )
-
-[node name="OpenDirectoryButton" type="Button" parent="HSplitContainer/ScriptBrowser/VBoxContainer"]
-margin_top = 82.0
-margin_right = 200.0
-margin_bottom = 104.0
 size_flags_horizontal = 3
 text = "Open Directory"
 icon = ExtResource( 9 )
 
 [node name="CurrentDirectoryLabel" type="Label" parent="HSplitContainer/ScriptBrowser/VBoxContainer"]
-margin_top = 108.0
+margin_top = 82.0
 margin_right = 200.0
-margin_bottom = 132.0
+margin_bottom = 106.0
 rect_min_size = Vector2( 0, 24 )
 text = "\"res://demo/\""
 valign = 1
 autowrap = true
 
-[node name="Control" type="MarginContainer" parent="HSplitContainer/ScriptBrowser"]
-margin_top = 142.0
+[node name="VBoxContainer2" type="VBoxContainer" parent="HSplitContainer/ScriptBrowser"]
+margin_top = 106.0
 margin_right = 200.0
 margin_bottom = 586.0
 
-[node name="ScriptsItemList" type="ItemList" parent="HSplitContainer/ScriptBrowser/Control"]
+[node name="HBoxContainer" type="HBoxContainer" parent="HSplitContainer/ScriptBrowser/VBoxContainer2"]
 margin_right = 200.0
-margin_bottom = 444.0
+margin_bottom = 24.0
+
+[node name="ListToggle" type="ToolButton" parent="HSplitContainer/ScriptBrowser/VBoxContainer2/HBoxContainer"]
+margin_right = 28.0
+margin_bottom = 24.0
+toggle_mode = true
+group = SubResource( 1 )
+icon = ExtResource( 18 )
+
+[node name="TreeToggle" type="ToolButton" parent="HSplitContainer/ScriptBrowser/VBoxContainer2/HBoxContainer"]
+margin_left = 32.0
+margin_right = 60.0
+margin_bottom = 24.0
+toggle_mode = true
+group = SubResource( 1 )
+icon = ExtResource( 17 )
+
+[node name="Control" type="MarginContainer" parent="HSplitContainer/ScriptBrowser/VBoxContainer2"]
+margin_top = 28.0
+margin_right = 200.0
+margin_bottom = 480.0
 size_flags_horizontal = 3
 size_flags_vertical = 3
+
+[node name="ScriptsItemList" type="ItemList" parent="HSplitContainer/ScriptBrowser/VBoxContainer2/Control"]
+margin_right = 200.0
+margin_bottom = 452.0
+size_flags_horizontal = 3
+size_flags_vertical = 3
+script = ExtResource( 16 )
 __meta__ = {
 "_edit_use_anchors_": false
 }
+file_extensions = [ "storyscript" ]
 
-[node name="ScriptsTree" type="Tree" parent="HSplitContainer/ScriptBrowser/Control"]
+[node name="ScriptsTree" type="Tree" parent="HSplitContainer/ScriptBrowser/VBoxContainer2/Control"]
 margin_right = 200.0
-margin_bottom = 444.0
+margin_bottom = 452.0
 rect_min_size = Vector2( 0, 100 )
 script = ExtResource( 14 )
 __meta__ = {
 "_edit_use_anchors_": false
 }
+file_extensions = [ "storyscript" ]
 
 [node name="VBoxContainer" type="VBoxContainer" parent="HSplitContainer"]
 margin_left = 212.0
@@ -190,7 +218,7 @@ custom_constants/separation = 0
 margin_right = 84.0
 margin_bottom = 24.0
 size_flags_vertical = 5
-shortcut = SubResource( 2 )
+shortcut = SubResource( 3 )
 text = "Compile"
 icon = ExtResource( 6 )
 
@@ -199,7 +227,7 @@ margin_left = 84.0
 margin_right = 139.0
 margin_bottom = 24.0
 size_flags_vertical = 5
-shortcut = SubResource( 4 )
+shortcut = SubResource( 5 )
 text = "Run"
 icon = ExtResource( 6 )
 

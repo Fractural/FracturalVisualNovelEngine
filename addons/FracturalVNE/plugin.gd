@@ -35,8 +35,6 @@ func _enter_tree():
 	plugin_ui.get_node("Dependencies/PluginDependency").dependency_path = get_path()
 	plugin_ui._settings = settings
 	
-	print("plugin _enter_tree")
-	
 	docker = Docker.new(self, settings, plugin_ui)
 	add_child(docker)
 	

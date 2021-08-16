@@ -84,7 +84,8 @@ func _ready() -> void:
 	
 	if persistent_data_dep.dependency.current_script_path == "":
 		new_file()
-	# Loads existing file in script_browser.gd
+	else:
+		open_file(persistent_data_dep.dependency.current_script_path)
 
 
 func new_file() -> void:
@@ -126,7 +127,7 @@ func open_file(file_path) -> bool:
 	set_current_script_path(file_path)
 	
 	script_text_edit.clear_undo_history()
-	script_browser.load_script(file_path)
+	script_browser.select_file(file_path)
 	
 	set_compiled(false)
 	set_saved(true)

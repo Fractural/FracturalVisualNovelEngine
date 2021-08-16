@@ -6,41 +6,51 @@ signal script_selected(script_path)
 signal valid_script_selected(script_path)
 signal invalid_script_selected(script_path)
 
+enum FileDisplay {
+	ITEM_LIST,
+	TREE,
+}
+
 const FracUtils = FracVNE.Utils
+const FilesItemList = preload("res://addons/FracturalVNE/plugin/ui/files_item_list.gd")
+const FilesTree = preload("res://addons/FracturalVNE/plugin/ui/files_tree.gd")
 
 var SCRIPT_ICON: Texture
 var REFRESH_ICON: Texture
 
 export var search_line_edit_path: NodePath
 export var scripts_item_list_path: NodePath
+export var scripts_tree_path: NodePath
+export var scripts_tree_toggle_path: NodePath
+export var scripts_item_list_toggle_path: NodePath
 export var open_directory_button_path: NodePath
 export var open_directory_dialog_path: NodePath
 export var popup_dim_path: NodePath
 export var refresh_button_path: NodePath
 export var current_directory_label_path: NodePath
-export var tree_path: NodePath
 
 export var persistent_data_dep_path: NodePath
 
-var loaded_scripts: Array = []
-var auto_remove_invalid_scripts: bool = true
-
 onready var search_line_edit: LineEdit = get_node(search_line_edit_path)
-onready var scripts_item_list: ItemList = get_node(scripts_item_list_path)
+onready var scripts_item_list: FilesItemList = get_node(scripts_item_list_path)
+onready var scripts_tree: FilesTree = get_node(scripts_tree_path)
+onready var scripts_tree_toggle: Button = get_node(scripts_tree_toggle_path)
+onready var scripts_item_list_toggle: Button = get_node(scripts_item_list_toggle_path)
 onready var open_directory_button: Button = get_node(open_directory_button_path)
 onready var open_directory_dialog: FileDialog = get_node(open_directory_dialog_path)
 onready var refresh_button: Button = get_node(refresh_button_path)
 onready var popup_dim: Node = get_node(popup_dim_path)
 onready var current_directory_label: Label = get_node(current_directory_label_path)
-onready var tree: Tree = get_node(tree_path)
 
 onready var persistent_data_dep = get_node(persistent_data_dep_path)
 
 
 func _ready():
 	search_line_edit.connect("text_changed", self, "_on_search_text_changed")
-	scripts_item_list.connect("item_selected", self, "_on_item_selected")
 	open_directory_button.connect("pressed", self, "_start_open_directory")
+	
+	scripts_item_list.connect("file_selected", self, "_on_file_selected")
+	scripts_tree.connect("file_selected", self, "_on_file_selected")
 	
 	open_directory_dialog.connect("dir_selected", self, "_on_dir_selected")
 	open_directory_dialog.connect("about_to_show", self, "_on_popup_about_to_show")
@@ -48,68 +58,36 @@ func _ready():
 	
 	refresh_button.connect("pressed", self, "_on_refresh_button_pressed")
 	
+	scripts_item_list.file_extensions = ["storyscript"]
+	scripts_tree.file_extensions = ["storyscript"]
+	
 	scripts_item_list.clear()
-	print("Using persistent data for curr_directory_path: " + persistent_data_dep.dependency.current_directory_path)
+	scripts_tree.clear()
+	
+	scripts_item_list_toggle.connect("toggled", self, "_on_file_display_type_button_toggled", [FileDisplay.ITEM_LIST])
+	scripts_tree_toggle.connect("toggled", self, "_on_file_display_type_button_toggled", [FileDisplay.TREE])
+	
 	set_current_directory(persistent_data_dep.dependency.current_directory_path)
+	set_current_file_display_type(persistent_data_dep.dependency.current_file_display_type)
 
 
 func _post_assets_setup():
-	print("_post_assets_setup for browser w/ curr_directory: " + get_current_directory())
 	if get_current_directory() != "":
-		load_scripts_in_dir(get_current_directory())
-	if get_current_script_path() != "":
-		load_script(get_current_script_path())
-	var item = tree.create_item()
-	item.set_icon(0, SCRIPT_ICON)
-	item.set_icon(0, SCRIPT_ICON)
-	item.set_text(0, "TESTING")
-
-func refresh_script_item_list():
-	if get_current_directory() == "":
-		return
-	
-	scripts_item_list.clear()
-	for script_path in loaded_scripts:
-		var file_name = script_path.get_file()
-		if search_line_edit.text == "" or file_name.find(search_line_edit.text) > -1:
-			scripts_item_list.add_item(file_name, SCRIPT_ICON)
-			scripts_item_list.set_item_metadata(scripts_item_list.get_item_count() - 1, script_path)
-			if get_current_script_path() != "" and script_path == get_current_script_path():
-				scripts_item_list.select(scripts_item_list.get_item_count() - 1, true)
+		get_current_file_display().directory = get_current_directory()
+	refresh_file_display()
 
 
-func clear_scripts():
-	loaded_scripts = []
+func select_file(path: String):
+	get_current_file_display().select_file(path)
 
 
-func load_scripts_in_dir(directory: String) -> void:
-	var script_file_paths = FracUtils.get_dir_files(directory, true, ["storyscript"])
-	for file_path in script_file_paths:
-		load_script(file_path, false)
-	refresh_script_item_list()
-
-
-func load_script(path: String, refresh: bool = true) -> void:
-	if not is_script_loaded(path):
-		var file_name = path.get_file()
-		loaded_scripts.append(path)
-		if refresh:
-			refresh_script_item_list()
-
-
-func is_script_loaded(path: String) -> bool:
-	return loaded_scripts.has(path)
-
-
-func remove_script(path: String) -> void:
-	var file_name = path.get_file()
-	if is_script_loaded(path):
-		loaded_scripts.erase(path)
-		refresh_script_item_list()
+func refresh_file_display():
+	get_current_file_display().refresh(get_current_script_path())
 
 
 func set_current_directory(directory) -> void:
 	current_directory_label.text = '"%s"' % directory
+	get_current_file_display().directory = directory
 	persistent_data_dep.dependency.current_directory_path = directory
 
 
@@ -117,26 +95,56 @@ func get_current_directory() -> String:
 	return persistent_data_dep.dependency.current_directory_path
 
 
-func get_current_script_path():
+func get_current_script_path() -> String:
 	return persistent_data_dep.dependency.current_script_path
 
 
-func _on_item_selected(index: int):
-	var selected_script_path = scripts_item_list.get_item_metadata(index)
+var _halt_toggle_signals: bool = false
+
+func set_current_file_display_type(file_display: int):
+	if _halt_toggle_signals:
+		return
+	_halt_toggle_signals = true
+	
+	scripts_item_list_toggle.pressed = file_display == FileDisplay.ITEM_LIST
+	scripts_tree_toggle.pressed = file_display == FileDisplay.TREE
+	
+	scripts_item_list.visible = scripts_item_list_toggle.pressed
+	scripts_tree.visible = scripts_tree_toggle.pressed
+	
+	persistent_data_dep.dependency.current_file_display_type = file_display
+	get_current_file_display().search_text = search_line_edit.text
+	get_current_file_display().directory = get_current_directory()
+	refresh_file_display()
+	
+	_halt_toggle_signals = false
+
+
+func get_current_file_display_type() -> int:
+	return persistent_data_dep.dependency.current_file_display_type
+
+
+func get_current_file_display():
+	match get_current_file_display_type():
+		FileDisplay.ITEM_LIST:
+			return scripts_item_list
+		FileDisplay.TREE:
+			return scripts_tree
+
+
+func _on_file_selected(selected_script_path: String):
 	var file = File.new()
 	emit_signal("script_selected", selected_script_path)
 	if file.file_exists(selected_script_path):
 		emit_signal("valid_script_selected", selected_script_path)
 	else:
 		emit_signal("invalid_script_selected", selected_script_path)
-		if auto_remove_invalid_scripts:
-			remove_script(selected_script_path)
+		refresh_file_display()
 
 
 func _on_dir_selected(directory):
-	clear_scripts()
 	set_current_directory(directory)
-	load_scripts_in_dir(directory)
+	refresh_file_display()
 
 
 func _on_popup_about_to_show() -> void:
@@ -149,20 +157,32 @@ func _on_popup_hide() -> void:
 
 
 func _on_search_text_changed(new_text) -> void:
-	refresh_script_item_list()
+	get_current_file_display().search_text = new_text
+	refresh_file_display()
 
 
 func _on_refresh_button_pressed() -> void:
 	if get_current_directory() != "":
-		load_scripts_in_dir(get_current_directory())
+		refresh_file_display()
 
 
 func _start_open_directory() -> void:
 	open_directory_dialog.popup()
 
 
+func _on_file_display_type_button_toggled(enabled: bool, type: int):
+	if enabled:
+		set_current_file_display_type(type)
+
+
 func _setup_editor_assets(assets_registry) -> void:
 	SCRIPT_ICON = assets_registry.load_asset("assets/icons/script.svg")
+	
+	scripts_item_list.default_file_icon = assets_registry.load_asset("assets/icons/file.svg")
+	
+	scripts_tree.default_file_icon = assets_registry.load_asset("assets/icons/file.svg")
+	scripts_tree.folder_icon = assets_registry.load_asset("assets/icons/folder.svg")
+	scripts_tree.favorites_cion = assets_registry.load_asset("assets/icons/favorites.svg")
 	
 	open_directory_dialog.rect_size = open_directory_dialog.rect_size * assets_registry.get_editor_scale()
 	open_directory_dialog.set_anchors_and_margins_preset(Control.PRESET_CENTER, Control.PRESET_MODE_KEEP_SIZE)
@@ -171,5 +191,8 @@ func _setup_editor_assets(assets_registry) -> void:
 	open_directory_button.icon = assets_registry.load_asset("assets/icons/load.svg")
 	search_line_edit.right_icon = assets_registry.load_asset("assets/icons/search.svg")
 	self.rect_min_size *= assets_registry.get_editor_scale()
+	
+	scripts_item_list_toggle.icon = assets_registry.load_asset("assets/icons/file_list.svg")
+	scripts_tree_toggle.icon = assets_registry.load_asset("assets/icons/filesystem.svg")
 	
 	_post_assets_setup()

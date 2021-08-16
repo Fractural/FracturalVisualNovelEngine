@@ -10,7 +10,6 @@ onready var story_script_editor = get_node(story_script_editor_path)
 
 
 func _ready() -> void:
-	print("plugin ui readied")
 	if FracVNE.Utils.is_in_editor_scene_tab(self):
 		return
 	

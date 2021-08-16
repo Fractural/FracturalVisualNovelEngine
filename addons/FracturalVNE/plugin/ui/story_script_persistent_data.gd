@@ -19,6 +19,7 @@ const STANDALONE_PERSISTENT_DATA_FILE_PATH: String = "res://addons/FracturalVNE/
 var current_script_path: String = ""
 var current_saved_story_path: String = ""
 var current_directory_path: String = ""
+var current_file_display_type: int = 0
 var compiled: bool = false
 var saved: bool = false
 
@@ -32,13 +33,11 @@ func _enter_tree() -> void:
 	
 	# We want to save before ready is called
 	# on other nodes.
-	print("Loaded persistent data")
 	load_data_from_file()
 
 
 func _notification(what) -> void:
 	if _is_real_persistent_data and what == NOTIFICATION_PREDELETE:
-		print("Saving while deleting")
 		save_data_to_file()
 
 
@@ -59,20 +58,16 @@ func save_data_to_file():
 
 func load_data_from_file():
 	var file = File.new()
-	print("loading persistent data at: " + get_persistent_data_file_path())
 	if file.file_exists(get_persistent_data_file_path()):
-		print("Persistent file exists")
 		var error = file.open(get_persistent_data_file_path(), File.READ)
 		assert(error == OK, "Could not open persistent data file.")
 		
 		var json_result = JSON.parse(file.get_as_text())
 		assert(json_result.error == OK, "Could not parse persistent data file's JSON.")
 		
-		print("json result: " + str(json_result.result))
 		file.close()
 		deserialize_state(json_result.result)
 	else:
-		print("Persistent data file path does not exist")
 		save_data_to_file()
 
 
@@ -83,17 +78,26 @@ func serialize_state():
 		"current_story_script_path": current_script_path,
 		"current_saved_story_path": current_saved_story_path,
 		"current_directory_path": current_directory_path,
+		"current_file_display_type": current_file_display_type,
 		"compiled": compiled,
 		"saved": saved,
 	}
 
 
 func deserialize_state(serialized_state):
-	current_script_path = serialized_state["current_story_script_path"]
-	current_saved_story_path = serialized_state["current_saved_story_path"]
-	current_directory_path = serialized_state["current_directory_path"]
-	compiled = serialized_state["compiled"]
-	saved = serialized_state["saved"]
-	print("deserialized state for persist data. current_director_path: " + current_directory_path)
+	current_script_path = 		_try_get_or_default(serialized_state, "current_story_script_path", 	current_script_path)
+	current_saved_story_path = 	_try_get_or_default(serialized_state, "current_saved_story_path",	current_saved_story_path)
+	current_directory_path = 	_try_get_or_default(serialized_state, "current_directory_path",		current_directory_path)
+	current_file_display_type = _try_get_or_default(serialized_state, "current_file_display_type",	current_file_display_type)
+	compiled = 					_try_get_or_default(serialized_state, "compiled",					compiled)
+	saved = 					_try_get_or_default(serialized_state, "saved",						saved)
 
+
+# Allows for changing of what's serialized
+# without having compatibility issues.
+func _try_get_or_default(serialized_state: Dictionary, key: String, default_value):
+	if serialized_state.has(key):
+		return serialized_state[key]
+	return default_value
+	
 # ----- Serialization ----- #

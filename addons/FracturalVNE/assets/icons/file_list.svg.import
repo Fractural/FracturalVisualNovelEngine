@@ -2,15 +2,15 @@
 
 importer="texture"
 type="StreamTexture"
-path="res://.import/favorites.svg-a71105d0e08d3e5dbfdc503287efe0f9.stex"
+path="res://.import/file_list.svg-3dc42e70b03d1021225b9827783f0be6.stex"
 metadata={
 "vram_texture": false
 }
 
 [deps]
 
-source_file="res://addons/FracturalVNE/assets/icons/favorites.svg"
-dest_files=[ "res://.import/favorites.svg-a71105d0e08d3e5dbfdc503287efe0f9.stex" ]
+source_file="res://addons/FracturalVNE/assets/icons/file_list.svg"
+dest_files=[ "res://.import/file_list.svg-3dc42e70b03d1021225b9827783f0be6.stex" ]
 
 [params]
 

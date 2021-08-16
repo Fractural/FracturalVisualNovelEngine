@@ -1,10 +1,12 @@
-[gd_scene load_steps=6 format=2]
+[gd_scene load_steps=7 format=2]
 
 [ext_resource path="res://addons/FracturalVNE/plugin/ui/plugin_ui.gd" type="Script" id=1]
 [ext_resource path="res://addons/FracturalVNE/plugin/ui/story_script_editor.tscn" type="PackedScene" id=2]
 [ext_resource path="res://addons/FracturalVNE/plugin/ui/story_script_persistent_data.gd" type="Script" id=3]
 [ext_resource path="res://addons/FracturalVNE/plugin/ui/editor_story_runner.gd" type="Script" id=4]
 [ext_resource path="res://addons/FracturalVNE/core/utils/dependency_injection/dependency.gd" type="Script" id=5]
+
+[sub_resource type="ButtonGroup" id=1]
 
 [node name="Fractural VNE" type="Control"]
 anchor_right = 1.0
@@ -31,8 +33,11 @@ dependency_path = NodePath("../../../EditorStoryRunner")
 [node name="StoryScriptPersistentDataDependency" parent="StoryScriptEditor/Dependencies" index="1"]
 dependency_path = NodePath("../../../StoryScriptPersistentData")
 
-[node name="ScriptsItemList" parent="StoryScriptEditor/HSplitContainer/ScriptBrowser" index="1"]
-items = [  ]
+[node name="ListToggle" parent="StoryScriptEditor/HSplitContainer/ScriptBrowser/VBoxContainer2/HBoxContainer" index="0"]
+group = SubResource( 1 )
+
+[node name="TreeToggle" parent="StoryScriptEditor/HSplitContainer/ScriptBrowser/VBoxContainer2/HBoxContainer" index="1"]
+group = SubResource( 1 )
 
 [node name="EditorStoryRunner" type="Node" parent="."]
 script = ExtResource( 4 )
