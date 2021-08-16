@@ -10,9 +10,11 @@ func get_types() -> Array:
 # ----- Typeable ----- #
 
 
+const FracUtils = FracVNE.Utils
 const Settings: Script = preload("plugin/settings.gd")
 const Docker: Script = preload("plugin/ui/docker.gd")
 const PluginUI: Script = preload("plugin/ui/plugin_ui.gd")
+const AssetsRegistry: Script = preload("plugin/plugin_assets_registry.gd")
 const PluginUIScene: PackedScene = preload("plugin/ui/plugin_ui.tscn")
 
 var inspector_plugins = []
@@ -21,7 +23,7 @@ var plugin_ui: PluginUI
 var docker: Docker
 var settings: Settings
 
-var assets_registry = PluginAssetsRegistry.new(self)
+var assets_registry = AssetsRegistry.new()
 
 
 func _init():
@@ -29,7 +31,13 @@ func _init():
 
 
 func _enter_tree():
-	#get_tree().root.print_tree_pretty()
+	# Temporary -- Only made for get_plugin_icon() to work.
+	assets_registry.queue_free()
+	
+	add_autoload_singleton("AssetsRegistry", "res://addons/FracturalVNE/plugin/plugin_assets_registry.gd")
+	
+	assets_registry = FracUtils.get_singleton_from_tree(get_tree(), "AssetsRegistry")
+	
 	plugin_ui = PluginUIScene.instance()
 	
 	plugin_ui.get_node("Dependencies/PluginDependency").dependency_path = get_path()
@@ -52,6 +60,8 @@ func _exit_tree():
 	
 	for inspector_plugin in inspector_plugins:
 		remove_inspector_plugin(inspector_plugin)
+	
+	remove_autoload_singleton("AssetsRegistry")
 
 
 func _setup_inspector_plugins():

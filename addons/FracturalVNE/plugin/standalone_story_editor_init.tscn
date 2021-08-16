@@ -1,11 +1,16 @@
-[gd_scene load_steps=5 format=2]
+[gd_scene load_steps=6 format=2]
 
 [ext_resource path="res://addons/FracturalVNE/plugin/ui/story_script_editor.tscn" type="PackedScene" id=1]
 [ext_resource path="res://addons/FracturalVNE/core/utils/dependency_injection/service_di_container.tscn" type="PackedScene" id=2]
 [ext_resource path="res://addons/FracturalVNE/plugin/ui/story_script_persistent_data.gd" type="Script" id=3]
 [ext_resource path="res://addons/FracturalVNE/plugin/ui/window_sizer.gd" type="Script" id=4]
+[ext_resource path="res://addons/FracturalVNE/plugin/plugin_assets_registry.gd" type="Script" id=5]
 
 [node name="StoryEditorInit" type="Node"]
+
+[node name="AssetsRegistry" type="Node" parent="."]
+script = ExtResource( 5 )
+self_autoload = true
 
 [node name="ServiceDIContainer" parent="." instance=ExtResource( 2 )]
 

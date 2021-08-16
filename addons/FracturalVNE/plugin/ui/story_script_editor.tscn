@@ -46,21 +46,22 @@ script = ExtResource( 5 )
 __meta__ = {
 "_edit_use_anchors_": false
 }
-compile_button_path = NodePath("HSplitContainer/VBoxContainer/TopMenu/VBoxContainer/HBoxContainer/Buttons/CompileButton")
-run_button_path = NodePath("HSplitContainer/VBoxContainer/TopMenu/VBoxContainer/HBoxContainer/Buttons/RunButton")
-script_text_edit_path = NodePath("HSplitContainer/VBoxContainer/ScriptTextEdit")
-compiler_path = NodePath("HSplitContainer/VBoxContainer/Compiler")
-compiled_ui_path = NodePath("HSplitContainer/VBoxContainer/TopMenu/VBoxContainer/HBoxContainer/States/CompiledUI")
-compiled_icon_path = NodePath("HSplitContainer/VBoxContainer/TopMenu/VBoxContainer/HBoxContainer/States/CompiledUI/CompiledUIContainer/CompiledIcon")
-saved_ui_path = NodePath("HSplitContainer/VBoxContainer/TopMenu/VBoxContainer/HBoxContainer/States/SavedUI")
-saved_icon_path = NodePath("HSplitContainer/VBoxContainer/TopMenu/VBoxContainer/HBoxContainer/States/SavedUI/SavedUIContainer/SavedIcon")
-file_menu_path = NodePath("HSplitContainer/VBoxContainer/TopMenu/VBoxContainer/HBoxContainer/Buttons/FileMenuButton")
-settings_button_path = NodePath("HSplitContainer/VBoxContainer/TopMenu/VBoxContainer/HBoxContainer/Buttons/SettingsButton")
-editing_file_label_path = NodePath("HSplitContainer/VBoxContainer/TopMenu/VBoxContainer/EditingFileText")
+compile_button_path = NodePath("MainHSplitContainer/VBoxContainer/TopMenu/VBoxContainer/HBoxContainer/Buttons/CompileButton")
+run_button_path = NodePath("MainHSplitContainer/VBoxContainer/TopMenu/VBoxContainer/HBoxContainer/Buttons/RunButton")
+script_text_edit_path = NodePath("MainHSplitContainer/VBoxContainer/ScriptTextEdit")
+compiler_path = NodePath("MainHSplitContainer/VBoxContainer/Compiler")
+compiled_ui_path = NodePath("MainHSplitContainer/VBoxContainer/TopMenu/VBoxContainer/HBoxContainer/States/CompiledUI")
+compiled_icon_path = NodePath("MainHSplitContainer/VBoxContainer/TopMenu/VBoxContainer/HBoxContainer/States/CompiledUI/CompiledUIContainer/CompiledIcon")
+saved_ui_path = NodePath("MainHSplitContainer/VBoxContainer/TopMenu/VBoxContainer/HBoxContainer/States/SavedUI")
+saved_icon_path = NodePath("MainHSplitContainer/VBoxContainer/TopMenu/VBoxContainer/HBoxContainer/States/SavedUI/SavedUIContainer/SavedIcon")
+file_menu_path = NodePath("MainHSplitContainer/VBoxContainer/TopMenu/VBoxContainer/HBoxContainer/Buttons/FileMenuButton")
+settings_button_path = NodePath("MainHSplitContainer/VBoxContainer/TopMenu/VBoxContainer/HBoxContainer/Buttons/SettingsButton")
+editing_file_label_path = NodePath("MainHSplitContainer/VBoxContainer/TopMenu/VBoxContainer/EditingFileText")
 open_file_dialog_path = NodePath("Control/PopupHolder/OpenFileDialog")
 save_file_dialog_path = NodePath("Control/PopupHolder/SaveFileDialog")
 popup_dim_path = NodePath("Control/PopupDim")
-script_browser_path = NodePath("HSplitContainer/ScriptBrowser")
+script_browser_path = NodePath("MainHSplitContainer/ScriptBrowser")
+main_hsplit_container_path = NodePath("MainHSplitContainer")
 story_runner_dep_path = NodePath("Dependencies/StoryRunnerDependency")
 persistent_data_dep_path = NodePath("Dependencies/StoryScriptPersistentDataDependency")
 
@@ -74,14 +75,14 @@ dependency_name = "StoryRunner"
 script = ExtResource( 8 )
 dependency_name = "StoryScriptPersistentData"
 
-[node name="HSplitContainer" type="HSplitContainer" parent="."]
+[node name="MainHSplitContainer" type="HSplitContainer" parent="."]
 margin_left = 7.0
 margin_top = 7.0
 margin_right = 1017.0
 margin_bottom = 593.0
 split_offset = 50
 
-[node name="ScriptBrowser" type="VSplitContainer" parent="HSplitContainer"]
+[node name="ScriptBrowser" type="VSplitContainer" parent="MainHSplitContainer"]
 margin_right = 200.0
 margin_bottom = 586.0
 rect_min_size = Vector2( 150, 0 )
@@ -99,19 +100,19 @@ refresh_button_path = NodePath("VBoxContainer/RefreshButton")
 current_directory_label_path = NodePath("VBoxContainer/CurrentDirectoryLabel")
 persistent_data_dep_path = NodePath("../../Dependencies/StoryScriptPersistentDataDependency")
 
-[node name="VBoxContainer" type="VBoxContainer" parent="HSplitContainer/ScriptBrowser"]
+[node name="VBoxContainer" type="VBoxContainer" parent="MainHSplitContainer/ScriptBrowser"]
 margin_right = 200.0
 margin_bottom = 106.0
 size_flags_horizontal = 3
 
-[node name="SearchLineEdit" type="LineEdit" parent="HSplitContainer/ScriptBrowser/VBoxContainer"]
+[node name="SearchLineEdit" type="LineEdit" parent="MainHSplitContainer/ScriptBrowser/VBoxContainer"]
 margin_right = 200.0
 margin_bottom = 26.0
 size_flags_vertical = 0
 right_icon = ExtResource( 13 )
 caret_blink = true
 
-[node name="RefreshButton" type="Button" parent="HSplitContainer/ScriptBrowser/VBoxContainer"]
+[node name="RefreshButton" type="Button" parent="MainHSplitContainer/ScriptBrowser/VBoxContainer"]
 margin_top = 30.0
 margin_right = 200.0
 margin_bottom = 52.0
@@ -119,7 +120,7 @@ size_flags_horizontal = 3
 text = "Refresh"
 icon = ExtResource( 15 )
 
-[node name="OpenDirectoryButton" type="Button" parent="HSplitContainer/ScriptBrowser/VBoxContainer"]
+[node name="OpenDirectoryButton" type="Button" parent="MainHSplitContainer/ScriptBrowser/VBoxContainer"]
 margin_top = 56.0
 margin_right = 200.0
 margin_bottom = 78.0
@@ -127,7 +128,7 @@ size_flags_horizontal = 3
 text = "Open Directory"
 icon = ExtResource( 9 )
 
-[node name="CurrentDirectoryLabel" type="Label" parent="HSplitContainer/ScriptBrowser/VBoxContainer"]
+[node name="CurrentDirectoryLabel" type="Label" parent="MainHSplitContainer/ScriptBrowser/VBoxContainer"]
 margin_top = 82.0
 margin_right = 200.0
 margin_bottom = 106.0
@@ -136,23 +137,23 @@ text = "\"res://demo/\""
 valign = 1
 autowrap = true
 
-[node name="VBoxContainer2" type="VBoxContainer" parent="HSplitContainer/ScriptBrowser"]
+[node name="VBoxContainer2" type="VBoxContainer" parent="MainHSplitContainer/ScriptBrowser"]
 margin_top = 106.0
 margin_right = 200.0
 margin_bottom = 586.0
 
-[node name="HBoxContainer" type="HBoxContainer" parent="HSplitContainer/ScriptBrowser/VBoxContainer2"]
+[node name="HBoxContainer" type="HBoxContainer" parent="MainHSplitContainer/ScriptBrowser/VBoxContainer2"]
 margin_right = 200.0
 margin_bottom = 24.0
 
-[node name="ListToggle" type="ToolButton" parent="HSplitContainer/ScriptBrowser/VBoxContainer2/HBoxContainer"]
+[node name="ListToggle" type="ToolButton" parent="MainHSplitContainer/ScriptBrowser/VBoxContainer2/HBoxContainer"]
 margin_right = 28.0
 margin_bottom = 24.0
 toggle_mode = true
 group = SubResource( 1 )
 icon = ExtResource( 18 )
 
-[node name="TreeToggle" type="ToolButton" parent="HSplitContainer/ScriptBrowser/VBoxContainer2/HBoxContainer"]
+[node name="TreeToggle" type="ToolButton" parent="MainHSplitContainer/ScriptBrowser/VBoxContainer2/HBoxContainer"]
 margin_left = 32.0
 margin_right = 60.0
 margin_bottom = 24.0
@@ -160,14 +161,14 @@ toggle_mode = true
 group = SubResource( 1 )
 icon = ExtResource( 17 )
 
-[node name="Control" type="MarginContainer" parent="HSplitContainer/ScriptBrowser/VBoxContainer2"]
+[node name="Control" type="MarginContainer" parent="MainHSplitContainer/ScriptBrowser/VBoxContainer2"]
 margin_top = 28.0
 margin_right = 200.0
 margin_bottom = 480.0
 size_flags_horizontal = 3
 size_flags_vertical = 3
 
-[node name="ScriptsItemList" type="ItemList" parent="HSplitContainer/ScriptBrowser/VBoxContainer2/Control"]
+[node name="ScriptsItemList" type="ItemList" parent="MainHSplitContainer/ScriptBrowser/VBoxContainer2/Control"]
 margin_right = 200.0
 margin_bottom = 452.0
 size_flags_horizontal = 3
@@ -178,7 +179,7 @@ __meta__ = {
 }
 file_extensions = [ "storyscript" ]
 
-[node name="ScriptsTree" type="Tree" parent="HSplitContainer/ScriptBrowser/VBoxContainer2/Control"]
+[node name="ScriptsTree" type="Tree" parent="MainHSplitContainer/ScriptBrowser/VBoxContainer2/Control"]
 margin_right = 200.0
 margin_bottom = 452.0
 rect_min_size = Vector2( 0, 100 )
@@ -188,33 +189,33 @@ __meta__ = {
 }
 file_extensions = [ "storyscript" ]
 
-[node name="VBoxContainer" type="VBoxContainer" parent="HSplitContainer"]
+[node name="VBoxContainer" type="VBoxContainer" parent="MainHSplitContainer"]
 margin_left = 212.0
 margin_right = 1010.0
 margin_bottom = 586.0
 custom_constants/separation = 0
 
-[node name="TopMenu" type="PanelContainer" parent="HSplitContainer/VBoxContainer"]
+[node name="TopMenu" type="PanelContainer" parent="MainHSplitContainer/VBoxContainer"]
 margin_right = 798.0
 margin_bottom = 66.0
 
-[node name="VBoxContainer" type="VBoxContainer" parent="HSplitContainer/VBoxContainer/TopMenu"]
+[node name="VBoxContainer" type="VBoxContainer" parent="MainHSplitContainer/VBoxContainer/TopMenu"]
 margin_left = 7.0
 margin_top = 7.0
 margin_right = 791.0
 margin_bottom = 59.0
 
-[node name="HBoxContainer" type="HBoxContainer" parent="HSplitContainer/VBoxContainer/TopMenu/VBoxContainer"]
+[node name="HBoxContainer" type="HBoxContainer" parent="MainHSplitContainer/VBoxContainer/TopMenu/VBoxContainer"]
 margin_right = 784.0
 margin_bottom = 24.0
 custom_constants/separation = 20
 
-[node name="Buttons" type="HBoxContainer" parent="HSplitContainer/VBoxContainer/TopMenu/VBoxContainer/HBoxContainer"]
+[node name="Buttons" type="HBoxContainer" parent="MainHSplitContainer/VBoxContainer/TopMenu/VBoxContainer/HBoxContainer"]
 margin_right = 279.0
 margin_bottom = 24.0
 custom_constants/separation = 0
 
-[node name="CompileButton" type="ToolButton" parent="HSplitContainer/VBoxContainer/TopMenu/VBoxContainer/HBoxContainer/Buttons"]
+[node name="CompileButton" type="ToolButton" parent="MainHSplitContainer/VBoxContainer/TopMenu/VBoxContainer/HBoxContainer/Buttons"]
 margin_right = 84.0
 margin_bottom = 24.0
 size_flags_vertical = 5
@@ -222,7 +223,7 @@ shortcut = SubResource( 3 )
 text = "Compile"
 icon = ExtResource( 6 )
 
-[node name="RunButton" type="ToolButton" parent="HSplitContainer/VBoxContainer/TopMenu/VBoxContainer/HBoxContainer/Buttons"]
+[node name="RunButton" type="ToolButton" parent="MainHSplitContainer/VBoxContainer/TopMenu/VBoxContainer/HBoxContainer/Buttons"]
 margin_left = 84.0
 margin_right = 139.0
 margin_bottom = 24.0
@@ -231,7 +232,7 @@ shortcut = SubResource( 5 )
 text = "Run"
 icon = ExtResource( 6 )
 
-[node name="FileMenuButton" type="MenuButton" parent="HSplitContainer/VBoxContainer/TopMenu/VBoxContainer/HBoxContainer/Buttons"]
+[node name="FileMenuButton" type="MenuButton" parent="MainHSplitContainer/VBoxContainer/TopMenu/VBoxContainer/HBoxContainer/Buttons"]
 margin_left = 139.0
 margin_right = 195.0
 margin_bottom = 24.0
@@ -241,7 +242,7 @@ text = "File"
 icon = ExtResource( 9 )
 script = ExtResource( 10 )
 
-[node name="SettingsButton" type="ToolButton" parent="HSplitContainer/VBoxContainer/TopMenu/VBoxContainer/HBoxContainer/Buttons"]
+[node name="SettingsButton" type="ToolButton" parent="MainHSplitContainer/VBoxContainer/TopMenu/VBoxContainer/HBoxContainer/Buttons"]
 margin_left = 195.0
 margin_right = 279.0
 margin_bottom = 24.0
@@ -250,25 +251,25 @@ custom_constants/hseparation = 5
 text = "Settings"
 icon = ExtResource( 11 )
 
-[node name="States" type="HBoxContainer" parent="HSplitContainer/VBoxContainer/TopMenu/VBoxContainer/HBoxContainer"]
+[node name="States" type="HBoxContainer" parent="MainHSplitContainer/VBoxContainer/TopMenu/VBoxContainer/HBoxContainer"]
 margin_left = 299.0
 margin_right = 457.0
 margin_bottom = 24.0
 custom_constants/separation = 0
 
-[node name="CompiledUI" type="MarginContainer" parent="HSplitContainer/VBoxContainer/TopMenu/VBoxContainer/HBoxContainer/States"]
+[node name="CompiledUI" type="MarginContainer" parent="MainHSplitContainer/VBoxContainer/TopMenu/VBoxContainer/HBoxContainer/States"]
 margin_right = 91.0
 margin_bottom = 24.0
 size_flags_vertical = 5
 custom_constants/margin_right = 5
 custom_constants/margin_left = 5
 
-[node name="CompiledUIContainer" type="HBoxContainer" parent="HSplitContainer/VBoxContainer/TopMenu/VBoxContainer/HBoxContainer/States/CompiledUI"]
+[node name="CompiledUIContainer" type="HBoxContainer" parent="MainHSplitContainer/VBoxContainer/TopMenu/VBoxContainer/HBoxContainer/States/CompiledUI"]
 margin_left = 5.0
 margin_right = 86.0
 margin_bottom = 24.0
 
-[node name="CompiledIcon" type="TextureRect" parent="HSplitContainer/VBoxContainer/TopMenu/VBoxContainer/HBoxContainer/States/CompiledUI/CompiledUIContainer"]
+[node name="CompiledIcon" type="TextureRect" parent="MainHSplitContainer/VBoxContainer/TopMenu/VBoxContainer/HBoxContainer/States/CompiledUI/CompiledUIContainer"]
 margin_top = 4.0
 margin_right = 16.0
 margin_bottom = 20.0
@@ -279,7 +280,7 @@ __meta__ = {
 "_edit_use_anchors_": false
 }
 
-[node name="CompiledText" type="Label" parent="HSplitContainer/VBoxContainer/TopMenu/VBoxContainer/HBoxContainer/States/CompiledUI/CompiledUIContainer"]
+[node name="CompiledText" type="Label" parent="MainHSplitContainer/VBoxContainer/TopMenu/VBoxContainer/HBoxContainer/States/CompiledUI/CompiledUIContainer"]
 margin_left = 20.0
 margin_top = 5.0
 margin_right = 81.0
@@ -289,7 +290,7 @@ custom_colors/font_color = Color( 0.647059, 0.937255, 0.67451, 1 )
 text = "Compiled"
 valign = 1
 
-[node name="SavedUI" type="MarginContainer" parent="HSplitContainer/VBoxContainer/TopMenu/VBoxContainer/HBoxContainer/States"]
+[node name="SavedUI" type="MarginContainer" parent="MainHSplitContainer/VBoxContainer/TopMenu/VBoxContainer/HBoxContainer/States"]
 margin_left = 91.0
 margin_right = 158.0
 margin_bottom = 24.0
@@ -297,12 +298,12 @@ size_flags_vertical = 5
 custom_constants/margin_right = 5
 custom_constants/margin_left = 5
 
-[node name="SavedUIContainer" type="HBoxContainer" parent="HSplitContainer/VBoxContainer/TopMenu/VBoxContainer/HBoxContainer/States/SavedUI"]
+[node name="SavedUIContainer" type="HBoxContainer" parent="MainHSplitContainer/VBoxContainer/TopMenu/VBoxContainer/HBoxContainer/States/SavedUI"]
 margin_left = 5.0
 margin_right = 62.0
 margin_bottom = 24.0
 
-[node name="SavedIcon" type="TextureRect" parent="HSplitContainer/VBoxContainer/TopMenu/VBoxContainer/HBoxContainer/States/SavedUI/SavedUIContainer"]
+[node name="SavedIcon" type="TextureRect" parent="MainHSplitContainer/VBoxContainer/TopMenu/VBoxContainer/HBoxContainer/States/SavedUI/SavedUIContainer"]
 margin_top = 4.0
 margin_right = 16.0
 margin_bottom = 20.0
@@ -313,7 +314,7 @@ __meta__ = {
 "_edit_use_anchors_": false
 }
 
-[node name="SavedText" type="Label" parent="HSplitContainer/VBoxContainer/TopMenu/VBoxContainer/HBoxContainer/States/SavedUI/SavedUIContainer"]
+[node name="SavedText" type="Label" parent="MainHSplitContainer/VBoxContainer/TopMenu/VBoxContainer/HBoxContainer/States/SavedUI/SavedUIContainer"]
 margin_left = 20.0
 margin_top = 5.0
 margin_right = 57.0
@@ -323,7 +324,7 @@ custom_colors/font_color = Color( 0.647059, 0.937255, 0.67451, 1 )
 text = "Saved"
 valign = 1
 
-[node name="EditingFileText" type="Label" parent="HSplitContainer/VBoxContainer/TopMenu/VBoxContainer"]
+[node name="EditingFileText" type="Label" parent="MainHSplitContainer/VBoxContainer/TopMenu/VBoxContainer"]
 margin_top = 28.0
 margin_right = 784.0
 margin_bottom = 52.0
@@ -331,7 +332,7 @@ rect_min_size = Vector2( 0, 24 )
 text = "Editing \"res://temp.storyscript\""
 valign = 1
 
-[node name="ScriptTextEdit" type="TextEdit" parent="HSplitContainer/VBoxContainer"]
+[node name="ScriptTextEdit" type="TextEdit" parent="MainHSplitContainer/VBoxContainer"]
 margin_top = 66.0
 margin_right = 798.0
 margin_bottom = 555.0
@@ -381,19 +382,19 @@ text_edit_theme = ExtResource( 1 )
 error_label_path = NodePath("../BottomMenu/HSplitContainer/ErrorLabel")
 caret_position_label_path = NodePath("../BottomMenu/HSplitContainer/CaretPositionLabel")
 
-[node name="BottomMenu" type="PanelContainer" parent="HSplitContainer/VBoxContainer"]
+[node name="BottomMenu" type="PanelContainer" parent="MainHSplitContainer/VBoxContainer"]
 margin_top = 555.0
 margin_right = 798.0
 margin_bottom = 586.0
 
-[node name="HSplitContainer" type="HSplitContainer" parent="HSplitContainer/VBoxContainer/BottomMenu"]
+[node name="HSplitContainer" type="HSplitContainer" parent="MainHSplitContainer/VBoxContainer/BottomMenu"]
 margin_left = 7.0
 margin_top = 7.0
 margin_right = 791.0
 margin_bottom = 24.0
 dragger_visibility = 2
 
-[node name="ErrorLabel" type="RichTextLabel" parent="HSplitContainer/VBoxContainer/BottomMenu/HSplitContainer"]
+[node name="ErrorLabel" type="RichTextLabel" parent="MainHSplitContainer/VBoxContainer/BottomMenu/HSplitContainer"]
 margin_right = 712.0
 margin_bottom = 17.0
 size_flags_horizontal = 3
@@ -403,7 +404,7 @@ bbcode_enabled = true
 meta_underlined = false
 scroll_active = false
 
-[node name="CaretPositionLabel" type="Label" parent="HSplitContainer/VBoxContainer/BottomMenu/HSplitContainer"]
+[node name="CaretPositionLabel" type="Label" parent="MainHSplitContainer/VBoxContainer/BottomMenu/HSplitContainer"]
 margin_left = 712.0
 margin_right = 784.0
 margin_bottom = 17.0
@@ -413,7 +414,7 @@ __meta__ = {
 "_edit_use_anchors_": false
 }
 
-[node name="Compiler" type="Node" parent="HSplitContainer/VBoxContainer"]
+[node name="Compiler" type="Node" parent="MainHSplitContainer/VBoxContainer"]
 script = ExtResource( 4 )
 
 [node name="Control" type="Control" parent="."]

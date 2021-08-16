@@ -16,17 +16,18 @@ const FracUtils = FracVNE.Utils
 const EDITOR_PERSISTENT_DATA_FILE_PATH: String = "res://addons/FracturalVNE/editor_persistent_data.json"
 const STANDALONE_PERSISTENT_DATA_FILE_PATH: String = "res://addons/FracturalVNE/standalone_persistent_data.json"
 
-var current_script_path: String = ""
-var current_saved_story_path: String = ""
-var current_directory_path: String = ""
-var current_file_display_type: int = 0
-var compiled: bool = false
-var saved: bool = false
+var current_script_path: String
+var current_saved_story_path: String
+var current_directory_path: String
+var current_file_display_type: int
+var compiled: bool
+var saved: bool
+var main_hsplit_offset: int
 
 var _is_real_persistent_data: bool = false
 
 
-func _enter_tree() -> void:
+func _ready() -> void:
 	if FracUtils.is_in_editor_scene_tab(self):
 		return
 	_is_real_persistent_data = true
@@ -34,6 +35,18 @@ func _enter_tree() -> void:
 	# We want to save before ready is called
 	# on other nodes.
 	load_data_from_file()
+
+
+func _set_defaults():
+	var editor_scale = FracUtils.get_singleton_from_tree(get_tree(), "AssetsRegistry").get_editor_scale()
+	
+	current_script_path = ""
+	current_saved_story_path = ""
+	current_directory_path = ""
+	current_file_display_type = 0
+	compiled = false
+	saved = false
+	main_hsplit_offset = editor_scale * 50
 
 
 func _notification(what) -> void:
@@ -68,6 +81,7 @@ func load_data_from_file():
 		file.close()
 		deserialize_state(json_result.result)
 	else:
+		_set_defaults()
 		save_data_to_file()
 
 
@@ -81,6 +95,7 @@ func serialize_state():
 		"current_file_display_type": current_file_display_type,
 		"compiled": compiled,
 		"saved": saved,
+		"main_hsplit_offset": main_hsplit_offset,
 	}
 
 
@@ -91,6 +106,7 @@ func deserialize_state(serialized_state):
 	current_file_display_type = _try_get_or_default(serialized_state, "current_file_display_type",	current_file_display_type)
 	compiled = 					_try_get_or_default(serialized_state, "compiled",					compiled)
 	saved = 					_try_get_or_default(serialized_state, "saved",						saved)
+	main_hsplit_offset =		_try_get_or_default(serialized_state, "main_hsplit_offset",			main_hsplit_offset)
 
 
 # Allows for changing of what's serialized

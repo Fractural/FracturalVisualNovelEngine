@@ -25,6 +25,13 @@ story_script_editor_path = NodePath("StoryScriptEditor")
 script = ExtResource( 5 )
 dependency_name = "Plugin"
 
+[node name="EditorStoryRunner" type="Node" parent="."]
+script = ExtResource( 4 )
+plugin_dep_path = NodePath("../Dependencies/PluginDependency")
+
+[node name="StoryScriptPersistentData" type="Node" parent="."]
+script = ExtResource( 3 )
+
 [node name="StoryScriptEditor" parent="." instance=ExtResource( 2 )]
 
 [node name="StoryRunnerDependency" parent="StoryScriptEditor/Dependencies" index="0"]
@@ -33,17 +40,10 @@ dependency_path = NodePath("../../../EditorStoryRunner")
 [node name="StoryScriptPersistentDataDependency" parent="StoryScriptEditor/Dependencies" index="1"]
 dependency_path = NodePath("../../../StoryScriptPersistentData")
 
-[node name="ListToggle" parent="StoryScriptEditor/HSplitContainer/ScriptBrowser/VBoxContainer2/HBoxContainer" index="0"]
+[node name="ListToggle" parent="StoryScriptEditor/MainHSplitContainer/ScriptBrowser/VBoxContainer2/HBoxContainer" index="0"]
 group = SubResource( 1 )
 
-[node name="TreeToggle" parent="StoryScriptEditor/HSplitContainer/ScriptBrowser/VBoxContainer2/HBoxContainer" index="1"]
+[node name="TreeToggle" parent="StoryScriptEditor/MainHSplitContainer/ScriptBrowser/VBoxContainer2/HBoxContainer" index="1"]
 group = SubResource( 1 )
-
-[node name="EditorStoryRunner" type="Node" parent="."]
-script = ExtResource( 4 )
-plugin_dep_path = NodePath("../Dependencies/PluginDependency")
-
-[node name="StoryScriptPersistentData" type="Node" parent="."]
-script = ExtResource( 3 )
 
 [editable path="StoryScriptEditor"]

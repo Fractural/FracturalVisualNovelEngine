@@ -293,6 +293,27 @@ static func pascal2snake(string: String) -> String:
 	return result.join('')
 
 
+static func get_singleton_from_tree(tree: SceneTree, name: String):
+	if tree.root.has_node(name):
+		return tree.root.get_node(name)
+	return null
+
+
+static func add_singleton_to_tree(tree: SceneTree, node: Node, name: String = ""):
+	if name == "":
+		name = node.name
+	else:
+		node.name = name
+	
+	if not tree.root.has_node(name):
+		tree.root.add_child(node)
+
+
+static func remove_singleton_from_tree(tree: SceneTree, name: String):
+	if tree.root.has_node(name):
+		tree.root.get_node(name).queue_free()
+
+
 # Checks if a given node is currently in the editor scene tab.
 # This has only been tested in Godot v3.3.2.
 static func is_in_editor_scene_tab(node):

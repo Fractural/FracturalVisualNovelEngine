@@ -5,6 +5,7 @@ extends Node
 # editor.
 
 
+const FracUtils = FracVNE.Utils
 const PluginAssetsRegistry = preload("res://addons/FracturalVNE/plugin/plugin_assets_registry.gd")
 
 export var compile_button_path: NodePath
@@ -22,6 +23,7 @@ export var open_file_dialog_path: NodePath
 export var save_file_dialog_path: NodePath
 export var popup_dim_path: NodePath
 export var script_browser_path: NodePath
+export var main_hsplit_container_path: NodePath
 
 export var story_runner_dep_path: NodePath
 export var persistent_data_dep_path: NodePath
@@ -45,6 +47,7 @@ onready var open_file_dialog: FileDialog = get_node(open_file_dialog_path)
 onready var save_file_dialog: FileDialog = get_node(save_file_dialog_path)
 onready var popup_dim: ColorRect = get_node(popup_dim_path)
 onready var script_browser = get_node(script_browser_path)
+onready var main_hsplit_container: HSplitContainer = get_node(main_hsplit_container_path)
 
 onready var story_runner_dep = get_node(story_runner_dep_path)
 onready var persistent_data_dep = get_node(persistent_data_dep_path)
@@ -56,7 +59,7 @@ func _ready() -> void:
 	
 	# If this is running standalone, then set up editor assets with a default scale of 1.
 	if not Engine.is_editor_hint():
-		_setup_editor_assets(PluginAssetsRegistry.new())
+		_setup_editor_assets(FracUtils.get_singleton_from_tree(get_tree(), "AssetsRegistry"))
 	
 	set_compiled(persistent_data_dep.dependency.compiled)
 	set_saved(persistent_data_dep.dependency.saved)
@@ -79,6 +82,9 @@ func _ready() -> void:
 	save_file_dialog.connect("about_to_show", self, "_on_popup_about_to_show")
 	open_file_dialog.connect("popup_hide", self, "_on_popup_hide")
 	save_file_dialog.connect("popup_hide", self, "_on_popup_hide")
+	
+	main_hsplit_container.split_offset = persistent_data_dep.dependency.main_hsplit_offset
+	main_hsplit_container.connect("dragged", self, "_on_main_hsplit_dragged")
 	
 	script_browser.connect("valid_script_selected", self, "_on_valid_script_selected")
 	
@@ -260,6 +266,10 @@ func _on_popup_hide() -> void:
 
 func _on_valid_script_selected(file_path: String) -> void:
 	open_file(file_path)
+
+
+func _on_main_hsplit_dragged(offset: int) -> void:
+	persistent_data_dep.dependency.main_hsplit_offset = offset
 
 
 func _setup_editor_assets(assets_registry) -> void:

@@ -75,11 +75,6 @@ _global_script_classes=[ {
 "path": "res://addons/FracturalVNE/core/visuals/types/visual.gd"
 }, {
 "base": "Reference",
-"class": "PluginAssetsRegistry",
-"language": "GDScript",
-"path": "res://addons/FracturalVNE/plugin/plugin_assets_registry.gd"
-}, {
-"base": "Reference",
 "class": "SerializationUtils",
 "language": "GDScript",
 "path": "res://addons/FracturalVNE/core/utils/serialization/serialization_utils.gd"
@@ -168,7 +163,6 @@ _global_script_class_icons={
 "FracVNE_StoryAudioChannel": "res://addons/FracturalVNE/assets/icons/audio_channel.svg",
 "FracVNE_TextPrinter": "res://addons/FracturalVNE/assets/icons/text_printer.svg",
 "FracVNE_Visual_ABSTRACT": "res://addons/FracturalVNE/assets/icons/visual.svg",
-"PluginAssetsRegistry": "",
 "SerializationUtils": "",
 "SignalConnector": "res://addons/FracturalVNE/assets/icons/signal.svg",
 "StoryScriptArgument": "",
@@ -210,6 +204,10 @@ Port=6008
 config/name="FracturalVisualNovelEngine"
 run/main_scene="res://addons/FracturalVNE/plugin/standalone_story_editor_init.tscn"
 config/icon="res://icon.png"
+
+[autoload]
+
+AssetsRegistry="*res://addons/FracturalVNE/plugin/plugin_assets_registry.gd"
 
 [display]
 
