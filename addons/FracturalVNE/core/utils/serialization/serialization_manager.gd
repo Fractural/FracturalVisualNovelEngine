@@ -10,7 +10,7 @@ extends Node
 
 export var serializers_holder_path: NodePath
 
-onready var serializers_holder = FracVNE.Utils.get_node_if_var_null(self, serializers_holder_path, serializers_holder)
+onready var serializers_holder = FracVNE.Utils.get_valid_node_or_dep(self, serializers_holder_path, serializers_holder)
 
 
 # Serialize an object either with a serialize function within itself or with

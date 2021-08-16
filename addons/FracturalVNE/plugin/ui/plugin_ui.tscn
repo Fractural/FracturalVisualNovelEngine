@@ -1,8 +1,7 @@
-[gd_scene load_steps=7 format=2]
+[gd_scene load_steps=6 format=2]
 
 [ext_resource path="res://addons/FracturalVNE/plugin/ui/plugin_ui.gd" type="Script" id=1]
 [ext_resource path="res://addons/FracturalVNE/plugin/ui/story_script_editor.tscn" type="PackedScene" id=2]
-[ext_resource path="res://addons/FracturalVNE/plugin/ui/story_script_persistent_data.gd" type="Script" id=3]
 [ext_resource path="res://addons/FracturalVNE/plugin/ui/editor_story_runner.gd" type="Script" id=4]
 [ext_resource path="res://addons/FracturalVNE/core/utils/dependency_injection/dependency.gd" type="Script" id=5]
 
@@ -29,21 +28,22 @@ dependency_name = "Plugin"
 script = ExtResource( 5 )
 dependency_name = "AssetsRegistry"
 
+[node name="PersistentDataDependency" type="Node" parent="Dependencies"]
+script = ExtResource( 5 )
+dependency_name = "PersistentData"
+
 [node name="EditorStoryRunner" type="Node" parent="."]
 script = ExtResource( 4 )
-plugin_dep_path = NodePath("../Dependencies/PluginDependency")
-
-[node name="StoryScriptPersistentData" type="Node" parent="."]
-script = ExtResource( 3 )
-assets_registry_or_dep_path = NodePath("../Dependencies/AssetsRegistryDependency")
+persistent_data_path = NodePath("../Dependencies/PersistentDataDependency")
+plugin_path = NodePath("../Dependencies/PluginDependency")
 
 [node name="StoryScriptEditor" parent="." instance=ExtResource( 2 )]
 
 [node name="StoryRunnerDependency" parent="StoryScriptEditor/Dependencies" index="0"]
 dependency_path = NodePath("../../../EditorStoryRunner")
 
-[node name="StoryScriptPersistentDataDependency" parent="StoryScriptEditor/Dependencies" index="1"]
-dependency_path = NodePath("../../../StoryScriptPersistentData")
+[node name="PersistentDataDependency" parent="StoryScriptEditor/Dependencies" index="1"]
+dependency_path = NodePath("../../../Dependencies/PersistentDataDependency")
 
 [node name="ListToggle" parent="StoryScriptEditor/MainHSplitContainer/ScriptBrowser/VBoxContainer2/HBoxContainer" index="0"]
 group = SubResource( 1 )

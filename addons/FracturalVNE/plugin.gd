@@ -11,6 +11,8 @@ func get_types() -> Array:
 
 
 const FracUtils = FracVNE.Utils
+const PersistentData: Script = preload("plugin/ui/persistent_data/persistent_data.gd")
+const EditorPersistentDataDefualtsLoader = preload("plugin/ui/persistent_data/editor_persistent_data_defaults_loader.gd")
 const Settings: Script = preload("plugin/settings.gd")
 const Docker: Script = preload("plugin/ui/docker.gd")
 const PluginUI: Script = preload("plugin/ui/plugin_ui.gd")
@@ -25,19 +27,45 @@ var settings: Settings
 
 # plugin.gd gets it's own AssetsRegistry
 # this is needed for get_plugin_icon() to work.
-var assets_registry = AssetsRegistry.new(self)
+var assets_registry
+var persistent_data
+var persistent_data_defaults_loader
 
 
 func _init():
+	assets_registry = AssetsRegistry.new(self)
+	
+	# true makes the PersistentData ready immediately,
+	# which loads the peristent data from the file, etc
+	persistent_data = PersistentData.new()
+	persistent_data_defaults_loader = EditorPersistentDataDefualtsLoader.new(persistent_data, assets_registry)
+	
+	# TODO DISCUSS: Maybe just refactor PersistentData into 
+	# 				a Refernce PersistentData and a Node wrapper
+	#				for the Reference PersistentData?
+	#				This would allow us to stop using
+	#				hacks like calling _ready() manually.
+	#
+	# We force a ready in order to let the data load
+	persistent_data._ready()
+	
 	settings = Settings.new("Fractural Visual Novel Engine", "Fractural_VNE")
 
 
 func _enter_tree():
 	add_child(assets_registry)
+	add_child(persistent_data)
+	print("Persistent data: " + str(persistent_data))
+	print("Persistent data path: " + str(persistent_data.get_path()))
 	
 	plugin_ui = PluginUIScene.instance()
+	print("plugin_ui node: " + str(plugin_ui))
+	print("plugin_ui persist data dep node: " + str(plugin_ui.get_node("Dependencies/PersistentDataDependency")))
 	plugin_ui.get_node("Dependencies/PluginDependency").dependency_path = get_path()
 	plugin_ui.get_node("Dependencies/AssetsRegistryDependency").dependency_path = assets_registry.get_path()
+	plugin_ui.get_node("Dependencies/PersistentDataDependency").dependency_path = persistent_data.get_path()
+	
+	print("plugin_ui persiste data dep path after inject: " + str(plugin_ui.get_node("Dependencies/PersistentDataDependency").dependency_path))
 	plugin_ui._settings = settings
 	
 	docker = Docker.new(self, settings, plugin_ui)

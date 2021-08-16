@@ -46,6 +46,9 @@ onready var persistent_data_dep = get_node(persistent_data_dep_path)
 
 
 func _ready():
+	if FracUtils.is_in_editor_scene_tab(self):
+		return
+	
 	search_line_edit.connect("text_changed", self, "_on_search_text_changed")
 	open_directory_button.connect("pressed", self, "_start_open_directory")
 	
@@ -67,6 +70,8 @@ func _ready():
 	scripts_item_list_toggle.connect("toggled", self, "_on_file_display_type_button_toggled", [FileDisplay.ITEM_LIST])
 	scripts_tree_toggle.connect("toggled", self, "_on_file_display_type_button_toggled", [FileDisplay.TREE])
 	
+	print("Has persist data readied? " + str(persistent_data_dep.dependency._is_real_persistent_data))
+	
 	set_current_directory(persistent_data_dep.dependency.current_directory_path)
 	set_current_file_display_type(persistent_data_dep.dependency.current_file_display_type)
 
@@ -75,6 +80,7 @@ func _post_assets_setup():
 	if get_current_directory() != "":
 		get_current_file_display().directory = get_current_directory()
 	refresh_file_display()
+
 
 
 func select_file(path: String):

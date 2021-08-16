@@ -228,18 +228,6 @@ static func try_free(object):
 			return true
 	return false
 
-# Gets a node if the orignal_variable is null. 
-# If an onready node variable was assigned a node reference 
-# before its onready was called, this mehtod would keep
-# this reference that it was assigned instead of
-# attempting to fetch a new one using node_path.
-static func get_node_if_var_null(base_node, node_path, original_variable):
-	if original_variable != null:
-		return original_variable
-	if node_path.is_empty():
-		return null
-	return base_node.get_node(node_path)
-
 
 # Snakecase conversions sou/rce:
 # https://gist.github.com/me2beats/443b40ba79d5b589a96a16c565952419
@@ -314,9 +302,28 @@ static func remove_singleton_from_tree(tree: SceneTree, name: String):
 		tree.root.get_node(name).queue_free()
 
 
-static func get_node_or_dependency(original_node: Node, node_path: NodePath):
+# A substitute for get_node that also supports Dependencies
+# and values injected before ready is called.
+#
+# Returns the dependency if the path points to a Dependency.
+# Returns a node if the path points to a node.
+# Returns null if the path is empty and the original value is also null.
+static func get_valid_node_or_dep(original_node: Node, node_path, original_value = null, run_in_scene_tab: bool = false):
+	# By default these will not run in the scene tab.
+	if not run_in_scene_tab and is_in_editor_scene_tab(original_node):
+		return null
+	
+	assert(node_path == null or node_path is NodePath, "Expected node_path to be null or a NodePath. Got \"%s\" instead." % get_type_name(node_path))
+	assert(original_value == null or original_node is Node, "Expected original_value to be null or a Node. Got \"%s\" instead." % get_type_name(original_value))
+	
+	if original_value != null:
+		return original_value
+	
+	if node_path == null or node_path.is_empty():
+		return null
+	
 	var node = original_node.get_node(node_path)
-	if "dependency" in node:
+	if is_type(node, "Dependency"):
 		return node.dependency
 	else:
 		return node

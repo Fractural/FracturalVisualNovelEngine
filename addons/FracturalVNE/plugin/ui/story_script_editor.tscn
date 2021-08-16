@@ -1,4 +1,4 @@
-[gd_scene load_steps=24 format=2]
+[gd_scene load_steps=27 format=2]
 
 [ext_resource path="res://addons/FracturalVNE/plugin/ui/monokai.tres" type="Resource" id=1]
 [ext_resource path="res://addons/FracturalVNE/assets/fonts/Hack/Hack-Regular.tres" type="DynamicFont" id=2]
@@ -18,6 +18,9 @@
 [ext_resource path="res://addons/FracturalVNE/plugin/ui/files_item_list.gd" type="Script" id=16]
 [ext_resource path="res://addons/FracturalVNE/assets/icons/filesystem.svg" type="Texture" id=17]
 [ext_resource path="res://addons/FracturalVNE/assets/icons/file_list.svg" type="Texture" id=18]
+[ext_resource path="res://addons/FracturalVNE/plugin/ui/settings/enum_field/enum_field.tscn" type="PackedScene" id=19]
+[ext_resource path="res://addons/FracturalVNE/plugin/ui/settings/int_field/int_field.tscn" type="PackedScene" id=20]
+[ext_resource path="res://addons/FracturalVNE/plugin/ui/settings/settings_window.gd" type="Script" id=21]
 
 [sub_resource type="ButtonGroup" id=1]
 
@@ -63,7 +66,7 @@ popup_dim_path = NodePath("Control/PopupDim")
 script_browser_path = NodePath("MainHSplitContainer/ScriptBrowser")
 main_hsplit_container_path = NodePath("MainHSplitContainer")
 story_runner_dep_path = NodePath("Dependencies/StoryRunnerDependency")
-persistent_data_dep_path = NodePath("Dependencies/StoryScriptPersistentDataDependency")
+persistent_data_dep_path = NodePath("Dependencies/PersistentDataDependency")
 
 [node name="Dependencies" type="Node" parent="."]
 
@@ -71,9 +74,9 @@ persistent_data_dep_path = NodePath("Dependencies/StoryScriptPersistentDataDepen
 script = ExtResource( 8 )
 dependency_name = "StoryRunner"
 
-[node name="StoryScriptPersistentDataDependency" type="Node" parent="Dependencies"]
+[node name="PersistentDataDependency" type="Node" parent="Dependencies"]
 script = ExtResource( 8 )
-dependency_name = "StoryScriptPersistentData"
+dependency_name = "PersistentData"
 
 [node name="MainHSplitContainer" type="HSplitContainer" parent="."]
 margin_left = 7.0
@@ -98,7 +101,7 @@ open_directory_dialog_path = NodePath("../../Control/PopupHolder/OpenDirectoryDi
 popup_dim_path = NodePath("../../Control/PopupDim")
 refresh_button_path = NodePath("VBoxContainer/RefreshButton")
 current_directory_label_path = NodePath("VBoxContainer/CurrentDirectoryLabel")
-persistent_data_dep_path = NodePath("../../Dependencies/StoryScriptPersistentDataDependency")
+persistent_data_dep_path = NodePath("../../Dependencies/PersistentDataDependency")
 
 [node name="VBoxContainer" type="VBoxContainer" parent="MainHSplitContainer/ScriptBrowser"]
 margin_right = 200.0
@@ -490,6 +493,59 @@ rect_min_size = Vector2( 800, 400 )
 window_title = "Save Script"
 resizable = true
 filters = PoolStringArray( "*.storyscript ; Story Script" )
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="SettingsWindow" type="WindowDialog" parent="Control/PopupHolder"]
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+margin_left = -407.0
+margin_top = -200.0
+margin_right = 407.0
+margin_bottom = 200.0
+rect_min_size = Vector2( 800, 400 )
+window_title = "Settings"
+resizable = true
+script = ExtResource( 21 )
+__meta__ = {
+"_edit_use_anchors_": false
+}
+enum_field_prefab = ExtResource( 19 )
+int_field_prefab = ExtResource( 20 )
+
+[node name="HSplitContainer" type="HSplitContainer" parent="Control/PopupHolder/SettingsWindow"]
+anchor_right = 1.0
+anchor_bottom = 1.0
+margin_left = 10.0
+margin_top = 10.0
+margin_right = -10.0
+margin_bottom = -10.0
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="MenuButtons" type="VBoxContainer" parent="Control/PopupHolder/SettingsWindow/HSplitContainer"]
+margin_right = 200.0
+margin_bottom = 380.0
+rect_min_size = Vector2( 200, 0 )
+
+[node name="GeneralButton" type="Button" parent="Control/PopupHolder/SettingsWindow/HSplitContainer/MenuButtons"]
+margin_right = 200.0
+margin_bottom = 40.0
+rect_min_size = Vector2( 0, 40 )
+text = "General"
+
+[node name="Settings" type="Control" parent="Control/PopupHolder/SettingsWindow/HSplitContainer"]
+margin_left = 212.0
+margin_right = 794.0
+margin_bottom = 380.0
+
+[node name="General" type="VBoxContainer" parent="Control/PopupHolder/SettingsWindow/HSplitContainer/Settings"]
+margin_right = 602.0
+margin_bottom = 400.0
 __meta__ = {
 "_edit_use_anchors_": false
 }

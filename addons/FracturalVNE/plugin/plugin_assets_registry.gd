@@ -7,7 +7,6 @@ const PLUGIN_ABSOLUTE_PATH_PREFIX = "res://addons/FracturalVNE/"
 const FracUtils = FracVNE.Utils
 
 export var self_autoload: bool = false 
-export var plugin_dependency_path: NodePath
 
 # We cannot assign plugin as an EditorPlugin
 # since Editor related classes are not
@@ -27,8 +26,6 @@ func _init(plugin_ = null):
 
 
 func _ready():
-	if not plugin_dependency_path.is_empty():
-		plugin = get_node(plugin_dependency_path).dependency
 	if self_autoload:
 		FracUtils.add_singleton_to_tree(get_tree(), self, "AssetsRegistry")
 
