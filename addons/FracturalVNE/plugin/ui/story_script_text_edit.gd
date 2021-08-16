@@ -41,12 +41,6 @@ func _ready() -> void:
 	load_text_edit_theme()
 
 
-func _setup_editor_assets(assets_registry):
-	add_font_override("font", assets_registry.load_asset(get_font("font")))
-	error_label.add_font_override("normal_font", assets_registry.load_asset(error_label.get_font("normal_font")))
-	caret_position_label.add_font_override("font", assets_registry.load_asset(caret_position_label.get_font("font")))
-
-
 func _on_cursor_changed():
 	caret_position_label.text = "(%3s,%3s)" % [str(cursor_get_line() + 1), str(cursor_get_column() + 1)]
 
@@ -103,3 +97,9 @@ func _on_error_label_clicked(meta):
 
 func clear_error():
 	error_label.bbcode_text = ""
+
+
+func _setup_editor_assets(assets_registry):
+	add_font_override("font", assets_registry.load_asset(get_font("font")))
+	error_label.add_font_override("normal_font", assets_registry.load_asset(error_label.get_font("normal_font")))
+	caret_position_label.add_font_override("font", assets_registry.load_asset(caret_position_label.get_font("font")))

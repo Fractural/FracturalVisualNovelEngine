@@ -5,8 +5,6 @@ extends Node
 # editor.
 
 
-const TEMP_SCRIPT_PATH: String = "res://temp.storyscript"
-
 const PluginAssetsRegistry = preload("res://addons/FracturalVNE/plugin/plugin_assets_registry.gd")
 
 export var compile_button_path: NodePath
@@ -23,13 +21,14 @@ export var editing_file_label_path: NodePath
 export var open_file_dialog_path: NodePath
 export var save_file_dialog_path: NodePath
 export var popup_dim_path: NodePath
+export var script_browser_path: NodePath
 
 export var story_runner_dep_path: NodePath
 export var persistent_data_dep_path: NodePath
 
 var compiled: bool = false setget set_compiled
 var saved: bool = false setget set_saved
-var current_script_path: String = TEMP_SCRIPT_PATH
+var current_script_path: String = ""
 
 onready var compile_button: Button = get_node(compile_button_path)
 onready var run_button: Button = get_node(run_button_path)
@@ -45,6 +44,7 @@ onready var editing_file_label: Label = get_node(editing_file_label_path)
 onready var open_file_dialog: FileDialog = get_node(open_file_dialog_path)
 onready var save_file_dialog: FileDialog = get_node(save_file_dialog_path)
 onready var popup_dim: ColorRect = get_node(popup_dim_path)
+onready var script_browser = get_node(script_browser_path)
 
 onready var story_runner_dep = get_node(story_runner_dep_path)
 onready var persistent_data_dep = get_node(persistent_data_dep_path)
@@ -80,14 +80,14 @@ func _ready() -> void:
 	open_file_dialog.connect("popup_hide", self, "_on_popup_hide")
 	save_file_dialog.connect("popup_hide", self, "_on_popup_hide")
 	
+	script_browser.connect("valid_script_selected", self, "_on_valid_script_selected")
+	
 	if persistent_data_dep.dependency.current_script_path == "":
-		#open_file("res://demo/visuals_testing.storyscript")
 		new_file()
-	else:
-		open_file(persistent_data_dep.dependency.current_script_path)
+	# Loads existing file in script_browser.gd
 
 
-func new_file():
+func new_file() -> void:
 	set_current_script_path("")
 	script_text_edit.text = """# This is a comment!
 define b = Character(name="Bob", name_color="#fcba03")
@@ -120,12 +120,13 @@ func open_file(file_path) -> bool:
 	if error != OK:
 		printerr("Cannot open file at \"%s\", got error code \"%s\"." % [file_path, str(error)])
 		return false
-	
-	set_current_script_path(file_path)
 	script_text_edit.text = file.get_as_text()
 	file.close()
 	
+	set_current_script_path(file_path)
+	
 	script_text_edit.clear_undo_history()
+	script_browser.load_script(file_path)
 	
 	set_compiled(false)
 	set_saved(true)
@@ -158,7 +159,7 @@ func save_current_file() -> bool:
 
 
 # Sets compiled to true if successful.
-func compile_script():
+func compile_script() -> void:
 	if persistent_data_dep.dependency.current_script_path == "":
 		save_file_dialog.popup()
 		return
@@ -176,7 +177,7 @@ func compile_script():
 
 
 # Returns true if successful.
-func save_ast_to_file(ast_tree, file_path):
+func save_ast_to_file(ast_tree, file_path) -> bool:
 	var serialized_ast = JSON.print(ast_tree.serialize())
 	
 	var serialized_file = File.new()
@@ -192,7 +193,7 @@ func save_ast_to_file(ast_tree, file_path):
 	return true
 
 
-func run_script():
+func run_script() -> void:
 	if not compiled:
 		compile_script()
 	
@@ -208,33 +209,33 @@ func run_script():
 		story_runner_dep.dependency.run(persistent_data_dep.dependency.current_saved_story_path)
 
 
-func set_compiled(new_value):
+func set_compiled(new_value: bool) -> void:
 	compiled = new_value
 	persistent_data_dep.dependency.compiled = new_value
 	if compiled_ui != null:
 		compiled_ui.modulate.a = 1 if new_value else 0.5
 
 
-func set_saved(new_value):
+func set_saved(new_value: bool) -> void:
 	saved = new_value
 	persistent_data_dep.dependency.saved = new_value
 	if saved_ui != null:
 		saved_ui.modulate.a = 1 if new_value else 0.5
 
 
-func set_current_script_path(new_value):
+func set_current_script_path(new_value: String) -> void:
 	current_script_path = new_value
 	persistent_data_dep.dependency.current_script_path = new_value
 	if editing_file_label != null:
 		editing_file_label.text = "Editing \"%s\" " % current_script_path
 
 
-func _on_script_text_changed():
+func _on_script_text_changed() -> void:
 	set_compiled(false)
 	set_saved(false)
 
 
-func _on_file_menu_item_pressed(meta):
+func _on_file_menu_item_pressed(meta: String) -> void:
 	match meta:
 		"open":
 			open_file_dialog.popup()
@@ -246,17 +247,21 @@ func _on_file_menu_item_pressed(meta):
 			save_file_dialog.popup()
 
 
-func _on_popup_about_to_show():
+func _on_popup_about_to_show() -> void:
 	popup_dim.visible = true
 	open_file_dialog.invalidate()
 	save_file_dialog.invalidate()
 
 
-func _on_popup_hide():
+func _on_popup_hide() -> void:
 	popup_dim.visible = false
 
 
-func _setup_editor_assets(assets_registry):
+func _on_valid_script_selected(file_path: String) -> void:
+	open_file(file_path)
+
+
+func _setup_editor_assets(assets_registry) -> void:
 	compile_button.icon = assets_registry.load_asset("assets/icons/play.svg")
 	run_button.icon = assets_registry.load_asset("assets/icons/play.svg")
 	compiled_icon.texture = assets_registry.load_asset("assets/icons/check_box.svg")
@@ -271,3 +276,4 @@ func _setup_editor_assets(assets_registry):
 	save_file_dialog.set_anchors_and_margins_preset(Control.PRESET_CENTER, Control.PRESET_MODE_KEEP_SIZE)
 	
 	script_text_edit._setup_editor_assets(assets_registry)
+	script_browser._setup_editor_assets(assets_registry)

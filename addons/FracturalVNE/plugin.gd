@@ -12,6 +12,7 @@ func get_types() -> Array:
 
 const Settings: Script = preload("plugin/settings.gd")
 const Docker: Script = preload("plugin/ui/docker.gd")
+const PluginUI: Script = preload("plugin/ui/plugin_ui.gd")
 const PluginUIScene: PackedScene = preload("plugin/ui/plugin_ui.tscn")
 
 var inspector_plugins = []
@@ -33,6 +34,8 @@ func _enter_tree():
 	
 	plugin_ui.get_node("Dependencies/PluginDependency").dependency_path = get_path()
 	plugin_ui._settings = settings
+	
+	print("plugin _enter_tree")
 	
 	docker = Docker.new(self, settings, plugin_ui)
 	add_child(docker)
