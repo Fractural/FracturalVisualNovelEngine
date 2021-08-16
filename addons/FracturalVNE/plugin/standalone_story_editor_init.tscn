@@ -19,6 +19,7 @@ initial_scene = ExtResource( 1 )
 
 [node name="StoryScriptPersistentData" type="Node" parent="ServiceDIContainer"]
 script = ExtResource( 3 )
+assets_registry_or_dep_path = NodePath("../../AssetsRegistry")
 
 [node name="WindowSizer" type="Node" parent="."]
 script = ExtResource( 4 )

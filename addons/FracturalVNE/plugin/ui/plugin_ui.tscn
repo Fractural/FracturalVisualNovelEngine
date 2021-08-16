@@ -25,12 +25,17 @@ story_script_editor_path = NodePath("StoryScriptEditor")
 script = ExtResource( 5 )
 dependency_name = "Plugin"
 
+[node name="AssetsRegistryDependency" type="Node" parent="Dependencies"]
+script = ExtResource( 5 )
+dependency_name = "AssetsRegistry"
+
 [node name="EditorStoryRunner" type="Node" parent="."]
 script = ExtResource( 4 )
 plugin_dep_path = NodePath("../Dependencies/PluginDependency")
 
 [node name="StoryScriptPersistentData" type="Node" parent="."]
 script = ExtResource( 3 )
+assets_registry_or_dep_path = NodePath("../Dependencies/AssetsRegistryDependency")
 
 [node name="StoryScriptEditor" parent="." instance=ExtResource( 2 )]
 

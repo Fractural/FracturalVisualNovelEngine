@@ -41,6 +41,8 @@ func clear():
 
 func refresh(selected_file_path: String = ""):
 	clear()
+	if directory == "":
+		return
 	
 	# sort() does an alphabetical string sort.
 	var file_paths = FracUtils.get_dir_files(directory, include_sub_dirs, file_extensions)

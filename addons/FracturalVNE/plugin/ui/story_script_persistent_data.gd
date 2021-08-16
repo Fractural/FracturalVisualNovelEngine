@@ -16,6 +16,8 @@ const FracUtils = FracVNE.Utils
 const EDITOR_PERSISTENT_DATA_FILE_PATH: String = "res://addons/FracturalVNE/editor_persistent_data.json"
 const STANDALONE_PERSISTENT_DATA_FILE_PATH: String = "res://addons/FracturalVNE/standalone_persistent_data.json"
 
+export var assets_registry_or_dep_path: NodePath
+
 var current_script_path: String
 var current_saved_story_path: String
 var current_directory_path: String
@@ -26,8 +28,10 @@ var main_hsplit_offset: int
 
 var _is_real_persistent_data: bool = false
 
+onready var assets_registry = FracUtils.get_node_or_dependency(self, assets_registry_or_dep_path)
 
-func _ready() -> void:
+
+func _ready() -> void:	
 	if FracUtils.is_in_editor_scene_tab(self):
 		return
 	_is_real_persistent_data = true
@@ -38,7 +42,7 @@ func _ready() -> void:
 
 
 func _set_defaults():
-	var editor_scale = FracUtils.get_singleton_from_tree(get_tree(), "AssetsRegistry").get_editor_scale()
+	var editor_scale = assets_registry.get_editor_scale()
 	
 	current_script_path = ""
 	current_saved_story_path = ""
@@ -46,7 +50,7 @@ func _set_defaults():
 	current_file_display_type = 0
 	compiled = false
 	saved = false
-	main_hsplit_offset = editor_scale * 50
+	main_hsplit_offset = editor_scale * 100
 
 
 func _notification(what) -> void:

@@ -314,6 +314,14 @@ static func remove_singleton_from_tree(tree: SceneTree, name: String):
 		tree.root.get_node(name).queue_free()
 
 
+static func get_node_or_dependency(original_node: Node, node_path: NodePath):
+	var node = original_node.get_node(node_path)
+	if "dependency" in node:
+		return node.dependency
+	else:
+		return node
+
+
 # Checks if a given node is currently in the editor scene tab.
 # This has only been tested in Godot v3.3.2.
 static func is_in_editor_scene_tab(node):
@@ -353,12 +361,15 @@ static func get_dir_contents(root_path: String, search_sub_directories: bool = t
 	var files = []
 	var directories = []
 	var dir = Directory.new()
-
-	if dir.open(root_path) == OK:
+	
+	assert(root_path != "", "Expected root_path to not be empty!")
+	
+	var error = dir.open(root_path)
+	if error == OK:
 		dir.list_dir_begin(true, false)
 		_add_dir_contents(dir, files, directories, search_sub_directories, file_extensions)
 	else:
-		push_warning("An error occurred when trying to access the path.")
+		push_warning("FracVNE.Utils.get_dir_contents: An error occurred when trying to access the path. Error code: \"%s\"." % error)
 
 	return [files, directories]
 

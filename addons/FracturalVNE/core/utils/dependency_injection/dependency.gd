@@ -4,6 +4,14 @@ extends Node
 # A node that represents an external node dependency of a scene
 
 
+# ----- Typeable ----- #
+
+func get_types() -> Array:
+	return ["Dependency"]
+
+# ----- Typeable ----- #
+
+
 export var dependency_name: String
 export var dependency_path: NodePath
 

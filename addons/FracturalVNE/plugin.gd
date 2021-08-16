@@ -23,7 +23,9 @@ var plugin_ui: PluginUI
 var docker: Docker
 var settings: Settings
 
-var assets_registry = AssetsRegistry.new()
+# plugin.gd gets it's own AssetsRegistry
+# this is needed for get_plugin_icon() to work.
+var assets_registry = AssetsRegistry.new(self)
 
 
 func _init():
@@ -31,16 +33,11 @@ func _init():
 
 
 func _enter_tree():
-	# Temporary -- Only made for get_plugin_icon() to work.
-	assets_registry.queue_free()
-	
-	add_autoload_singleton("AssetsRegistry", "res://addons/FracturalVNE/plugin/plugin_assets_registry.gd")
-	
-	assets_registry = FracUtils.get_singleton_from_tree(get_tree(), "AssetsRegistry")
+	add_child(assets_registry)
 	
 	plugin_ui = PluginUIScene.instance()
-	
 	plugin_ui.get_node("Dependencies/PluginDependency").dependency_path = get_path()
+	plugin_ui.get_node("Dependencies/AssetsRegistryDependency").dependency_path = assets_registry.get_path()
 	plugin_ui._settings = settings
 	
 	docker = Docker.new(self, settings, plugin_ui)
@@ -61,11 +58,11 @@ func _exit_tree():
 	for inspector_plugin in inspector_plugins:
 		remove_inspector_plugin(inspector_plugin)
 	
-	remove_autoload_singleton("AssetsRegistry")
+	assets_registry.free()
 
 
 func _setup_inspector_plugins():
-		add_custom_inspector_plugin(load("res://addons/FracturalVNE/core/utils/signals/signal_connector_inspector.gd").new())
+	add_custom_inspector_plugin(load("res://addons/FracturalVNE/core/utils/signals/signal_connector_inspector.gd").new())
 
 
 func add_custom_inspector_plugin(instance: EditorInspectorPlugin):
