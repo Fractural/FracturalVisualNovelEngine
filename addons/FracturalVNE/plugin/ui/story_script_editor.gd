@@ -87,6 +87,8 @@ func _ready() -> void:
 	script_browser.connect("valid_script_selected", self, "_on_valid_script_selected")
 	
 	settings_button.connect("pressed", settings_window, "popup")
+	settings_window.connect("about_to_show", self, "_on_popup_about_to_show")
+	settings_window.connect("popup_hide", self, "_on_popup_hide")
 	
 	if get_current_script_path() == "":
 		new_file()
@@ -151,6 +153,7 @@ func save_file_to(file_path) -> bool:
 	set_current_script_path(file_path)
 	file.store_string(script_text_edit.text)
 	file.close()
+	script_browser.refresh_file_display()
 	
 	set_saved(true)
 	return true

@@ -1,0 +1,15 @@
+# This is a comment!
+define b = Character(name="Bob", name_color="#fcba03")
+define j = Character("Joe", "#03a1fc", "#03a1fc")
+b "Hi there, I'm Bob!"
+j "Hi there, I'm Joe!"
+"Tom" "Hi there, I'm tom!"
+label start:
+	b "I'm in a label!"
+	j "I'm also in a label!"
+	"Tom" "I'm also in a label!"
+	"Here's some narration in the label!"
+	"Tom" "Lets jump recursively back to that label!"
+	jump start
+label impossible_to_reach:
+	"You will never reach this label!"

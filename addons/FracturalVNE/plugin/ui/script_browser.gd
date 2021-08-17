@@ -194,6 +194,8 @@ func _setup_editor_assets(assets_registry) -> void:
 	search_line_edit.right_icon = assets_registry.load_asset("assets/icons/search.svg")
 	self.rect_min_size *= assets_registry.get_editor_scale()
 	
+	current_directory_label.rect_min_size.y *= assets_registry.get_editor_scale()
+	
 	scripts_item_list_toggle.icon = assets_registry.load_asset("assets/icons/file_list.svg")
 	scripts_tree_toggle.icon = assets_registry.load_asset("assets/icons/filesystem.svg")
 	
