@@ -2,9 +2,7 @@ extends "custom_networking.gd"
 # Ran By The GUI when running in Editor
 # Otherwise ignored (e.g Running GUI as a scene or exported scene)
 # Since we're talking to localhost from localhost, we allow object decoding
-#
-# TODO: Deprecated since we are using persistent data to store and transfer
-#		information.
+
 
 const FracUtils = FracVNE.Utils
 
@@ -31,6 +29,7 @@ func host() -> void:
 		push_warning(err as String)
 	custom_multiplayer.network_peer = _server
 	custom_multiplayer.connect("network_peer_connected", self, "_on_peer_connected")
+	custom_multiplayer.connect("network_peer_disconnected", self, "_on_peer_disconnected")
 
 
 func close() -> void:
@@ -41,5 +40,7 @@ func close() -> void:
 
 func _on_peer_connected(id: int) -> void:
 	pass
-	# We actually do not need any networking for now since we have FracVNEPersistentData
-	# to transfer information (data is always stored under the FracturalVNE folder).
+
+
+func _on_peer_disconnected(id: int) -> void:
+	persistent_data.load_data_from_file()

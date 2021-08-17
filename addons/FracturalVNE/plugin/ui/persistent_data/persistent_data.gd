@@ -36,6 +36,7 @@ var saved: bool
 var main_hsplit_offset: int
 var port: int
 var display_mode: int
+var via_editor_window_size: Vector2
 
 var _is_real_persistent_data: bool = false
 
@@ -60,6 +61,7 @@ func _set_defaults():
 	main_hsplit_offset 			= 100
 	port 						= 6010
 	display_mode 				= 9		# Main Panel
+	via_editor_window_size		= Vector2(ProjectSettings.get_setting("display/window/size/width"), ProjectSettings.get_setting("display/window/size/height"))
 
 	emit_signal("get_defaults", self)
 
@@ -129,6 +131,7 @@ func serialize_state():
 		"main_hsplit_offset": main_hsplit_offset,
 		"port": port,
 		"display_mode": display_mode,
+		"via_editor_window_size": SerializationUtils.serialize_vec2(via_editor_window_size),
 	}
 
 
@@ -142,6 +145,8 @@ func deserialize_state(serialized_state):
 	main_hsplit_offset			= _try_get_or_default(serialized_state, "main_hsplit_offset",			main_hsplit_offset)
 	port						= _try_get_or_default(serialized_state, "port", 						port)
 	display_mode				= _try_get_or_default(serialized_state, "display_mode",					display_mode)
+	if serialized_state.has("via_editor_window_size"):
+		via_editor_window_size = SerializationUtils.deserialize_vec2(serialized_state["via_editor_window_size"])
 
 
 # Allows for changing of what's serialized

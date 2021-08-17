@@ -28,6 +28,12 @@ func join() -> void:
 	
 	# Use the persistent data to launch
 	story_runner.run(persistent_data.current_saved_story_path)
+	OS.window_size = persistent_data.via_editor_window_size
+	get_tree().root.connect("size_changed", self, "_on_viewport_size_changed")
+
+
+func _on_viewport_size_changed():
+	persistent_data.via_editor_window_size = OS.window_size
 
 
 # TODO: Deprecated due to the use of FracVNEPersistentData to transfer

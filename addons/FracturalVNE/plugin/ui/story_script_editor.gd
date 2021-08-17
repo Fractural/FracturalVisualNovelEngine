@@ -7,6 +7,7 @@ extends Node
 
 const FracUtils = FracVNE.Utils
 const PluginAssetsRegistry = preload("res://addons/FracturalVNE/plugin/plugin_assets_registry.gd")
+const StoryScriptCompiler = preload("res://addons/FracturalVNE/core/story_script/compiling/story_script_compiler.gd")
 
 export var compile_button_path: NodePath
 export var run_button_path: NodePath
@@ -61,8 +62,8 @@ func _ready() -> void:
 	
 	set_compiled(persistent_data.compiled)
 	set_saved(persistent_data.saved)
-	compile_button.connect("pressed", self, "compile_script")
-	run_button.connect("pressed", self, "run_script")
+	compile_button.connect("pressed", self, "compile_current_script")
+	run_button.connect("pressed", self, "run_current_compiled_script")
 	compiler.connect("throw_error", script_text_edit, "display_error")
 	script_text_edit.connect("text_changed", self, "_on_script_text_changed")
 	
@@ -169,12 +170,22 @@ func save_current_file() -> bool:
 
 
 # Sets compiled to true if successful.
-func compile_script() -> void:
+func compile_current_script() -> void:
 	if get_current_script_path() == "":
 		save_file_dialog.popup()
 		return
 	
-	var ast_tree = compiler.compile(script_text_edit.text)
+	compile_script(get_current_script_path())
+
+
+# Compiles a script at a give path.
+func compile_script(script_path: String):
+	var file = File.new()
+	var error = file.open(script_path, File.READ)
+	if error != OK:
+		printerr("Cannot open file at \"%s\", got error code \"%s\"." % [script_path, str(error)])
+		return
+	var ast_tree = compiler.compile(file.get_as_text())
 	if ast_tree is FracVNE.StoryScript.Error:
 		script_text_edit.display_error(ast_tree)
 		set_compiled(false)
@@ -203,9 +214,9 @@ func save_ast_to_file(ast_tree, file_path) -> bool:
 	return true
 
 
-func run_script() -> void:
+func run_current_compiled_script() -> void:
 	if not get_compiled():
-		compile_script()
+		compile_current_script()
 	
 	if not get_compiled():
 		return
@@ -213,6 +224,11 @@ func run_script() -> void:
 	if not save_current_file():
 		return
 	
+	run_compiled_script(persistent_data.current_saved_story_path)
+
+
+func run_compiled_script(compile_script_path: String) -> void:
+	persistent_data.set_property("current_saved_story_path", compile_script_path)
 	if not Engine.is_editor_hint():
 		story_runner.run(persistent_data.current_saved_story_path, load("res://addons/FracturalVNE/plugin/ui/story_script_editor.tscn"))
 	else:
@@ -285,12 +301,9 @@ func _on_main_hsplit_dragged(offset: int) -> void:
 
 
 func _setup_editor_assets(assets_registry) -> void:
-	compile_button.icon = assets_registry.load_asset("assets/icons/play.svg")
-	run_button.icon = assets_registry.load_asset("assets/icons/play.svg")
 	compiled_icon.texture = assets_registry.load_asset("assets/icons/check_box.svg")
 	saved_icon.texture = assets_registry.load_asset("assets/icons/check_box.svg")
 	file_menu.icon = assets_registry.load_asset("assets/icons/load.svg")
-	settings_button.icon = assets_registry.load_asset("assets/icons/settings.png")
 	
 	open_file_dialog.rect_size = open_file_dialog.rect_size * assets_registry.get_editor_scale()
 	save_file_dialog.rect_size = open_file_dialog.rect_size * assets_registry.get_editor_scale()

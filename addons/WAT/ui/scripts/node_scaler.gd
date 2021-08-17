@@ -7,6 +7,7 @@ const FracUtils = FracVNE.Utils
 
 export(Array, String) var scaled_properties
 export(Array, String) var scaled_constants
+export(Array, String) var scaled_textures
 export var target_node_path: NodePath = NodePath(".")
 export var dep__assets_registry_path: NodePath
 

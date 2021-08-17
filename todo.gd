@@ -1,31 +1,11 @@
-# Immediate TODO:
-#	[X] full_transition_action.gd
-#	[ ] full_transition_manager.gd
-#	[X] full_transitioon_statement.gd
-#	[ ] full_transition_statement_construct.gd
-
-# TODO NOW: 
-#	[ ] Make a full scene transition. Using screen shot manager, take a screenshot
-#		of the entire screen and then use it as a texture to transition into#
-#		something else. Make sure split full screen transitions into
-#		a start and end phase (therefore using two different statements) 
-#		to allow for loading in between transitioning
-#		in and out.
-#	
-#		Concept:
-#
-#		full transition cross_fade:
-#			# Do setup here
-#			remove Bob
-#			show Joe
-#	
-
-# TODO NEXT:
+# TODO NOW:
 #	[ ] Write a remove statement that can remove Visuals
 #		Example syntax:
 #			define bob = Visual(...)
 #			show bob
 #			remove bob 			# Deletes the VisualController
+
+# TODO NEXT:
 
 
 # TODO QUEUE:

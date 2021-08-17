@@ -1,5 +1,4 @@
 tool
-class_name StoryScriptLexer
 extends Reference
 # Lexes a string of text into tokens for parsing.
 

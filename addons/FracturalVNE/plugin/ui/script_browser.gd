@@ -180,17 +180,15 @@ func _on_file_display_type_button_toggled(enabled: bool, type: int):
 func _setup_editor_assets(assets_registry) -> void:
 	SCRIPT_ICON = assets_registry.load_asset("assets/icons/script.svg")
 	
-	scripts_item_list.default_file_icon = assets_registry.load_asset("assets/icons/file.svg")
+	scripts_item_list.default_file_icon = assets_registry.load_asset("assets/icons/storyscript.svg")
 	
-	scripts_tree.default_file_icon = assets_registry.load_asset("assets/icons/file.svg")
+	scripts_tree.default_file_icon = assets_registry.load_asset("assets/icons/storyscript.svg")
 	scripts_tree.folder_icon = assets_registry.load_asset("assets/icons/folder.svg")
 	scripts_tree.favorites_cion = assets_registry.load_asset("assets/icons/favorites.svg")
 	
 	open_directory_dialog.rect_size = open_directory_dialog.rect_size * assets_registry.get_editor_scale()
 	open_directory_dialog.set_anchors_and_margins_preset(Control.PRESET_CENTER, Control.PRESET_MODE_KEEP_SIZE)
 	
-	refresh_button.icon = assets_registry.load_asset("assets/icons/reload.svg")
-	open_directory_button.icon = assets_registry.load_asset("assets/icons/load.svg")
 	search_line_edit.right_icon = assets_registry.load_asset("assets/icons/search.svg")
 	self.rect_min_size *= assets_registry.get_editor_scale()
 	
