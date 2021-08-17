@@ -1,0 +1,19 @@
+[gd_scene load_steps=3 format=2]
+
+[ext_resource path="res://addons/FracturalVNE/plugin/ui/settings/fields/enum_field/enum_field.gd" type="Script" id=1]
+[ext_resource path="res://addons/FracturalVNE/plugin/ui/settings/fields/basic_field.tscn" type="PackedScene" id=2]
+
+[node name="EnumField" instance=ExtResource( 2 )]
+margin_bottom = 20.0
+script = ExtResource( 1 )
+label_path = NodePath("Label")
+options_button_path = NodePath("OptionsButton")
+
+[node name="Label" parent="." index="1"]
+margin_right = 510.0
+
+[node name="OptionsButton" type="OptionButton" parent="." index="2"]
+margin_left = 514.0
+margin_right = 1024.0
+margin_bottom = 40.0
+size_flags_horizontal = 3

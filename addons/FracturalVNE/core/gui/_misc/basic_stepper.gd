@@ -2,12 +2,14 @@ extends Node
 # Steps the story whenever an unhandled mouse button is clicked
 
 
-export var story_director_dep_path: NodePath
+const FracUtils = FracVNE.Utils
 
-onready var story_director_dep = get_node(story_director_dep_path)
+export var dep__story_director_path: NodePath
+
+onready var story_director = FracUtils.get_valid_node_or_dep(self, dep__story_director_path, story_director)
 
 
 func _unhandled_input(event):
 	if event is InputEventMouseButton and event.button_index == BUTTON_LEFT and event.pressed:
 		get_tree().set_input_as_handled()
-		story_director_dep.dependency.try_step()
+		story_director.try_step()

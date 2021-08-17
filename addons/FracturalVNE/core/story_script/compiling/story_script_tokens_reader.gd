@@ -1,4 +1,3 @@
-class_name StoryScriptTokensReader
 extends Reference
 # Handles traversing through an array of tokens.
 

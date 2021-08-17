@@ -1,4 +1,3 @@
-class_name StoryScriptReader
 extends Reference
 # Handles traversing through a string.
 

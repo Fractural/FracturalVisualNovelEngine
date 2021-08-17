@@ -1,10 +1,19 @@
 # Repo: https://github.com/Atlinx/Godot-PluginAssetsRegistry
+tool
+extends Node
 
-class_name PluginAssetsRegistry
-extends Reference
+
+# ----- Tyepable ----- #
+
+func get_types() -> Array:
+	return ["AssetsRegistry"]
+
+# ----- Tyepable ----- #
+
 
 # Replace 'demo_plugin' with your plugin's name
 const PLUGIN_ABSOLUTE_PATH_PREFIX = "res://addons/FracturalVNE/"
+const FracUtils = FracVNE.Utils
 
 # We cannot assign plugin as an EditorPlugin
 # since Editor related classes are not
@@ -18,8 +27,10 @@ var loaded_editor_assets: Dictionary
 # Only used by pre 3.3 Godot editors
 var _cached_editor_scale = -1
 
+
 func _init(plugin_ = null):
 	plugin = plugin_
+
 
 # Returns an asset scaled to fit the current editor's UI scale
 # Can load scaled asset with a string using the plugin folder as the root older

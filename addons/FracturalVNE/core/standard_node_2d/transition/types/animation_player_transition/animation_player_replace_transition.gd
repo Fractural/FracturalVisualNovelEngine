@@ -28,8 +28,8 @@ func _ready() -> void:
 	animation_player.add_animation("Animation", animation)
 
 
-func transition(new_node_: Node, old_node_: Node, duration_: float):
-	if not .transition(new_node_, old_node_, duration_):
+func transition(new_node_: Node, old_node_: Node, duration_: float, is_skipping_loading_: bool = true):
+	if not .transition(new_node_, old_node_, duration_, is_skipping_loading_):
 		return false
 	
 	original_new_node_parent = new_node.get_parent()

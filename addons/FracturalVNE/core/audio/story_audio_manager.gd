@@ -44,10 +44,10 @@ export var serialization_manager_path: NodePath
 var channels: Array = []
 var channel_controller_lookup: Dictionary = {}
 
-onready var channels_holder = FracUtils.get_node_if_var_null(self, channels_holder_path, channels_holder)
-onready var story_director = FracUtils.get_node_if_var_null(self, story_director_path, story_director)
-onready var reference_registry = FracUtils.get_node_if_var_null(self, reference_registry_path, reference_registry)
-onready var serialization_manager = FracUtils.get_node_if_var_null(self, serialization_manager_path, serialization_manager)
+onready var channels_holder = FracUtils.get_valid_node_or_dep(self, channels_holder_path, channels_holder)
+onready var story_director = FracUtils.get_valid_node_or_dep(self, story_director_path, story_director)
+onready var reference_registry = FracUtils.get_valid_node_or_dep(self, reference_registry_path, reference_registry)
+onready var serialization_manager = FracUtils.get_valid_node_or_dep(self, serialization_manager_path, serialization_manager)
 
 
 # ----- StoryScriptFunc ----- #

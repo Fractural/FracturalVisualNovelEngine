@@ -1,6 +1,6 @@
 extends Node
 
-const NodeAdded: String = "node_added"
+#const NodeAdded: String = "node_added"
 
 func _init() -> void:
 	custom_multiplayer = MultiplayerAPI.new()

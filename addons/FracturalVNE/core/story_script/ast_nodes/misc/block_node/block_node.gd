@@ -46,23 +46,25 @@ func configure_node(runtime_block_):
 		for i in range(1, statements.size()):
 			statements[i - 1].runtime_next_node = statements[i]
 	
-	# Bind the last statement's executed signal to listen for when the block 
-	# is fully executed.
-	#
-	# Do not bind if the statement overrides the story flow (such as with
-	# a jump statement).
-	if not statements.back().overrides_story_flow:
-		if FracUtils.is_type(statements.back(), "SteppedNode"):
-			# Step nodes must wait for the user to step them in order
-			# to consider them as finished. This ensures when a stepped
-			# node is the last statement, it will only finish the block
-			# when the user has stepped it.
-			statements.back().connect("stepped", self, "block_executed")
-		else:
-			statements.back().connect("executed", self, "block_executed")
+		# Bind the last statement's executed signal to listen for when the block 
+		# is fully executed.
+		#
+		# Do not bind if the statement overrides the story flow (such as with
+		# a jump statement).
+		if not statements.back().overrides_story_flow:
+			if FracUtils.is_type(statements.back(), "SteppedNode"):
+				# Step nodes must wait for the user to step them in order
+				# to consider them as finished. This ensures when a stepped
+				# node is the last statement, it will only finish the block
+				# when the user has stepped it.
+				statements.back().connect("stepped", self, "block_executed")
+			else:
+				statements.back().connect("executed", self, "block_executed")
+
 
 func execute():
-	statements.front().execute()
+	if statements.size() > 0:
+		statements.front().execute()
 
 
 func block_executed():

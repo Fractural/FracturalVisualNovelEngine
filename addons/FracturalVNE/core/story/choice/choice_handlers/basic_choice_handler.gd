@@ -27,7 +27,7 @@ func _on_start_choice(choices_options: Array):
 
 
 func select_choice(choice_option):
-	choice_manager_dep.dependency.select_choice(choice_option)
+	choice_manager.select_choice(choice_option)
 	reset()
 
 

@@ -1,4 +1,16 @@
 extends Node
+# Docks a window anywhere in the Editor.
+
+
+# ----- Typeable ----- #
+
+func get_types() -> Array:
+	return ["Docker"]
+
+# ----- Typeable ----- #
+
+
+const FracUtils = FracVNE.Utils
 
 enum DockType {
 	LEFT_UPPER_LEFT, LEFT_BOTTOM_LEFT, LEFT_UPPER_RIGHT,
@@ -14,9 +26,7 @@ const DockTypeDisplays: Dictionary = {
 	9: "Main Panel",
 }
 
-const Settings: Script = preload("../settings.gd")
-
-var _settings : Settings
+var _persistent_data
 
 var _plugin: EditorPlugin
 var _scene: Control
@@ -25,11 +35,11 @@ var _init_plugin_with_main_panel: bool
 var _main_panel_constructed: bool
 var _switched_out_of_main_panel: bool
 
-func _init(plugin: EditorPlugin, settings: Settings, scene: Control) -> void:
+
+func _init(plugin: EditorPlugin, persistent_data, scene: Control) -> void:
 	_plugin = plugin
 	_scene = scene
-	_settings = settings
-	add_docker_type_setting()
+	_persistent_data = persistent_data
 	_state = get_window_state()
 	
 	_switched_out_of_main_panel = false
@@ -40,14 +50,17 @@ func _init(plugin: EditorPlugin, settings: Settings, scene: Control) -> void:
 	if _init_plugin_with_main_panel and _state != DockType.MAIN_PANEL:
 		_init_plugin_with_main_panel = false
 	
+	_persistent_data.connect("on_property_changed", self, "_on_persistent_data_property_changed")
+	
+	FracUtils.try_inject_dependency(self, _scene)
+	
 	construct()
-	
-func _process(delta: float) -> void:
-	update()
-	
+
+
 func _notification(what) -> void:
 	if what == NOTIFICATION_PREDELETE:
 		deconstruct()
+
 
 func construct() -> void:
 	if _switched_out_of_main_panel:
@@ -61,10 +74,12 @@ func construct() -> void:
 			_main_panel_constructed = true
 			_scene.visible = false
 			_plugin.get_editor_interface().get_editor_viewport().add_child(_scene)
+			_plugin.make_visible(false)
 		else:
 			push_warning("Fractural VNE Display changed to Main Panel. A plugin restart is required for display changes to take effect.")
 	else:
 		_plugin.add_control_to_dock(_state, _scene)
+
 
 func deconstruct() -> void:
 	if _state == DockType.BOTTOM_PANEL:
@@ -75,6 +90,7 @@ func deconstruct() -> void:
 		return
 	else:
 		_plugin.remove_control_from_docks(_scene)
+
 
 func update() -> void:
 	var state = get_window_state()
@@ -98,12 +114,12 @@ func update() -> void:
 	_state = state
 	construct()
 
-	_settings.set_setting("Display", _state)
-	_settings.save()
 
 func get_window_state() -> int:
-	return _settings.get_setting("Display")
+	return _persistent_data.display_mode
 
-func add_docker_type_setting() -> void:
-	_settings.add_setting("Display", TYPE_INT, DockType.MAIN_PANEL, PROPERTY_HINT_ENUM, PoolStringArray(DockTypeDisplays.values()).join(","))
-	_settings.save()
+
+func _on_persistent_data_property_changed(prop_name: String, new_value) -> void:
+	match prop_name:
+		"display_mode":
+			update()

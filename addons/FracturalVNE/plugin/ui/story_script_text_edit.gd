@@ -1,5 +1,4 @@
 tool
-class_name StoryScriptTextEdit 
 extends TextEdit
 # A special TextEdit for editing StoryScript files in.
 
@@ -25,6 +24,8 @@ const ACCENT_4_KEYWORDS = [
 	"define" 
 	]
 
+const FracUtils = FracVNE.Utils
+
 export var text_edit_theme: Resource
 export var error_label_path: NodePath
 export var caret_position_label_path: NodePath
@@ -34,17 +35,14 @@ onready var caret_position_label: Label = get_node(caret_position_label_path)
 
 
 func _ready() -> void:
+	if FracUtils.is_in_editor_scene_tab(self):
+		return
+	
 	connect("cursor_changed", self, "_on_cursor_changed")
 	error_label.connect("meta_clicked", self, "_on_error_label_clicked")
 	clear_error()
 	
 	load_text_edit_theme()
-
-
-func _setup_editor_assets(assets_registry):
-	add_font_override("font", assets_registry.load_asset(get_font("font")))
-	error_label.add_font_override("normal_font", assets_registry.load_asset(error_label.get_font("normal_font")))
-	caret_position_label.add_font_override("font", assets_registry.load_asset(caret_position_label.get_font("font")))
 
 
 func _on_cursor_changed():
@@ -103,3 +101,9 @@ func _on_error_label_clicked(meta):
 
 func clear_error():
 	error_label.bbcode_text = ""
+
+
+func _setup_editor_assets(assets_registry):
+	add_font_override("font", assets_registry.load_asset(get_font("font")))
+	error_label.add_font_override("normal_font", assets_registry.load_asset(error_label.get_font("normal_font")))
+	caret_position_label.add_font_override("font", assets_registry.load_asset(caret_position_label.get_font("font")))

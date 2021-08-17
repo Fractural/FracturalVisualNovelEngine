@@ -2,6 +2,8 @@ extends Node
 # Wires up the bottom menu of the story GUI to the appropriate actions
 
 
+const FracUtils = FracVNE.Utils
+
 export var history_button_path: NodePath
 export var skip_button_path: NodePath
 export var auto_button_path: NodePath
@@ -9,7 +11,7 @@ export var save_button_path: NodePath
 export var load_button_path: NodePath
 export var options_button_path: NodePath
 export var pause_menu_path: NodePath
-export var story_director_dep_path: NodePath
+export var dep__story_director_path: NodePath
 
 var pressed_state_button_count: int = 0
 
@@ -20,7 +22,7 @@ onready var save_button: Button = get_node(save_button_path)
 onready var load_button: Button = get_node(load_button_path)
 onready var options_button: Button = get_node(options_button_path)
 onready var pause_menu = get_node(pause_menu_path)
-onready var story_director_dep = get_node(story_director_dep_path)
+onready var story_director = FracUtils.get_valid_node_or_dep(self, dep__story_director_path, story_director)
 
 
 func _ready() -> void:
@@ -66,8 +68,8 @@ func _on_options_button_pressed():
 
 func _update_step_state():
 	if skip_button.pressed:
-		story_director_dep.dependency.step_state = story_director_dep.dependency.StepState.SKIPPING
+		story_director.step_state = story_director.StepState.SKIPPING
 	elif auto_button.pressed:
-		story_director_dep.dependency.step_state = story_director_dep.dependency.StepState.AUTO_STEP
+		story_director.step_state = story_director.StepState.AUTO_STEP
 	else:
-		story_director_dep.dependency.step_state = story_director_dep.dependency.StepState.MANUAL
+		story_director.step_state = story_director.StepState.MANUAL

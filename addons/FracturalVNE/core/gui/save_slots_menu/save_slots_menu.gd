@@ -3,6 +3,8 @@ extends Control
 # loading mode and lets users select a save slot to save to/load from.
 
 
+const FracUtils = FracVNE.Utils
+
 enum Mode {
 	SAVE,
 	LOAD
@@ -15,7 +17,8 @@ export var menu_manager_path: NodePath
 export var settings_path: NodePath
 export var save_slot_prefab: PackedScene
 export var grid_container_path: NodePath
-export var save_manager_dep_path: NodePath
+
+export var dep__save_manager_path: NodePath
 
 var ui_save_slots: Array = []
 var mode: int = Mode.SAVE
@@ -23,12 +26,13 @@ var mode: int = Mode.SAVE
 onready var menu_manager = get_node(menu_manager_path)
 onready var settings = get_node(settings_path)
 onready var grid_container = get_node(grid_container_path)
-onready var save_manager_dep = get_node(save_manager_dep_path)
+
+onready var save_manager = FracUtils.get_valid_node_or_dep(self, dep__save_manager_path, save_manager)
 
 
 func _ready() -> void:
-	for i in range(save_manager_dep.dependency.save_slots.size()):
-		var slot = save_manager_dep.dependency.save_slots[i]
+	for i in range(save_manager.save_slots.size()):
+		var slot = save_manager.save_slots[i]
 		ui_save_slots.append(save_slot_prefab.instance())
 		grid_container.add_child(ui_save_slots.back())
 		ui_save_slots.back().construct(i, slot)

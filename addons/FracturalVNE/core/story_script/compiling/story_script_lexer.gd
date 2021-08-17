@@ -1,5 +1,4 @@
 tool
-class_name StoryScriptLexer
 extends Reference
 # Lexes a string of text into tokens for parsing.
 
@@ -10,6 +9,7 @@ const StoryScriptReader = preload("res://addons/FracturalVNE/core/story_script/c
 const NodeConstructConstants = preload("res://addons/FracturalVNE/core/story_script/node_construct_constants.gd")
 const StoryScriptPosition = preload("res://addons/FracturalVNE/core/story_script/story_script_position.gd")
 const StoryScriptError = preload("res://addons/FracturalVNE/core/story_script/story_script_error.gd")
+const StoryScriptToken = preload("res://addons/FracturalVNE/core/story_script/compiling/story_script_token.gd")
 const SSUtils = preload("res://addons/FracturalVNE/core/story_script/story_script_utils.gd")
 
 # ----- Definitions ----- #

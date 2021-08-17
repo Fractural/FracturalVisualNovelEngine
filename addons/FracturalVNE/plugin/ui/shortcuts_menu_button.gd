@@ -4,8 +4,12 @@ extends MenuButton
 
 signal menu_item_pressed(meta)
 
+const FracUtils = FracVNE.Utils
+
 
 func _ready() -> void:
+	if FracUtils.is_in_editor_scene_tab(self):
+		return
 	get_popup().connect("id_pressed", self, "_on_popup_id_pressed")
 
 

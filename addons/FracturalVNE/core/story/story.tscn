@@ -63,7 +63,7 @@ dependency_name = "SceneManager"
 script = ExtResource( 1 )
 story_loader_path = NodePath("../StoryLoader")
 story_gui_configurer_path = NodePath("../StoryGUIConfigurer")
-scene_manager_dep_path = NodePath("../Dependencies/SceneManagerDependency")
+dep__scene_manager_path = NodePath("../Dependencies/SceneManagerDependency")
 
 [node name="StoryStateManager" type="Node" parent="."]
 script = ExtResource( 15 )
@@ -71,7 +71,7 @@ screenshot_manager_path = NodePath("../ScreenshotManager")
 story_manager_path = NodePath("../StoryManager")
 story_director_path = NodePath("../StoryLoader/StoryServices/StoryDirector")
 ast_node_locator_path = NodePath("../StoryLoader/StoryServices/ASTNodeLocator")
-story_save_manager_dep_path = NodePath("../Dependencies/StorySaveManagerDependency")
+dep__save_manager_path = NodePath("../Dependencies/StorySaveManagerDependency")
 
 [node name="SerializationManager" type="Node" parent="."]
 script = ExtResource( 19 )
@@ -488,7 +488,7 @@ text = "FPS COUNTER"
 [node name="StoryRunnerListener" type="Node" parent="."]
 script = ExtResource( 9 )
 story_manager_path = NodePath("../StoryManager")
-story_runner_dep_path = NodePath("../Dependencies/StoryRunnerDependency")
+dep__story_runner_path = NodePath("../Dependencies/StoryRunnerDependency")
 
 [editable path="StoryGUIConfigurer/BasicGUI"]
 [editable path="StoryGUIConfigurer/BasicGUI/Panel/VBoxContainer/TextPrinterHolder/BasicTextPrinter"]
