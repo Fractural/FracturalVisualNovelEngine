@@ -1,5 +1,4 @@
 tool
-class_name StoryScriptEditor
 extends Node
 # Controls the story script editor and wires up the UI buttons within the
 # editor.
@@ -8,6 +7,7 @@ extends Node
 const FracUtils = FracVNE.Utils
 const PluginAssetsRegistry = preload("res://addons/FracturalVNE/plugin/plugin_assets_registry.gd")
 const StoryScriptCompiler = preload("res://addons/FracturalVNE/core/story_script/compiling/story_script_compiler.gd")
+const StoryScriptTextEdit = preload("res://addons/FracturalVNE/plugin/ui/story_script_text_edit.gd")
 
 export var compile_button_path: NodePath
 export var run_button_path: NodePath

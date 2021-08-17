@@ -5,6 +5,8 @@ extends Node
 
 signal changed(new_value)
 
+const FracUtils = FracVNE.Utils
+
 export var label_path: NodePath
 export var spin_box_path: NodePath
 
@@ -13,6 +15,8 @@ var spin_box: SpinBox
 
 
 func _ready() -> void:
+	if FracUtils.is_in_editor_scene_tab(self):
+		return
 	spin_box.connect("value_changed", self, "_on_value_changed")
 
 

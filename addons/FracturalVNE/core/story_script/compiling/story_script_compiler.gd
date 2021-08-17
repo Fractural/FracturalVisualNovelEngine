@@ -6,6 +6,7 @@ extends Node
 signal throw_error(message, error_position)
 
 const StoryScriptReader = preload("res://addons/FracturalVNE/core/story_script/compiling/story_script_reader.gd")
+const StoryScriptTokensReader = preload("res://addons/FracturalVNE/core/story_script/compiling/story_script_tokens_reader.gd")
 const StoryScriptLexer = preload("res://addons/FracturalVNE/core/story_script/compiling/story_script_lexer.gd")
 const StoryScriptParser = preload("res://addons/FracturalVNE/core/story_script/compiling/story_script_parser.gd")
 const StoryScriptError = preload("res://addons/FracturalVNE/core/story_script/story_script_error.gd")

@@ -8,9 +8,6 @@ const FracUtils = FracVNE.Utils
 
 export var dep__persistent_data_path: NodePath
 
-var story_file_path: String = ""
-var quit_to_scene_path: String = ""
-
 var _server: NetworkedMultiplayerENet
 
 onready var persistent_data = FracUtils.get_valid_node_or_dep(self, dep__persistent_data_path, persistent_data)

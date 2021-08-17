@@ -13,6 +13,7 @@ const PluginUIScene: PackedScene = preload("plugin/ui/plugin_ui.tscn")
 var inspector_plugins = []
 
 var plugin_ui: PluginUI
+var backup_ui
 var docker: Docker
 
 # plugin.gd gets it's own AssetsRegistry
@@ -55,6 +56,8 @@ func _enter_tree():
 	inspector_plugins = []
 	_setup_inspector_plugins()
 	
+	make_visible(false)
+	
 	push_warning("""
 
 888888 88""Yb    db     dP""b8     Yb    dP 88b 88 888888 
@@ -73,13 +76,13 @@ func _ready() -> void:
 
 
 func _exit_tree():
-	docker.free()
-	plugin_ui.free()
+	FracUtils.try_free(docker)
+	FracUtils.try_free(plugin_ui)
 	
 	for inspector_plugin in inspector_plugins:
 		remove_inspector_plugin(inspector_plugin)
 	
-	assets_registry.free()
+	FracUtils.try_free(assets_registry)
 
 
 func _setup_inspector_plugins():
@@ -102,6 +105,8 @@ func has_main_screen():
 func make_visible(visible):
 	if plugin_ui:
 		plugin_ui.visible = visible
+	else:
+		push_warning("plugin_ui does not exist, therefore we cannot call \"make_visible(%s)\". Is this intentional? " % str(visible))
 
 
 func get_plugin_name():

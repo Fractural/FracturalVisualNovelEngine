@@ -20,6 +20,8 @@ var file_extension_to_icon: Dictionary = {}
 
 
 func _ready():
+	if FracUtils.is_in_editor_scene_tab(self):
+		return
 	connect("item_selected", self, "_on_item_selected")
 
 

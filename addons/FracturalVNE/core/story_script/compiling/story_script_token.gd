@@ -1,4 +1,3 @@
-class_name StoryScriptToken
 extends Reference
 # Represents a keyword, identifier, or symbol.
 

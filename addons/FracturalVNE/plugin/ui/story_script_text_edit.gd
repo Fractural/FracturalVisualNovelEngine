@@ -1,5 +1,4 @@
 tool
-class_name StoryScriptTextEdit 
 extends TextEdit
 # A special TextEdit for editing StoryScript files in.
 
@@ -25,6 +24,8 @@ const ACCENT_4_KEYWORDS = [
 	"define" 
 	]
 
+const FracUtils = FracVNE.Utils
+
 export var text_edit_theme: Resource
 export var error_label_path: NodePath
 export var caret_position_label_path: NodePath
@@ -34,6 +35,9 @@ onready var caret_position_label: Label = get_node(caret_position_label_path)
 
 
 func _ready() -> void:
+	if FracUtils.is_in_editor_scene_tab(self):
+		return
+	
 	connect("cursor_changed", self, "_on_cursor_changed")
 	error_label.connect("meta_clicked", self, "_on_error_label_clicked")
 	clear_error()

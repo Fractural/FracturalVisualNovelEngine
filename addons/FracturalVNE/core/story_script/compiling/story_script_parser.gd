@@ -1,3 +1,4 @@
+tool
 extends Reference
 # Parses an array of tokens into an Abstract Syntax Tree.
 

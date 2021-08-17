@@ -5,6 +5,8 @@ extends Tree
 
 signal file_selected(file_path)
 
+const FracUtils = FracVNE.Utils
+
 export var default_file_icon: Texture
 export var favorites_cion: Texture
 export var folder_icon: Texture
@@ -23,6 +25,9 @@ var _folder_count = 0
 
 
 func _ready():
+	if FracUtils.is_in_editor_scene_tab(self):
+		return
+	
 	columns = 1
 	connect("cell_selected", self, "_on_cell_selected")
 

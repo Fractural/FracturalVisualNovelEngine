@@ -5,6 +5,8 @@ extends Node
 
 signal changed(new_value)
 
+const FracUtils = FracVNE.Utils
+
 export var label_path: NodePath
 export var options_button_path: NodePath
 
@@ -13,6 +15,8 @@ var options_button: OptionButton
 
 
 func _ready() -> void:
+	if FracUtils.is_in_editor_scene_tab(self):
+		return
 	options_button.connect("item_selected", self, "_on_item_selected")
 
 

@@ -74,6 +74,7 @@ func construct() -> void:
 			_main_panel_constructed = true
 			_scene.visible = false
 			_plugin.get_editor_interface().get_editor_viewport().add_child(_scene)
+			_plugin.make_visible(false)
 		else:
 			push_warning("Fractural VNE Display changed to Main Panel. A plugin restart is required for display changes to take effect.")
 	else:
