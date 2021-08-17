@@ -56,8 +56,6 @@ func _enter_tree():
 	inspector_plugins = []
 	_setup_inspector_plugins()
 	
-	make_visible(false)
-	
 	push_warning("""
 
 888888 88""Yb    db     dP""b8     Yb    dP 88b 88 888888 
