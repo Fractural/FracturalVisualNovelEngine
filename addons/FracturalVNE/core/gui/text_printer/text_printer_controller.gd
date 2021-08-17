@@ -26,6 +26,16 @@ func init(text_printer_ = null, story_director_ = null):
 	story_director = story_director_
 
 
+func _notification(what):
+	if what == NOTIFICATION_PREDELETE:
+		_destruct()
+
+
+func _destruct():
+	if curr_print_text_action != null and story_director != null:
+		story_director.remove_step_action(curr_print_text_action)
+
+
 func say(character, text: String, skippable: bool = true):
 	if curr_print_text_action != null:
 		story_director.remove_step_action(curr_print_text_action)

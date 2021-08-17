@@ -42,6 +42,16 @@ func init(story_director_) -> void:
 	story_director = story_director_
 
 
+func _notification(what):
+	if what == NOTIFICATION_PREDELETE:
+		_destruct()
+
+
+func _destruct():
+	if curr_transition_action != null and story_director != null:
+		story_director.remove_step_action(curr_transition_action)
+
+
 # -- StoryScriptErrorable -- #
 func show(transition: FracVNE_StandardNode2DTransition = null, duration: float = 1, is_skippable: bool = true):
 	_force_clear_current_transition()

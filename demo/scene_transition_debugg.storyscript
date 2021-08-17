@@ -7,4 +7,7 @@ label looped:
 	show godette sad with fade_to_black
 	show godette happy with fade_to_black
 	"Tested stacked show"
+	"Testing remove..."
+	remove godette
+	"Tested remove"
 	jump looped
