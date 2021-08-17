@@ -39,11 +39,6 @@ _global_script_classes=[ {
 "language": "GDScript",
 "path": "res://addons/FracturalVNE/core/visuals/types/multi_visual/multi_visual.gd"
 }, {
-"base": "Node",
-"class": "FracVNE_NodeVariable",
-"language": "GDScript",
-"path": "res://addons/FracturalVNE/core/utils/node_variable/node_variable.gd"
-}, {
 "base": "Resource",
 "class": "FracVNE_PrefabVisual",
 "language": "GDScript",
@@ -156,7 +151,6 @@ _global_script_class_icons={
 "FracVNE_Character": "res://addons/FracturalVNE/assets/icons/character.svg",
 "FracVNE_CharactersDelay": "res://addons/FracturalVNE/assets/icons/characters_delay.svg",
 "FracVNE_MultiVisual": "",
-"FracVNE_NodeVariable": "res://addons/FracturalVNE/assets/icons/node_variable.svg",
 "FracVNE_PrefabVisual": "",
 "FracVNE_SingleVisual": "",
 "FracVNE_StandardNode2DTransition": "res://addons/FracturalVNE/assets/icons/transition.svg",
@@ -198,6 +192,7 @@ Run_All_Tests=Object(InputEventKey,"resource_local_to_scene":false,"resource_nam
 Auto_Refresh_Tests=false
 Display=8
 Port=6008
+collision/draw_2d_outlines=true
 
 [application]
 

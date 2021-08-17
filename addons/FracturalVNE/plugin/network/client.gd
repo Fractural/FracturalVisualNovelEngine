@@ -30,7 +30,7 @@ func join() -> void:
 	story_runner.run(persistent_data.current_saved_story_path)
 
 
-# TODO: Deprecated due to the use of PersistentData to transfer
+# TODO: Deprecated due to the use of FracVNEPersistentData to transfer
 #		information to the client.
 #puppet func run_strategy_received(story_file_path: String, quit_to_scene_path: String) -> void:
 #	if not quit_to_scene_path == "":

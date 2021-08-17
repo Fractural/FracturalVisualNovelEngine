@@ -18,6 +18,7 @@ export var saved_ui_path: NodePath
 export var saved_icon_path: NodePath
 export var file_menu_path: NodePath
 export var settings_button_path: NodePath
+export var settings_window_path: NodePath
 export var editing_file_label_path: NodePath
 export var open_file_dialog_path: NodePath
 export var save_file_dialog_path: NodePath
@@ -27,10 +28,6 @@ export var main_hsplit_container_path: NodePath
 
 export var dep__story_runner_path: NodePath
 export var dep__persistent_data_path: NodePath
-
-var compiled: bool = false setget set_compiled, get_compiled
-var saved: bool = false setget set_saved, get_saved
-var current_script_path: String = "" setget set_current_script_path, get_current_script_path 
 
 onready var compile_button: Button = get_node(compile_button_path)
 onready var run_button: Button = get_node(run_button_path)
@@ -42,6 +39,7 @@ onready var saved_ui: Control = get_node(saved_ui_path)
 onready var saved_icon: TextureRect = get_node(saved_icon_path)
 onready var file_menu: MenuButton = get_node(file_menu_path)
 onready var settings_button: Button = get_node(settings_button_path)
+onready var settings_window = get_node(settings_window_path)
 onready var editing_file_label: Label = get_node(editing_file_label_path)
 onready var open_file_dialog: FileDialog = get_node(open_file_dialog_path)
 onready var save_file_dialog: FileDialog = get_node(save_file_dialog_path)
@@ -88,10 +86,12 @@ func _ready() -> void:
 	
 	script_browser.connect("valid_script_selected", self, "_on_valid_script_selected")
 	
-	if persistent_data.current_script_path == "":
+	settings_button.connect("pressed", settings_window, "popup")
+	
+	if get_current_script_path() == "":
 		new_file()
 	else:
-		open_file(persistent_data.current_script_path)
+		open_file(get_current_script_path())
 
 
 func new_file() -> void:
@@ -158,16 +158,16 @@ func save_file_to(file_path) -> bool:
 
 # Returns true if successful.
 func save_current_file() -> bool:
-	if current_script_path == "":
+	if get_current_script_path() == "":
 		save_file_dialog.popup()
 		return false
 	else:
-		return save_file_to(current_script_path)
+		return save_file_to(get_current_script_path())
 
 
 # Sets compiled to true if successful.
 func compile_script() -> void:
-	if persistent_data.current_script_path == "":
+	if get_current_script_path() == "":
 		save_file_dialog.popup()
 		return
 	
@@ -177,7 +177,7 @@ func compile_script() -> void:
 		set_compiled(false)
 	else:
 		script_text_edit.clear_error()
-		var successful = save_ast_to_file(ast_tree, persistent_data.current_script_path.trim_suffix(".storyscript") + ".story")
+		var successful = save_ast_to_file(ast_tree, get_current_script_path().trim_suffix(".storyscript") + ".story")
 		set_compiled(successful)
 		if not successful:
 			printerr("Could not compile due to file saving issues.")
@@ -196,15 +196,15 @@ func save_ast_to_file(ast_tree, file_path) -> bool:
 	serialized_file.store_string(serialized_ast)
 	serialized_file.close()
 	
-	persistent_data.current_saved_story_path = file_path
+	persistent_data.set_property("current_saved_story_path", file_path)
 	return true
 
 
 func run_script() -> void:
-	if not compiled:
+	if not get_compiled():
 		compile_script()
 	
-	if not compiled:
+	if not get_compiled():
 		return
 	
 	if not save_current_file():
@@ -217,7 +217,7 @@ func run_script() -> void:
 
 
 func set_compiled(new_value: bool) -> void:
-	persistent_data.compiled = new_value
+	persistent_data.set_property("compiled", new_value)
 	if compiled_ui != null:
 		compiled_ui.modulate.a = 1 if new_value else 0.5
 
@@ -227,7 +227,7 @@ func get_compiled() -> bool:
 
 
 func set_saved(new_value: bool) -> void:
-	persistent_data.saved = new_value
+	persistent_data.set_property("saved", new_value)
 	if saved_ui != null:
 		saved_ui.modulate.a = 1 if new_value else 0.5
 
@@ -237,9 +237,9 @@ func get_saved() -> bool:
 
 
 func set_current_script_path(new_value: String) -> void:
-	persistent_data.current_script_path = new_value
+	persistent_data.set_property("current_script_path", new_value)
 	if editing_file_label != null:
-		editing_file_label.text = "Editing \"%s\" " % current_script_path
+		editing_file_label.text = "Editing \"%s\" " % get_current_script_path()
 
 
 func get_current_script_path() -> String:
@@ -278,7 +278,7 @@ func _on_valid_script_selected(file_path: String) -> void:
 
 
 func _on_main_hsplit_dragged(offset: int) -> void:
-	persistent_data.main_hsplit_offset = offset
+	persistent_data.set_property("main_hsplit_offset", offset)
 
 
 func _setup_editor_assets(assets_registry) -> void:

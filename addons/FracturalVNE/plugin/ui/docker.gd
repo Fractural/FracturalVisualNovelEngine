@@ -2,6 +2,16 @@ extends Node
 # Docks a window anywhere in the Editor.
 
 
+# ----- Typeable ----- #
+
+func get_types() -> Array:
+	return ["Docker"]
+
+# ----- Typeable ----- #
+
+
+const FracUtils = FracVNE.Utils
+
 enum DockType {
 	LEFT_UPPER_LEFT, LEFT_BOTTOM_LEFT, LEFT_UPPER_RIGHT,
 	LEFT_BOTTOM_RIGHT, RIGHT_UPPER_LEFT, RIGHT_BOTTOM_LEFT,
@@ -39,6 +49,10 @@ func _init(plugin: EditorPlugin, persistent_data, scene: Control) -> void:
 	# Then set to false if you are not
 	if _init_plugin_with_main_panel and _state != DockType.MAIN_PANEL:
 		_init_plugin_with_main_panel = false
+	
+	_persistent_data.connect("on_property_changed", self, "_on_persistent_data_property_changed")
+	
+	FracUtils.try_inject_dependency(self, _scene)
 	
 	construct()
 
@@ -99,8 +113,12 @@ func update() -> void:
 	_state = state
 	construct()
 
-	_persistent_data.display_mode = _state
-
 
 func get_window_state() -> int:
 	return _persistent_data.display_mode
+
+
+func _on_persistent_data_property_changed(prop_name: String, new_value) -> void:
+	match prop_name:
+		"display_mode":
+			update()

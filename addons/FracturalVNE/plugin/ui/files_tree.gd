@@ -67,7 +67,7 @@ func refresh(selected_file_path: String = ""):
 
 
 func _on_cell_selected():
-	if get_selected().get_metadata(0).type == "file":
+	if get_selected().get_metadata(0) != null and get_selected().get_metadata(0).type == "file":
 		emit_signal("file_selected", get_selected().get_metadata(0).path)
 
 

@@ -3,6 +3,8 @@ extends Control
 # loading mode and lets users select a save slot to save to/load from.
 
 
+const FracUtils = FracVNE.Utils
+
 enum Mode {
 	SAVE,
 	LOAD

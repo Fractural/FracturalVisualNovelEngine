@@ -7,14 +7,15 @@ extends Node
 # ----- Typeable ----- #
 
 func get_types() -> Array:
-	return ["StoryScriptPersistentData"]
+	return ["FracVNEPersistentData"]
 
 # ----- Typeable ----- #
 
 
+signal on_property_changed(variable, new_value)
 signal get_defaults(persistent_data)
 
-enum PersistentDataPath {
+enum PersistentDataType {
 	EDITOR,
 	STANDALONE,
 	AUTO,
@@ -24,33 +25,43 @@ const FracUtils = FracVNE.Utils
 const EDITOR_PERSISTENT_DATA_FILE_PATH: String = "res://addons/FracturalVNE/editor_persistent_data.json"
 const STANDALONE_PERSISTENT_DATA_FILE_PATH: String = "res://addons/FracturalVNE/standalone_persistent_data.json"
 
-export(PersistentDataPath) var dep__persistent_data_path: int = PersistentDataPath.AUTO
+export(PersistentDataType) var persistent_data_type: int = PersistentDataType.AUTO
 
-# Data:									# Defaults:
-var current_script_path: String			= ""
-var current_saved_story_path: String	= ""
-var current_directory_path: String		= ""
-var current_file_display_type: int		= 0
-var compiled: bool						= false
-var saved: bool							= false
-var main_hsplit_offset: int				= 100
-var port: int							= 6010
-var display_mode: int					= 0
+var current_script_path: String
+var current_saved_story_path: String
+var current_directory_path: String
+var current_file_display_type: int
+var compiled: bool
+var saved: bool
+var main_hsplit_offset: int
+var port: int
+var display_mode: int
 
 var _is_real_persistent_data: bool = false
-var _called_ready: bool = false
 
 
-func _ready() -> void:
-	if FracUtils.is_in_editor_scene_tab(self) or _called_ready:
+func _ready() -> void:	
+	if FracUtils.is_in_editor_scene_tab(self):
 		return
-	_called_ready = true
 	_is_real_persistent_data = true
-	print("Persistent data readying")
 	
 	# We want to save before ready is called
 	# on other nodes.
 	load_data_from_file()
+
+
+func _set_defaults():
+	current_script_path 		= ""
+	current_saved_story_path 	= ""
+	current_directory_path 		= ""
+	current_file_display_type 	= 0
+	compiled 					= false
+	saved 						= false
+	main_hsplit_offset 			= 100
+	port 						= 6010
+	display_mode 				= 9		# Main Panel
+
+	emit_signal("get_defaults", self)
 
 
 func _notification(what) -> void:
@@ -58,18 +69,26 @@ func _notification(what) -> void:
 		save_data_to_file()
 
 
+func set_property(prop_name: String, value, emit_set_signal: bool = true):
+	assert(prop_name in self, "Property \"%s\" does not exist in FracVNEPersistentData." % prop_name)
+	if get(prop_name) != value:
+		set(prop_name, value)
+		if emit_set_signal:
+			emit_signal("on_property_changed", prop_name, value)
+
+
 func get_persistent_data_file_path() -> String:
-	match dep__persistent_data_path:
-		PersistentDataPath.AUTO:
+	match persistent_data_type:
+		PersistentDataType.AUTO:
 			if Engine.is_editor_hint():
 				return EDITOR_PERSISTENT_DATA_FILE_PATH
 			else:
 				return STANDALONE_PERSISTENT_DATA_FILE_PATH
-		PersistentDataPath.STANDALONE:
+		PersistentDataType.STANDALONE:
 			return STANDALONE_PERSISTENT_DATA_FILE_PATH
-		PersistentDataPath.EDITOR:
+		PersistentDataType.EDITOR:
 			return EDITOR_PERSISTENT_DATA_FILE_PATH
-	push_error("Could not get the file path for the StoryScriptPersistentData!")
+	push_error("Could not get the file path for the FracVNEPersistentData!")
 	return ""
 
 
@@ -93,7 +112,7 @@ func load_data_from_file():
 		file.close()
 		deserialize_state(json_result.result)
 	else:
-		emit_signal("get_defaults", self)
+		_set_defaults()
 		save_data_to_file()
 
 

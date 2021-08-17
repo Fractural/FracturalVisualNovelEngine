@@ -22,19 +22,23 @@ story_script_editor_path = NodePath("StoryScriptEditor")
 
 [node name="PluginDependency" type="Node" parent="Dependencies"]
 script = ExtResource( 5 )
-dependency_name = "Plugin"
+dependency_name = "EditorPlugin"
 
 [node name="AssetsRegistryDependency" type="Node" parent="Dependencies"]
 script = ExtResource( 5 )
 dependency_name = "AssetsRegistry"
 
-[node name="PersistentDataDependency" type="Node" parent="Dependencies"]
+[node name="FracVNEPersistentDataDependency" type="Node" parent="Dependencies"]
 script = ExtResource( 5 )
-dependency_name = "PersistentData"
+dependency_name = "FracVNEPersistentData"
+
+[node name="DockerDependency" type="Node" parent="Dependencies"]
+script = ExtResource( 5 )
+dependency_name = "Docker"
 
 [node name="EditorStoryRunner" type="Node" parent="."]
 script = ExtResource( 4 )
-dep__persistent_data_path = NodePath("../Dependencies/PersistentDataDependency")
+dep__persistent_data_path = NodePath("../Dependencies/FracVNEPersistentDataDependency")
 dep__plugin_path = NodePath("../Dependencies/PluginDependency")
 
 [node name="StoryScriptEditor" parent="." instance=ExtResource( 2 )]
@@ -42,8 +46,14 @@ dep__plugin_path = NodePath("../Dependencies/PluginDependency")
 [node name="StoryRunnerDependency" parent="StoryScriptEditor/Dependencies" index="0"]
 dependency_path = NodePath("../../../EditorStoryRunner")
 
-[node name="PersistentDataDependency" parent="StoryScriptEditor/Dependencies" index="1"]
-dependency_path = NodePath("../../../Dependencies/PersistentDataDependency")
+[node name="DockerDependency" parent="StoryScriptEditor/Dependencies" index="1"]
+dependency_path = NodePath("../../../Dependencies/DockerDependency")
+
+[node name="AssetsRegistryDependency" parent="StoryScriptEditor/Dependencies" index="2"]
+dependency_path = NodePath("../../../Dependencies/AssetsRegistryDependency")
+
+[node name="FracVNEPersistentDataDependency" parent="StoryScriptEditor/Dependencies" index="3"]
+dependency_path = NodePath("../../../Dependencies/FracVNEPersistentDataDependency")
 
 [node name="ListToggle" parent="StoryScriptEditor/MainHSplitContainer/ScriptBrowser/VBoxContainer2/HBoxContainer" index="0"]
 group = SubResource( 1 )
@@ -52,3 +62,4 @@ group = SubResource( 1 )
 group = SubResource( 1 )
 
 [editable path="StoryScriptEditor"]
+[editable path="StoryScriptEditor/Control/PopupHolder/SettingsWindow"]

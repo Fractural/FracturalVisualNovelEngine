@@ -2,6 +2,8 @@ extends Node
 # Wires up the bottom menu of the story GUI to the appropriate actions
 
 
+const FracUtils = FracVNE.Utils
+
 export var history_button_path: NodePath
 export var skip_button_path: NodePath
 export var auto_button_path: NodePath

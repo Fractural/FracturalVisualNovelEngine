@@ -329,6 +329,19 @@ static func get_valid_node_or_dep(original_node: Node, node_path, original_value
 		return node
 
 
+static func try_inject_dependency(dependency, loaded_scene: Node):
+	if not loaded_scene.has_node("Dependencies"):
+		return
+	
+	var dependencies_holder = loaded_scene.get_node("Dependencies")
+	var dependency_requesters = dependencies_holder.get_children()
+	
+	for requester in dependency_requesters:
+		if requester.dependency_name == get_type_name(dependency):
+			requester.dependency = dependency
+			break
+
+
 # Checks if a given node is currently in the editor scene tab.
 # This has only been tested in Godot v3.3.2.
 static func is_in_editor_scene_tab(node):

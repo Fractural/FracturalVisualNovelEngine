@@ -25,9 +25,7 @@ onready var persistent_data = FracUtils.get_valid_node_or_dep(self, dep__persist
 
 func run(story_file_path: String, quit_to_scene: PackedScene = null):
 	if not is_instance_valid(server):
-		print("Creating new server")
 		server = Server.new()
-		print("Adding to server: " + str(persistent_data))
 		server.persistent_data = persistent_data
 		add_child(server)
 	server.story_file_path = story_file_path

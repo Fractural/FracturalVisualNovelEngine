@@ -1,3 +1,4 @@
+tool
 extends Node
 # Displays an enum.
 
@@ -7,8 +8,8 @@ signal changed(new_value)
 export var label_path: NodePath
 export var options_button_path: NodePath
 
-onready var label: Label = get_node(label_path)
-onready var options_button: OptionButton = get_node(options_button_path)
+var label: Label
+var options_button: OptionButton
 
 
 func _ready() -> void:
@@ -16,6 +17,9 @@ func _ready() -> void:
 
 
 func init(label_text: String, original_value: int, enum_values: Array):
+	label = get_node(label_path)
+	options_button = get_node(options_button_path)
+	
 	label.text = label_text
 	options_button.clear()
 	for value in enum_values:

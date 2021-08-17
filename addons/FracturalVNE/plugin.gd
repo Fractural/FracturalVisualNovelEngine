@@ -2,14 +2,6 @@ tool
 extends EditorPlugin
 
 
-# ----- Typeable ----- #
-
-func get_types() -> Array:
-	return ["Plugin"]
-
-# ----- Typeable ----- #
-
-
 const FracUtils = FracVNE.Utils
 const PersistentData: Script = preload("plugin/ui/persistent_data/persistent_data.gd")
 const EditorPersistentDataDefualtsLoader = preload("plugin/ui/persistent_data/editor_persistent_data_defaults_loader.gd")
@@ -53,15 +45,27 @@ func _enter_tree():
 	add_child(persistent_data)
 	
 	plugin_ui = PluginUIScene.instance()
-	plugin_ui.get_node("Dependencies/PluginDependency").dependency_path = get_path()
-	plugin_ui.get_node("Dependencies/AssetsRegistryDependency").dependency_path = assets_registry.get_path()
-	plugin_ui.get_node("Dependencies/PersistentDataDependency").dependency_path = persistent_data.get_path()
+	FracUtils.try_inject_dependency(self, plugin_ui)
+	FracUtils.try_inject_dependency(assets_registry, plugin_ui)
+	FracUtils.try_inject_dependency(persistent_data, plugin_ui)
 	
 	docker = Docker.new(self, persistent_data, plugin_ui)
 	add_child(docker)
 	
 	inspector_plugins = []
 	_setup_inspector_plugins()
+	
+	push_warning("""
+
+888888 88""Yb    db     dP""b8     Yb    dP 88b 88 888888 
+88__   88__dP   dPYb   dP   `"      Yb  dP  88Yb88 88__   
+88""   88"Yb   dP__Yb  Yb            YbdP   88 Y88 88""   
+88     88  Yb dP"\"""Yb  YboodP        YP    88  Y8 888888 
+
+https://github.com/Fractural/FracturalVisualNovelEngine
+
+You may change any setting for Fractural VNE by clicking the "Settings" button in the story script editor or by editing "FracturalVNE/editor_persistent_data.json"
+""")
 
 
 func _ready() -> void:

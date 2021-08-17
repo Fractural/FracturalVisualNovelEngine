@@ -59,8 +59,6 @@ func _on_scene_loaded(loaded_scene):
 		return
 	
 	var dependencies_holder = loaded_scene.get_node("Dependencies")
-	
-	# Include both the holder and its children as dependency requesters
 	var dependency_requesters = dependencies_holder.get_children()
 	
 	for requester in dependency_requesters:

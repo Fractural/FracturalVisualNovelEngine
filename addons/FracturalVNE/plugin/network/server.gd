@@ -23,7 +23,6 @@ func _ready() -> void:
 
 
 func host() -> void:
-	print("Server starting host")
 	close()
 	_server = NetworkedMultiplayerENet.new()
 	var err: int = _server.create_server(persistent_data.port)
@@ -42,5 +41,5 @@ func close() -> void:
 
 func _on_peer_connected(id: int) -> void:
 	pass
-	# We actually do not need any networking for now since we have PersistentData
+	# We actually do not need any networking for now since we have FracVNEPersistentData
 	# to transfer information (data is always stored under the FracturalVNE folder).

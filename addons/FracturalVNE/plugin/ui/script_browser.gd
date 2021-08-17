@@ -28,7 +28,6 @@ export var open_directory_dialog_path: NodePath
 export var popup_dim_path: NodePath
 export var refresh_button_path: NodePath
 export var current_directory_label_path: NodePath
-
 export var dep__persistent_data_path: NodePath
 
 onready var search_line_edit: LineEdit = get_node(search_line_edit_path)
@@ -41,8 +40,7 @@ onready var open_directory_dialog: FileDialog = get_node(open_directory_dialog_p
 onready var refresh_button: Button = get_node(refresh_button_path)
 onready var popup_dim: Node = get_node(popup_dim_path)
 onready var current_directory_label: Label = get_node(current_directory_label_path)
-
-onready var persistent_data_dep = get_node(dep__persistent_data_path)
+onready var persistent_data = FracUtils.get_valid_node_or_dep(self, dep__persistent_data_path, persistent_data)
 
 
 func _ready():
@@ -70,10 +68,8 @@ func _ready():
 	scripts_item_list_toggle.connect("toggled", self, "_on_file_display_type_button_toggled", [FileDisplay.ITEM_LIST])
 	scripts_tree_toggle.connect("toggled", self, "_on_file_display_type_button_toggled", [FileDisplay.TREE])
 	
-	print("Has persist data readied? " + str(persistent_data_dep.dependency._is_real_persistent_data))
-	
-	set_current_directory(persistent_data_dep.dependency.current_directory_path)
-	set_current_file_display_type(persistent_data_dep.dependency.current_file_display_type)
+	set_current_directory(persistent_data.current_directory_path)
+	set_current_file_display_type(persistent_data.current_file_display_type)
 
 
 func _post_assets_setup():
@@ -94,15 +90,15 @@ func refresh_file_display():
 func set_current_directory(directory) -> void:
 	current_directory_label.text = '"%s"' % directory
 	get_current_file_display().directory = directory
-	persistent_data_dep.dependency.current_directory_path = directory
+	persistent_data.set_property("current_directory_path", directory)
 
 
 func get_current_directory() -> String:
-	return persistent_data_dep.dependency.current_directory_path
+	return persistent_data.current_directory_path
 
 
 func get_current_script_path() -> String:
-	return persistent_data_dep.dependency.current_script_path
+	return persistent_data.current_script_path
 
 
 var _halt_toggle_signals: bool = false
@@ -118,7 +114,7 @@ func set_current_file_display_type(file_display: int):
 	scripts_item_list.visible = scripts_item_list_toggle.pressed
 	scripts_tree.visible = scripts_tree_toggle.pressed
 	
-	persistent_data_dep.dependency.current_file_display_type = file_display
+	persistent_data.set_property("current_file_display_type", file_display)
 	get_current_file_display().search_text = search_line_edit.text
 	get_current_file_display().directory = get_current_directory()
 	refresh_file_display()
@@ -127,7 +123,7 @@ func set_current_file_display_type(file_display: int):
 
 
 func get_current_file_display_type() -> int:
-	return persistent_data_dep.dependency.current_file_display_type
+	return persistent_data.current_file_display_type
 
 
 func get_current_file_display():

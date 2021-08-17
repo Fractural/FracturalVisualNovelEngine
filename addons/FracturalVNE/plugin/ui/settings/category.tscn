@@ -1,0 +1,21 @@
+[gd_scene load_steps=3 format=2]
+
+[ext_resource path="res://addons/FracturalVNE/core/utils/dependency_injection/dependency.gd" type="Script" id=1]
+[ext_resource path="res://addons/WAT/ui/scripts/node_scaler.gd" type="Script" id=2]
+
+[node name="Category" type="VBoxContainer"]
+anchor_right = 1.0
+anchor_bottom = 1.0
+custom_constants/separation = 5
+script = ExtResource( 2 )
+__meta__ = {
+"_edit_use_anchors_": false
+}
+scaled_constants = [ "separation" ]
+dep__assets_registry_path = NodePath("Dependencies/AssetsRegistryDependency")
+
+[node name="Dependencies" type="Node" parent="."]
+
+[node name="AssetsRegistryDependency" type="Node" parent="Dependencies"]
+script = ExtResource( 1 )
+dependency_name = "AssetsRegistry"

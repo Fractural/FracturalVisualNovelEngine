@@ -1,3 +1,4 @@
+tool
 extends "res://addons/FracturalVNE/plugin/ui/settings/settings_configurers/settings_configurer.gd"
 # Configures the settings for Docker.
 
@@ -28,4 +29,9 @@ func configure_settings(settings_window):
 	if not Engine.is_editor_hint():
 		return
 	
-	settings_window.add_enum_field("General/Display", persistent_data., Docker.DockType.keys())
+	settings_window.add_enum_field("Editor/Display Mode", persistent_data.display_mode, Docker.DockTypeDisplays.values()) \
+	.connect("changed", self, "_on_display_mode_changed")
+
+
+func _on_display_mode_changed(new_value: int):
+	persistent_data.set_property("display_mode", new_value)

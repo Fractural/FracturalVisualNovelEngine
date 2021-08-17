@@ -1,5 +1,5 @@
 extends Reference
-# Modifies the defaults for StoryScriptPersistentData in the editor.
+# Modifies the defaults for FracVNEPersistentData in the editor.
 # This is mostly applying scaling to certain default values.
 
 
@@ -12,7 +12,6 @@ var assets_registry
 func _init(persistent_data_, assets_registry_):
 	persistent_data = persistent_data_
 	assets_registry = assets_registry_
-	print("Editor defaults readying")
 	persistent_data.connect("get_defaults", self, "_on_get_defaults")
 
 
