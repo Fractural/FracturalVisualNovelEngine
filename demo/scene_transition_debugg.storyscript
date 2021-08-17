@@ -2,9 +2,7 @@ import "res://demo/visuals_testing_definitions.story"
 
 label looped: 
 	"Testing stacked show..."
-	show godette surprised with fade_to_black
 	show godette happy with fade_to_black
-	show godette sad with fade_to_black
-	show godette happy with fade_to_black
-	"Tested stacked show"
+	remove godette
+	"Tested remove"
 	jump looped

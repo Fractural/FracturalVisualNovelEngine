@@ -23,8 +23,8 @@ var starting_rotation: float
 var travel_curve: Curve
 var duration: float
 var story_director
+var curr_move_action
 
-var _curr_move_action
 var _curr_time: float
 
 onready var standard_node_2d = get_node(standard_node_2d_path)
@@ -36,6 +36,16 @@ func _ready() -> void:
 
 func init(story_director_):
 	story_director = story_director_
+
+
+func _notification(what):
+	if what == NOTIFICATION_PREDELETE:
+		_destructor()
+
+
+func _destructor():
+	if curr_move_action != null and story_director != null:
+		story_director.remove_step_action(curr_move_action)
 
 
 func _process(delta) -> void:
@@ -53,15 +63,15 @@ func _process(delta) -> void:
 
 
 func move(target_position_, target_scale_, target_rotation_, travel_curve_: Curve = null, duration_: float = 0):
-	if _curr_move_action != null:
-		story_director.remove_step_action(_curr_move_action)
-		_curr_move_action = null
+	if curr_move_action != null:
+		story_director.remove_step_action(curr_move_action)
+		curr_move_action = null
 	if travel_curve_ != null:
 		# We have a transition so we have to add a move_action
 		# step action. Any action that does not take time should not
 		# add a step action to the story_director.
-		_curr_move_action = MovementAction.new(self)
-		story_director.add_step_action(_curr_move_action)
+		curr_move_action = MovementAction.new(self)
+		story_director.add_step_action(curr_move_action)
 	
 	set_process(true)
 	target_position = target_position_
@@ -91,8 +101,8 @@ func _on_move_finished(skipped):
 	if target_rotation != null:
 		standard_node_2d.standard_rotation = target_rotation
 	
-	if not skipped and _curr_move_action != null:
-		story_director.remove_step_action(_curr_move_action)
-	_curr_move_action = null
+	if not skipped and curr_move_action != null:
+		story_director.remove_step_action(curr_move_action)
+	curr_move_action = null
 	
 	set_process(false)

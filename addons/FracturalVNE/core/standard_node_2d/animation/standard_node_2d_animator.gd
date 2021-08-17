@@ -38,6 +38,16 @@ func init(story_director_):
 	story_director = story_director_
 
 
+func _notification(what):
+	if what == NOTIFICATION_PREDELETE:
+		_destructor()
+
+
+func _destructor():
+	if curr_animation_action != null and story_director != null:
+		story_director.remove_step_action(curr_animation_action)
+
+
 func play_animation(node_animation):
 	if curr_animation_action != null:
 		story_director.remove_step_action(curr_animation_action)
