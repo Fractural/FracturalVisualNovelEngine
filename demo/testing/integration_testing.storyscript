@@ -1,6 +1,27 @@
 import "res://demo/visuals_testing_definitions.story"
 
 label looped:
+	"Testing show and remove..."
+	show godette happy with fade_to_black
+	pause 0.1
+	remove godette
+	"Tested show and remove"
+	
+	"Testing move and remove..."
+	show godette happy
+	move godette to Point(0, 0)
+	move godette to Point(500, 0) with linear for 2
+	pause 0.1
+	remove godette
+	"Tested move and remove"
+	
+	"Testing animate and remove..."
+	show godette happy
+	animate godette with hop
+	pause 0.1
+	remove godette
+	"Tested animate and remove"
+	
 	"Testing scene show..."
 	scene bg_library2 with fade_to_black
 	"Tested scene show"
