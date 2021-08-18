@@ -15,8 +15,11 @@ onready var scene_manager = get_node(scene_manager_path)
 
 
 func _ready() -> void:
-	scene_manager.connect("scene_readied", self, "_on_scene_readied")
+	scene_manager.connect("node_added", self, "_on_node_added")
 
-func _on_scene_readied(readied_scene):
-	# Make _post_ready() calls after entire scene is readied 
-	readied_scene.propagate_call("_post_ready")
+
+func _on_node_added(node):
+	if "_post_readied" in node and not node._post_readied:
+		node._post_readied = true
+		# Make _post_ready() calls after entire scene is readied
+		node.call_deferred("_post_ready")

@@ -1,0 +1,19 @@
+﻿Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio 2012
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "FracturalVisualNovelEngine", "FracturalVisualNovelEngine.csproj", "{FFE32030-67E2-4CC3-A24E-457586F264CA}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+	Debug|Any CPU = Debug|Any CPU
+	ExportDebug|Any CPU = ExportDebug|Any CPU
+	ExportRelease|Any CPU = ExportRelease|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{FFE32030-67E2-4CC3-A24E-457586F264CA}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{FFE32030-67E2-4CC3-A24E-457586F264CA}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{FFE32030-67E2-4CC3-A24E-457586F264CA}.ExportDebug|Any CPU.ActiveCfg = ExportDebug|Any CPU
+		{FFE32030-67E2-4CC3-A24E-457586F264CA}.ExportDebug|Any CPU.Build.0 = ExportDebug|Any CPU
+		{FFE32030-67E2-4CC3-A24E-457586F264CA}.ExportRelease|Any CPU.ActiveCfg = ExportRelease|Any CPU
+		{FFE32030-67E2-4CC3-A24E-457586F264CA}.ExportRelease|Any CPU.Build.0 = ExportRelease|Any CPU
+	EndGlobalSection
+EndGlobal

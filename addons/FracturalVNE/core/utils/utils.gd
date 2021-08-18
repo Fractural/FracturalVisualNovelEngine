@@ -192,11 +192,20 @@ static func property_equals(object, property: String, value) -> bool:
 
 # Reparents a node to a new_parent and returns
 # the original parent..
-static func reparent(node: Node, new_parent: Node):
+static func reparent(node: Node, new_parent: Node) -> Node:
 	var original = node.get_parent()
 	node.get_parent().remove_child(node)
 	new_parent.add_child(node)
 	return original
+
+
+# Checks if target_node has a parent
+static func has_parent(target_node: Node, parent: Node) -> bool:
+	if target_node.get_parent() == null:
+		return false
+	if target_node.get_parent() == parent:
+		return true
+	return has_parent(target_node.get_parent(), parent)
 
 
 # Attempts to free an object.

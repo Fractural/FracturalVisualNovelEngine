@@ -1,0 +1,13 @@
+[remap]
+
+importer="FracVNE.story"
+type="Resource"
+path="res://.import/full_transition_testing.story-ada957744e960bee15c70ac0bb644c6b.res"
+
+[deps]
+
+source_file="res://demo/testing/full_transition_testing.story"
+dest_files=[ "res://.import/full_transition_testing.story-ada957744e960bee15c70ac0bb644c6b.res" ]
+
+[params]
+

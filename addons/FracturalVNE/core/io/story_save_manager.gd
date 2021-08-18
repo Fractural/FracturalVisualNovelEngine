@@ -22,12 +22,10 @@ func _ready() -> void:
 	preload_save_slots()
 	
 	var dir = Directory.new()
-	var err = dir.open("user://")
-	
-	assert(err == OK, "Error occured while opening file: " + str(err))
-	
-	if not dir.dir_exists("saves"):
-		dir.make_dir("saves")
+	if not dir.dir_exists("user://saves/"):
+		var err = dir.make_dir("user://saves/")
+		
+		assert(err == OK, "Error occured while opening save directory: " + str(err))
 
 
 func save_state(save_state, save_slot_id: int):

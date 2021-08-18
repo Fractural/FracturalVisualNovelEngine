@@ -15,6 +15,7 @@ persistent_data_type = 0
 [node name="Client" type="Node" parent="ServiceDIContainer"]
 script = ExtResource( 1 )
 story_runner_path = NodePath("../StoryRunner")
+service_di_container_path = NodePath("..")
 dep__persistent_data_path = NodePath("../EditorFracVNEPersistentData")
 
 [editable path="ServiceDIContainer"]

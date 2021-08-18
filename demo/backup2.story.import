@@ -1,0 +1,13 @@
+[remap]
+
+importer="FracVNE.story"
+type="Resource"
+path="res://.import/backup2.story-a8cd2bb0225295ebabf39aae21cc5394.res"
+
+[deps]
+
+source_file="res://demo/backup2.story"
+dest_files=[ "res://.import/backup2.story-a8cd2bb0225295ebabf39aae21cc5394.res" ]
+
+[params]
+

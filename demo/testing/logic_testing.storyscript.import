@@ -1,0 +1,13 @@
+[remap]
+
+importer="FracVNE.storysciprt"
+type="Resource"
+path="res://.import/logic_testing.storyscript-58955ae8830d99940750a82963ac33cd.res"
+
+[deps]
+
+source_file="res://demo/testing/logic_testing.storyscript"
+dest_files=[ "res://.import/logic_testing.storyscript-58955ae8830d99940750a82963ac33cd.res" ]
+
+[params]
+

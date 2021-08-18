@@ -9,8 +9,12 @@ extends Node
 # of the StoryScriptEditor.
 
 
+signal readied()
+
+export var is_self_contained: bool = false
 export var scene_manager_path: NodePath
 export var services_holder_path: NodePath
+export(Array, NodePath) var preloaded_service_paths: Array
 
 var services = []
 
@@ -24,13 +28,16 @@ func _ready() -> void:
 	
 	scene_manager.connect("scene_loaded", self, "_on_scene_loaded")
 	
+	# TODO: Maybe remove this? What does the idle_frame do?
 	yield(get_tree(), "idle_frame")
 	
-	var root = get_tree().root
-	get_parent().remove_child(self)
-	root.add_child(self)
+	if not is_self_contained:
+		var root = get_tree().root
+		get_parent().remove_child(self)
+		root.add_child(self)
 	
 	scene_manager.goto_initial_scene()
+	emit_signal("readied")
 
 
 func has_service(new_injectable_service):
@@ -67,6 +74,7 @@ func _on_scene_loaded(loaded_scene):
 			if FracVNE.Utils.is_type(injectable_service, requester.dependency_name):
 				_inject_dependency(requester, injectable_service)
 				break
+
 
 func _inject_dependency(requester, injectable_service):
 	requester.dependency_path = injectable_service.get_path()

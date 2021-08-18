@@ -1,0 +1,13 @@
+[remap]
+
+importer="FracVNE.story"
+type="Resource"
+path="res://.import/testing.story-34da41ea3fb4276d042405380c1816bd.res"
+
+[deps]
+
+source_file="res://demo/testing.story"
+dest_files=[ "res://.import/testing.story-34da41ea3fb4276d042405380c1816bd.res" ]
+
+[params]
+
