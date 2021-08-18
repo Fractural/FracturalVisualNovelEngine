@@ -1,0 +1,12 @@
+[remap]
+
+importer="FracVNE.storysciprt"
+path="res://.import/visuals_testing.storyscript-1323da2da598d3c764d0e10438b231ac.res"
+
+[deps]
+
+source_file="res://demo/visuals_testing.storyscript"
+dest_files=[ "res://.import/visuals_testing.storyscript-1323da2da598d3c764d0e10438b231ac.res" ]
+
+[params]
+

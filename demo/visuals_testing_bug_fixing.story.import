@@ -1,0 +1,12 @@
+[remap]
+
+importer="FracVNE.story"
+path="res://.import/visuals_testing_bug_fixing.story-5d1481eeb4e1ebef0c88f0210eb7fb88.res"
+
+[deps]
+
+source_file="res://demo/visuals_testing_bug_fixing.story"
+dest_files=[ "res://.import/visuals_testing_bug_fixing.story-5d1481eeb4e1ebef0c88f0210eb7fb88.res" ]
+
+[params]
+
