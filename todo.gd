@@ -1,4 +1,20 @@
 # TODO NOW:
+#	[ ] Add C# support
+#		Make service locator have two service lists -- One for CSharp services and
+# 		one for GDScript services.
+#
+#		Maybe still have the locator parse it's children for services. 
+#		If a child is a CSharp class or a GDScript to CSharp wrapper class , then it adds it to the CSharp services.
+#		If the child is a GDScript class or a CSharp to GDScript wrapper class, then it adds it to the GDScript services.
+#
+#		To do this we need to figure out how to differentiate C# vs GDSCript class. IIRC they are two different builtin types.
+#		(GDScript and MonoScript? -- Look this up to be sure)
+#
+#		Maybe make all dependency.gd have two dependencies -
+#		a "gdscript_dependency" and a "csharp_dependency".
+#		FracVNE.TryGetValidNodeOrDep(self, path, curent, dependency_type = GDSCRIPT) -> csharp_dependency
+#		FracVNE.try_get_valid_node_or_dep(self, path, current, dependency_type = CSHARP) -> gdscript_dep
+
 #	[ ] Write a remove statement that can remove Visuals
 #		Example syntax:
 #			define bob = Visual(...)

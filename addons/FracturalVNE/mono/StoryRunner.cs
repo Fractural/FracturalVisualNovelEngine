@@ -1,26 +1,29 @@
 using Godot;
 using System;
 
-// Wrapper for story_runner.gd
-public class StoryRunner : Node
+namespace Fractural.FracVNE 
 {
-	public SceneManager SceneManager { get; set; }
-
-	private String storyFilePath;
-	private PackedScene quitToScene;
-
-	[Export]
-	private NodePath sceneManagerPath;
-
-	public override void _Ready()
+	// Wrapper for story_runner.gd
+	public class StoryRunner : Node
 	{
-		SceneManager = GetNode<SceneManager>(sceneManagerPath);
-	}
+		public SceneManager SceneManager { get; set; }
 
-	public void Run(String storyFilePath, PackedScene quitToScene = null)
-	{
-		this.storyFilePath = storyFilePath;
-		this.quitToScene = quitToScene;
-		SceneManager.GotoScene("res://addons/FracturalVNE/core/story/story.tscn");
+		private String storyFilePath;
+		private PackedScene quitToScene;
+
+		[Export]
+		private NodePath sceneManagerPath;
+
+		public override void _Ready()
+		{
+			SceneManager = GetNode<SceneManager>(sceneManagerPath);
+		}
+
+		public void Run(String storyFilePath, PackedScene quitToScene = null)
+		{
+			this.storyFilePath = storyFilePath;
+			this.quitToScene = quitToScene;
+			SceneManager.GotoScene("res://addons/FracturalVNE/core/story/story.tscn");
+		}
 	}
 }

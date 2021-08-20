@@ -1,72 +1,84 @@
 using Godot;
 using System;
 
-// Manages transitions between scenes.
-public class SceneManager : Node
+// TODO: Update the CSharp version of SceneManager with the same features from the GDScript verison.
+
+namespace Fractural 
 {
-	public class SceneLoadedArgs : EventArgs
+	// Manages transitions between scenes.
+	public class SceneManager : Node
 	{
-		public Node Scene { get; set; }
-	}
-
-	public class SceneReadiedArgs : EventArgs
-	{
-		public Node Scene { get; set; }
-	}
-
-	[Signal]
-	public delegate void SceneLoadedSignal(Node loadedScene);
-	public event EventHandler<SceneLoadedArgs> SceneLoaded;
-
-	[Signal]
-	public delegate void SceneReadiedSignal(Node readiedScene);
-	public event EventHandler<SceneReadiedArgs> SceneReadied;
-
-	[Export]
-	public PackedScene InitialScene { get; set; }
-
-	public void GotoInitialScene()
-	{
-		if (InitialScene != null)
+		public class SceneLoadedArgs : EventArgs
 		{
-			GotoScene(InitialScene);
+			public Node Scene { get; set; }
 		}
-	}
 
-	public void GotoScene(PackedScene scene)
-	{
-		GetTree().CurrentScene.QueueFree();
+		public class SceneReadiedArgs : EventArgs
+		{
+			public Node Scene { get; set; }
+		}
 
-		Node instance = scene.Instance();
+		[Signal]
+		public delegate void SceneLoadedSignal(Node loadedScene);
+		public event EventHandler<SceneLoadedArgs> SceneLoaded;
 
-		OnSceneLoaded(new SceneLoadedArgs { Scene = instance});
+		[Signal]
+		public delegate void SceneReadiedSignal(Node readiedScene);
+		public event EventHandler<SceneReadiedArgs> SceneReadied;
 
-		GetTree().Root.AddChild(instance);
-		GetTree().CurrentScene = instance;
+		[Export]
+		public PackedScene InitialScene { get; set; }
 
-		OnSceneReadied(new SceneReadiedArgs { Scene = instance});
-	}
+		[Export]
+		public bool AutoLoadInititalScene { get; set; }
 
-	public void TransitionToScene(PackedScene scene)
-	{
-		// TODO: Finish adding transitions.
-		GotoScene(scene);
-	}
+		public override void _Ready()
+		{
+			if (AutoLoadInititalScene)
+				GotoInitialScene();
+		}
 
-	public void GotoScene(String scene_path)
-	{
-		GotoScene(ResourceLoader.Load<PackedScene>(scene_path));
-	}
+		public void GotoInitialScene()
+		{
+			if (InitialScene != null)
+				GotoScene(InitialScene);
+		}
 
-	protected void OnSceneLoaded(SceneLoadedArgs args)
-	{
-		EmitSignal("SceneReadiedSignal");
-		SceneLoaded?.Invoke(this, args);
-	}
+		public void GotoScene(PackedScene scene)
+		{
+			GetTree().CurrentScene.QueueFree();
 
-	protected void OnSceneReadied(SceneReadiedArgs args)
-	{
-		EmitSignal("SceneLoadedSignal");
-		SceneReadied?.Invoke(this, args);
+			Node instance = scene.Instance();
+
+			OnSceneLoaded(new SceneLoadedArgs { Scene = instance});
+
+			GetTree().Root.AddChild(instance);
+			GetTree().CurrentScene = instance;
+
+			OnSceneReadied(new SceneReadiedArgs { Scene = instance});
+		}
+
+		public void TransitionToScene(PackedScene scene)
+		{
+			// TODO: Finish adding transitions.
+			GotoScene(scene);
+		}
+
+		public void GotoScene(String scene_path)
+		{
+			GotoScene(ResourceLoader.Load<PackedScene>(scene_path));
+		}
+
+		protected void OnSceneLoaded(SceneLoadedArgs args)
+		{
+			EmitSignal(nameof(SceneReadiedSignal));
+			SceneLoaded?.Invoke(this, args);
+		}
+
+		protected void OnSceneReadied(SceneReadiedArgs args)
+		{
+			EmitSignal(nameof(SceneLoadedSignal));
+			SceneReadied?.Invoke(this, args);
+		}
 	}
 }
