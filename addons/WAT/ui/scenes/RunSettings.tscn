@@ -13,27 +13,23 @@ __meta__ = {
 }
 
 [node name="Repeats" type="SpinBox" parent="."]
-margin_right = 150.0
+margin_right = 137.0
 margin_bottom = 24.0
-rect_min_size = Vector2( 150, 0 )
 size_flags_horizontal = 0
 size_flags_vertical = 0
-align = 1
 prefix = "Repeat"
 suffix = "Time(s)"
 script = ExtResource( 2 )
 
 [node name="Threads" type="SpinBox" parent="."]
-margin_left = 154.0
-margin_right = 314.0
+margin_left = 141.0
+margin_right = 289.0
 margin_bottom = 24.0
-rect_min_size = Vector2( 160, 0 )
 size_flags_horizontal = 0
 size_flags_vertical = 0
 min_value = 1.0
-max_value = 15.0
+max_value = 7.0
 value = 1.0
-align = 1
 prefix = "Run on"
 suffix = "Thread(s)"
 script = ExtResource( 2 )

@@ -27,9 +27,6 @@ namespace Fractural.Mono
 		private void Init()
 		{
 			EngineUtils.UpdateVersionPreprocessorDefines();
-			#if GODOT_3_3_2
-			GD.Print("We are on 3.3.2!");
-			#endif
 			Plugin.AddCustomType(nameof(Dependency), 
 				nameof(Node), 
 				GD.Load<Script>(PluginAbsolutePath + "_modules/mono/dependency_injection/Dependency.cs"), 

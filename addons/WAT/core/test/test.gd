@@ -2,7 +2,6 @@ extends Node
 class_name WATTest
 
 const Assertions: Script = preload("res://addons/WAT/core/assertions/assertions.gd")
-const Director: Script = preload("res://addons/WAT/core/double/factory.gd")
 const TEST: bool = true
 const YIELD: String = "finished"
 signal described
@@ -13,7 +12,7 @@ var recorder: Script
 var any: Script
 var watcher
 var rerun_method: bool
-var direct: Director
+var direct: Object
 var yielder: Timer
 var p: Dictionary
 var _last_assertion_passed: bool = false
@@ -95,3 +94,7 @@ func methods() -> PoolStringArray:
 		if method.name.begins_with("test"):
 			output.append(method.name)
 	return output
+	
+static func get_instance_base_type():
+	return "WAT.Test"
+		

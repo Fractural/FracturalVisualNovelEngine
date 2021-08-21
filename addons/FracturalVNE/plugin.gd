@@ -42,8 +42,6 @@ func _init():
 	#
 	# We force a ready in order to let the data load
 	persistent_data._ready()
-	
-	_load_plugin_modules()
 
 
 func _enter_tree():
@@ -61,6 +59,8 @@ func _enter_tree():
 	inspector_plugins = []
 	_setup_inspector_plugins()
 
+	_load_plugin_modules()
+	
 # Not using ASCII art since it takes up too much space in the console
 # 888888 88""Yb    db     dP""b8     Yb    dP 88b 88 888888 
 # 88__   88__dP   dPYb   dP   `"      Yb  dP  88Yb88 88__   

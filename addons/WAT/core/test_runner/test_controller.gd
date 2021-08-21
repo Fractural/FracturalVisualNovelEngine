@@ -15,7 +15,7 @@ enum { START, PRE, EXECUTE, POST, END }
 signal finished
 signal done
 
-var _test: Test
+var _test
 var _case: Node
 var _state: int = START
 var _cursor: int = -1
@@ -58,7 +58,6 @@ func run(test: Dictionary) -> void:
 		push_warning("No Tests found in " + test["path"] + "")
 		call_deferred("_complete")
 		return
-	_test.connect("cancelled", self, "_on_test_cancelled")
 	_test.connect("described", _case, "_on_test_method_described")
 	_assertions.connect("asserted", _case, "_on_asserted")
 	_assertions.connect("asserted", _test, "_on_last_assertion")

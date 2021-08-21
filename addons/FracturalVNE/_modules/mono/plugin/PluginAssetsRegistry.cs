@@ -111,27 +111,21 @@ namespace Fractural.Plugin.AssetsRegistry
 		{
 			get
 			{
-				if (EngineUtils.CurrentVersionInfo >= "3.3")
-					return plugin.GetEditorInterface().GetEditorScale();
+		#if GODOT_3_3_0_OR_NEWER
+				return plugin.GetEditorInterface().GetEditorScale();
+		#else
+				if (cachedEditorScale == -1)
+			#if GODOT_3_0_0_OR_NEWER
+					return CalculateCurrentEditorScale_3_0();
+			#elif GODOT_3_1_0_OR_NEWER
+					return CalculateCurrentEditorScale_3_1(); 
+			#else
+					GD.PushError($"Could not fetch editor scale for the current Godot version. ({EngineUtils.CurrentVersionInfo})");
+					return 1;
+			#endif
 				else
-				{
-					if (cachedEditorScale == -1)
-					{
-						if (EngineUtils.CurrentVersionInfo >= "3.1")
-							throw new NotImplementedException("Uncomment to add support for Godot 3.1");
-							//return CalculateCurrentEditorScale_3_0();
-						else if (EngineUtils.CurrentVersionInfo >= "3.0")
-							throw new NotImplementedException("Uncomment to add support for Godot 3.0");
-							//return CalculateCurrentEditorScale_3_1();
-						else
-						{
-							GD.PushError($"Could not fetch editor scale for the current Godot version. ({EngineUtils.CurrentVersionInfo})");
-							return 1;
-						}
-					}
-					else
-						return cachedEditorScale;
-				}
+					return cachedEditorScale; 
+		#endif
 			}
 		}
 
@@ -153,12 +147,8 @@ namespace Fractural.Plugin.AssetsRegistry
 			assetsRegistry.Scale = Scale;
 			return assetsRegistry.LoadAsset<T>(asset);
 		}
-		
-		// Uncomment to add support for older versions.
-		// Godot doesn't have preprocessor defines
-		// for different engine versions so I'm leaving
-		// it up to the devs to configure this manually...
-		/*
+
+		#if GODOT_3_0_0_OR_NEWER
 		private float CalculateCurrentEditorScale_3_0()
 		{
 			EditorSettings editorSettings = plugin.GetEditorInterface().GetEditorSettings();
@@ -195,7 +185,9 @@ namespace Fractural.Plugin.AssetsRegistry
 					return customDisplayScale;
 			}
 		}
+		#endif
 
+		#if GODOT_3_1_0_OR_NEWER
 		private float CalculateCurrentEditorScale_3_1()
 		{
 			EditorSettings editorSettings = plugin.GetEditorInterface().GetEditorSettings();
@@ -222,7 +214,7 @@ namespace Fractural.Plugin.AssetsRegistry
 					return 1;
 			}
 		}
-		*/
+		#endif	
 	}
 	#endif
 }

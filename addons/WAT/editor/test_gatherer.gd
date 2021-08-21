@@ -30,15 +30,15 @@ func _discover(path: String = Settings.test_directory()) -> Array:
 	
 	while current_name != BLANK:
 		var title: String = path + "/" + current_name
-		#																	The third slash is for the leading dir
-		if (title.ends_with(".gd") or title.ends_with(".gdc")) and load(title).get("TEST") and title != "res:///addons/WAT/core/test/test.gd" and title != "res:///addons/WAT/core/test/test.gdc":
+		# The third slash is for the leading dir
+		if is_script(title) and (load(title).get_instance_base_type() == "WAT.Test") and is_not_original(title):
 			var script = load(title)
 			var test = {"script": script, "path": title, "tags": [], "passing": false}
 			scripts.append(test)
 			tests.scripts[title] = test
 		elif dir.dir_exists(current_name):
 			subdirs.append(title)
-#			tests.dirs.append(title)
+			tests.dirs.append(title)
 		current_name = dir.get_next()
 	dir.list_dir_end()
 	
@@ -72,3 +72,9 @@ func save(data: Dictionary) -> void:
 	var val: String = JSON.print(data.scripts, "\t")
 	file.store_string(val)
 	file.close()
+	
+func is_script(title) -> bool:
+	return title.ends_with(".gd") or title.ends_with(".gdc") or title.ends_with(".cs")
+
+func is_not_original(title) -> bool:
+	return title != "res:///addons/WAT/core/test/test.gd" and title != "res:///addons/WAT/core/test/Test.cs" and title != "res:///addons/WAT/core/test/test.gdc"

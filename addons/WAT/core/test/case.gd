@@ -11,7 +11,7 @@ var _test: Node
 
 func _init(test: Node, path: String) -> void:
 	_test = test
-	_title = test.title()
+	_title = test.title() if path.ends_with(".gd") else test.Title()
 	_path = path
 
 func add_method(name: String) -> void:
@@ -21,7 +21,7 @@ func add_method(name: String) -> void:
 func _on_test_method_described(description: String) -> void:
 	_methods.back().context = description
 	
-func _on_asserted(assertion: Dictionary) -> void:
+func _on_asserted(assertion) -> void:
 	_methods.back().assertions.append(assertion)
 	
 func calculate() -> void:

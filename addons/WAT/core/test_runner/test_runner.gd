@@ -5,7 +5,7 @@ const Log: Script = preload("res://addons/WAT/log.gd")
 const SingleThreadedRunner: Script = preload("single_threaded_runner.gd")
 const MultiThreadedRunner: Script = preload("multi_threaded_runner.gd")
 var _runner: Node
-var _client
+var _client: Client
 var tests: Array
 var threads: int = 1
 signal run_completed

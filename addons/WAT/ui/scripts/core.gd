@@ -9,6 +9,7 @@ onready var RunSettings: HBoxContainer = $Menu/RunSettings
 onready var RunMenu: Button = $Menu/TestMenu
 onready var Summary: HBoxContainer = $Summary
 onready var Menu: Control = $Menu
+
 signal test_strategy_set
 
 func _ready() -> void:
@@ -39,4 +40,3 @@ func _setup_editor_assets(assets_registry):
 	Summary._setup_editor_assets(assets_registry)
 	Menu._setup_editor_assets(assets_registry)
 	Results._setup_editor_assets(assets_registry)
-
