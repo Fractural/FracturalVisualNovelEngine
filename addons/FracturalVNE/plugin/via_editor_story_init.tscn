@@ -1,12 +1,13 @@
 [gd_scene load_steps=4 format=2]
 
 [ext_resource path="res://addons/FracturalVNE/plugin/network/client.gd" type="Script" id=1]
-[ext_resource path="res://addons/FracturalVNE/core/utils/dependency_injection/service_di_container.tscn" type="PackedScene" id=2]
+[ext_resource path="res://addons/FracturalVNE/core/utils/dependency_injection/di_container.tscn" type="PackedScene" id=2]
 [ext_resource path="res://addons/FracturalVNE/plugin/ui/persistent_data/persistent_data.gd" type="Script" id=3]
 
 [node name="ViaEditorStory" type="Node"]
 
 [node name="ServiceDIContainer" parent="." instance=ExtResource( 2 )]
+services_holder_path = NodePath(".")
 
 [node name="EditorFracVNEPersistentData" type="Node" parent="ServiceDIContainer"]
 script = ExtResource( 3 )

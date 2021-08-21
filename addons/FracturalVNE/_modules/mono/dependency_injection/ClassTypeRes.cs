@@ -5,7 +5,7 @@ namespace Fractural
 {
 	public interface IClassTypeRes
 	{
-		Type DependencyType { get; }
+		Type Type { get; }
 	}
 
 	/// <summary>
@@ -18,6 +18,6 @@ namespace Fractural
 	/// <typeparam name="T"></typeparam>
 	public class ClassTypeRes<T> : Resource, IClassTypeRes
 	{
-		public Type DependencyType => typeof(T);
+		public Type Type => typeof(T);
 	}
 }

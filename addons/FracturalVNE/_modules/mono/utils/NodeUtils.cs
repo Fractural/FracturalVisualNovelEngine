@@ -14,6 +14,28 @@ namespace Fractural.Utils
 	public static class NodeUtils
 	{
 		/// <summary>
+		/// Checks if a given node is currently in the
+		/// editor scene tab.
+		/// This has only been tested in Godot v3.3.2.
+		/// </summary>
+		/// <param name="node">Node being checked</param>
+		/// <returns>True if the Node has the editor's scene tab as one of its parents.</returns>
+		public static bool IsInEditorSceneTab(Node node)
+		{
+			if (Engine.EditorHint)
+			{
+				while (node.GetParent() != null)
+				{
+					node = node.GetParent();
+					// Only tested to work on Godot 3.3
+					if (node.Name == "@@5903")
+						return true;
+				}
+			}
+			return false;
+		}
+
+		/// <summary>
 		/// Reparents "node" to have "newParent" as it's parent.
 		/// </summary>
 		/// <param name="node">Node being reparented</param>

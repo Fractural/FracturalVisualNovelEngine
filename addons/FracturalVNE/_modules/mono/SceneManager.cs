@@ -8,29 +8,20 @@ namespace Fractural
 	// Manages transitions between scenes.
 	public class SceneManager : Node
 	{
-		public class SceneLoadedArgs : EventArgs
-		{
-			public Node Scene { get; set; }
-		}
-
-		public class SceneReadiedArgs : EventArgs
-		{
-			public Node Scene { get; set; }
-		}
+		[Signal]
+		public delegate void SceneLoaded(Node loadedScene);
 
 		[Signal]
-		public delegate void SceneLoadedSignal(Node loadedScene);
-		public event EventHandler<SceneLoadedArgs> SceneLoaded;
-
-		[Signal]
-		public delegate void SceneReadiedSignal(Node readiedScene);
-		public event EventHandler<SceneReadiedArgs> SceneReadied;
+		public delegate void SceneReadied(Node readiedScene);
 
 		[Export]
-		public PackedScene InitialScene { get; set; }
+		public bool IsSelfContained { get; set; }
 
 		[Export]
 		public bool AutoLoadInititalScene { get; set; }
+
+		[Export]
+		public PackedScene InitialScene { get; set; }
 
 		public override void _Ready()
 		{
@@ -50,12 +41,12 @@ namespace Fractural
 
 			Node instance = scene.Instance();
 
-			OnSceneLoaded(new SceneLoadedArgs { Scene = instance});
+			EmitSignal(nameof(SceneLoaded), instance);
 
 			GetTree().Root.AddChild(instance);
 			GetTree().CurrentScene = instance;
 
-			OnSceneReadied(new SceneReadiedArgs { Scene = instance});
+			EmitSignal(nameof(SceneReadied), instance);
 		}
 
 		public void TransitionToScene(PackedScene scene)
@@ -67,18 +58,6 @@ namespace Fractural
 		public void GotoScene(String scene_path)
 		{
 			GotoScene(ResourceLoader.Load<PackedScene>(scene_path));
-		}
-
-		protected void OnSceneLoaded(SceneLoadedArgs args)
-		{
-			EmitSignal(nameof(SceneReadiedSignal));
-			SceneLoaded?.Invoke(this, args);
-		}
-
-		protected void OnSceneReadied(SceneReadiedArgs args)
-		{
-			EmitSignal(nameof(SceneLoadedSignal));
-			SceneReadied?.Invoke(this, args);
 		}
 	}
 }

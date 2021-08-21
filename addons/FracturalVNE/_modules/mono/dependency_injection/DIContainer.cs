@@ -18,8 +18,6 @@ namespace Fractural.DependencyInjection
 
 		[Export]
 		private NodePath sceneManagerPath;
-		[Export]
-		private NodePath dependenciesHolderPath;
 
 		public override async void _Ready()
 		{

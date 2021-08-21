@@ -6,13 +6,14 @@ namespace Fractural.Information
 {
 	public struct VersionInfo
 	{
-		public VersionInfo(string versionString)
-		{
-			int[] info = versionString.Split('.').Select(x => int.Parse(x)).ToArray();
+		public VersionInfo(string versionString) : this(
+			versionString.Split('.').Select(x => int.Parse(x)).ToArray()) { }
 
+		public VersionInfo(int[] info)
+		{
 			Major = info.Length >= 1 ? info[0] : 0;
 			Minor = info.Length >= 2 ? info[1] : 0;
-			Patch = info.Length >= 3 ? info[2] : 0;
+			Patch = info.Length >= 3 ? info[2] : 0;		
 		}
 
 		public VersionInfo(int major, int minor, int patch)
@@ -28,7 +29,7 @@ namespace Fractural.Information
 
 		public override string ToString()
 		{
-			return $"v{Major}.{Minor}.{Patch}";
+			return $"{Major}.{Minor}.{Patch}";
 		}
 
 		public override bool Equals(object obj)

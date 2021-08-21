@@ -378,11 +378,10 @@ static func try_inject_dependency(dependency, loaded_scene: Node):
 static func is_in_editor_scene_tab(node):
 	if Engine.is_editor_hint():
 		# Only tested so far to work on Godot 3.3
-		if node == null:
-			return false
-		elif node.name == "@@5903":
-			return true
-		return is_in_editor_scene_tab(node.get_parent())
+		while node.get_parent() != null:
+			node = node.get_parent()
+			if node.name == "@@5903":
+				return true
 	return false
 
 # ----- Editor ----- #

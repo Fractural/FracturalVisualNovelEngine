@@ -1,9 +1,4 @@
-using System.Security.AccessControl;
-using System.Runtime.Serialization;
-using System.Runtime.InteropServices;
-using System.Threading.Tasks.Dataflow;
-using System.Linq;
-using System.Diagnostics;
+using System.Collections.ObjectModel;
 using System;
 using Godot;
 using Fractural.Utils;
@@ -34,11 +29,48 @@ namespace Fractural.Plugin.AssetsRegistry
 		T LoadAsset<T>(T asset) where T : class;
 	}
 
-	public class AssetProcessingAssetsRegistry : IAssetsRegistry
+	/// <summary>
+	/// Used for stanalone builds, where the scale is set
+	/// by the developer.
+	/// </summary>
+	public class DefaultAssetsRegistry : IAssetsRegistry
 	{
 		public float Scale { get; set; } = 1;
-		public Dictionary<object, object> LoadedAssets { get; private set; }
-		public List<AssetProcessor> Processors;
+		public Dictionary<object, object> LoadedAssets { get; private set; } = new Dictionary<object, object>();
+		private List<AssetProcessor> processors;
+
+		public DefaultAssetsRegistry()
+		{
+			processors = new List<AssetProcessor> {
+				new TextureProcessor(this),
+				new DynamicFontProcessor(this),
+			};
+		}
+
+		public DefaultAssetsRegistry(List<AssetProcessor> processors)
+		{
+			this.processors = processors;
+
+			// Prime each processor for use.
+			foreach (AssetProcessor processor in this.processors)
+				processor.AssetsRegistry = this;
+		}
+
+		public void AddAssetProcessor(AssetProcessor processor)
+		{
+			processor.AssetsRegistry = this;
+			processors.Add(processor);
+		}
+
+		public bool RemoveAssetProcessor(AssetProcessor processor)
+		{
+			return processors.Remove(processor);
+		}
+		
+		public ReadOnlyCollection<AssetProcessor> GetAssetProcessors()
+		{
+			return new ReadOnlyCollection<AssetProcessor>(processors);
+		}
 
 		public T LoadAsset<T>(string path) where T : class
 		{
@@ -49,7 +81,7 @@ namespace Fractural.Plugin.AssetsRegistry
 		{
 			if (LoadedAssets.ContainsKey(asset))
 				return (T) LoadedAssets[asset];
-			foreach (AssetProcessor processor in Processors)
+			foreach (AssetProcessor processor in processors)
 			{
 				if (processor.CanProcess(asset))
 				{
@@ -63,6 +95,11 @@ namespace Fractural.Plugin.AssetsRegistry
 		}
 	}
 
+	#if TOOLS
+	/// <summary>
+	/// Used in the editor, where the scale is retreived
+	/// from the editor's settings.
+	/// </summary>
 	public class EditorAssetsRegistry : IAssetsRegistry
 	{
 		const string PluginAbsolutePathPrefix = "res://addons/FracturalVNE";
@@ -81,9 +118,11 @@ namespace Fractural.Plugin.AssetsRegistry
 					if (cachedEditorScale == -1)
 					{
 						if (EngineUtils.CurrentVersionInfo >= "3.1")
-							return CalculateCurrentEditorScale_3_0();
+							throw new NotImplementedException("Uncomment to add support for Godot 3.1");
+							//return CalculateCurrentEditorScale_3_0();
 						else if (EngineUtils.CurrentVersionInfo >= "3.0")
-							return CalculateCurrentEditorScale_3_1();
+							throw new NotImplementedException("Uncomment to add support for Godot 3.0");
+							//return CalculateCurrentEditorScale_3_1();
 						else
 						{
 							GD.PushError($"Could not fetch editor scale for the current Godot version. ({EngineUtils.CurrentVersionInfo})");
@@ -96,14 +135,30 @@ namespace Fractural.Plugin.AssetsRegistry
 			}
 		}
 
-		private IAssetsRegistry assetsRegistry;
+		private DefaultAssetsRegistry assetsRegistry = new DefaultAssetsRegistry();
 
-		public EditorAssetsRegistry(IAssetsRegistry assetsRegistry, EditorPlugin plugin)
+		public EditorAssetsRegistry(EditorPlugin plugin)
 		{
 			this.plugin = plugin;
-			this.assetsRegistry = assetsRegistry;
+		}
+
+		public T LoadAsset<T>(string path) where T : class
+		{
+			assetsRegistry.Scale = Scale;
+			return assetsRegistry.LoadAsset<T>(path);
+		}
+
+		public T LoadAsset<T>(T asset) where T : class
+		{
+			assetsRegistry.Scale = Scale;
+			return assetsRegistry.LoadAsset<T>(asset);
 		}
 		
+		// Uncomment to add support for older versions.
+		// Godot doesn't have preprocessor defines
+		// for different engine versions so I'm leaving
+		// it up to the devs to configure this manually...
+		/*
 		private float CalculateCurrentEditorScale_3_0()
 		{
 			EditorSettings editorSettings = plugin.GetEditorInterface().GetEditorSettings();
@@ -167,5 +222,7 @@ namespace Fractural.Plugin.AssetsRegistry
 					return 1;
 			}
 		}
+		*/
 	}
+	#endif
 }

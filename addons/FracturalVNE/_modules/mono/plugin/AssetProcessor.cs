@@ -4,20 +4,22 @@ using System.Collections.Generic;
 
 namespace Fractural.Plugin.AssetsRegistry
 {
-	public abstract class AssetProccessor
+	public abstract class AssetProcessor
 	{
 		public IAssetsRegistry AssetsRegistry { get; set; }
 
 		public abstract bool CanProcess(object asset);
 		public abstract object Process(object asset);
 		
-		public AssetProccessor(IAssetsRegistry assetsRegistry)
+		public AssetProcessor() {}
+
+		public AssetProcessor(IAssetsRegistry assetsRegistry)
 		{
 			AssetsRegistry = assetsRegistry;
 		}
 	}
 
-	public class DynamicFontProcessor : AssetProccessor
+	public class DynamicFontProcessor : AssetProcessor
 	{
 		public DynamicFontProcessor(IAssetsRegistry assetsRegistry) : base(assetsRegistry) {}
 		
@@ -35,7 +37,7 @@ namespace Fractural.Plugin.AssetsRegistry
 		}
 	}
 
-	public class TextureProcessor : AssetProccessor
+	public class TextureProcessor : AssetProcessor
 	{
 		public TextureProcessor(IAssetsRegistry assetsRegistry) : base(assetsRegistry) {}
 		

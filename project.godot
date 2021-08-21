@@ -165,7 +165,7 @@ window/stretch/aspect="expand"
 
 [editor_plugins]
 
-enabled=PoolStringArray( "res://addons/FracturalVNE/plugin.cfg", "res://addons/MonoCustomResourceRegistry/plugin.cfg", "res://addons/NodeDependencies/plugin.cfg", "res://addons/WAT/plugin.cfg" )
+enabled=PoolStringArray( "res://addons/FracturalVNE/plugin.cfg", "res://addons/WAT/plugin.cfg" )
 
 [global]
 
