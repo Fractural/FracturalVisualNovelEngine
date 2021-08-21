@@ -22,6 +22,9 @@ var assets_registry
 var persistent_data
 var persistent_data_defaults_loader
 
+# Holds optional extensions for this plugin.
+var plugin_extensions = []
+
 
 func _init():
 	assets_registry = AssetsRegistry.new(self)
@@ -39,6 +42,8 @@ func _init():
 	#
 	# We force a ready in order to let the data load
 	persistent_data._ready()
+	
+	_load_plugin_extensions()
 
 
 func _enter_tree():
@@ -83,8 +88,28 @@ func _exit_tree():
 	FracUtils.try_free(assets_registry)
 
 
+func _load_plugin_extensions():
+	# ----- Mono ----- #
+	
+	load_plugin_extension("res://addons/FracturalVNE/mono/PluginExtension.cs")
+	
+	# ----- Mono ----- #
+
+
 func _setup_inspector_plugins():
 	add_custom_inspector_plugin(load("res://addons/FracturalVNE/core/utils/signals/signal_connector_inspector.gd").new())
+
+
+func load_plugin_extension(extension_path: String):
+	var file = File.new()
+	if not file.file_exists(extension_path):
+		return
+	var extension = ResourceLoader.load(extension_path)
+	if extension == null:
+		return
+	
+	print("FracVNE: Loaded plugin extension -> \"%s\"" % extension_path)
+	plugin_extensions.append(extension.new(self))
 
 
 func add_custom_inspector_plugin(instance: EditorInspectorPlugin):

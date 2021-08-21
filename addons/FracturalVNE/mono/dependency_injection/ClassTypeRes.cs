@@ -1,6 +1,5 @@
 using Godot;
 using System;
-using MonoCustomResourceRegistry;
 
 namespace Fractural
 {
@@ -17,7 +16,7 @@ namespace Fractural
 	/// Only one ClassTypeRes should exist for each C# class.
 	/// </summary>
 	/// <typeparam name="T"></typeparam>
-	public class ClassTypeRes<T> : Resource, IRegisteredResource, IClassTypeRes
+	public class ClassTypeRes<T> : Resource, IClassTypeRes
 	{
 		public Type DependencyType => typeof(T);
 	}

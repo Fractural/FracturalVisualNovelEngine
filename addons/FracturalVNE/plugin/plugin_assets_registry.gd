@@ -43,7 +43,7 @@ func load_asset(asset):
 		if loaded_editor_assets.has(asset):
 			return loaded_editor_assets[asset]
 		else:
-			if asset is Font:
+			if asset is DynamicFont:
 				loaded_editor_assets[asset] = _load_scaled_font(asset)
 				return loaded_editor_assets[asset]
 			elif asset is Texture:
@@ -61,7 +61,7 @@ func _load_scaled_texture(texture: Texture) -> Texture:
 	
 	return scaled_texture 
 
-func _load_scaled_font(font: Font) -> DynamicFont:
+func _load_scaled_font(font: DynamicFont) -> DynamicFont:
 	var duplicate = font.duplicate()
 	duplicate.size *= get_editor_scale()
 	return duplicate
@@ -113,7 +113,7 @@ func _calculate_current_editor_scale_3_1():
 func _calculate_current_editor_scale_3_0():
 	var editor_settings = plugin.get_editor_interface().get_editor_settings()
 	
-	var dpi_mode = editor_settings.get_settings("interface/editor/hidpi_mode")
+	var dpi_mode = editor_settings.get_setting("interface/editor/hidpi_mode")
 	
 	match dpi_mode:
 		0:
@@ -130,3 +130,5 @@ func _calculate_current_editor_scale_3_0():
 			return 1.5
 		4:
 			return 2.0
+		_:
+			return 1.0

@@ -1,12 +1,11 @@
 using Godot;
 using System;
-using MonoCustomResourceRegistry;
 using Fractural.Utils;
 
 namespace Fractural.DependencyInjection
 {
 	[Tool]
-	public class Dependency : Node, IRegisteredResource
+	public class Dependency : Node
 	{
 		[Export]
 		private Resource classTypeRes;
