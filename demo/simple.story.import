@@ -1,0 +1,12 @@
+[remap]
+
+importer="FracVNE.story"
+path="res://.import/simple.story-b69799d125e4a8748331dca7c3ba1113.res"
+
+[deps]
+
+source_file="res://demo/simple.story"
+dest_files=[ "res://.import/simple.story-b69799d125e4a8748331dca7c3ba1113.res" ]
+
+[params]
+

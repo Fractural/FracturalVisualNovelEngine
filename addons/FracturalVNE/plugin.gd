@@ -11,6 +11,7 @@ const AssetsRegistry: Script = preload("plugin/plugin_assets_registry.gd")
 const PluginUIScene: PackedScene = preload("plugin/ui/plugin_ui.tscn")
 
 var inspector_plugins = []
+var import_plugins = []
 
 var plugin_ui: PluginUI
 var backup_ui
@@ -55,6 +56,7 @@ func _enter_tree():
 	
 	inspector_plugins = []
 	_setup_inspector_plugins()
+	_setup_import_plugins()
 	
 	push_warning("""
 
@@ -79,6 +81,8 @@ func _exit_tree():
 	
 	for inspector_plugin in inspector_plugins:
 		remove_inspector_plugin(inspector_plugin)
+	for import_plugin in import_plugins:
+		remove_import_plugin(import_plugin)
 	
 	FracUtils.try_free(assets_registry)
 
@@ -87,11 +91,21 @@ func _setup_inspector_plugins():
 	add_custom_inspector_plugin(load("res://addons/FracturalVNE/core/utils/signals/signal_connector_inspector.gd").new())
 
 
+func _setup_import_plugins():
+	add_custom_import_plugin(load("res://addons/FracturalVNE/plugin/import_plugins/story_import_plugin.gd").new())
+	add_custom_import_plugin(load("res://addons/FracturalVNE/plugin/import_plugins/storyscript_import_plugin.gd").new())
+
+
 func add_custom_inspector_plugin(instance: EditorInspectorPlugin):
 	if instance.has_method("_setup_editor_assets"):
 		instance._setup_editor_assets(assets_registry)
 	add_inspector_plugin(instance)
 	inspector_plugins.append(instance)
+
+
+func add_custom_import_plugin(instance: EditorImportPlugin):
+	add_import_plugin(instance)
+	import_plugins.append(instance)
 
 
 func has_main_screen():
