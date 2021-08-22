@@ -15,3 +15,6 @@ data_*/
 
 # Builds
 builds/
+
+# Plugin releases
+releases/
