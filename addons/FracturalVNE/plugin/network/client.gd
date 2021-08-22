@@ -5,15 +5,19 @@ const FracUtils = FracVNE.Utils
 const IPAddress: String = "127.0.0.1"
 
 export var story_runner_path: NodePath
+export var service_di_container_path: NodePath
 export var dep__persistent_data_path: NodePath
 
 var _client: NetworkedMultiplayerENet
 
-onready var story_runner 	= FracUtils.get_valid_node_or_dep(self, story_runner_path, 	story_runner)
+onready var story_runner = get_node(story_runner_path)
+onready var service_di_container = get_node(service_di_container_path)
 onready var persistent_data = FracUtils.get_valid_node_or_dep(self, dep__persistent_data_path, persistent_data)
 
 
 func _ready() -> void:
+	service_di_container.connect("readied", self, "_on_container_ready")
+	story_runner.connect("story_closed", self, "_on_story_closed")
 	join()
 
 
@@ -26,10 +30,17 @@ func join() -> void:
 	custom_multiplayer.connect("connection_failed", self, "_on_connection_failed")
 	custom_multiplayer.network_peer = _client
 	
-	# Use the persistent data to launch
-	story_runner.run(persistent_data.current_saved_story_path)
 	OS.window_size = persistent_data.via_editor_window_size
 	get_tree().root.connect("size_changed", self, "_on_viewport_size_changed")
+
+
+func _on_container_ready():
+	# Use the persistent data to launch
+	story_runner.run(persistent_data.current_saved_story_path)
+
+
+func _on_story_closed():
+	get_tree().quit()
 
 
 func _on_viewport_size_changed():

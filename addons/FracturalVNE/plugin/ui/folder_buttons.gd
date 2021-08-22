@@ -37,5 +37,5 @@ func run_main():
 			story_script_editor.compile_script(script_path)
 			# compile_script() compiles the data into the same folder
 			story_script_editor.run_compiled_script(script_path.replace(".storyscript", ".story"))
-			break
+			return
 	push_warning("No main script found! Make sure you have a \"main.storyscript\" file somewhere in the directory.")

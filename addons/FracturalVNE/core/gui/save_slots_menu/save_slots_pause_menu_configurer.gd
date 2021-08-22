@@ -14,6 +14,7 @@ onready var pause_menu = get_node(pause_menu_path)
 onready var story_state_manager = FracUtils.get_valid_node_or_dep(self, dep__story_state_manager_path, story_state_manager)
 
 
+var _post_readied: bool = false
 func _post_ready():
 	story_state_manager.connect("state_saved", self, "_on_state_saved")
 	save_slots_menu.connect("picked_saved_state", self, "_on_picked_saved_state")

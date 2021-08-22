@@ -2,6 +2,8 @@ extends Reference
 # Static utility class for general purpose functions.
 
 
+# ----- Typeable ----- #
+
 # A constant that maps the type ID to the string for it's name.
 # we won't need to include TYPE_OBJECT since we will handle it differently.
 const TYPE_TO_STR_MAPPING = {
@@ -63,7 +65,6 @@ const STR_TO_TYPE_MAPPING = {
 	"PoolVector3Array": TYPE_VECTOR3_ARRAY,
 	"PoolColorArray": TYPE_COLOR_ARRAY,
 }
-
 
 # Gives the type of an object.
 static func get_type_name(object):
@@ -157,6 +158,10 @@ static func _try_custom_cast_builtin(object, type):
 			pass
 	return null
 
+# ----- Typeable ----- #
+
+
+# ----- Equitable ----- #
 
 # Checks if two values are the same 
 static func equals(value, other_value) -> bool:
@@ -189,14 +194,28 @@ static func property_equals(object, property: String, value) -> bool:
 	# The property does not exist
 	return false
 
+# ----- Equitable ----- #
+
+
+
+# ----- Node ----- #
 
 # Reparents a node to a new_parent and returns
 # the original parent..
-static func reparent(node: Node, new_parent: Node):
+static func reparent(node: Node, new_parent: Node) -> Node:
 	var original = node.get_parent()
 	node.get_parent().remove_child(node)
 	new_parent.add_child(node)
 	return original
+
+
+# Checks if target_node has a parent
+static func has_parent(target_node: Node, parent: Node) -> bool:
+	if target_node.get_parent() == null:
+		return false
+	if target_node.get_parent() == parent:
+		return true
+	return has_parent(target_node.get_parent(), parent)
 
 
 # Attempts to free an object.
@@ -228,6 +247,31 @@ static func try_free(object):
 			return true
 	return false
 
+
+static func get_singleton_from_tree(tree: SceneTree, name: String):
+	if tree.root.has_node(name):
+		return tree.root.get_node(name)
+	return null
+
+
+static func add_singleton_to_tree(tree: SceneTree, node: Node, name: String = ""):
+	if name == "":
+		name = node.name
+	else:
+		node.name = name
+	
+	if not tree.root.has_node(name):
+		tree.root.add_child(node)
+
+
+static func remove_singleton_from_tree(tree: SceneTree, name: String):
+	if tree.root.has_node(name):
+		tree.root.get_node(name).queue_free()
+
+# ----- Node ----- #
+
+
+# ----- String ----- #
 
 # Snakecase conversions sou/rce:
 # https://gist.github.com/me2beats/443b40ba79d5b589a96a16c565952419
@@ -280,27 +324,10 @@ static func pascal2snake(string: String) -> String:
 	result[0] = result[0][1]
 	return result.join('')
 
-
-static func get_singleton_from_tree(tree: SceneTree, name: String):
-	if tree.root.has_node(name):
-		return tree.root.get_node(name)
-	return null
+# ----- String ----- #
 
 
-static func add_singleton_to_tree(tree: SceneTree, node: Node, name: String = ""):
-	if name == "":
-		name = node.name
-	else:
-		node.name = name
-	
-	if not tree.root.has_node(name):
-		tree.root.add_child(node)
-
-
-static func remove_singleton_from_tree(tree: SceneTree, name: String):
-	if tree.root.has_node(name):
-		tree.root.get_node(name).queue_free()
-
+# ----- Dependency Injection ----- #
 
 # A substitute for get_node that also supports Dependencies
 # and values injected before ready is called.
@@ -341,19 +368,26 @@ static func try_inject_dependency(dependency, loaded_scene: Node):
 			requester.dependency = dependency
 			break
 
+# ----- Dependency Injection ----- #
+
+
+# ----- Editor ----- #
 
 # Checks if a given node is currently in the editor scene tab.
 # This has only been tested in Godot v3.3.2.
 static func is_in_editor_scene_tab(node):
 	if Engine.is_editor_hint():
 		# Only tested so far to work on Godot 3.3
-		if node == null:
-			return false
-		elif node.name == "@@5903":
-			return true
-		return is_in_editor_scene_tab(node.get_parent())
+		while node.get_parent() != null:
+			node = node.get_parent()
+			if node.name == "@@5903":
+				return true
 	return false
 
+# ----- Editor ----- #
+
+
+# ----- FileSystem ----- #
 
 # Gets all the files in a directory. See get_dir_contents() for more information
 # about the parameters for this method since they are the same for both methods.
@@ -426,3 +460,5 @@ static func _add_dir_contents(dir: Directory, files: Array, directories: Array, 
 		file_name = dir.get_next()
 
 	dir.list_dir_end()
+
+# ----- FileSystem ----- #

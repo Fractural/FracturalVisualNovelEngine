@@ -39,7 +39,7 @@ func save_current_state(save_slot_id: int):
 
 	var state = SaveState.new(story_manager.story_file_path, story_director.curr_stepped_node.reference_id, serialized_state, thumbnail)
 	
-	save_manager.save_state(state, save_slot_id)
+	save_manager.save_state_to_slot(state, save_slot_id)
 	
 	story_director.release_queued_overridden_steps()
 	

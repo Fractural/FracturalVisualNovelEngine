@@ -31,6 +31,7 @@ onready var reference_registry = get_node(reference_registry_path)
 onready var text_printer_manager = get_node(text_printer_manager_path)
 
 
+var _post_readied: bool = false
 func _post_ready():
 	function_definitions = [
 		FuncDef.new("Character", [

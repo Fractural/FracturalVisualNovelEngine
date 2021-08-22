@@ -23,6 +23,9 @@ var assets_registry
 var persistent_data
 var persistent_data_defaults_loader
 
+# Holds optional modules for this plugin.
+var plugin_modules = []
+
 
 func _init():
 	assets_registry = AssetsRegistry.new(self)
@@ -57,18 +60,15 @@ func _enter_tree():
 	inspector_plugins = []
 	_setup_inspector_plugins()
 	_setup_import_plugins()
+	_load_plugin_modules()
 	
-	push_warning("""
+# Not using ASCII art since it takes up too much space in the console
+# 888888 88""Yb    db     dP""b8     Yb    dP 88b 88 888888 
+# 88__   88__dP   dPYb   dP   `"      Yb  dP  88Yb88 88__   
+# 88""   88"Yb   dP__Yb  Yb            YbdP   88 Y88 88""   
+# 88     88  Yb dP"\"""Yb  YboodP        YP    88  Y8 888888 
 
-888888 88""Yb    db     dP""b8     Yb    dP 88b 88 888888 
-88__   88__dP   dPYb   dP   `"      Yb  dP  88Yb88 88__   
-88""   88"Yb   dP__Yb  Yb            YbdP   88 Y88 88""   
-88     88  Yb dP"\"""Yb  YboodP        YP    88  Y8 888888 
-
-https://github.com/Fractural/FracturalVisualNovelEngine
-
-You may change any setting for Fractural VNE by clicking the "Settings" button in the story script editor or by editing "FracturalVNE/editor_persistent_data.json"
-""")
+	push_warning("You may change any setting for Fractural VNE by clicking the \"Settings\" button in the story script editor or by editing \"FracturalVNE/editor_persistent_data.json\"")
 
 
 func _ready() -> void:
@@ -87,8 +87,28 @@ func _exit_tree():
 	FracUtils.try_free(assets_registry)
 
 
+func _load_plugin_modules():
+	# ----- Mono ----- #
+	
+	load_plugin_module("res://addons/FracturalVNE/_modules/mono/PluginModule.cs")
+	
+	# ----- Mono ----- #
+
+
 func _setup_inspector_plugins():
 	add_custom_inspector_plugin(load("res://addons/FracturalVNE/core/utils/signals/signal_connector_inspector.gd").new())
+
+
+func load_plugin_module(module_path: String):
+	var file = File.new()
+	if not file.file_exists(module_path):
+		return
+	var module = ResourceLoader.load(module_path)
+	if module == null:
+		return
+	
+	print("FracVNE: Loaded plugin module -> \"%s\"" % module_path)
+	plugin_modules.append(module.new(self))
 
 
 func _setup_import_plugins():

@@ -2,7 +2,7 @@ extends Script
 
 static func write(results, time: float = 0.0) -> void:
 	if not ProjectSettings.has_setting("WAT/Results_Directory"):
-		print("cannot find directory")
+		("cannot find directory")
 		return
 	var path: String = ProjectSettings.get_setting("WAT/Results_Directory")
 	if not Directory.new().dir_exists(path):

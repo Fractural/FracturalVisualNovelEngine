@@ -12,7 +12,7 @@ static func initialize() -> void:
 	_add_setting("Port", TYPE_INT, 6008)
 	
 	# DEFAULT LAUNCH IS A REDUNDANT SETTING. DELETE IT.
-	#_add_setting("Default_Launch", TYPE_INT, 0, PROPERTY_HINT_ENUM, "Launch via Editor, Launch In Editor")
+	# _add_setting("Default_Launch", TYPE_INT, 0, PROPERTY_HINT_ENUM, "Launch via Editor, Launch In Editor")
 	_add_setting("Tags", TYPE_STRING_ARRAY, PoolStringArray())
 	_add_setting("Run_All_Tests", TYPE_OBJECT, InputEventKey.new())
 	

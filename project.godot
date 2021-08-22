@@ -17,7 +17,7 @@ _global_script_classes=[ {
 "base": "Reference",
 "class": "FracVNE",
 "language": "GDScript",
-"path": "res://addons/FracturalVNE/core/namespace.gd"
+"path": "res://addons/FracturalVNE/namespace.gd"
 }, {
 "base": "Resource",
 "class": "FracVNE_BGScene",
@@ -125,6 +125,13 @@ _global_script_class_icons={
 Display=9
 Port=6010
 
+[MonoCustomResourceRegistry]
+
+ClassPrefix=""
+SearchType=0
+ResourceScriptDirectories=[ "res://" ]
+RefreshCustomResourceOnBuild=true
+
 [WAT]
 
 Test_Directory="res://tests"
@@ -143,7 +150,7 @@ collision/draw_2d_outlines=true
 [application]
 
 config/name="FracturalVisualNovelEngine"
-run/main_scene="res://addons/FracturalVNE/plugin/standalone_story_editor_init.tscn"
+run/main_scene="res://addons/FracturalVNE/standalone_story_editor_init.tscn"
 config/icon="res://icon.png"
 
 [autoload]
