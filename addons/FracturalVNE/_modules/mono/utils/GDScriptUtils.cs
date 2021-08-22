@@ -82,6 +82,42 @@ namespace Fractural.Utils
 			return true;
 		}
 		
-		// The rest of the Utils methods are not
+		/// <summary>
+		/// Getse a property from a Godot Object that is
+		/// casted to a certain type.
+		/// </summary>
+		/// <param name="obj">Object being checked</param>
+		/// <param name="property">Name of the property</param>
+		/// <typeparam name="T">Type to cast the property's value too</typeparam>
+		/// <returns>The value of the property casted to "T"</returns>
+		public static T Get<T>(this Godot.Object obj, string property)
+		{
+			return (T) obj.Get(property);
+		}
+
+		/// <summary>
+		/// Checks if a Godot Object has a property.
+		/// </summary>
+		/// <param name="obj">Object being used</param>
+		/// <param name="property">Name of the property</param>
+		/// <returns>True if the object has the property</returns>
+		public static bool Has(this Godot.Object obj, string property)
+		{
+			return obj.Get(property) != null;
+		}
+
+		/// <summary>
+		/// Calls a method on a Godot Object and returns the 
+		/// result as a certain type.
+		/// </summary>
+		/// <param name="obj">Object being used</param>
+		/// <param name="method">Name of method to call</param>
+		/// <param name="args">Arguments to pass into the method</param>
+		/// <typeparam name="T">Type to cast the result to</typeparam>
+		/// <returns>The result of the method call, casted to "T"</returns>
+		public static T Call<T>(this Godot.Object obj, string method, params object[] args)
+		{
+			return (T) obj.Call(method, args);
+		}
 	}
 }

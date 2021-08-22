@@ -28,7 +28,7 @@ func _ready() -> void:
 		assert(err == OK, "Error occured while opening save directory: " + str(err))
 
 
-func save_state(save_state, save_slot_id: int):
+func save_state_to_slot(save_state, save_slot_id: int):
 	save_slots[save_slot_id] = save_state
 	var save_file = File.new()
 	
