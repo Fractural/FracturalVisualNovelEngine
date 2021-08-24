@@ -1,4 +1,4 @@
-import "res://demo/visuals_testing_definitions.story"
+import "res://demo/testing/testing_definitions.story"
 
 label looped:
 	"Testing show and remove..."

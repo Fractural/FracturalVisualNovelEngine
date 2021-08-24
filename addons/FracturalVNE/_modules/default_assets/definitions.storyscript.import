@@ -1,0 +1,13 @@
+[remap]
+
+importer="FracVNE.storysciprt"
+type="Resource"
+path="res://.import/definitions.storyscript-83158674c0dc69bcd5528909b9ae7837.res"
+
+[deps]
+
+source_file="res://addons/FracturalVNE/_modules/default_assets/definitions.storyscript"
+dest_files=[ "res://.import/definitions.storyscript-83158674c0dc69bcd5528909b9ae7837.res" ]
+
+[params]
+

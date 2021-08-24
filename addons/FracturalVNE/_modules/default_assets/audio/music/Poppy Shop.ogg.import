@@ -1,0 +1,15 @@
+[remap]
+
+importer="ogg_vorbis"
+type="AudioStreamOGGVorbis"
+path="res://.import/Poppy Shop.ogg-99ddbd1d2ff8e010f1b1ec15bfa261f4.oggstr"
+
+[deps]
+
+source_file="res://addons/FracturalVNE/_modules/default_assets/audio/music/Poppy Shop.ogg"
+dest_files=[ "res://.import/Poppy Shop.ogg-99ddbd1d2ff8e010f1b1ec15bfa261f4.oggstr" ]
+
+[params]
+
+loop=true
+loop_offset=0

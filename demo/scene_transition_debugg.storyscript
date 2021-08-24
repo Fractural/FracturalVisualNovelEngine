@@ -1,8 +1,0 @@
-import "res://demo/visuals_testing_definitions.story"
-
-label looped: 
-	"Testing stacked show..."
-	show godette happy with fade_to_black
-	remove godette
-	"Tested remove"
-	jump looped
