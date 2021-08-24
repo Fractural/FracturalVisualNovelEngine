@@ -22,8 +22,8 @@ func _ready() -> void:
 	animation_player.add_animation("Animation", animation)
 
 
-func transition(node_: Node, duration_: float):
-	if not .transition(node_, duration_):
+func transition(node_: Node, duration_: float, does_cleanup_: bool = true):
+	if not .transition(node_, duration_, does_cleanup_):
 		return false
 	
 	original_node_parent = node.get_parent()

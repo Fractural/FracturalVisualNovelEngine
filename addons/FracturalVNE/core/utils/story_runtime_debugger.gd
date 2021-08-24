@@ -3,11 +3,13 @@ extends Node
 
 
 export var story_manager_path: NodePath
+export var story_runner_listener_path: NodePath
 export var quit_button_path: NodePath
 export var error_ui_path: NodePath
 export var error_text_path: NodePath
 
 onready var story_manager: = get_node(story_manager_path)
+onready var story_runner_listener = get_node(story_runner_listener_path)
 onready var quit_button: Button = get_node(quit_button_path)
 onready var error_ui: Control = get_node(error_ui_path)
 onready var error_text: TextEdit = get_node(error_text_path)
@@ -25,4 +27,4 @@ func popup_error(error):
 
 
 func _on_quit_button_pressed():
-	story_manager.quit()
+	story_runner_listener.quit()

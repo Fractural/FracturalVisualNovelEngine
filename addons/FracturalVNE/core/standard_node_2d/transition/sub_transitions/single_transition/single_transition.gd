@@ -26,7 +26,7 @@ var does_cleanup: bool = false
 
 
 # Return false if the transition was stopped prematurely
-func transition(node_: Node, duration_: float, does_cleanup_ = true):
+func transition(node_: Node, duration_: float, does_cleanup_: bool = true):
 	if not _setup_transition(node_, duration_, does_cleanup_):
 		return
 

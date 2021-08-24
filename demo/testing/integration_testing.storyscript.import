@@ -1,6 +1,7 @@
 [remap]
 
 importer="FracVNE.storysciprt"
+type="Resource"
 path="res://.import/integration_testing.storyscript-c52e37717012e318f11ee1d6cc8f5109.res"
 
 [deps]

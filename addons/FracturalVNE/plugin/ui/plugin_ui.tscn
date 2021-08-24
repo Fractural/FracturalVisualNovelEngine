@@ -17,6 +17,7 @@ __meta__ = {
 "_edit_use_anchors_": false
 }
 story_script_editor_path = NodePath("StoryScriptEditor")
+dep__plugin_path = NodePath("Dependencies/PluginDependency")
 
 [node name="Dependencies" type="Node" parent="."]
 

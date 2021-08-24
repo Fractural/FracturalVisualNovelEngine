@@ -1,0 +1,15 @@
+[gd_resource type="Animation" format=2]
+
+[resource]
+resource_name = "shake"
+length = 0.7
+tracks/0/type = "bezier"
+tracks/0/path = NodePath(".:position:x")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/keys = {
+"points": PoolRealArray( 0, -0.25, 0, 0.251079, 77.8541, 0, -0.243483, -116.313, 0.12815, 52.0208, 0, -0.125623, -47.1459, 0.057474, 15.8349, 0, -0.0582289, -6.29138, 0.25, 0 ),
+"times": PoolRealArray( 0, 0.4, 0.6, 0.7 )
+}

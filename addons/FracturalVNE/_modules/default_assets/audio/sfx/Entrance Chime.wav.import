@@ -1,0 +1,21 @@
+[remap]
+
+importer="wav"
+type="AudioStreamSample"
+path="res://.import/Entrance Chime.wav-bced20acfa20cedd45629394802fe60b.sample"
+
+[deps]
+
+source_file="res://addons/FracturalVNE/_modules/default_assets/audio/sfx/Entrance Chime.wav"
+dest_files=[ "res://.import/Entrance Chime.wav-bced20acfa20cedd45629394802fe60b.sample" ]
+
+[params]
+
+force/8_bit=false
+force/mono=false
+force/max_rate=false
+force/max_rate_hz=44100
+edit/trim=false
+edit/normalize=false
+edit/loop=false
+compress/mode=0
