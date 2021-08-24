@@ -4,6 +4,10 @@ extends Node
 # editor.
 
 
+signal saved_script(script_path)
+signal opened_script(script_path)
+signal compiled_script(script_path)
+
 const FracUtils = FracVNE.Utils
 const PluginAssetsRegistry = preload("res://addons/FracturalVNE/plugin/plugin_assets_registry.gd")
 const StoryScriptCompiler = preload("res://addons/FracturalVNE/core/story_script/compiling/story_script_compiler.gd")
@@ -140,6 +144,7 @@ func open_file(file_path) -> bool:
 	
 	set_compiled(false)
 	set_saved(true)
+	emit_signal("opened_script", file_path)
 	return true
 
 
@@ -154,9 +159,10 @@ func save_file_to(file_path) -> bool:
 	set_current_script_path(file_path)
 	file.store_string(script_text_edit.text)
 	file.close()
-	script_browser.refresh_file_display()
+	refresh_file_display()
 	
 	set_saved(true)
+	emit_signal("saved_script", file_path)
 	return true
 
 
@@ -195,6 +201,8 @@ func compile_script(script_path: String):
 		set_compiled(successful)
 		if not successful:
 			printerr("Could not compile due to file saving issues.")
+			return
+		emit_signal("compiled_script", script_path)
 
 
 # Returns true if successful.
@@ -263,6 +271,10 @@ func set_current_script_path(new_value: String) -> void:
 
 func get_current_script_path() -> String:
 	return persistent_data.current_script_path
+
+
+func refresh_file_display() -> void:
+	script_browser.refresh_file_display()
 
 
 func _on_script_text_changed() -> void:
