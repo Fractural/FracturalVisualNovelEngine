@@ -307,12 +307,14 @@ __meta__ = {
 }
 
 [node name="StoryGUIConfigurer" type="CanvasLayer" parent="."]
+pause_mode = 2
 layer = 20
 script = ExtResource( 7 )
 story_loader_path = NodePath("../StoryLoader")
 story_gui_holder_path = NodePath(".")
 
 [node name="BasicGUI" parent="StoryGUIConfigurer" instance=ExtResource( 4 )]
+pause_mode = 2
 
 [node name="StoryDirectorDependency" parent="StoryGUIConfigurer/BasicGUI/Dependencies" index="0"]
 dependency_path = NodePath("../../../../StoryLoader/StoryServices/StoryDirector")
@@ -344,6 +346,9 @@ margin_right = 824.0
 
 [node name="DialogueTextReveal" parent="StoryGUIConfigurer/BasicGUI/Panel/VBoxContainer/TextPrinterHolder/BasicTextPrinter/Holder/Panel/MarginContainer/HSeparator" index="1"]
 margin_right = 824.0
+
+[node name="Quit" parent="StoryGUIConfigurer/BasicGUI/BasicPauseMenu/VSplitContainer/HSplitContainer/VSplitContainer/SideButtons" index="4"]
+pause_mode = 2
 
 [node name="FullTransition" type="CanvasLayer" parent="."]
 layer = 40
@@ -385,6 +390,7 @@ __meta__ = {
 textured_node_path = NodePath(".")
 
 [node name="StoryRuntimeDebugger" type="CanvasLayer" parent="."]
+pause_mode = 2
 layer = 100
 script = ExtResource( 11 )
 story_manager_path = NodePath("../StoryManager")
@@ -394,6 +400,7 @@ error_ui_path = NodePath("ErrorUI")
 error_text_path = NodePath("ErrorUI/Panel/MarginContainer/VSplitContainer/ErrorText")
 
 [node name="ErrorUI" type="Control" parent="StoryRuntimeDebugger"]
+pause_mode = 2
 visible = false
 anchor_right = 1.0
 anchor_bottom = 1.0
@@ -449,7 +456,7 @@ text = "Error"
 [node name="ErrorText" type="TextEdit" parent="StoryRuntimeDebugger/ErrorUI/Panel/MarginContainer/VSplitContainer"]
 margin_top = 54.0
 margin_right = 784.0
-margin_bottom = 316.0
+margin_bottom = 283.0
 size_flags_horizontal = 3
 size_flags_vertical = 3
 custom_fonts/font = ExtResource( 13 )
@@ -459,9 +466,9 @@ wrap_enabled = true
 
 [node name="QuitButton" type="Button" parent="StoryRuntimeDebugger/ErrorUI/Panel/MarginContainer/VSplitContainer"]
 margin_left = 292.0
-margin_top = 320.0
+margin_top = 287.0
 margin_right = 492.0
-margin_bottom = 360.0
+margin_bottom = 327.0
 rect_min_size = Vector2( 200, 40 )
 size_flags_horizontal = 4
 text = "Quit"

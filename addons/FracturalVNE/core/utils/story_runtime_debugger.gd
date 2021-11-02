@@ -27,4 +27,5 @@ func popup_error(error):
 
 
 func _on_quit_button_pressed():
+	print("_on_quit_button_pressed")
 	story_runner_listener.quit()
