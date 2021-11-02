@@ -25,7 +25,7 @@ define cross_fade = load("res://addons/FracturalVNE/_modules/default_assets/tran
 define hop = load("res://addons/FracturalVNE/_modules/default_assets/animations/hop.tres")
 
 # ----- Curves ----- #
-define linear = load("res://addons/FractualVNE/_modules/default_assets/curves/linear.tres")
+define linear = load("res://addons/FracturalVNE/_modules/default_assets/curves/linear.tres")
 define ease_in = load("res://addons/FracturalVNE/_modules/default_assets/curves/ease_in.tres")
 define ease_out = load("res://addons/FracturalVNE/_modules/default_assets/curves/ease_out.tres")
 define smooth_step = load("res://addons/FracturalVNE/_modules/default_assets/curves/smooth_step.tres")

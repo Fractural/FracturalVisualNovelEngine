@@ -452,7 +452,7 @@ static func _add_dir_contents(dir: Directory, files: Array, directories: Array, 
 						# Only .import files are available in the exported builds,
 						# therefore we have to look for those instead.
 						path = path.trim_suffix(".import")
-					if file_extension == path.get_extension():
+					if not files.has(path) and file_extension == path.get_extension():
 						# print("Found file: %s" % path)
 						files.append(path)
 						break

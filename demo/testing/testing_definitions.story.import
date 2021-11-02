@@ -1,0 +1,13 @@
+[remap]
+
+importer="FracVNE.story"
+type="Resource"
+path="res://.import/testing_definitions.story-c2892b04d38d57fa09260d64631929f0.res"
+
+[deps]
+
+source_file="res://demo/testing/testing_definitions.story"
+dest_files=[ "res://.import/testing_definitions.story-c2892b04d38d57fa09260d64631929f0.res" ]
+
+[params]
+

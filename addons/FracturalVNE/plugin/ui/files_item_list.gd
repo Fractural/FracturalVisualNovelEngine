@@ -53,7 +53,7 @@ func refresh(selected_file_path: String = ""):
 		var file_name = file_path.get_file()
 		if _can_show_item(file_name):
 			add_item(file_name, _get_file_icon(file_path))
-			set_item_metadata(get_item_count() - 1, file_path)	
+			set_item_metadata(get_item_count() - 1, file_path)
 			if selected_file_path == file_path:
 				select(get_item_count() - 1, true)
 
