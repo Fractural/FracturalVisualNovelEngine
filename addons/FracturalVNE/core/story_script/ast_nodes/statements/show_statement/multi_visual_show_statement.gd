@@ -23,18 +23,15 @@ func _init(position_ = null, actor_ = null, modifiers_string_ = null, transition
 func _run_show_transition(transition_result):
 	var actor_result = SSUtils.evaluate_and_cast(actor, "MultiVisual")
 	if not SSUtils.is_success(actor_result):
-		throw_error(stack_error(actor_result, "Could not evaluate the multi visual for the multi visual show statement."))
-		return
+		return stack_error(actor_result, "Could not evaluate the multi visual for the multi visual show statement.")
 	
 	if modifiers_string != null:
 		var actor_controller = get_runtime_block().get_service("VisualManager").get_or_load_visual_controller(actor_result)
 		if not SSUtils.is_success(actor_controller):
-			throw_error(stack_error(actor_controller, "Could not load MultiVisualController."))
-			return
+			return stack_error(actor_controller, "Could not load MultiVisualController.")
 		var result = actor_controller.set_sprite_show(modifiers_string, transition_result)
 		if not SSUtils.is_success(result):
-			throw_error(stack_error(result, "Could not set MultiVisual sprite."))
-			return
+			return stack_error(result, "Could not set MultiVisual sprite.")
 
 
 func _get_transition_result():

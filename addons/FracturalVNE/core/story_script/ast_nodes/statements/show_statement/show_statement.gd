@@ -45,7 +45,7 @@ func _run_show_transition(transition_result):
 	var actor_controller = get_runtime_block().get_service("ActorManager").get_or_load_actor_controller(actor_result)
 	if not SSUtils.is_success(actor_controller):
 		return stack_error(actor_controller, "Could not load the ActorController for the show statement.")
-	actor_controller.actor_transitioner.show(transition_result)
+	return actor_controller.actor_transitioner.show(transition_result)
 
 
 func _get_transition_result():

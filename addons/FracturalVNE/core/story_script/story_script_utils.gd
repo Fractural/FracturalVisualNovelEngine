@@ -101,10 +101,11 @@ static func get_dir_contents(root_path: String, search_sub_directories: bool = t
 	var directories = []
 	var dir = Directory.new()
 
-	if dir.open(root_path) == OK:
+	var result = dir.open(root_path)
+	if result == OK:
 		dir.list_dir_begin(true, false)
 		FracUtils._add_dir_contents(dir, files, directories, search_sub_directories, file_extensions)
 	else:
-		return Error.new("An error occurred when trying to access the path.")
+		return Error.new("An error occurred when trying to access the path. Directory error: %s" % [result])
 
 	return [files, directories]
