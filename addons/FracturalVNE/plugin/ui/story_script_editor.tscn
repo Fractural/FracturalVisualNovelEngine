@@ -435,6 +435,7 @@ __meta__ = {
 text_edit_theme = ExtResource( 1 )
 error_label_path = NodePath("../BottomMenu/HSplitContainer/ErrorLabel")
 caret_position_label_path = NodePath("../BottomMenu/HSplitContainer/CaretPositionLabel")
+dep__persistent_data_path = NodePath("../../../Dependencies/FracVNEPersistentDataDependency")
 
 [node name="BottomMenu" type="PanelContainer" parent="MainHSplitContainer/VBoxContainer"]
 margin_top = 555.0

@@ -1,41 +1,41 @@
 # ----- BGScenes ----- #
-define bg_library1 = Scene(texture_path="res://addons/FracturalVNE/_modules/default_assets/bg_images/library_1.png")
-define bg_library2 = Scene("res://addons/FracturalVNE/_modules/default_assets/bg_images/library_2.png")
-define bg_library3 = Scene(texture_path="res://addons/FracturalVNE/_modules/default_assets/bg_images/library_3.png")
+var bg_library1 = Scene(texture_path="res://addons/FracturalVNE/_modules/default_assets/bg_images/library_1.png")
+var bg_library2 = Scene("res://addons/FracturalVNE/_modules/default_assets/bg_images/library_2.png")
+var bg_library3 = Scene(texture_path="res://addons/FracturalVNE/_modules/default_assets/bg_images/library_3.png")
 
 # ----- Characters ----- #
-#define godette_single_visual = Visual(texture_path="res://addons/FracturalVNE/default_assets/visuals/images/godette_body.png")
-define godette = Character("Godette", "#468cbf", "#ffffff", visual=DynamicVisual(textures_directory="res://addons/FracturalVNE/_modules/default_assets/images/dynamic_godette/"))
-define godette2 = Character(name="Godette", name_color="#468cbf", dialogue_color="#ffffff", visual=DynamicVisual(textures_directory="res://addons/FracturalVNE/_modules/default_assets/images/dynamic_godette"))
-define godette3 = Character(name="Godette", name_color="#468cbf", dialogue_color="#ffffff", visual=DynamicVisual(textures_directory="res://addons/FracturalVNE/_modules/default_assets/images/dynamic_godette"))
-define godette4 = Character(name="Godette", name_color="#468cbf", dialogue_color="#ffffff", visual=DynamicVisual(textures_directory="res://addons/FracturalVNE/_modules/default_assets/images/dynamic_godette"))
-define godette5 = Character(name="Godette", name_color="#468cbf", dialogue_color="#ffffff", visual=DynamicVisual(textures_directory="res://addons/FracturalVNE/_modules/default_assets/images/dynamic_godette"))
+#var godette_single_visual = Visual(texture_path="res://addons/FracturalVNE/default_assets/visuals/images/godette_body.png")
+var godette = Character("Godette", "#468cbf", "#ffffff", visual=DynamicVisual(textures_directory="res://addons/FracturalVNE/_modules/default_assets/images/dynamic_godette/"))
+var godette2 = Character(name="Godette", name_color="#468cbf", dialogue_color="#ffffff", visual=DynamicVisual(textures_directory="res://addons/FracturalVNE/_modules/default_assets/images/dynamic_godette"))
+var godette3 = Character(name="Godette", name_color="#468cbf", dialogue_color="#ffffff", visual=DynamicVisual(textures_directory="res://addons/FracturalVNE/_modules/default_assets/images/dynamic_godette"))
+var godette4 = Character(name="Godette", name_color="#468cbf", dialogue_color="#ffffff", visual=DynamicVisual(textures_directory="res://addons/FracturalVNE/_modules/default_assets/images/dynamic_godette"))
+var godette5 = Character(name="Godette", name_color="#468cbf", dialogue_color="#ffffff", visual=DynamicVisual(textures_directory="res://addons/FracturalVNE/_modules/default_assets/images/dynamic_godette"))
 
-define godette6 = Character(name="Godette", name_color="#468cbf", dialogue_color="#ffffff", visual=DynamicVisual(textures_directory="res://addons/FracturalVNE/_modules/default_assets/images/dynamic_godette"))
-define godette7 = Character(name="Godette", name_color="#468cbf", dialogue_color="#ffffff", visual=DynamicVisual(textures_directory="res://addons/FracturalVNE/_modules/default_assets/images/dynamic_godette"))
-define godette8 = Character(name="Godette", name_color="#468cbf", dialogue_color="#ffffff", visual=DynamicVisual(textures_directory="res://addons/FracturalVNE/_modules/default_assets/images/dynamic_godette"))
-define godette9 = Character(name="Godette", name_color="#468cbf", dialogue_color="#ffffff", visual=DynamicVisual(textures_directory="res://addons/FracturalVNE/_modules/default_assets/images/dynamic_godette"))
-define godette10 = Character(name="Godette", name_color="#468cbf", dialogue_color="#ffffff", visual=DynamicVisual(textures_directory="res://addons/FracturalVNE/_modules/default_assets/images/dynamic_godette"))
+var godette6 = Character(name="Godette", name_color="#468cbf", dialogue_color="#ffffff", visual=DynamicVisual(textures_directory="res://addons/FracturalVNE/_modules/default_assets/images/dynamic_godette"))
+var godette7 = Character(name="Godette", name_color="#468cbf", dialogue_color="#ffffff", visual=DynamicVisual(textures_directory="res://addons/FracturalVNE/_modules/default_assets/images/dynamic_godette"))
+var godette8 = Character(name="Godette", name_color="#468cbf", dialogue_color="#ffffff", visual=DynamicVisual(textures_directory="res://addons/FracturalVNE/_modules/default_assets/images/dynamic_godette"))
+var godette9 = Character(name="Godette", name_color="#468cbf", dialogue_color="#ffffff", visual=DynamicVisual(textures_directory="res://addons/FracturalVNE/_modules/default_assets/images/dynamic_godette"))
+var godette10 = Character(name="Godette", name_color="#468cbf", dialogue_color="#ffffff", visual=DynamicVisual(textures_directory="res://addons/FracturalVNE/_modules/default_assets/images/dynamic_godette"))
 
 # ----- Transitions ----- #
-define fade_to_black = load("res://addons/FracturalVNE/_modules/default_assets/transitions/fade_to_color/fade_to_black/fade_to_black.tres")
-define cross_fade = load("res://addons/FracturalVNE/_modules/default_assets/transitions/cross_fade/cross_fade.tres")
+var fade_to_black = load("res://addons/FracturalVNE/_modules/default_assets/transitions/fade_to_color/fade_to_black/fade_to_black.tres")
+var cross_fade = load("res://addons/FracturalVNE/_modules/default_assets/transitions/cross_fade/cross_fade.tres")
 
 # ----- Animations ----- #
-define hop = load("res://addons/FracturalVNE/_modules/default_assets/animations/hop.tres")
+var hop = load("res://addons/FracturalVNE/_modules/default_assets/animations/hop.tres")
 
 # ----- Curves ----- #
-define linear = load("res://addons/FracturalVNE/_modules/default_assets/curves/linear.tres")
-define ease_in = load("res://addons/FracturalVNE/_modules/default_assets/curves/ease_in.tres")
-define ease_out = load("res://addons/FracturalVNE/_modules/default_assets/curves/ease_out.tres")
-define smooth_step = load("res://addons/FracturalVNE/_modules/default_assets/curves/smooth_step.tres")
+var linear = load("res://addons/FracturalVNE/_modules/default_assets/curves/linear.tres")
+var ease_in = load("res://addons/FracturalVNE/_modules/default_assets/curves/ease_in.tres")
+var ease_out = load("res://addons/FracturalVNE/_modules/default_assets/curves/ease_out.tres")
+var smooth_step = load("res://addons/FracturalVNE/_modules/default_assets/curves/smooth_step.tres")
 
 # ----- Channels ----- #
-define sfx = AudioChannel(volume_db = -20)
-define music = AudioChannel(volume_db = -20)
-define queued_channel = AudioChannel(volume_db = -20, queue_by_default = true)
+var sfx = AudioChannel(volume_db = -20)
+var music = AudioChannel(volume_db = -20)
+var queued_channel = AudioChannel(volume_db = -20, queue_by_default = true)
 
 # ----- Sounds ----- #
-define bgm_poppy_shop = load("res://addons/FracturalVNE/_modules/default_assets/audio/music/Poppy Shop.ogg")
-define bgm_ambience = load("res://addons/FracturalVNE/_modules/default_assets/audio/ambient/Store Ambience 1.wav")
-define sfx_entrance_chime = load("res://addons/FracturalVNE/_modules/default_assets/audio/sfx/Entrance Chime.wav")
+var bgm_poppy_shop = load("res://addons/FracturalVNE/_modules/default_assets/audio/music/Poppy Shop.ogg")
+var bgm_ambience = load("res://addons/FracturalVNE/_modules/default_assets/audio/ambient/Store Ambience 1.wav")
+var sfx_entrance_chime = load("res://addons/FracturalVNE/_modules/default_assets/audio/sfx/Entrance Chime.wav")

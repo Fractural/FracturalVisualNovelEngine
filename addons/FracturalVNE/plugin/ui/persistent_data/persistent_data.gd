@@ -27,6 +27,7 @@ const STANDALONE_PERSISTENT_DATA_FILE_PATH: String = "res://addons/FracturalVNE/
 
 export(PersistentDataType) var persistent_data_type: int = PersistentDataType.AUTO
 
+var highlighting_theme = preload("res://addons/FracturalVNE/plugin/ui/monokai.tres")
 var current_script_path: String
 var current_saved_story_path: String
 var current_directory_path: String

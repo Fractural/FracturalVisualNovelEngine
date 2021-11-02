@@ -43,6 +43,20 @@ func _init():
 	#
 	# We force a ready in order to let the data load
 	persistent_data._ready()
+	
+	var ed_settings = get_editor_interface().get_editor_settings();
+	var theme = TextEditTheme.new()
+	theme.symbol_color = ed_settings.get_setting("text_editor/highlighting/symbol_color")
+	theme.text_color = ed_settings.get_setting("text_editor/highlighting/text_color")
+	theme.keyword_color = ed_settings.get_setting("text_editor/highlighting/keyword_color")
+	theme.function_color = ed_settings.get_setting("text_editor/highlighting/function_color")
+	theme.string_color = ed_settings.get_setting("text_editor/highlighting/string_color")
+	theme.number_color = ed_settings.get_setting("text_editor/highlighting/number_color")
+	theme.comment_color = ed_settings.get_setting("text_editor/highlighting/comment_color")
+	theme.line_number_color = ed_settings.get_setting("text_editor/highlighting/line_number_color")
+	theme.background_color = ed_settings.get_setting("text_editor/highlighting/background_color")
+	theme.selection_color = ed_settings.get_setting("text_editor/highlighting/selection_color")
+	persistent_data.highlighting_theme = theme;
 
 
 func _enter_tree():
