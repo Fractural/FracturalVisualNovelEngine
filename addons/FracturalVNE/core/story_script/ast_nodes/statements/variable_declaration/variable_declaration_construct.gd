@@ -11,7 +11,7 @@ func get_parse_types():
 
 
 func get_keywords():
-	return ["define"]
+	return ["var"]
 
 
 func get_punctuation():
@@ -20,7 +20,7 @@ func get_punctuation():
 
 func parse(parser):
 	var checkpoint = parser.save_reader_state()
-	var label = parser.expect_token("keyword", "define")
+	var label = parser.expect_token("keyword", "var")
 	if parser.is_success(label):
 		var identifier = parser.expect_token("identifier")
 		if parser.is_success(identifier):
