@@ -1,0 +1,4 @@
+[submodule "addons/GodotVisualStudioStub"]
+	path = addons/GodotVisualStudioStub
+	url = https://github.com/Fractural/GodotVisualStudioStub.git
+	branch = release
