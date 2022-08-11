@@ -10,7 +10,6 @@
 [node name="StoryEditorInit" type="Node"]
 
 [node name="DIContainer" parent="." instance=ExtResource( 2 )]
-services_holder_path = NodePath(".")
 
 [node name="SceneManager" parent="DIContainer" index="0"]
 initial_scene = ExtResource( 1 )

@@ -375,12 +375,15 @@ static func try_inject_dependency(dependency, loaded_scene: Node):
 
 # Checks if a given node is currently in the editor scene tab.
 # This has only been tested in Godot v3.3.2.
-static func is_in_editor_scene_tab(node):
+static func is_in_editor_scene_tab(node: Node):
 	if Engine.is_editor_hint():
 		# Only tested so far to work on Godot 3.3
 		while node.get_parent() != null:
 			node = node.get_parent()
-			if node.name == "@@5903":
+			if (node is Viewport and
+				node.get_parent() != null 				and node.get_parent() is ViewportContainer and
+				node.get_parent().get_parent() != null  and node.get_parent().get_parent() is Control
+			):
 				return true
 	return false
 

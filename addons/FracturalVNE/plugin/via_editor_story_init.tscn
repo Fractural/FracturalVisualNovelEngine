@@ -7,7 +7,6 @@
 [node name="ViaEditorStory" type="Node"]
 
 [node name="ServiceDIContainer" parent="." instance=ExtResource( 2 )]
-services_holder_path = NodePath(".")
 
 [node name="EditorFracVNEPersistentData" type="Node" parent="ServiceDIContainer"]
 script = ExtResource( 3 )

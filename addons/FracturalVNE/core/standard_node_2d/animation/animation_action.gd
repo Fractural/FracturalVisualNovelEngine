@@ -1,5 +1,5 @@
 extends "res://addons/FracturalVNE/core/story/director/step_action.gd"
-# Action for animating a Visualr
+# Action for animating a Visual
 
 
 var standard_node_2d_animation

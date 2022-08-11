@@ -1,23 +1,21 @@
-extends Reference
 tool
+extends Reference
+
 
 static func initialize() -> void:
-	push_warning("You may change any setting for WAT in Project -> ProjectSettings -> General -> WAT")
-	_add_setting("Test_Directory", TYPE_STRING, "res://tests")
-	_add_setting("Results_Directory", TYPE_STRING, "res://tests")
-	_add_setting("Test_Metadata_Directory", TYPE_STRING, "res://tests")
+	if not ProjectSettings.has_setting("WAT/Test_Directory"):
+		push_warning("Test Directory was set to project root.\nYou may change any setting for WAT in Project -> ProjectSettings -> General -> WAT")
+	_add_setting("Test_Directory", TYPE_STRING, "res://")
+	_add_setting("Results_Directory", TYPE_STRING, "res://")
+	_add_setting("Test_Metadata_Directory", TYPE_STRING, "res://")
 	_add_setting("Tags", TYPE_STRING_ARRAY, PoolStringArray())
+	_add_setting("Cache_Tests", TYPE_BOOL, true)
 	_add_setting("Window_Size", TYPE_VECTOR2, Vector2(1280, 720))
 	_add_setting("Minimize_Window_When_Running_Tests", TYPE_BOOL, false)
 	_add_setting("Port", TYPE_INT, 6008)
-	
-	# DEFAULT LAUNCH IS A REDUNDANT SETTING. DELETE IT.
-	# _add_setting("Default_Launch", TYPE_INT, 0, PROPERTY_HINT_ENUM, "Launch via Editor, Launch In Editor")
 	_add_setting("Tags", TYPE_STRING_ARRAY, PoolStringArray())
-	_add_setting("Run_All_Tests", TYPE_OBJECT, InputEventKey.new())
 	
 	# Set this to true if using external editors
-	_add_setting("Auto_Refresh_Tests", TYPE_BOOL, false)
 	ProjectSettings.save()
 	
 static func _add_setting(title: String, type: int, value, hint_type: int = -1, hint_string = "") -> void:
@@ -36,18 +34,26 @@ static func _add_setting(title: String, type: int, value, hint_type: int = -1, h
 static func test_directory() -> String:
 	return ProjectSettings.get_setting("WAT/Test_Directory")
 	
+static func results_directory() -> String:
+	return ProjectSettings.get_setting("WAT/Results_Directory")
+	
+static func metadata_directory() -> String:
+	return ProjectSettings.get_setting("WAT/Test_Metadata_Directory")
+	
 static func window_size() -> Vector2:
 	return ProjectSettings.get_setting("WAT/Window_Size")
 	
 static func tags() -> PoolStringArray:
 	return ProjectSettings.get_setting("WAT/Tags")
+
+static func cache_tests() -> bool:
+	return ProjectSettings.get_setting("WAT/Cache_Tests")
 	
 static func minimize_window_when_running_tests() -> bool:
 	return ProjectSettings.get_setting("WAT/Minimize_Window_When_Running_Tests")
 	
 static func port() -> int:
 	return ProjectSettings.get_setting("WAT/Port")
-	
-static func run_all_shortcut() -> ShortCut:
-	return ProjectSettings.get_setting("Run_All_Tests")
 
+static func is_bottom_panel() -> int:
+	return ProjectSettings.get_setting("WAT/Display") == 8

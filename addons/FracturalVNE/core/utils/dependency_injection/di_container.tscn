@@ -9,6 +9,7 @@
 [node name="DIContainer" type="Node"]
 script = ExtResource( 4 )
 scene_manager_path = NodePath("SceneManager")
+services_holder_path = NodePath(".")
 
 [node name="SceneManager" type="Node" parent="."]
 script = ExtResource( 5 )

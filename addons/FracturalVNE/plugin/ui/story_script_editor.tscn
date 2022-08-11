@@ -48,9 +48,6 @@ shortcut = SubResource( 4 )
 anchor_right = 1.0
 anchor_bottom = 1.0
 script = ExtResource( 5 )
-__meta__ = {
-"_edit_use_anchors_": false
-}
 compile_button_path = NodePath("MainHSplitContainer/VBoxContainer/TopMenu/VBoxContainer/HBoxContainer/Buttons/CompileButton")
 run_button_path = NodePath("MainHSplitContainer/VBoxContainer/TopMenu/VBoxContainer/HBoxContainer/Buttons/RunButton")
 script_text_edit_path = NodePath("MainHSplitContainer/VBoxContainer/ScriptTextEdit")
@@ -391,12 +388,12 @@ margin_top = 62.0
 margin_right = 751.0
 margin_bottom = 555.0
 size_flags_vertical = 3
-custom_fonts/font = ExtResource( 2 )
 custom_colors/function_color = Color( 0.65098, 0.886275, 0.180392, 1 )
 custom_colors/font_color = Color( 0.972549, 0.972549, 0.94902, 1 )
 custom_colors/line_number_color = Color( 0.458824, 0.443137, 0.368627, 1 )
 custom_colors/background_color = Color( 0.152941, 0.156863, 0.133333, 1 )
 custom_colors/number_color = Color( 0.682353, 0.505882, 1, 1 )
+custom_fonts/font = ExtResource( 2 )
 text = "label one(oof=\"xd\", lol, another_one=123 + 3234 /234 * (4 + 345.454)):
 	m \"Hi! how are you doing.\"
 	s \"I'm doing well.\"
@@ -453,8 +450,8 @@ dragger_visibility = 2
 margin_right = 665.0
 margin_bottom = 17.0
 size_flags_horizontal = 3
-custom_fonts/normal_font = ExtResource( 2 )
 custom_colors/default_color = Color( 0.960784, 0.454902, 0.407843, 1 )
+custom_fonts/normal_font = ExtResource( 2 )
 bbcode_enabled = true
 meta_underlined = false
 scroll_active = false

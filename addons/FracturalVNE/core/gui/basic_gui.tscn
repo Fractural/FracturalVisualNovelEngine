@@ -17,9 +17,6 @@ anchor_bottom = 1.0
 mouse_filter = 2
 theme = ExtResource( 3 )
 script = ExtResource( 2 )
-__meta__ = {
-"_edit_use_anchors_": false
-}
 pause_menu_path = NodePath("BasicPauseMenu")
 
 [node name="Dependencies" type="Node" parent="."]
