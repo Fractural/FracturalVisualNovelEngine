@@ -1,0 +1,85 @@
+[gd_scene load_steps=8 format=2]
+
+[ext_resource path="res://addons/FracturalVNE/core/gui/text_printer/base_text_printer.tscn" type="PackedScene" id=1]
+[ext_resource path="res://addons/FracturalVNE/core/gui/text_printer/printers/components/text_reveal.gd" type="Script" id=2]
+[ext_resource path="res://addons/FracturalVNE/core/gui/text_printer/printers/basic_text_printer/basic_text_printer_controller.gd" type="Script" id=3]
+[ext_resource path="res://addons/FracturalVNE/assets/fonts/Noto_Sans/NotoSans-BoldItalic.tres" type="DynamicFont" id=4]
+[ext_resource path="res://addons/FracturalVNE/assets/fonts/Noto_Sans/NotoSans-Bold.tres" type="DynamicFont" id=5]
+[ext_resource path="res://addons/FracturalVNE/assets/fonts/Noto_Sans/NotoSans-Italic.tres" type="DynamicFont" id=6]
+[ext_resource path="res://addons/FracturalVNE/assets/fonts/Noto_Sans/NotoSans-Regular.tres" type="DynamicFont" id=7]
+
+[node name="BasicTextPrinter" instance=ExtResource( 1 )]
+rect_min_size = Vector2( 0, 200 )
+mouse_filter = 2
+script = ExtResource( 3 )
+name_text_reveal_path = NodePath("Holder/Panel/MarginContainer/HSeparator/NameTextReveal")
+dialogue_text_reveal_path = NodePath("Holder/Panel/MarginContainer/HSeparator/DialogueTextReveal")
+
+[node name="Holder" parent="." index="0"]
+mouse_filter = 2
+
+[node name="Panel" type="Panel" parent="Holder" index="0"]
+anchor_right = 1.0
+anchor_bottom = 1.0
+mouse_filter = 2
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="MarginContainer" type="MarginContainer" parent="Holder/Panel" index="0"]
+anchor_right = 1.0
+anchor_bottom = 1.0
+margin_left = 100.0
+margin_top = 10.0
+margin_right = -100.0
+margin_bottom = -10.0
+mouse_filter = 2
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="HSeparator" type="VSplitContainer" parent="Holder/Panel/MarginContainer" index="0"]
+margin_right = 823.0
+margin_bottom = 580.0
+mouse_filter = 2
+dragger_visibility = 2
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="NameTextReveal" type="RichTextLabel" parent="Holder/Panel/MarginContainer/HSeparator" index="0"]
+margin_right = 823.0
+margin_bottom = 30.0
+rect_min_size = Vector2( 0, 30 )
+mouse_filter = 2
+custom_fonts/bold_italics_font = ExtResource( 4 )
+custom_fonts/italics_font = ExtResource( 6 )
+custom_fonts/bold_font = ExtResource( 5 )
+custom_fonts/normal_font = ExtResource( 7 )
+bbcode_enabled = true
+bbcode_text = "Name"
+text = "Name"
+scroll_active = false
+script = ExtResource( 2 )
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="DialogueTextReveal" type="RichTextLabel" parent="Holder/Panel/MarginContainer/HSeparator" index="1"]
+margin_top = 30.0
+margin_right = 823.0
+margin_bottom = 580.0
+mouse_filter = 2
+custom_fonts/bold_italics_font = ExtResource( 4 )
+custom_fonts/italics_font = ExtResource( 6 )
+custom_fonts/bold_font = ExtResource( 5 )
+custom_fonts/normal_font = ExtResource( 7 )
+bbcode_enabled = true
+bbcode_text = "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Et tortor consequat id porta. Eget duis at tellus at urna condimentum. Nec feugiat nisl pretium fusce id velit ut tortor. Euismod in pellentesque massa placerat duis ultricies lacus sed turpis. Et netus et malesuada fames ac turpis egestas sed. Tellus cras adipiscing enim eu turpis egestas pretium aenean. Varius quam quisque id diam vel quam elementum pulvinar etiam. Malesuada proin libero nunc consequat. Ut consequat semper viverra nam libero justo. At augue eget arcu dictum varius. Id semper risus in hendrerit gravida. Tellus orci ac auctor augue mauris. In arcu cursus euismod quis viverra nibh. Auctor urna nunc id cursus metus aliquam eleifend mi in. Amet risus nullam eget felis eget nunc lobortis. Viverra aliquet eget sit amet tellus cras adipiscing enim."
+text = "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Et tortor consequat id porta. Eget duis at tellus at urna condimentum. Nec feugiat nisl pretium fusce id velit ut tortor. Euismod in pellentesque massa placerat duis ultricies lacus sed turpis. Et netus et malesuada fames ac turpis egestas sed. Tellus cras adipiscing enim eu turpis egestas pretium aenean. Varius quam quisque id diam vel quam elementum pulvinar etiam. Malesuada proin libero nunc consequat. Ut consequat semper viverra nam libero justo. At augue eget arcu dictum varius. Id semper risus in hendrerit gravida. Tellus orci ac auctor augue mauris. In arcu cursus euismod quis viverra nibh. Auctor urna nunc id cursus metus aliquam eleifend mi in. Amet risus nullam eget felis eget nunc lobortis. Viverra aliquet eget sit amet tellus cras adipiscing enim."
+script = ExtResource( 2 )
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[editable path="BaseActor"]

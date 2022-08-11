@@ -1,0 +1,54 @@
+# ----- BGScenes ----- #
+define bg_library1 = Scene(texture_path="res://addons/FracturalVNE/_modules/default_assets/bg_images/library_1.png")
+define bg_library2 = Scene("res://addons/FracturalVNE/_modules/default_assets/bg_images/library_2.png")
+define bg_library3 = Scene(texture_path="res://addons/FracturalVNE/_modules/default_assets/bg_images/library_3.png")
+
+# ----- Characters ----- #
+define godette = Character("Godette", "#468cbf", "#ffffff", visual=DynamicVisual(textures_directory="res://addons/FracturalVNE/default_assets/images/dynamic_godette/"))
+
+# ----- Transitions ----- #
+define trans_fade_to_black = load("res://addons/FracturalVNE/_modules/default_assets/transitions/fade_to_color/fade_to_black/fade_to_black.tres")
+define trans_cross_fade = load("res://addons/FracturalVNE/_modules/default_assets/transitions/cross_fade/cross_fade.tres")
+
+# ----- Animations ----- #
+define anim_bob = load("res://addons/FracturalVNE/_modules/default_assets/animations/bob.tres")
+define anim_fast_shake = load("res://addons/FracturalVNE/_modules/default_assets/animations/fast_shake.tres")
+define anim_shake = load("res://addons/FracturalVNE/_modules/default_assets/animations/shake.tres")
+define anim_hesitent = load("res://addons/FracturalVNE/_modules/default_assets/animations/hesitent.tres")
+define anim_hop = load("res://addons/FracturalVNE/_modules/default_assets/animations/hop.tres")
+define anim_small_jump_left = load("res://addons/FracturalVNE/_modules/default_assets/animations/small_jump_left.tres")
+define anim_small_jump_right = load("res://addons/FracturalVNE/_modules/default_assets/animations/small_jump_right.tres")
+
+# ----- Curves ----- #
+define linear = load("res://addons/FractualVNE/_modules/default_assets/curves/linear.tres")
+define ease_in = load("res://addons/FracturalVNE/_modules/default_assets/curves/ease_in.tres")
+define ease_out = load("res://addons/FracturalVNE/_modules/default_assets/curves/ease_out.tres")
+define smooth_step = load("res://addons/FracturalVNE/_modules/default_assets/curves/smooth_step.tres")
+
+# ----- Channels ----- #
+define sfx = AudioChannel(volume_db)
+define bgm = AudioChannel(volume_db = -20)
+
+# ----- Sounds ----- #
+define bgm_poppy_shop = load("res://addons/FracturalVNE/_modules/default_assets/audio/music/Poppy Shop.ogg")
+define bgm_ambience = load("res://addons/FracturalVNE/_modules/default_assets/audio/ambient/Store Ambience 1.wav")
+define sfx_entrance_chime = load("res://addons/FracturalVNE/_modules/default_assets/audio/sfx/Entrance Chime.wav")
+
+# ----- Constants ----- #
+define LeftPos5 = Point(-500, 0)
+define LeftPos4 = Point(-400, 0)
+define LeftPos3 = Point(-300, 0)
+define LeftPos2 = Point(-200, 0)
+define LeftPos1 = Point(-100, 0)
+
+define LeftPos = Point(-500, 0)
+
+define CenterPos = Point(0, 0)
+
+define RightPos5 = Point(500, 0)
+define RightPos4 = Point(400, 0)
+define RightPos3 = Point(300, 0)
+define RightPos2 = Point(200, 0)
+define RightPos1 = Point(100, 0)
+
+define RightPos = Point(500, 0)

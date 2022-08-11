@@ -1,0 +1,66 @@
+[gd_scene load_steps=6 format=2]
+
+[ext_resource path="res://addons/FracturalVNE/plugin/ui/plugin_ui.gd" type="Script" id=1]
+[ext_resource path="res://addons/FracturalVNE/plugin/ui/story_script_editor.tscn" type="PackedScene" id=2]
+[ext_resource path="res://addons/FracturalVNE/plugin/ui/editor_story_runner.gd" type="Script" id=4]
+[ext_resource path="res://addons/FracturalVNE/core/utils/dependency_injection/dependency.gd" type="Script" id=5]
+
+[sub_resource type="ButtonGroup" id=1]
+
+[node name="Fractural VNE" type="Control"]
+anchor_right = 1.0
+anchor_bottom = 1.0
+rect_min_size = Vector2( 0, 500 )
+size_flags_vertical = 3
+script = ExtResource( 1 )
+__meta__ = {
+"_edit_use_anchors_": false
+}
+story_script_editor_path = NodePath("StoryScriptEditor")
+dep__plugin_path = NodePath("Dependencies/PluginDependency")
+
+[node name="Dependencies" type="Node" parent="."]
+
+[node name="PluginDependency" type="Node" parent="Dependencies"]
+script = ExtResource( 5 )
+dependency_name = "EditorPlugin"
+
+[node name="AssetsRegistryDependency" type="Node" parent="Dependencies"]
+script = ExtResource( 5 )
+dependency_name = "AssetsRegistry"
+
+[node name="FracVNEPersistentDataDependency" type="Node" parent="Dependencies"]
+script = ExtResource( 5 )
+dependency_name = "FracVNEPersistentData"
+
+[node name="DockerDependency" type="Node" parent="Dependencies"]
+script = ExtResource( 5 )
+dependency_name = "Docker"
+
+[node name="EditorStoryRunner" type="Node" parent="."]
+script = ExtResource( 4 )
+dep__persistent_data_path = NodePath("../Dependencies/FracVNEPersistentDataDependency")
+dep__plugin_path = NodePath("../Dependencies/PluginDependency")
+
+[node name="StoryScriptEditor" parent="." instance=ExtResource( 2 )]
+
+[node name="StoryRunnerDependency" parent="StoryScriptEditor/Dependencies" index="0"]
+dependency_path = NodePath("../../../EditorStoryRunner")
+
+[node name="DockerDependency" parent="StoryScriptEditor/Dependencies" index="1"]
+dependency_path = NodePath("../../../Dependencies/DockerDependency")
+
+[node name="AssetsRegistryDependency" parent="StoryScriptEditor/Dependencies" index="2"]
+dependency_path = NodePath("../../../Dependencies/AssetsRegistryDependency")
+
+[node name="FracVNEPersistentDataDependency" parent="StoryScriptEditor/Dependencies" index="3"]
+dependency_path = NodePath("../../../Dependencies/FracVNEPersistentDataDependency")
+
+[node name="ListToggle" parent="StoryScriptEditor/MainHSplitContainer/ScriptBrowser/VBoxContainer2/HBoxContainer" index="0"]
+group = SubResource( 1 )
+
+[node name="TreeToggle" parent="StoryScriptEditor/MainHSplitContainer/ScriptBrowser/VBoxContainer2/HBoxContainer" index="1"]
+group = SubResource( 1 )
+
+[editable path="StoryScriptEditor"]
+[editable path="StoryScriptEditor/Control/PopupHolder/SettingsWindow"]

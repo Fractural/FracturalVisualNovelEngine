@@ -1,0 +1,9 @@
+[gd_scene load_steps=2 format=2]
+
+[ext_resource path="res://addons/FracturalVNE/core/utils/dependency_injection/di_container.tscn" type="PackedScene" id=1]
+
+[node name="GameInit" type="Node"]
+
+[node name="ServiceDIContainer" parent="." instance=ExtResource( 1 )]
+
+[editable path="ServiceDIContainer"]

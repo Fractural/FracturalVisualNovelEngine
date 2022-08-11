@@ -1,0 +1,50 @@
+[gd_scene load_steps=4 format=2]
+
+[ext_resource path="res://addons/FracturalVNE/core/story/choice/choice_handlers/basic_choice_handler.gd" type="Script" id=1]
+[ext_resource path="res://addons/FracturalVNE/core/story/choice/choice_option_controllers/basic_choice_option.tscn" type="PackedScene" id=2]
+[ext_resource path="res://addons/FracturalVNE/core/utils/dependency_injection/dependency.gd" type="Script" id=3]
+
+[node name="BasicChoiceHandler" type="MarginContainer"]
+anchor_right = 1.0
+anchor_bottom = 1.0
+margin_left = 200.0
+margin_top = 50.0
+margin_right = -200.0
+margin_bottom = -50.0
+script = ExtResource( 1 )
+__meta__ = {
+"_edit_use_anchors_": false
+}
+dep__choice_manager_path = NodePath("Dependencies/ChoiceManagerDependency")
+option_controller_prefab = ExtResource( 2 )
+option_controllers_holder_path = NodePath("OptionsHolder")
+
+[node name="Dependencies" type="Node" parent="."]
+
+[node name="ChoiceManagerDependency" type="Node" parent="Dependencies"]
+script = ExtResource( 3 )
+dependency_name = "ChoiceManager"
+
+[node name="OptionsHolder" type="VBoxContainer" parent="."]
+margin_right = 624.0
+margin_bottom = 500.0
+custom_constants/separation = 20
+alignment = 1
+
+[node name="BasicChoiceOption" parent="OptionsHolder" instance=ExtResource( 2 )]
+anchor_right = 0.0
+margin_top = 170.0
+margin_right = 624.0
+margin_bottom = 210.0
+
+[node name="BasicChoiceOption2" parent="OptionsHolder" instance=ExtResource( 2 )]
+anchor_right = 0.0
+margin_top = 230.0
+margin_right = 624.0
+margin_bottom = 270.0
+
+[node name="BasicChoiceOption3" parent="OptionsHolder" instance=ExtResource( 2 )]
+anchor_right = 0.0
+margin_top = 290.0
+margin_right = 624.0
+margin_bottom = 330.0

@@ -1,0 +1,37 @@
+[gd_scene load_steps=7 format=2]
+
+[ext_resource path="res://addons/FracturalVNE/_modules/mono/PostReady.cs" type="Script" id=1]
+[ext_resource path="res://addons/FracturalVNE/core/misc/scene_manager.gd" type="Script" id=2]
+[ext_resource path="res://addons/FracturalVNE/_modules/mono/io/StorySaveManagerWrapper.cs" type="Script" id=3]
+[ext_resource path="res://addons/FracturalVNE/core/utils/dependency_injection/dependency_injection_container.gd" type="Script" id=4]
+[ext_resource path="res://addons/FracturalVNE/_modules/mono/StoryRunner.cs" type="Script" id=5]
+[ext_resource path="res://addons/FracturalVNE/core/io/story_save_manager.gd" type="Script" id=6]
+
+[node name="StoryRunner" type="Node"]
+script = ExtResource( 5 )
+__meta__ = {
+"_editor_description_": "Used when you just want to load up a story without having your own dependency injection system. All the nodes here are C# wrappers or native C# classes in order to provide an APi for  other C# code to interact with."
+}
+sceneManagerPath = NodePath("DIContainer/SceneManager")
+
+[node name="DIContainer" type="Node" parent="."]
+script = ExtResource( 4 )
+is_self_contained = true
+scene_manager_path = NodePath("SceneManager")
+services_holder_path = NodePath(".")
+preloaded_service_paths = [ NodePath("..") ]
+
+[node name="SceneManager" type="Node" parent="DIContainer"]
+script = ExtResource( 2 )
+is_self_contained = true
+
+[node name="PostReady" type="Node" parent="DIContainer/SceneManager"]
+script = ExtResource( 1 )
+sceneManagerPath = NodePath("..")
+
+[node name="StorySaveManagerWrapper" type="Node" parent="DIContainer"]
+script = ExtResource( 3 )
+sourcePath = NodePath("StorySaveManager")
+
+[node name="StorySaveManager" type="Node" parent="DIContainer/StorySaveManagerWrapper"]
+script = ExtResource( 6 )

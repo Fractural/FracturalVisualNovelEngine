@@ -1,0 +1,29 @@
+[gd_scene load_steps=3 format=2]
+
+[ext_resource path="res://addons/FracturalVNE/plugin/ui/node_scaler.gd" type="Script" id=1]
+[ext_resource path="res://addons/FracturalVNE/core/utils/dependency_injection/dependency.gd" type="Script" id=2]
+
+[node name="BasicField" type="HBoxContainer"]
+anchor_right = 1.0
+margin_bottom = 14.0
+rect_min_size = Vector2( 0, 40 )
+size_flags_horizontal = 3
+
+[node name="Dependencies" type="Node" parent="."]
+
+[node name="AssetsRegistryDependency" type="Node" parent="Dependencies"]
+script = ExtResource( 2 )
+dependency_name = "AssetsRegistry"
+
+[node name="Label" type="Label" parent="."]
+margin_top = 13.0
+margin_right = 1024.0
+margin_bottom = 27.0
+size_flags_horizontal = 3
+text = "sdfasdfasdf"
+
+[node name="FieldScaler" type="Node" parent="."]
+script = ExtResource( 1 )
+scaled_properties = [ "rect_min_size" ]
+target_node_path = NodePath("..")
+dep__assets_registry_path = NodePath("../Dependencies/AssetsRegistryDependency")

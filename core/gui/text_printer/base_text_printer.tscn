@@ -1,0 +1,45 @@
+[gd_scene load_steps=4 format=2]
+
+[ext_resource path="res://addons/FracturalVNE/core/gui/text_printer/text_printer_controller.gd" type="Script" id=1]
+[ext_resource path="res://addons/FracturalVNE/core/actor/base_actor.tscn" type="PackedScene" id=2]
+[ext_resource path="res://addons/FracturalVNE/core/standard_node_2d/standard_node_2d.gd" type="Script" id=3]
+
+[node name="BaseTextPrinter" type="Control"]
+anchor_right = 1.0
+anchor_bottom = 1.0
+script = ExtResource( 1 )
+__meta__ = {
+"_edit_use_anchors_": false
+}
+actor_animator_path = NodePath("BaseActor/Animator")
+actor_mover_path = NodePath("BaseActor/Mover")
+actor_transitioner_path = NodePath("BaseActor/Transitioner")
+node_holder_path = NodePath("Holder")
+
+[node name="Holder" type="Control" parent="."]
+anchor_right = 1.0
+anchor_bottom = 1.0
+margin_right = -0.00012207
+script = ExtResource( 3 )
+__meta__ = {
+"_edit_use_anchors_": false
+}
+standard_scale = Vector2( 1, 1 )
+global_standard_position = null
+global_standard_scale = null
+global_standard_rotation = null
+
+[node name="BaseActor" parent="." instance=ExtResource( 2 )]
+
+[node name="Animator" parent="BaseActor" index="0"]
+node_holder_path = NodePath("../../Holder")
+animation_holder_path = NodePath("../..")
+
+[node name="Mover" parent="BaseActor" index="1"]
+standard_node_2d_path = NodePath("../..")
+
+[node name="Transitioner" parent="BaseActor" index="2"]
+node_holder_path = NodePath("../../Holder")
+transition_holder_path = NodePath("../..")
+
+[editable path="BaseActor"]
