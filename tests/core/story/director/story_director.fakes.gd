@@ -19,9 +19,9 @@ class TestSkip:
 		step_actions.clear()
 	
 	
-	func add_step_action(_object, args: Array):
-		step_actions.append(args[0])
+	func add_step_action(action):
+		step_actions.append(action)
 	
 	
-	func remove_step_action(_object, args: Array):
-		step_actions.erase(args[0])
+	func remove_step_action(action):
+		step_actions.erase(action)

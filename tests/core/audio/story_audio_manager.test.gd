@@ -49,7 +49,7 @@ func test_add_new_channel():
 	# ----- Setup ----- #
 	
 	var channel = p.channel
-	var mock_reference_registry = direct.script(ReferenceRegistry, "Reference")
+	var mock_reference_registry = direct.script(ReferenceRegistry)
 	mock_reference_registry.method("add_reference")
 	var story_audio_manager = StoryAudioManagerBuilder.new().default(direct) \
 		.inject_reference_registry(mock_reference_registry.double()) \

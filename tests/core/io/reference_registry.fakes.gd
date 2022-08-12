@@ -15,24 +15,20 @@ class TestGetAddReference:
 	
 	# ----- Binded ----- #
 	
-	func add_reference(_object, args):
-		var reference = args[0]
+	func add_reference(reference):
 		if not references.has(reference):
 			references.append(reference)
 	
 	
-	func remove_reference(_object, args):
-		var reference = args[0]
+	func remove_reference(reference):
 		references.erase(reference)
 	
 	
-	func get_reference(_object, args):
-		var id = args[0]
+	func get_reference(id):
 		return references[id]
 	
 	
-	func get_reference_id(_object, args):
-		var reference = args[0]
+	func get_reference_id(reference):
 		return references.find(reference)
 	
 	# ----- Binded ----- #
