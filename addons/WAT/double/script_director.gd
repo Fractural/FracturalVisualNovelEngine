@@ -135,7 +135,6 @@ func double(deps: Array = [], show_error = true) -> Object:
 	if not deps.empty() and dependecies.empty():
 		dependecies = deps
 	object = script().callv("new", dependecies)
-	var another_object = script().callv("new", [])
 	object.WATRegistry.append(registry)
 	for m in methods.values():
 		m.double = object
