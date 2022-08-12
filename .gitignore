@@ -21,3 +21,6 @@ builds/
 
 # Plugin releases
 releases/
+
+tests/metadata.json
+tests/results.xml
