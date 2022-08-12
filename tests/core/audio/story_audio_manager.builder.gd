@@ -56,7 +56,7 @@ func inject_story_director(story_director_):
 
 func default(direct):
 	inject_channels_holder(Node.new())
-	inject_story_director(direct.script_blank(StoryDirector, "Reference").double())
-	inject_reference_registry(direct.script_blank(ReferenceRegistry, "Reference").double())
-	inject_serialization_manager(direct.script_blank(SerializationManager, "Reference").double())
+	inject_story_director(direct.script(StoryDirector).double())
+	inject_reference_registry(direct.script(ReferenceRegistry).double())
+	inject_serialization_manager(direct.script(SerializationManager).double())
 	return self

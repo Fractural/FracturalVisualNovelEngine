@@ -20,7 +20,7 @@ func test_execute():
 	asserts.is_true(true, "TEMP TODO: Finish tests for choice.")	
 #	# ----- Setup ----- #
 #
-#	var mock_story_director = direct.script_blank(StoryDirector)
+#	var mock_story_director = direct.script(StoryDirector)
 #
 #	var choice_options = [
 #			ChoiceOptionBuilder.new().default(direct) \

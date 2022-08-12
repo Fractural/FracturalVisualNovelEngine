@@ -5,13 +5,12 @@ extends Reference
 const StoryDirector = preload("res://addons/FracturalVNE/core/story/director/story_director.gd")
 
 
-class TestSkip extends WAT.FakeMock:
+class TestSkip:
 	var step_actions: Array = []
 	
 	
-	func _init(direct).(direct, StoryDirector):
-		_bind_mock_function("add_step_action")
-		_bind_mock_function("remove_step_action")
+	func _init():
+		pass
 	
 	
 	func skip_all_step_actions():

@@ -19,9 +19,9 @@ func test_serialization():
 	
 	# ----- Setup ----- #
 	
-	var fake_reference_registry = ReferenceRegistryFakes.TestGetAddReference.new(direct)
+	var fake_reference_registry = ReferenceRegistryFakes.TestGetAddReference.new()
 	var serializer = SerializerBuilder.new().default(direct) \
-		.inject_reference_registry(fake_reference_registry.double()) \
+		.inject_reference_registry(fake_reference_registry) \
 		.build()
 	add_child(serializer)
 	
@@ -31,7 +31,7 @@ func test_serialization():
 		.build()
 	add_child(controller)
 	
-	fake_reference_registry.double().add_reference(channel)
+	fake_reference_registry.add_reference(channel)
 	
 	# ----- Setup ----- #
 	

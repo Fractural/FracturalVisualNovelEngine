@@ -5,15 +5,12 @@ extends Node
 const ReferenceRegistry = preload("res://addons/FracturalVNE/core/io/reference_registry.gd")
 
 
-class TestGetAddReference extends WAT.FakeMock:
+class TestGetAddReference:
 	var references = []
 	
 	
-	func _init(direct).(direct, ReferenceRegistry):
-		_bind_mock_function("add_reference")
-		_bind_mock_function("remove_reference")
-		_bind_mock_function("get_reference")
-		_bind_mock_function("get_reference_id")
+	func _init():
+		pass
 	
 	
 	# ----- Binded ----- #

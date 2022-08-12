@@ -149,12 +149,12 @@ func test_skipping_audio_for_skippable_controller():
 	
 	# ----- Setup ----- #
 	
-	var fake_story_director = StoryDirectorFakes.TestSkip.new(direct)
+	var fake_story_director = StoryDirectorFakes.TestSkip.new()
 	var controller = ChannelControllerBuilder.new() \
 		.inject_channel(ChannelBuilder.new().default(direct) \
 			.inject_is_skippable(true) \
 			.build()) \
-		.inject_story_director(fake_story_director.double()) \
+		.inject_story_director(fake_story_director) \
 		.build()
 	
 	watch(controller, "finished_playing")

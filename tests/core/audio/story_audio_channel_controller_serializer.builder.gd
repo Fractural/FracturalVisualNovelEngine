@@ -35,6 +35,6 @@ func inject_reference_registry(reference_registry_):
 
 
 func default(direct):
-	inject_story_director(direct.script_blank(StoryDirector, "Reference").double())
-	inject_reference_registry(direct.script_blank(ReferenceRegistry, "Reference").double())
+	inject_story_director(direct.script(StoryDirector).double())
+	inject_reference_registry(direct.script(ReferenceRegistry).double())
 	return self

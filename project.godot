@@ -140,6 +140,7 @@ Auto_Refresh_Tests=false
 Display=8
 Port=6008
 collision/draw_2d_outlines=true
+Cache_Tests=true
 
 [application]
 

@@ -58,6 +58,6 @@ func default(direct):
 	# assign these dependencies since the 
 	# inject() methods also clear any existing objects
 	# to prevent memory leaks with orphan nodes. 
-	inject_dependency_one(direct.script_blank(Reference))
+	inject_dependency_one(direct.script(Reference).double())
 	inject_other_dependency(12340)
 	return self

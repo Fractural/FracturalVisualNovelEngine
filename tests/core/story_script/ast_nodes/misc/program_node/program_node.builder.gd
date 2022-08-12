@@ -65,6 +65,6 @@ func default_test_statements(direct, statement: Array, services = []):
 
 
 func default(direct):
-	inject_block(direct.script_blank(BlockNode))
+	inject_block(direct.script(BlockNode).double())
 	inject_services([])
 	return self

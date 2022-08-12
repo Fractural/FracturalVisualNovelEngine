@@ -34,6 +34,6 @@ func inject_channel(channel_):
 
 
 func default(direct):
-	inject_story_director(direct.script_blank(StoryDirector, "Reference").double())
-	inject_channel(direct.script_blank(AudioChannel, "Reference").double())
+	inject_story_director(direct.script(StoryDirector).double())
+	inject_channel(direct.script(AudioChannel).double())
 	return self
