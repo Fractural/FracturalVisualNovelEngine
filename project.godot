@@ -145,7 +145,7 @@ Cache_Tests=true
 [application]
 
 config/name="FracturalVisualNovelEngine"
-run/main_scene="res://addons/FracturalVNE/standalone_story_editor_init.tscn"
+run/main_scene="res://addons/WAT/gui.tscn"
 config/icon="res://icon.png"
 
 [autoload]

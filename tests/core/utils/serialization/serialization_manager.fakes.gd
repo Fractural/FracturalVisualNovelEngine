@@ -4,17 +4,12 @@ extends Node
 const SerializationManager = preload("res://addons/FracturalVNE/core/utils/serialization/serialization_manager.gd")
 const PartlySerializedObject = SerializationManager.PartlySerializedObject
 
-class ReferenceBasedSerializationManager extends WAT.FakeMock:
+class ReferenceBasedSerializationManager:
 	# Simple SerializtionManger that
 	# just operates using an array instead of 
 	# in a scene tre.
 	
 	var serializers: Array
-	
-	
-	func _init(direct).(direct, SerializationManager, "Reference"):
-		_bind_mock_function("serialize")
-		_bind_mock_function("deserialize")
 	
 	
 	func set_serializers(serializers_: Array):

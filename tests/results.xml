@@ -1,5 +1,5 @@
 <?xml version="1.0" ?>
-<testsuites failures="0" name="TestXML" tests="3" time="9.088">
+<testsuites failures="0" name="TestXML" tests="3" time="13.048">
 	<testsuite name="C# SelfContainedStory" failures="0"  tests="1" time="0">
 		<testcase name="When running a self contained story" time="0"></testcase>
 	</testsuite>
