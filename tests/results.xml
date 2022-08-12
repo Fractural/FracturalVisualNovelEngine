@@ -1,5 +1,5 @@
 <?xml version="1.0" ?>
-<testsuites failures="0" name="TestXML" tests="8" time="6.443">
+<testsuites failures="0" name="TestXML" tests="8" time="6.757">
 	<testsuite name="C# SelfContainedStory" failures="0"  tests="1" time="0">
 		<testcase name="When running a self contained story" time="0"></testcase>
 	</testsuite>
@@ -20,9 +20,9 @@
 
 	<testsuite name="StoryAudioManager" failures="0"  tests="4" time="0">
 		<testcase name="When calling serialize_state() and deserialize_state()" time="0"></testcase>
-		<testcase name="When calling AudioChannel() with invalid arguments" time="0"></testcase>
 		<testcase name="When calling add_new_channel() with preset channel #4" time="0"></testcase>
 		<testcase name="When calling AudioChannel() with the variables of a preset channel" time="0"></testcase>
+		<testcase name="When calling AudioChannel() with invalid arguments" time="0"></testcase>
 	</testsuite>
 
 	<testsuite name="ChoiceManager" failures="0"  tests="1" time="0">
@@ -34,10 +34,10 @@
 	</testsuite>
 
 	<testsuite name="StoryAudioChannelController" failures="0"  tests="4" time="0">
-		<testcase name="When skippable and called play()" time="0"></testcase>
-		<testcase name="When not skippable and called play()" time="0"></testcase>
-		<testcase name="When skippable and the controller is deleted while playing." time="0"></testcase>
 		<testcase name="When skippable, called play(), and skipped playing" time="0"></testcase>
+		<testcase name="When skippable and called play()" time="0"></testcase>
+		<testcase name="When skippable and the controller is deleted while playing." time="0"></testcase>
+		<testcase name="When not skippable and called play()" time="0"></testcase>
 	</testsuite>
 
 </testsuites>
