@@ -26,9 +26,7 @@ jobs:
         run: msbuild
 
       - name: Reimport Assets
-        run: |
-          timeout $IMPORT_TIME godot --editor
-          exit 0
+        run: timeout $IMPORT_TIME godot --editor || code=$?; if [[ $code -ne 124 && $code -ne 0 ]]; then exit $code; fi
 
       - name: Run
         run: godot addons/WAT/cli.tscn run=all 
