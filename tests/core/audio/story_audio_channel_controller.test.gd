@@ -59,6 +59,7 @@ func test_playing_audio_for_unskippable_controller():
 	asserts.is_equal(controller.get_current_sound(), SOUND_SAMPLE, "Then, @time = 1/2 of sample's legnth, the audio player is playing the correct sample.")
 
 	yield(until_signal(controller, "finished_playing", SOUND_SAMPLE.get_length() + 3), YIELD)
+	yield(until_timeout(1), YIELD)
 
 	asserts.is_false(_is_audio_playing(), "Then, @time > sample's length, the audio player stops playing. Got volume: %s db." % [_current_master_volume()])
 	asserts.is_null(controller.get_current_sound(), "Then, @time > sample's length, the audio player's stream is null.")
