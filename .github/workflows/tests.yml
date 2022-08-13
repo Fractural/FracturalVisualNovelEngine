@@ -2,6 +2,9 @@ name: 🧪 Run Unit Tests
 
 on: [push, pull_request]
 
+env:
+  IMPORT_TIME: 10s
+
 jobs:
   Tests:
     name: Run All Tests on 3.5
@@ -23,9 +26,7 @@ jobs:
         run: msbuild
 
       - name: Reimport Assets
-        run: godot --editor
-        timeout-minutes: 1
-        continue-on-error: true
+        run: timeout $IMPORT_TIME godot --editor
 
       - name: Run
         run: godot addons/WAT/cli.tscn run=all 

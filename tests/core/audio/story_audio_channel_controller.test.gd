@@ -184,4 +184,4 @@ func _is_audio_playing():
 	# WAT will attempt to run the repeats in parallel, which leads to
 	# all the threads playing sound on the same AudioServer (making it impossible
 	# to distinguish which server is what).
-	return AudioServer.get_bus_peak_volume_left_db(AudioServer.get_bus_index("Master"), 0) > -150
+	return AudioServer.get_bus_peak_volume_left_db(AudioServer.get_bus_index("Master"), 0) > -100
