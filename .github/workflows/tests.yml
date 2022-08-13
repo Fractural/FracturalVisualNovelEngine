@@ -23,7 +23,7 @@ jobs:
         run: msbuild
 
       - name: Reimport Assets
-        run: godot --editor --quit
+        run: godot --editor
         timeout-minutes: 1
         continue-on-error: true
 
