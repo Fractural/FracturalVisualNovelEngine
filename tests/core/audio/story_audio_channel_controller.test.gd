@@ -55,12 +55,12 @@ func test_playing_audio_for_unskippable_controller():
 	var halfway_delay: float = SOUND_SAMPLE.get_length() / 2.0
 	yield(until_timeout(halfway_delay), YIELD)
 
-	asserts.is_true(_is_audio_playing(), "Then, @time = 1/2 sample's length, the audio player is playing.")
+	asserts.is_true(_is_audio_playing(), "Then, @time = 1/2 sample's length, the audio player is playing. Got volume: " + _current_master_volume() + "db.")
 	asserts.is_equal(controller.get_current_sound(), SOUND_SAMPLE, "Then, @time = 1/2 of sample's legnth, the audio player is playing the correct sample.")
 
 	yield(until_signal(controller, "finished_playing", SOUND_SAMPLE.get_length() + 3), YIELD)
 
-	asserts.is_false(_is_audio_playing(), "Then, @time > sample's length, the audio player stops playing.")
+	asserts.is_false(_is_audio_playing(), "Then, @time > sample's length, the audio player stops playing. Got volume: " + _current_master_volume() + "db.")
 	asserts.is_null(controller.get_current_sound(), "Then, @time > sample's length, the audio player's stream is null.")
 	
 	asserts.is_equal(mock_story_director.call_count("add_step_action"), 0, "Then no step actions were added.")
@@ -184,4 +184,7 @@ func _is_audio_playing():
 	# WAT will attempt to run the repeats in parallel, which leads to
 	# all the threads playing sound on the same AudioServer (making it impossible
 	# to distinguish which server is what).
-	return AudioServer.get_bus_peak_volume_left_db(AudioServer.get_bus_index("Master"), 0) > -100
+	return _current_master_volume() > -100
+
+func _current_master_volume():
+	return AudioServer.get_bus_peak_volume_left_db(AudioServer.get_bus_index("Master"), 0);
