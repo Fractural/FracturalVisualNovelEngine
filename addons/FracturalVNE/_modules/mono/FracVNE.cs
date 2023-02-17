@@ -1,7 +1,7 @@
 using Godot;
 using System;
 
-namespace Fractural.FracVNE
+namespace Fractural.VisualNovelEngine
 {
     public static class FracVNE
     {
@@ -15,6 +15,19 @@ namespace Fractural.FracVNE
         public static PackedScene GetSelfContainedStoryRunner()
         {
             return ResourceLoader.Load<PackedScene>("res://addons/FracturalVNE/plugin/self_contained_story.tscn");
+        }
+    }
+
+    public static class GodotExtensions
+    {
+        public static T Get<T>(this Godot.Object target, string name)
+        {
+            return (T)target.Get(name);
+        }
+
+        public static T Call<T>(this Godot.Object target, string method, params object[] args)
+        {
+            return (T)target.Call(method, args);
         }
     }
 }

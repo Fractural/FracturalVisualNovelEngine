@@ -1,0 +1,11 @@
+import "res://demo/testing/testing_definitions.story"
+
+label start:
+	
+	"Testing full transition (with bgm and scene)..."
+	transition fade_to_black:
+		sound music bgm_poppy_shop
+		scene bg_library1
+	"Tested full transition"
+	jump start
+	

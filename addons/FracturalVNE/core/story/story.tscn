@@ -1,4 +1,4 @@
-[gd_scene load_steps=43 format=2]
+[gd_scene load_steps=44 format=2]
 
 [ext_resource path="res://addons/FracturalVNE/core/story/story_manager.gd" type="Script" id=1]
 [ext_resource path="res://addons/FracturalVNE/core/story/director/story_director.gd" type="Script" id=2]
@@ -42,6 +42,7 @@
 [ext_resource path="res://addons/FracturalVNE/core/story/choice/choice_manager.gd" type="Script" id=40]
 [ext_resource path="res://addons/FracturalVNE/core/full_transition/full_transition_manager.gd" type="Script" id=41]
 [ext_resource path="res://addons/FracturalVNE/core/visuals/texture_holders/types/single_texture_holder.gd" type="Script" id=42]
+[ext_resource path="res://addons/FracturalVNE/core/gui/_misc/root_viewport.gd" type="Script" id=43]
 
 [node name="Story" type="Node"]
 
@@ -229,12 +230,12 @@ screenshot_viewport_path = NodePath("ScreenshotViewport")
 screenshot_gui_holder_path = NodePath("ScreenshotViewport/ScreenshotGUIHolder")
 
 [node name="ScreenshotViewport" type="Viewport" parent="ScreenshotManager"]
-size = Vector2( 1024, 600 )
 handle_input_locally = false
 usage = 0
 render_target_update_mode = 0
 physics_object_picking = true
 gui_disable_input = true
+script = ExtResource( 43 )
 
 [node name="ScreenshotGUIHolder" type="CanvasLayer" parent="ScreenshotManager/ScreenshotViewport"]
 layer = 10
@@ -255,9 +256,6 @@ __meta__ = {
 anchor_right = 1.0
 anchor_bottom = 1.0
 mouse_filter = 2
-__meta__ = {
-"_edit_use_anchors_": false
-}
 
 [node name="BGLayer" type="CanvasLayer" parent="WorldHolder/World"]
 layer = -10
@@ -266,9 +264,6 @@ layer = -10
 anchor_right = 1.0
 anchor_bottom = 1.0
 mouse_filter = 2
-__meta__ = {
-"_edit_use_anchors_": false
-}
 
 [node name="OldSceneHolder" type="Control" parent="WorldHolder/World/BGLayer/BGScenesHolder"]
 anchor_right = 1.0
@@ -290,21 +285,10 @@ __meta__ = {
 
 [node name="ActorsHolder" type="Control" parent="WorldHolder/World"]
 mouse_filter = 2
-__meta__ = {
-"_edit_use_anchors_": false
-}
 
 [node name="Camera2D" type="Camera2D" parent="WorldHolder/World"]
 current = true
 zoom = Vector2( 2, 2 )
-
-[node name="UIHolder" type="Control" parent="WorldHolder"]
-anchor_right = 1.0
-anchor_bottom = 1.0
-mouse_filter = 2
-__meta__ = {
-"_edit_use_anchors_": false
-}
 
 [node name="StoryGUIConfigurer" type="CanvasLayer" parent="."]
 pause_mode = 2
@@ -357,9 +341,6 @@ layer = 40
 anchor_right = 1.0
 anchor_bottom = 1.0
 mouse_filter = 2
-__meta__ = {
-"_edit_use_anchors_": false
-}
 
 [node name="NewTextureRect" type="TextureRect" parent="FullTransition/FullTransitionHolder"]
 visible = false
@@ -456,7 +437,7 @@ text = "Error"
 [node name="ErrorText" type="TextEdit" parent="StoryRuntimeDebugger/ErrorUI/Panel/MarginContainer/VSplitContainer"]
 margin_top = 54.0
 margin_right = 784.0
-margin_bottom = 283.0
+margin_bottom = 316.0
 size_flags_horizontal = 3
 size_flags_vertical = 3
 custom_fonts/font = ExtResource( 13 )
@@ -466,9 +447,9 @@ wrap_enabled = true
 
 [node name="QuitButton" type="Button" parent="StoryRuntimeDebugger/ErrorUI/Panel/MarginContainer/VSplitContainer"]
 margin_left = 292.0
-margin_top = 287.0
+margin_top = 320.0
 margin_right = 492.0
-margin_bottom = 327.0
+margin_bottom = 360.0
 rect_min_size = Vector2( 200, 40 )
 size_flags_horizontal = 4
 text = "Quit"
@@ -481,9 +462,6 @@ anchor_right = 1.0
 anchor_bottom = 1.0
 mouse_filter = 2
 script = ExtResource( 31 )
-__meta__ = {
-"_edit_use_anchors_": false
-}
 label_path = NodePath("Label")
 
 [node name="Label" type="Label" parent="StoryRuntimeDebugger/FPSCounter"]

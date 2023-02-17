@@ -104,9 +104,10 @@ func _exit_tree():
 func _load_plugin_modules():
 	# ----- Mono ----- #
 	
-	load_plugin_module("res://addons/FracturalVNE/_modules/mono/PluginModule.cs")
+	# load_plugin_module("res://addons/FracturalVNE/_modules/mono/PluginModule.cs")
 	
 	# ----- Mono ----- #
+	pass
 
 
 func _setup_inspector_plugins():

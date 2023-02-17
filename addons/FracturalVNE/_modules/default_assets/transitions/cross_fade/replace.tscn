@@ -7,19 +7,14 @@
 
 [sub_resource type="ShaderMaterial" id=1]
 shader = ExtResource( 4 )
-shader_param/progress = 1.0
 
 [sub_resource type="ShaderMaterial" id=2]
 shader = ExtResource( 4 )
-shader_param/progress = 0.0
 
 [node name="Replace" type="Control"]
 anchor_right = 1.0
 anchor_bottom = 1.0
 script = ExtResource( 3 )
-__meta__ = {
-"_edit_use_anchors_": false
-}
 node_2d_transition_texture_holder_path = NodePath("Node2DTextureHolder")
 control_transition_texture_holder_path = NodePath("ControlTextureHolder")
 transition_curve = ExtResource( 2 )
@@ -36,7 +31,4 @@ anchor_bottom = 1.0
 expand = true
 stretch_mode = 7
 script = ExtResource( 5 )
-__meta__ = {
-"_edit_use_anchors_": false
-}
 node_holder_path = NodePath(".")

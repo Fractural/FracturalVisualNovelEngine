@@ -4,7 +4,6 @@
 [ext_resource path="res://addons/FracturalVNE/_modules/default_assets/transitions/fade_to_color/fade_to_white/hide.tscn" type="PackedScene" id=2]
 [ext_resource path="res://addons/FracturalVNE/_modules/default_assets/transitions/fade_to_color/fade_to_white/show.tscn" type="PackedScene" id=3]
 
-
 [node name="Replace" type="Control"]
 mouse_filter = 2
 script = ExtResource( 1 )

@@ -8,9 +8,9 @@ void fragment()
 	vec4 old_color = texture(old_texture, UV);
 	vec4 new_color = texture(TEXTURE, UV);
 	
-	if (old_color.a == 0f && new_color.a != 0f)
+	if (old_color.a == 0.0f && new_color.a != 0.0f)
 		COLOR.rgb = new_color.rgb;
-	else if (old_color.a != 0f && new_color.a == 0f)
+	else if (old_color.a != 0.0f && new_color.a == 0.0f)
 		COLOR.rgb = old_color.rgb;
 	else
 		COLOR.rgb = mix(old_color.rgb, new_color.rgb, progress);

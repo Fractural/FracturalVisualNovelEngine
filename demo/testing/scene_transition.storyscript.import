@@ -1,0 +1,13 @@
+[remap]
+
+importer="FracVNE.storysciprt"
+type="Resource"
+path="res://.import/scene_transition.storyscript-2f0bff567abe13f7dbcf3f73be93347a.res"
+
+[deps]
+
+source_file="res://demo/testing/scene_transition.storyscript"
+dest_files=[ "res://.import/scene_transition.storyscript-2f0bff567abe13f7dbcf3f73be93347a.res" ]
+
+[params]
+

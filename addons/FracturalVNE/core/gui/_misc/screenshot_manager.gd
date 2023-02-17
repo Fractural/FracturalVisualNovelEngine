@@ -24,6 +24,10 @@ onready var screenshot_viewport = get_node(screenshot_viewport_path)
 onready var screenshot_gui_holder = get_node(screenshot_gui_holder_path)
 
 
+func _ready():
+	pass
+
+
 # Screenshots the entire screen
 func screenshot(callback = null):
 	if is_taking_screenshot:
@@ -35,7 +39,7 @@ func screenshot(callback = null):
 	image.flip_y()
 	
 	var texture = ImageTexture.new()
-	texture.create_from_image(image)
+	texture.create_from_image(image, Texture.FLAG_FILTER)
 	
 	screenshot = texture
 	is_taking_screenshot = false
@@ -75,7 +79,7 @@ func screenshot_gameplay(callback = null):
 	
 	# Convert Image to ImageTexture.
 	var facade_texture = ImageTexture.new()
-	facade_texture.create_from_image(facade_image)
+	facade_texture.create_from_image(facade_image, Texture.FLAG_FILTER)
 	
 	facade_viewport_texture_rect.texture = facade_texture
 	facade_viewport_texture_rect.visible = true
@@ -93,7 +97,7 @@ func screenshot_gameplay(callback = null):
 	viewport_texture_image.flip_y()
 
 	var viewport_texture = ImageTexture.new()
-	viewport_texture.create_from_image(viewport_texture_image)
+	viewport_texture.create_from_image(viewport_texture_image, Texture.FLAG_FILTER)
 
 	if story_gui_configurer.story_gui.pause_menu != null:
 		story_gui_configurer.story_gui.pause_menu.visible = original_pause_menu_visibility
