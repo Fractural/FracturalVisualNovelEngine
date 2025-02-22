@@ -1,6 +1,6 @@
 # Fractural Visual Novel Engine 📖
 
-![Deploy](https://github.com/Fractural/FracturalCommons/actions/workflows/deploy.yml/badge.svg) ![Unit Tests](https://github.com/Fractural/FracturalCommons/actions/workflows/tests.yml/badge.svg)
+![Deploy](https://github.com/Fractural/FracturalVisualNovelEngine/actions/workflows/deploy.yml/badge.svg) ![Unit Tests](https://github.com/Fractural/FracturalVisualNovelEngine/actions/workflows/tests.yml/badge.svg)
 
 A flexible text-based visual novel engine for Godot written in GDScript. Partly inspired by [Ren'Py](https://www.renpy.org/doc/html/).
 
